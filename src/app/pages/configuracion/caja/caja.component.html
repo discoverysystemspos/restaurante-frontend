@@ -1,0 +1,241 @@
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<header>
+    <div class="bg-header-blue py-2 px-3 mb-2">
+        <h5 class="text-white m-0">Configuraciones / Caja</h5>
+    </div>
+    <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
+
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-dark active" id="ticket1-tab"><i class="bi-gear" style="font-size: 1rem"></i> Tablero Principal</a>
+        </li>
+
+    </ul>
+</header>
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+
+<div class="container-fluid my-4">
+
+    <!-- TABLE CLIENTS -->
+    <div class="shadow-lg p-3 mb-5 rounded bg-white">
+
+        <!-- CARGANDO -->
+        <div *ngIf="cargando">
+            <div class="text-center p-4">
+                <div class="spinner-grow text-secondary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <small class="text-muted">cargando...</small>
+        </div>
+        <!-- CARGANDO -->
+
+        <div *ngIf="!cargando">
+            <div>
+                <div class="form-floating mb-2">
+                    <span class="position-absolute top-50 start-90 translate-middle"><i class=" bi-search " style="font-size: 1rem "></i></span>
+                    <input type="text" class="form-control" id="floatingInput2" placeholder="Buscar Caja" (keyup)="buscar(search.value)" #search>
+                    <label for="floatingInput2 ">Buscar Caja</label>
+                </div>
+            </div>
+
+            <!-- BTN CREAR CAJA -->
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-sm btn-primary btnW waves-effect waves-ligth" data-bs-toggle="modal" data-bs-target="#nuevaCaja">Crear Caja</button>
+            </div>
+            <!-- BTN CREAR CAJA -->
+
+            <div class="table-responsive ">
+                <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                    <thead class="border-bottom ">
+                        <tr>
+                            <th class="text-muted " scope="col ">#</th>
+                            <th class="text-muted " scope="col " colspan="2">Nombre</th>
+                            <th class="text-muted " scope="col " colspan="2">Descripción</th>
+                            <th class="text-muted " scope="col ">Estado</th>
+                            <th class="text-muted " scope="col ">Activa</th>
+                            <th class="text-muted w100 " scope="col ">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="!sinResultados" class="text-center ">
+                            <th colspan="10" class="py-4">
+                                <h4 class="text-muted">Sin Resultados</h4>
+                            </th>
+                        </tr>
+                        <tr class="trHover" *ngFor="let caja of listaCaja; let i = index">
+                            <th *ngIf="desde === 0 " scope="row ">{{ i + 1}}</th>
+                            <th *ngIf="desde> 0" scope="row">{{ (i + 1) + desde }}</th>
+                            <td colspan="2">{{ caja.name }}</td>
+                            <td colspan="2">{{ caja.description }}</td>
+                            <td>
+                                <span *ngIf="!caja.cerrada" class="badge rounded-pill bg-danger text-white-75">Abierta</span>
+                                <span *ngIf="caja.cerrada" class="badge rounded-pill bg-success text-white-75">Cerrada</span>
+                            </td>
+                            <td>
+                                <button *ngIf="caja.status" (click)="statusUpdate(caja.caid)" type="button" class="btn btnW waves-effect waves-ligth btn-success btn-sm">Activa</button>
+                                <button *ngIf="!caja.status" (click)="statusUpdate(caja.caid)" type="button" class="btn btnW waves-effect waves-ligth btn-danger btn-sm">Desactivada</button>
+                            </td>
+                            <td class="text-center">
+                                <button type="button" (click)="informacionCaja(caja)" class="btn btn-link p-1 text-primary" data-bs-toggle="modal" data-bs-target="#actualizarCaja">
+                                    <i class="bi bi-box-arrow-up-right"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- BTN SIGUIENTE Y ANTERIOR -->
+            <div class="row">
+                <div class="col col-md-4">
+                    <small class="text-muted">Total de cajas: ({{totalCajas}})</small>
+                    <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
+                    <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + listaCaja.length }})</small>
+                </div>
+
+                <!-- <div *ngIf="search.value.length === 0" class="col d-flex justify-content-end">
+                    <button type="button" (click)="cambiarPagina(-10)" class="{{btnAtras}} btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
+                    <button type="button" (click)="cambiarPagina(10)" class="{{btnAdelante}} btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
+                </div> -->
+            </div>
+            <!-- BTN SIGUIENTE Y ANTERIOR -->
+
+        </div>
+    </div>
+    <!-- TABLE CLIENTS -->
+
+
+</div>
+
+<!-- =========================================================================
+    NUEVA CAJA 
+========================================================================= -->
+<div class="modal fade" id="nuevaCaja" tabindex="-1" aria-labelledby="nuevaCajaModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="nuevaCajaModal"><i class="bi-collection" style="font-size: 1rem"></i> Crear Caja Nueva</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <form id="newDepartmentForm" autocomplete="off" [formGroup]="newCajaForm" (ngSubmit)="crearCaja()">
+
+                    <!-- =======================================================================
+                        Informacion del Caja
+                    =========================================================================== -->
+                    <h5 class="text-muted">Informacion de la caja</h5>
+
+                    <div class="row mb-3">
+                        <div class="col-md-12 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="name" type="text" class="form-control text-capitalize" placeholder="Nombre de la caja">
+                                <label for="floatingInput">Nombre de la caja</label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="description" type="text" class="form-control" placeholder="Descripción">
+                                <label for="floatingInput">Descripción</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="text-danger mb-2">
+                            <p *ngIf="campoValido('name')" class="mb-1 animated fadeIn">- El nombre es obligatorio</p>
+                            <p *ngIf="campoValido('description')" class="mb-1 animated fadeIn">- Debe de tener como minimo 5 letras</p>
+                        </div>
+                    </div>
+
+
+                    <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =========================================================================
+    NUEVA CAJA 
+========================================================================= -->
+
+<!-- =========================================================================
+    ACTUALIZAR CAJA 
+========================================================================= -->
+<div class="modal fade" id="actualizarCaja" tabindex="-1" aria-labelledby="actualizarCajaModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="actualizarCajaModal"><i class="bi-collection" style="font-size: 1rem"></i> Actualizar Caja</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <form id="upCajaForm" autocomplete="off" [formGroup]="upCajaForm" (ngSubmit)="actualizarCaja()">
+
+                    <!-- =======================================================================
+                        Informacion del Departamento
+                    =========================================================================== -->
+                    <h5 class="text-muted">Informacion de la caja</h5>
+
+                    <div class="row mb-3">
+                        <div class="col-md-12 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="name" type="text" class="form-control text-capitalize" placeholder="Nombre de la caja">
+                                <label for="floatingInput">Nombre de la caja</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-12 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="description" type="text" class="form-control text-capitalize" placeholder="Descripción de la caja">
+                                <label for="floatingInput">Descripción de la caja</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="text-danger mb-2">
+                            <p *ngIf="campoValidoUpdate('name')" class="mb-1 animated fadeIn">- El nombre es obligatorio</p>
+                            <p *ngIf="campoValidoUpdate('description')" class="mb-1 animated fadeIn">- La descripción es obligatoria</p>
+                        </div>
+                    </div>
+
+
+                    <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =========================================================================
+    ACTUALIZAR CAJA 
+========================================================================= -->

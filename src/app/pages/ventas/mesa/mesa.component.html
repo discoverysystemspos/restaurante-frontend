@@ -1,0 +1,818 @@
+<!-- =========================================================================
+    TICKET 1 
+========================================================================= -->
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="col-md-8 align-self-start">
+
+            <!-- DEPARTAMENTOS -->
+            <div class="p-2 border-bottom my-2 d-flex flex-wrap justify-content-start">
+
+                <!-- <div class="p-2">
+
+                        <button type="button" (click)="cargarProductos()" class="btn bg-white btnW waves-effect waves-blue text-muted"> 
+                            <i class="bi-grid-3x3-gap" style="font-size:2rem;"></i> 
+                            <h5>Todos</h5>
+                        </button>
+
+                    </div> -->
+
+                <ng-container *ngFor="let departamento of departmentos">
+
+                    <div class="p-2" *ngIf="departamento.visibility">
+
+                        <button type="button" (click)="cargarProductosDepartamento(departamento.did)" class="btn bg-white btnW waves-effect waves-blue text-muted p-2"> 
+                                <img class="avatar avatar-xs" style="max-height: 50px; width: auto;" [src]="departamento.img | imagen:'department'" class="card-img-top" alt="...">
+                                <h6>{{ departamento.name }}</h6>
+                            </button>
+
+                    </div>
+
+                </ng-container>
+
+
+            </div>
+            <!-- DEPARTAMENTOS -->
+
+            <!-- PRODUCTOS -->
+            <!-- SEARCH PRODUCT CODE -->
+            <div class="my-2">
+                <div class="d-flex flex-wrap mx-auto">
+                    <label for="searchCode" class="px-2 col-form-label">Codigo del Prodcuto:</label>
+                    <div class="px-2 col-8 d-flex align-justify-start">
+                        <input type="text" class="form-control" placeholder="Ingrese o busca un codigo de barras" (keyup.enter)="buscarCodigo(searchCode.value)" #searchCode>
+                    </div>
+                </div>
+            </div>
+            <!-- SEARCH PRODUCT CODE -->
+            <div class="d-flex justify-content-center flex-wrap">
+
+                <div *ngIf="listaProductos.length < 1" class="py-4">
+                    <h4 class="text-muted">Sin Resultados</h4>
+                </div>
+
+                <ng-container *ngFor="let producto of listaProductos">
+
+                    <div class="card m-1 animated fadeIn" style="width: 12rem;" *ngIf="producto.visibility">
+
+                        <img class="avatar-xxl avatar-img avatar-redondo-lg mx-auto" style="height: 180px; width: auto;" [src]="producto.img | imagen:'products'" class="card-img-top" alt="...">
+
+                        <div class="card-body py-2 d-flex align-items-start flex-column">
+                            <div>
+                                <h5 class="card-title mb-1">{{ producto.name }}</h5>
+                            </div>
+                            <div class="col-12 mt-auto">
+                                <div class="d-flex align-items-center">
+                                    <p class="mb-0 text-success">{{ producto.price | currency }}</p>
+                                    <button type="button" (click)="carritoTemp( producto, 1, producto.price )" class="btn btn-link btn-primary text-white ms-auto" style="font-size: 1rem;">
+                                            <i class="bi bi-cart-plus"></i>
+                                        </button>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </ng-container>
+
+
+            </div>
+            <!-- PRODUCTOS -->
+
+        </div>
+
+        <div class="col-md-4 bg-white py-4 px-2 border-start" style="min-height: 100vh;">
+
+            <!-- BOTONES -->
+            <div class="mb-3">
+                <button type="button" class="btn btn-outline-success btn-sm m-2" data-bs-toggle="modal" data-bs-target="#buscarCliente"><i class="bi-people"></i> Crear Cliente </button>
+                <button type="button" class="btn btn-outline-primary btn-sm m-2" data-bs-toggle="modal" data-bs-target="#buscarProducto"><i class="bi-box"></i> Productos </button>
+                <button type="button" class="btn btn-outline-primary btn-sm m-2" data-bs-toggle="modal" data-bs-target="#entradaSalidas"><i class="bi-arrow-left-right"></i> Entradas y Salidas </button>
+                <button type="button" class="btn btn-outline-info btn-sm m-2" data-bs-toggle="modal" data-bs-target="#comandas"><i class="bi-receipt"></i> Comandas </button>
+            </div>
+
+            <div class="d-grid">
+
+                <div class="mb-3">
+
+                    <div>
+                        <input type="text" class="form-control" placeholder="buscar cliente" (keyup)="buscarCliente(searchClient.value)" #searchClient>
+                    </div>
+
+                    <div *ngIf="listaClientes.length > 0" class="bg-white py-3 px-2 shadow" style="position: absolute; z-index: 1020;">
+
+                        <div *ngIf="cargandoCliente" class="text-center py-3">
+                            <div class="spinner-grow text-secondary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <div>
+                                <small class="text-muted">Cargando...</small>
+                            </div>
+                        </div>
+
+                        <ul *ngIf="!cargandoCliente" class="list-group list-group-flush overflow-auto" style="max-height: 200px; min-width: 250px;">
+
+                            <li class="list-group-item">
+                                <h6>Resultados: ({{ listaClientes.length }})</h6>
+                            </li>
+
+                            <li class="list-group-item" *ngFor="let item of listaClientes">
+                                <div class="d-flex ">
+                                    <div class="align-self-center">
+                                        <span class="text-capitalize fw-bold"> {{ item.name }} </span><br>
+                                        <small> C.C: {{ item.cedula }} </small>
+                                    </div>
+
+                                    <div class="ms-auto">
+                                        <button class="btn btn-link p-1 text-success float-end" (click)="seleccionarCliente(item)"> <i class="bi-arrow-90deg-right"></i></button>
+                                    </div>
+                                </div>
+
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- BUSCAR CLIENTE -->
+
+            <div>
+
+                <!-- INFORMACION DEL CLIENTE -->
+                <div class="row mt-2">
+
+                    <div class="col-md-8 text-left text-muted">
+
+                        <div class="">
+                            <h6 class="mb-0 text-capitalize"><strong>CLIENTE / RAZON SOCIAL:  </strong><small *ngIf="clienteTemp.name">{{ clienteTemp.name }}</small></h6>
+                        </div>
+                        <div class="col">
+                            <h6 class="text-wrap mb-0 text-capitalize"><strong>CC / Nit: </strong> <small *ngIf="clienteTemp.cedula"> {{ clienteTemp.cedula }}</small></h6>
+                        </div>
+
+                        <div class="">
+                            <h6 class="text-wrap mb-0 text-capitalize"><strong>TELEFONO: </strong> <small *ngIf="clienteTemp.phone"> {{ clienteTemp.phone }}</small> </h6>
+                        </div>
+                        <div class="col">
+                            <h6 class="text-wrap mb-0"><strong>CORREO: </strong> <small *ngIf="clienteTemp.email"> {{ clienteTemp.email }} </small></h6>
+                        </div>
+
+                        <div class="col">
+                            <h6 class="text-wrap mb-0">
+                                <span class="text-primary text-wrap"> 
+                                {{ mesa.name }} - 
+                                {{ mesa.mesero.name }} 
+                            </span>
+                            </h6>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- INFORMACION DEL CLIENTE -->
+
+                <hr class="my-2">
+
+                <div class="table-responsive">
+                    <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                        <thead class="border-bottom ">
+                            <tr>
+                                <th class="text-muted text-left" scope="col " colspan="2 ">Descripción</th>
+                                <th class="text-muted " scope="col ">Precio</th>
+                                <th class="text-muted " scope="col ">Cantidad</th>
+                                <th class="text-muted " scope="col ">Monto</th>
+                                <th class="text-muted " scope="col "></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="carrito.length === 0" class="text-center ">
+                                <th colspan="10" class="py-4">
+                                    <h4 class="text-muted">No has seleccionado ningun producto</h4>
+                                </th>
+                            </tr>
+                            <ng-container *ngIf="carrito.length > 0 ">
+
+                                <ng-container *ngFor="let item of carrito; let i = index">
+                                    <tr class="trHover" *ngIf="item.product">
+                                        <td colspan="2">{{ item.product.name }}</td>
+                                        <td>{{ item.price | currency}}</td>
+                                        <td class="text-center">{{ item.qty }}</td>
+                                        <td>{{ item.price * item.qty | currency}}</td>
+                                        <td><button type="button" (click)="eliminarProductoCarrito(i)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button></td>
+                                    </tr>
+                                </ng-container>
+
+
+                            </ng-container>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- TOTALES -->
+
+                <div class="py-2" style="bottom: 0;">
+
+                    <div class="d-flex justify-content-center">
+
+                        <div class="col-4">
+                            <button *ngIf="clienteTemp.cedula === '' || carrito.length === 0" type="button" class="btn disabled btn-dark btnW waves-effect waves-dark text-white"> <h4 class="display-7">Facturar</h4></button>
+                            <button *ngIf="clienteTemp.cedula !== '' && carrito.length > 0" (click)="focusMonto()" type="button" class="btn btn-dark btnW waves-effect waves-dark text-white" data-bs-toggle="modal" data-bs-target="#facturar"> <h4 class="display-6">Facturar</h4></button>
+                            <!-- <button type="button" class="btn btn-dark btnW waves-effect waves-dark text-white" data-bs-toggle="modal" data-bs-target="#facturar"> <h4 class="display-6">Facturar</h4></button> -->
+                        </div>
+
+                        <div class="col ms-auto text-end">
+                            <h4 class="fw-normal text-primary">{{ total | currency }}</h4>
+                            <small class="h6 fw-normal text-primary">Sub-total {{ total / 1 | currency }}</small>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+<!-- =========================================================================
+    TICKET 1 
+========================================================================= -->
+
+<!-- =========================================================================
+    MODAL BUSCAR CLIENTE 
+========================================================================= -->
+<div class="modal fade" id="buscarCliente" tabindex="-1" aria-labelledby="buscarClienteModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="buscarClienteModal"><i class="bi-people" style="font-size: 1rem"></i>Crear Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="mt-2">
+
+                    <form autocomplete="off" [formGroup]="newClientForm" (ngSubmit)="crearCliente()">
+
+                        <!-- =======================================================================
+                            DATOS PERSONALES 
+                        =========================================================================== -->
+
+                        <h5 class="text-muted">Datos Personales</h5>
+
+
+                        <div class="col-md-10 mx-auto p-2 ">
+
+                            <div class="form-floating">
+                                <input formControlName="name" type="text" class="form-control text-capitalize" placeholder="Nombres">
+                                <label for="floatingInput">Nombres</label>
+                                <p *ngIf="campoValido('name')" class="mb-1 animated fadeIn text-danger">* El nombre es obligatorio</p>
+                            </div>
+
+                        </div>
+                        <div class="col-md-10 mx-auto p-2  ">
+
+                            <div class="form-floating">
+                                <input formControlName="cedula" type="text" class="form-control" placeholder="Cedula de ciudadania">
+                                <label for="floatingInput">Cedula de ciudadania</label>
+                                <p *ngIf="campoValido('cedula')" class="mb-1 animated fadeIn text-danger">* La cedula de ciudadania es obligatoria</p>
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="col-md-10 mx-auto p-2 ">
+
+                            <div class="form-floating">
+                                <input formControlName="email" type="email" class="form-control" placeholder="Email">
+                                <label for="floatingInput">Email</label>
+                            </div>
+
+                        </div>
+                        <div class="col-md-10 mx-auto p-2 ">
+
+                            <div class="form-floating">
+                                <input formControlName="phone" type="text" class="form-control" placeholder="Telefono">
+                                <label for="floatingInput">Telefono</label>
+                            </div>
+
+                        </div>
+
+                        <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>
+
+                    </form>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =========================================================================
+    MODAL BUSCAR CLIENTE 
+========================================================================= -->
+
+<!-- =========================================================================
+    BUSCAR PRODUCTO 
+========================================================================= -->
+<div class="modal fade" id="buscarProducto" tabindex="-1" aria-labelledby="buscarProductoModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="min-height: 350px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="buscarProductoModal"><i class="bi-file-spreadsheet" style="font-size: 1rem"></i> Productos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <div class="col">
+
+                    <div class="my-2">
+                        <div>
+                            <label for="precioM">Buscar Productos:</label>
+                            <input type="text" class="form-control" placeholder="buscar producto" (keyup)="buscarProducto(searchProduct.value)" #searchProduct>
+                        </div>
+                        <div *ngIf="listaProductos.length > 0" class="bg-white px-2 shadow col-10" style="position: absolute; z-index: 1020;">
+
+                            <ul class="list-group list-group-flush overflow-auto" style="max-height: 200px;">
+
+                                <li class="list-group-item py-1">
+                                    <h6>Resultados: ({{ listaProductos.length }})</h6>
+                                </li>
+
+                                <li class="list-group-item py-1 trHover" *ngFor="let item of listaProductos">
+                                    <div class="d-flex ">
+                                        <div class="align-self-center">
+                                            <span> {{ item.name }} </span>
+                                        </div>
+
+                                        <div class="ms-auto">
+                                            <button class="btn btn-link p-1 text-success float-end" (click)="seleccionarProducto(item)"> <i class="bi-arrow-90deg-right"></i></button>
+                                        </div>
+                                    </div>
+
+                                </li>
+
+                            </ul>
+
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+
+                        <div class="form-group">
+                            <label for="">Codigo de barras:</label>
+                            <input readonly type="text" class="form-control" placeholder="Codigo de Barras" [value]="productTemp.code" #barcode>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Nombre:</label>
+                            <input readonly type="text" class="form-control" placeholder="Nombre" [value]="productTemp.name">
+                        </div>
+
+                        <div class="row">
+
+                            <div *ngIf="!mayoreo.checked" class="form-group col-md-6">
+                                <label for="precio">Precio:</label>
+                                <input readonly type="number" min="1" class="form-control" placeholder="Precio" [value]="productTemp.price" #precio>
+                            </div>
+
+                            <div *ngIf="mayoreo.checked" class="form-group col-md-6">
+                                <label for="precioM">Precio Al Mayor:</label>
+                                <input readonly type="number" min="1" class="form-control" placeholder="Precio Al Mayor" [value]="productTemp.wholesale" #precioM>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="cantidad">Cantidad:</label>
+                                <input type="number" min="1" class="form-control" placeholder="" value="1" #cantidad>
+                            </div>
+
+                        </div>
+
+                        <div class="form-check form-switch mt-2">
+                            <input class="form-check-input" type="checkbox" [(ngModel)]="mayoreo.checked" #mayoreo>
+                            <label class="form-check-label" for="mayor">Aplicar Mayoreo</label>
+                        </div>
+
+                        <button type="button" (click)="evniarAlCarrito(cantidad.value, mayoreo.checked, barcode.value)" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =========================================================================
+    BUSCAR PRODUCTO 
+========================================================================= -->
+
+<!-- =========================================================================
+    MODAL FACTURAR 
+========================================================================= -->
+<div class="modal fade" id="facturar" tabindex="-1" aria-labelledby="facturarModal" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+
+                <div class="container-fluid">
+                    <div class="py-2">
+
+                        <!-- COLUMNA IZQ -->
+                        <div class="col px-0 bg-white">
+
+                            <!-- TITULO -->
+                            <div class="bg-header-blue py-1 px-2">
+                                <h4 class="text-white fw-normal mb-0">Cobrar</h4>
+                            </div>
+
+                            <div class="container-fluid py-4">
+
+                                <!-- TOTAL -->
+                                <div class="text-center my-3">
+                                    <h4 class="display-4 text-primary">{{ total | currency }}</h4>
+
+                                    <small *ngIf="totalPagos > 0 && totalPagos < total" class="text-danger animated fadeIn">Resta</small>
+                                    <small *ngIf="totalPagos > 0 && totalPagos >= total" class="text-success animated fadeIn">Vueltos</small>
+                                    <h4 class="mb-0 fw-normal animated fadeIn" [ngClass]=" {   'text-danger': totalPagos < total, 
+                                                        'text-success': totalPagos >= total
+                                                    }" *ngIf="totalPagos > 0">
+                                        {{ vueltos | currency }}
+                                    </h4>
+
+                                </div>
+                                <!-- TOTAL -->
+
+
+                                <div class="d-flex justify-content-center">
+
+                                    <div>
+
+                                        <!-- FORM INVOICE - FORM INVOICE -->
+                                        <form autocomplete="off" [formGroup]="invoiceForm">
+
+                                            <div class="row text-center">
+                                                <div class="col p-2">
+
+                                                    <input type="radio" (click)="limpiarPagos()" class="btn-check" name="type" formControlName="type" id="efectivo-outlined" value="efectivo" autocomplete="off" checked>
+                                                    <label class="btn btn-outline-success" for="efectivo-outlined">
+                                                    <i class="px-3 bi-cash-stack" style="font-size: 1.5rem;"></i>
+                                                    <p class="mb-0">Efectivo</p>
+    
+                                                </label>
+
+                                                </div>
+                                                <div class="col p-2">
+
+                                                    <input type="radio" (click)="limpiarPagos()" class="btn-check" name="type" formControlName="type" id="tarjeta-outlined" value="tarjeta" autocomplete="off">
+                                                    <label class="btn btn-outline-primary" for="tarjeta-outlined">
+                                                    <i class="px-3 bi-credit-card" style="font-size: 1.5rem;"></i>
+                                                    <p class="mb-0">Tarjeta</p>
+                                                </label>
+
+                                                </div>
+
+                                                <div class="col p-2">
+
+                                                    <input type="radio" (click)="limpiarPagos()" class="btn-check" name="options-outlined" name="type" formControlName="type" id="vale-outlined" value="vale" autocomplete="off">
+                                                    <label class="btn btn-outline-secondary" for="vale-outlined">
+                                                    <i class="px-3 bi-card-heading" style="font-size: 1.5rem;"></i>
+                                                    <p class="mb-0">Vale</p>
+                                                </label>
+
+                                                </div>
+
+                                                <div class="col p-2">
+
+                                                    <input type="radio" (click)="limpiarPagos()" class="btn-check" name="options-outlined" name="type" formControlName="type" id="mixto-outlined" value="mixto" autocomplete="off">
+                                                    <label class="btn btn-outline-dark" for="mixto-outlined">
+                                                    <i class="px-3 bi-patch-question" style="font-size: 1.5rem;"></i>
+                                                    <p class="mb-0">Mixto</p>
+                                                </label>
+
+                                                </div>
+
+                                                <div class="col p-2">
+
+                                                    <input type="radio" (click)="limpiarPagos('credito')" class="btn-check" name="options-outlined" name="type" formControlName="type" id="credito-outlined" value="credito" autocomplete="off">
+                                                    <label class="btn btn-outline-warning" for="credito-outlined">
+                                                    <i class="px-3 bi-clock-history" style="font-size: 1.5rem;"></i>
+                                                    <p class="mb-0">Credito</p>
+                                                </label>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="mx-auto">
+
+                                                <!-- TABLA -->
+                                                <div class="table-responsive">
+                                                    <table class="table table-sm table-borderless">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Descripcion</th>
+                                                                <th>Monto</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody formArrayName="payments">
+                                                            <tr class="trHover" *ngFor="let control of payments; let i = index">
+                                                                <th>{{ i + 1}}</th>
+                                                                <td>
+                                                                    <p class="mb-0">{{ control.type }} <span *ngIf="control.description">- {{ control.description }}</span></p>
+                                                                </td>
+                                                                <td> {{ control.amount | currency }} </td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-link p-1 text-danger text-right" (click)="eliminarPagos(control)"> <i class="bi-trash"></i> </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+
+                                                </div>
+                                                <!-- TABLA -->
+
+                                                <!-- AGREGAR METODO DE PAGO -->
+
+                                                <div class="row g-3 d-flex justify-content-center">
+
+                                                    <div class="col-auto">
+
+                                                        <select class="form-select" aria-label="Default select example" (change)="typeAdd.value" #typeAdd>
+                                                            <option *ngIf="invoiceForm.value.type === 'efectivo' || invoiceForm.value.type === 'mixto'" value="efectivo">Efectivo</option>
+                                                            <option *ngIf="invoiceForm.value.type === 'tarjeta' || invoiceForm.value.type === 'mixto'" value="tarjeta">Tarjeta</option>
+                                                            <option *ngIf="invoiceForm.value.type === 'vale' || invoiceForm.value.type === 'mixto'" value="vale">Vale</option>
+                                                            <option *ngIf="invoiceForm.value.type === 'credito'" value="credito">Credito</option>
+                                                        </select>
+
+                                                    </div>
+
+                                                    <div class="col-auto" *ngIf="!credit">
+                                                        <label for="Descripción" class="visually-hidden">Descripción</label>
+                                                        <input type="text" class="form-control w100" id="Descripción" placeholder="Descripción" (keyup)="descripcionAdd.value" #descripcionAdd>
+                                                    </div>
+
+                                                    <div class="col-auto" *ngIf="!credit">
+                                                        <label for="monto" class="visually-hidden">Monto</label>
+                                                        <input type="number" class="form-control" id="monto" placeholder="Monto" [value]=" total " autofocus="true" (keyup)="montoAdd.value" #montoAdd>
+                                                    </div>
+
+                                                    <div class="col-auto" *ngIf="!credit">
+                                                        <button type="button" class="btn btn-primary mb-3" (click)="agregarPagos(typeAdd.value, montoAdd.value, descripcionAdd.value)">Agregar</button>
+                                                    </div>
+
+                                                    <div class="col-auto" *ngIf="credit">
+                                                        <label for="credi" class="visually-hidden">Fecha limite</label>
+                                                        <input type="date" formControlName="fechaCredito" class="form-control" id="credi" placeholder="Selecciona una fecha limite" #fechCredito>
+                                                    </div>
+
+                                                </div>
+                                                <!-- AGREGAR METODO DE PAGO -->
+
+                                            </div>
+
+
+                                        </form>
+                                        <!-- FORM INVOICE - FORM INVOICE -->
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <!-- COLUMNA IZQ -->
+
+                    </div>
+
+                    <!-- BTN CREAR FACTURA -->
+                    <div class="my-4 float-end">
+                        <button type="button" (click)="crearFactura()" class="btn btn-outline-primary">
+
+                                    Imprimir
+                        </button>
+                    </div>
+                    <!-- BTN CREAR FACTURA -->
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =========================================================================
+    MODAL FACTURAR 
+========================================================================= -->
+
+<!-- =========================================================================
+    MODAL REGISTRAR ENTRADAS Y SALIDAS
+========================================================================= -->
+
+<div class="modal fade" id="entradaSalidas" tabindex="-1" aria-labelledby="entradaSalidasModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="entradaSalidasModal"><i class="bi-arrow-left-right" style="font-size: 1rem"></i> Movimientos </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <!-- NAV - NAV -->
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <a class="nav-link active" id="nav-entradas-tab" data-bs-toggle="tab" href="#nav-entradas" role="tab" aria-controls="nav-entradas" aria-selected="true"><i class="bi-box-arrow-in-right"></i>  Entradas</a>
+                        <a class="nav-link" id="nav-salidas-tab" data-bs-toggle="tab" href="#nav-salidas" role="tab" aria-controls="nav-salidas" aria-selected="false"><i class="bi-box-arrow-right"></i> Salidas</a>
+                    </div>
+                </nav>
+                <!-- NAV - NAV -->
+
+                <div class="tab-content" id="nav-tabContent">
+
+                    <!-- ENTRADAS - ENTRADAS - ENTRADAS -->
+                    <div class="tab-pane fade show active" id="nav-entradas" role="tabpanel" aria-labelledby="nav-entradas-tab">
+
+                        <div class="py-4">
+
+                            <div class="form-group">
+                                <label for="">Entrada</label>
+                                <input type="number" class="form-control" placeholder="Monto de entrada" #montoE>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">Descripción</label>
+                                <input type="text" class="form-control" placeholder="Descripción" #descriptionE>
+                            </div>
+
+                            <div class="col py-2">
+                                <button type="button" (click)="entradaSalida('entrada', descriptionE.value, montoE.value)" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                    <!-- ENTRADAS - ENTRADAS - ENTRADAS -->
+                    <!-- SALIDAS - SALIDAS - SALIDAS -->
+                    <div class="tab-pane fade" id="nav-salidas" role="tabpanel" aria-labelledby="nav-salidas-tab">
+
+                        <div class="py-4">
+
+                            <div class="form-group">
+                                <label for="">Salida</label>
+                                <input type="number" class="form-control" placeholder="Monto de salida" #montoS>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">Descripción</label>
+                                <input type="text" class="form-control" placeholder="Descripción" #descriptionS>
+                            </div>
+
+                            <div class="col py-2">
+                                <button type="button" (click)="entradaSalida('salida', descriptionS.value, montoS.value)" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!-- SALIDAS - SALIDAS - SALIDAS -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =========================================================================
+    MODAL REGISTRAR ENTRADAS Y SALIDAS
+========================================================================= -->
+
+<!-- =========================================================================
+VERIFICADOR DE PRECIOS
+========================================================================= -->
+<div class="modal fade" id="verificarPrecio" tabindex="-1" aria-labelledby="verificarPrecioModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="verificarPrecioModal"><i class="bi-upc-scan" style="font-size: 1rem"></i> Verificar Precio </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="text-center pb-4">
+                    <h4 class="text-muted">Comprobar Precio</h4>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Escanear Codigo" (keyup.enter)="comprobrarPrecio(comprobarPrecio.value)" #comprobarPrecio>
+                    </div>
+
+                    <div *ngIf="productoCom" class="mt-4">
+                        <h6 class="text-muted mb-0"> {{ productoCom.name }} </h6>
+                        <h4 class="display-2 text-primary"> {{ productoCom.price | currency }} </h4>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =========================================================================
+VERIFICADOR DE PRECIOS
+========================================================================= -->
+
+<!-- =========================================================================
+COMANDAS
+========================================================================= -->
+<div class="modal fade" id="comandas" tabindex="-1" aria-labelledby="comandasModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="comandasModal"><i class="bi-upc-scan" style="font-size: 1rem"></i> Comandas </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="text-center pb-2" id="printDiv">
+
+                    <h4 class="text-capitalize"> {{ mesa.name }} </h4>
+
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th> Descripción </th>
+                                <th> Cantidad </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+                            <tr *ngFor="let item of comanda; let i = index">
+
+                                <td scope="row">
+                                    {{ item.product }}
+                                </td>
+
+                                <td>
+                                    {{ item.qty }}
+                                </td>
+
+                                <td>
+                                    <button type="button" (click)="eliminarProductoComanda(i)" class="btn btn-link p-1 text-danger">
+                                        <i class="bi-trash" style="font-size: 0.9rem"></i>
+                                    </button>
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                        <tfoot>
+                            <tr *ngIf="nota.value !== ''" class="text-start">
+                                <th>Notas:</th>
+                            </tr>
+                            <tr *ngIf="nota.value !== ''" class="text-start">
+                                <td colspan="2" class="text-wrap"> {{ nota.value }} </td>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+
+
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="">Notas:</label>
+                    <input type="text" name="" id="" class="form-control" placeholder="Notas" (keyup)="nota.value" #nota>
+                </div>
+
+                <button type="button" (click)="printDiv()" class="btn btn-primary ms-auto">Imprimir</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =========================================================================
+COMANDAS
+========================================================================= -->

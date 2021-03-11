@@ -1,0 +1,448 @@
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<header>
+    <div class="bg-header-yellow py-2 px-3 mb-2">
+        <h5 class="text-white m-0">PRODUCTOS</h5>
+    </div>
+    <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-dark active" id="nuevo-tab"><i class="bi-pencil" style="font-size: 1rem"></i> Editar Producto</a>
+        </li>
+    </ul>
+</header>
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+
+<!-- =========================================================================
+    BODY 
+========================================================================= -->
+<div class="container-fluid my-4">
+
+    <div class="row">
+
+        <!-- IMAGE -->
+        <div class="col-lg-4 text-center">
+
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+
+                    <p class="mb-0">Stock</p>
+                    <h4 class="display-6" *ngIf="producto.type !== 'Granel'">
+                        {{ producto.stock + ( producto.returned || 0 ) + ( producto.bought || 0 ) - (producto.sold || 0) - ( producto.damaged || 0) | number }}
+                    </h4>
+                    <h4 class="display-6" *ngIf="producto.type === 'Granel'">
+                        {{ producto.stock + ( producto.returned || 0 ) + ( producto.bought || 0 ) - (producto.sold || 0) - ( producto.damaged || 0) | number:'1.3' }}
+                    </h4>
+
+                    
+
+                </div>
+            </div>
+
+            <div class="d-grid gap-2 mt-2 mb-4">
+                <button data-bs-toggle="modal" data-bs-target="#ajustarInventario" class="btn btn-dark" type="button"> 
+                    <i class="bi-card-checklist"></i> Ajustar Inventario
+                </button>
+            </div>
+            
+            <div class="card">
+                <div class="card-body text-center">
+                    <!-- Image Product-->
+                    <!-- <img class="img-fluid rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/300x300"> -->
+                    <!-- <div class="avatar-redondo-lg mx-auto" style="background-image: url(https://www.alimentosmary.com/wp-content/uploads/2017/08/arroz-tradicional-4.jpg)">
+                    </div> -->
+
+                    <!-- Image Product-->
+                    <img *ngIf="!imgTemp" [src]="producto.img | imagen:'products'" class="avatar-redondo-lg mx-auto" alt="">
+
+                    <!-- IMG TEMPO  imgTemp -->
+                    <img *ngIf="imgTemp" [src]="imgTemp" class="avatar-redondo-lg mx-auto" alt="">
+                    
+                    <!-- Description-->
+                    <div class="small font-italic text-muted mb-4">JPG - PNG - WEBP - no mayor a 5 mb</div>
+                    <div class="mb-3">
+                        <label for="formFileSm" class="form-label">Seleccionar Imagen</label>
+                        <input #fileImg class="form-control form-control-sm" id="formFileSm" type="file" (change)="cambiarImage($event.target.files[0])">
+                    </div>
+                    <!-- BTN upload Image -->
+                    <button *ngIf="imgTemp" class="btn btnW btn-primary waves-effect waves-light px-3" [disabled]="!subirImagen" (click)="subirImg()" type="button">Actualizar Imagen</button>
+
+                </div>
+            </div>
+
+            
+
+        </div>
+        <!-- IMAGE -->
+
+        <!-- INFO PRODUCT -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    Informacion del producto
+                </div>
+                <div class="card-body">
+
+                    <!-- FORM -->
+
+                    <form id="upProductForm" autocomplete="off" [formGroup]="upProductForm" (ngSubmit)="actualizarProducto()">
+
+                        <!-- =======================================================================
+                            DATOS PERSONALES 
+                        =========================================================================== -->
+                        <h5 class="text-muted">Producto</h5>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6 px-md-1">
+
+                                <div class="form-floating">
+                                    <input formControlName="code" type="text" class="form-control text-capitalize" placeholder="Codigo de barras">
+                                    <label for="floatingInput">Codigo de barras</label>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6 px-md-1 ">
+
+                                <div class="form-floating">
+                                    <input formControlName="name" type="text" class="form-control" placeholder="Nombre del producto">
+                                    <label for="floatingInput">Nombre del producto</label>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <h5 class="text-muted">Tipo</h5>
+                        <div class="row mb-3">
+
+                            <div class="col-md-12 px-md-1">
+
+                                <div class="form-floating">
+                                    <select class="form-select" id="floatingSelectType" aria-label="Floating label select example" formControlName="type" #type>
+                                        <option selected value="0">Seleccionar Tipo</option>
+                                        <option value="Unidad">Unidad</option>
+                                        <option value="Granel">Granel</option>
+                                        <option value="Paquete">Paquete</option>
+                                    </select>
+                                    <label for="floatingSelect">Seleccionar Tipo</label>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="row mb-3" *ngIf="type.value === 'Paquete'">
+                            <h6 class="text-muted">Agregar Productos</h6>
+                            <hr>
+
+                            <!-- KIT -->
+                            <!-- KIT -->
+                            <div class="col-md-12 px-md-1 mb-3">
+
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" placeholder="Buscar Producto" (keyup)="buscar(search.value)" #search>
+                                    <label for="floatingInput">Buscar Producto</label>
+                                </div>
+
+                                <div *ngIf="sinResultados" class="bg-white py-3 px-2 shadow col-10" style="position: absolute; z-index: 1020;">
+                                    <h6 class="text-muted">Sin resultados</h6>
+                                </div>
+
+                                <div *ngIf="searchProduct.length > 0" class="bg-white py-3 px-2 shadow col-10" style="position: absolute; z-index: 1020;">
+
+                                    <div *ngIf="cargando" class="text-center py-3">
+                                        <div class="spinner-grow text-secondary" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <div>
+                                            <small class="text-muted">Cargando...</small>
+                                        </div>
+                                    </div>
+
+
+
+                                    <ul *ngIf="!cargando" class="list-group list-group-flush overflow-auto" style="max-height: 200px;">
+
+                                        <li class="list-group-item">
+                                            <h6>Resultados: ({{ searchProduct.length }})</h6>
+                                        </li>
+                                        <li class="list-group-item" *ngFor="let item of searchProduct">
+                                            <div class="d-flex ">
+                                                <div class="align-self-center">
+                                                    <span> {{ item.name }} </span>
+                                                </div>
+
+                                                <div class="ms-auto">
+                                                    <button class="btn btn-link p-1 text-success float-end" (click)="seleccionarProducto(item)"> <i class="bi-arrow-90deg-right"></i></button>
+                                                </div>
+                                            </div>
+
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+
+                            <div class="row mb-3">
+
+
+                                <div class="col-md-5 px-md-1">
+
+                                    <input type="text" disabled class="form-control" placeholder="Producto" [value]="inProducto">
+
+                                </div>
+
+                                <div class="col-md-5 px-md-1">
+
+                                    <input type="number" class="form-control" min="0" placeholder="Cantidad" #qty>
+
+                                </div>
+
+                                <div class="col-md-2 px-md-1">
+
+                                    <button type="button" (click)="agregarProductoKit(qty.value)" class="{{btnAddKit}} btn btnW waves-effect waves-ligth px-3 btn-success"><i class="bi-plus" style="font-size: 1rem"></i> </button>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-md-12 px-md-1">
+
+                                <div class="border border-redounded py-2 px-2">
+
+                                    <table class="table table-sm table-borderless table-striped table-hover">
+                                        <thead class="border-bottom">
+                                            <tr class="text-muted">
+                                                <th scope="col" style="width: 30px;">#</th>
+                                                <th scope="col">Nombre</th>
+                                                <th scope="col">Cantidad</th>
+                                                <th scope="col"></th>
+                                            </tr>
+
+                                        </thead>
+                                        <tbody>
+
+
+                                            <tr class="trHover" *ngFor="let kitP of kits; let i=index">
+                                                <th scope="row"><small>{{i + 1}}</small></th>
+                                                <td><small>{{kitP.product.name}}</small></td>
+                                                <td><small>{{kitP.qty}}</small></td>
+                                                <td><button class="btn btn-link p-1 text-danger" (click)="eliminarProductoKit(kitP)"><small class="bi-trash" style="font-size: 0.9rem"></small> </button></td>
+                                            </tr>
+
+
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        <!-- KIT -->
+                        <!-- KIT -->
+                        <!-- =======================================================================
+                            PRECIO
+                        =========================================================================== -->
+                        <div class="row mb-3">
+
+                            <div class="col-md-3 px-md-1">
+
+                                <div class="form-floating">
+                                    <input formControlName="cost" type="number" class="form-control" min="0" (keyup)="porcentaje('costo', costo.value)" [value]="costoN" placeholder="costo" #costo>
+                                    <label for="floatingInput">costo</label>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-3 px-md-1">
+
+                                <div class="form-floating">
+                                    <input formControlName="gain" type="number" class="form-control" min="0" (change)="porcentaje('ganancia', ganancia.value)" [value]="gananciaN" placeholder="Ganancia" #ganancia>
+                                    <label for="floatingInput">Ganancia</label>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-3 px-md-1">
+
+                                <div class="form-floating">
+                                    <input formControlName="price" type="number" class="form-control" min="0" (change)="porcentaje('precio', precio.value)" [value]="precioN" placeholder="Precio" #precio>
+                                    <label for="floatingInput">Precio</label>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-3 px-md-1">
+
+                                <div class="form-floating">
+                                    <input formControlName="wholesale" type="text" class="form-control" placeholder="Al Mayor">
+                                    <label for="floatingInput">Al Mayor</label>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- KIT -->
+
+                        <div class="row mb-3">
+
+                            <div class="col-md-6 px-md-1">
+
+                                <div class="form-floating">
+                                    <select class="form-select" id="floatingSelect" aria-label="Floating label select example" formControlName="department">
+                                        <option selected value="0">Seleccionar Departamento</option>
+                                            <ng-container *ngFor="let departmento of departamentos">
+                                                <option *ngIf="departmento.status" value="{{departmento.did}}">{{departmento.name}}</option>
+                                            </ng-container>
+                                        </select>
+                                    <label for="floatingSelect">Seleccionar Departamento</label>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6 px-md-1">
+
+                                <div class="form-floating">
+                                    <input formControlName="expiration" type="date" class="form-control" placeholder="Fecha de vencimiento">
+                                    <label for="floatingInput">Fecha de vencimiento</label>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- KIT -->
+
+                        <div class="row mb-3">
+
+                            <div class="col-md-6 px-md-1">
+
+                                <div class="form-floating">
+                                    <input formControlName="min" type="text" class="form-control" placeholder="Minimo">
+                                    <label for="floatingInput">Minimo</label>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6 px-md-1">
+
+                                <div class="form-floating">
+                                    <input formControlName="max" type="text" class="form-control" placeholder="Maximo">
+                                    <label for="floatingInput">Maximo</label>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-4 px-md-1">
+                            <div class="form-check mt-2">
+                                <input formControlName="visibility" class="form-check-input" type="checkbox" value="" id="checkProducto" checked>
+                                <label class="form-check-label" for="checkProducto">
+                                  Producto Visible
+                                </label>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="text-danger mb-2">
+                                <!-- <p *ngIf="campoValido('name')" class="mb-1 animated fadeIn">- El nombre es obligatorio</p> -->
+                                <!-- <p *ngIf="campoValido('cedula')" class="mb-1 animated fadeIn">- La cedula de ciudadania es obligatoria</p> -->
+                                <!-- <p *ngIf="campoValido('email')" class="mb-1 animated fadeIn">- El email es obligatorio y tiene que ser un email valido</p> -->
+                            </div>
+                        </div>
+
+
+                        <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- INFO PRODUCT -->
+
+
+
+    </div>
+</div>
+
+<!-- =========================================================================
+    BODY 
+========================================================================= -->
+
+<!-- =========================================================================
+    MODAL AJUSTAR INVENTARIO
+========================================================================= -->
+
+<div class="modal fade" id="ajustarInventario" tabindex="-1" aria-labelledby="ajustarInventarioModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ajustarInventarioModal"><i class="bi-arrow-left-right" style="font-size: 1rem"></i> Movimientos </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <!-- NAV - NAV -->
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <a class="nav-link active" id="nav-entradas-tab" data-bs-toggle="tab" href="#nav-entradas" role="tab" aria-controls="nav-entradas" aria-selected="true"><i class="bi-box-arrow-in-right"></i>  Ingresar</a>
+                        <a class="nav-link" id="nav-salidas-tab" data-bs-toggle="tab" href="#nav-salidas" role="tab" aria-controls="nav-salidas" aria-selected="false"><i class="bi-box-arrow-right"></i> Ajustar</a>
+                    </div>
+                </nav>
+                <!-- NAV - NAV -->
+
+                <div class="tab-content" id="nav-tabContent">
+
+                    <!-- ENTRADAS - ENTRADAS - ENTRADAS -->
+                    <div class="tab-pane fade show active" id="nav-entradas" role="tabpanel" aria-labelledby="nav-entradas-tab">
+                        
+                        <div class="py-4">
+
+                            <div class="form-group">
+                                <label for="">Aumentar</label>
+                                <input type="number" class="form-control" placeholder="Agregue la cantidad de productos nuevos" #cantidadE>
+                            </div>
+      
+                            <div class="col py-2">      
+                                <button type="button" (click)="ajustar('entrada', cantidadE.value)" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>                              
+                            </div>
+
+                        </div>                     
+
+
+                    </div>
+                    <!-- ENTRADAS - ENTRADAS - ENTRADAS -->
+                    <!-- SALIDAS - SALIDAS - SALIDAS -->
+                    <div class="tab-pane fade" id="nav-salidas" role="tabpanel" aria-labelledby="nav-salidas-tab">
+                        
+                        <div class="py-4">
+
+                            <div class="form-group">
+                                <label for="">Ajuste</label>
+                                <input type="number" class="form-control" placeholder="Registre el ajuste de los productos" #cantidadS>
+                              </div>
+      
+                              <div class="col py-2">      
+                                  <button type="button" (click)="ajustar('salida', cantidadS.value)" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>                              
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!-- SALIDAS - SALIDAS - SALIDAS -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =========================================================================
+    MODAL AJUSTAR INVENTARIO
+========================================================================= -->

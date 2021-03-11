@@ -1,0 +1,66 @@
+<header class="bg-dark pt-2 border-bottom">
+    <div class="px-2">
+        <div class="bg-dark clearfix">
+
+            <a class="navbar-brand float-start text-white " routerLink="./"> Discovery Systems Pos </a>
+            <!-- BTN USER -->
+            <div class="dropdown float-end">
+                <button class="btn text-white" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="avatar shadow" >
+                        <img class="avatar-img img-fluid border border-2 border-light" [src]="user.getImage" >
+                    </div>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
+
+                    <h6 class="dropdown-header d-flex align-items-center">
+                        <div class="avatar avatar-lg me-2">
+                            <img class="avatar-img img-fluid border border-2 border-light" [src]="user.getImage">
+                        </div>
+                        <div class="dropdown-user-details">
+                            <div class="dropdown-user-details-name">{{ user.name }}</div>
+                            <small class="dropdown-user-details-email text-center">{{ user.usuario }}</small>
+                        </div>
+                    </h6>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" routerLink="./perfil">Perfil</a></li>
+                    <li><a class="dropdown-item cursor" (click)="logout()">Salir</a></li>
+                </ul>
+            </div>
+            <!-- BTN USER -->
+        </div>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light p-0 py-3" aria-label="Eighth navbar example">
+        <div class="px-2">
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarsExample07">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item p-1 active">
+                        <a class="nav-link btnW waves-effect waves-blue px-3 mx-1" aria-current="page" routerLink="./ventas"><i class="bi-cart2" style="font-size: 1rem"></i> Ventas</a>
+                    </li>
+                    <li class="nav-item p-1">
+                        <a class="nav-link btnW waves-effect waves-dark px-3 mx-1" routerLink="./clientes"><i class="bi-people" style="font-size: 1rem"></i> Clientes</a>
+                    </li>
+                    <li class="nav-item p-1">
+                        <a class="nav-link btnW waves-effect waves-yellow px-3 mx-1" routerLink="./productos"><i class="bi-file-spreadsheet" style="font-size: 1rem"></i> Productos</a>
+                    </li>
+                    <li class="nav-item p-1">
+                        <a class="nav-link btnW waves-effect waves-red px-3 mx-1" routerLink="./facturas"><i class="bi-file-text" style="font-size: 1rem"></i> Facturas</a>
+                    </li>
+                    <li class="nav-item p-1">
+                        <a class="nav-link btnW waves-effect waves-red px-3 mx-1" routerLink="./corte"><i class="bi-bar-chart" style="font-size: 1rem"></i> Corte</a>
+                    </li>
+                    <li class="nav-item p-1">
+                        <a class="nav-link btnW waves-effect waves-blue px-3 mx-1" routerLink="./configuracion"><i class="bi-gear" style="font-size: 1rem"></i> Configuracion</a>
+                    </li>                    
+                </ul>
+            </div>
+            
+        </div>
+    </nav>
+</header>

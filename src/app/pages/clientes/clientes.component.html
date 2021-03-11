@@ -1,0 +1,389 @@
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<header>
+    <div class="bg-header-dark py-2 px-3 mb-2">
+        <h5 class="text-white m-0">CLIENTES</h5>
+    </div>
+    <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><i class="bi-people" style="font-size: 1rem"></i> Administración de clientes </a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-success cursor" id="crear-tab" data-bs-toggle="modal" data-bs-target="#nuevoCliente"><i class="bi-person-plus" style="font-size: 1rem"></i> Nuevo Cliente </a>
+        </li>
+    </ul>
+</header>
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+
+<!-- =========================================================================
+    BODY 
+========================================================================= -->
+<div class="tab-content mt-4 bg-light2" id="myTabContent">
+
+    <!-- TAB 1 -->
+    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+        <div class="px-3">
+            <!-- TITLE - SUBTITLE -->
+            <div>
+                <h5 class="text-dark">ADMINISTRACIÓN DE CLIENTES</h5>
+                <p>Administra todos los clientes de tu negocio (crédito, facturación, etc) de forma centralizada.</p>
+            </div>
+            <!-- TITLE - SUBTITLE -->
+
+            <!-- TABLE CLIENTS -->
+            <div class="shadow-lg p-3 mb-5 rounded bg-white">
+
+                <!-- CARGANDO -->
+                <div *ngIf="cargando">
+                    <div class="text-center p-4">
+                        <div class="spinner-grow text-secondary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <small class="text-muted">cargando...</small>
+                </div>
+                <!-- CARGANDO -->
+
+                <div *ngIf="!cargando">
+                    <div>
+                        <div class="form-floating mb-2">
+                            <span class="position-absolute top-50 start-90 translate-middle"><i class=" bi-search " style="font-size: 1rem "></i></span>
+                            <input type="text" class="form-control" id="floatingInput" placeholder="Buscar Cliente" (keyup)="buscar(search.value)" #search>
+                            <label for="floatingInput ">Buscar Cliente</label>
+                        </div>
+                    </div>
+                    <div class="table-responsive ">
+                        <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                            <thead class="border-bottom ">
+                                <tr>
+                                    <th class="text-muted " scope="col ">#</th>
+                                    <th class="text-muted " scope="col " colspan="2 ">Nombres</th>
+                                    <th class="text-muted " scope="col ">Cedula</th>
+                                    <th class="text-muted " scope="col ">Email</th>
+                                    <th class="text-muted " scope="col ">Telefono</th>
+                                    <th class="text-muted " scope="col ">Dirección</th>
+                                    <th class="text-muted " scope="col ">Departamento</th>
+                                    <th class="text-muted " scope="col ">Codigo Postal</th>
+                                    <th class="text-muted w100 " scope="col ">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngIf="!sinResultados" class="text-center ">
+                                    <th colspan="10" class="py-4">
+                                        <h4 class="text-muted">Sin Resultados</h4>
+                                    </th>
+                                </tr>
+                                <tr class="trHover" *ngFor="let cliente of clientes; let i=index ">
+                                    <th *ngIf="desde===0 " scope="row ">{{ i + 1}}</th>
+                                    <th *ngIf="desde> 0" scope="row">{{ (i + 1) + desde }}</th>
+                                    <td colspan="2">{{ cliente.name }}</td>
+                                    <td>{{ cliente.cedula }}</td>
+                                    <td>{{ cliente.email }}</td>
+                                    <td>{{ cliente.phone }}</td>
+                                    <td>{{ cliente.address }}</td>
+                                    <td>{{ cliente.department }} <span *ngIf="cliente.city || cliente.department">-</span> {{ cliente.city }}</td>
+                                    <td>{{ cliente.zip }}</td>
+                                    <td class="text-center">
+                                        <button type="button" (click)="actualizarCliente(cliente)" class="btn btn-link p-1 text-primary" data-bs-toggle="modal" data-bs-target="#actualizarCLiente"><i class="bi-pen" style="font-size: 0.9rem"></i></button>
+                                        <button type="button" (click)="borrarCliente(cliente.cid)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <!-- BTN SIGUIENTE Y ANTERIOR -->
+                    <div class="row">
+                        <div class="col col-md-4">
+                            <small class="text-muted">Total de clientes: ({{totalClientes}})</small>
+                            <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
+                            <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + clientes.length }})</small>
+                        </div>
+
+                        <div *ngIf="search.value.length === 0" class="col d-flex justify-content-end">
+                            <button type="button" (click)="cambiarPagina(-10)" class="{{btnAtras}} btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
+                            <button type="button" (click)="cambiarPagina(10)" class="{{btnAdelante}} btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
+                        </div>
+                    </div>
+                    <!-- BTN SIGUIENTE Y ANTERIOR -->
+
+                </div>
+            </div>
+            <!-- TABLE CLIENTS -->
+
+
+
+        </div>
+    </div>
+    <!-- TAB 1 -->
+
+</div>
+<!-- =========================================================================
+    BODY 
+========================================================================= -->
+<!-- =========================================================================
+    NUEVO CLIENTE 
+========================================================================= -->
+<div class="modal fade" id="nuevoCliente" tabindex="-1" aria-labelledby="nuevoClienteModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="nuevoClienteModal"><i class="bi-person-plus" style="font-size: 2rem"></i> Nuevo Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <form id="newClientForm" autocomplete="off" [formGroup]="newClientForm" (ngSubmit)="crearCliente()">
+
+                    <!-- =======================================================================
+                        DATOS PERSONALES 
+                    =========================================================================== -->
+                    <h5 class="text-muted">Datos Personales</h5>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="name" type="text" class="form-control text-capitalize" placeholder="Nombres">
+                                <label for="floatingInput">Nombres</label>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 px-md-1 ">
+
+                            <div class="form-floating">
+                                <input formControlName="cedula" type="text" class="form-control" placeholder="Cedula de ciudadania">
+                                <label for="floatingInput">Cedula de ciudadania</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+
+                        <div class="col-md-6 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="email" type="email" class="form-control" placeholder="Email">
+                                <label for="floatingInput">Email</label>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="phone" type="text" class="form-control" placeholder="Telefono">
+                                <label for="floatingInput">Telefono</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- =======================================================================
+                        DIRECCION
+                    =========================================================================== -->
+                    <h5 class="text-muted">DIRECCIÓN</h5>
+
+                    <div class="row mb-3">
+
+                        <div class="col-md-12 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="address" type="text" class="form-control" placeholder="Dirección">
+                                <label for="floatingInput">Dirección</label>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row mb-3">
+
+                        <div class="col-md-5 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="department" type="text" class="form-control" placeholder="Departamento">
+                                <label for="floatingInput">Departamento</label>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-5 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="city" type="text" class="form-control" placeholder="Ciudad">
+                                <label for="floatingInput">Ciudad</label>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-2 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="zip" type="text" class="form-control" placeholder="ZIP">
+                                <label for="floatingInput">ZIP</label>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="text-danger mb-2">
+                            <p *ngIf="campoValido('name')" class="mb-1 animated fadeIn">- El nombre es obligatorio</p>
+                            <p *ngIf="campoValido('cedula')" class="mb-1 animated fadeIn">- La cedula de ciudadania es obligatoria</p>
+                            <p *ngIf="campoValido('email')" class="mb-1 animated fadeIn">- El email es obligatorio y tiene que ser un email valido</p>
+                        </div>
+                    </div>
+
+
+                    <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =========================================================================
+    NUEVO CLIENTE 
+========================================================================= -->
+
+<!-- =========================================================================
+    ACTUALIZAR CLIENTE
+========================================================================= -->
+<div class="modal fade" id="actualizarCLiente" tabindex="-1" aria-labelledby="actualizarCLienteModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="actualizarCLienteModal"><i class="bi-pencil" style="font-size: 1rem"></i> Actualizar Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <form action="" id="upClientForm" autocomplete="off" [formGroup]="upClientForm" (ngSubmit)="updateCLiente()">
+
+                    <!-- =======================================================================
+                        DATOS PERSONALES 
+                    =========================================================================== -->
+                    <h5 class="text-muted">Datos Personales</h5>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="name" type="text" class="form-control text-capitalize" placeholder="Nombres">
+                                <label for="floatingInput">Nombres</label>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 px-md-1 ">
+
+                            <div class="form-floating">
+                                <input formControlName="cedula" type="text" class="form-control" placeholder="Cedula de ciudadania">
+                                <label for="floatingInput">Cedula de ciudadania</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+
+                        <div class="col-md-6 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="email" type="email" class="form-control" placeholder="Email">
+                                <label for="floatingInput">Email</label>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="phone" type="text" class="form-control" placeholder="Telefono">
+                                <label for="floatingInput">Telefono</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- =======================================================================
+                        DIRECCION
+                    =========================================================================== -->
+                    <h5 class="text-muted">DIRECCIÓN</h5>
+
+                    <div class="row mb-3">
+
+                        <div class="col-md-12 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="address" type="text" class="form-control" placeholder="Dirección">
+                                <label for="floatingInput">Dirección</label>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row mb-3">
+
+                        <div class="col-md-5 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="department" type="text" class="form-control" placeholder="Departamento">
+                                <label for="floatingInput">Departamento</label>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-5 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="city" type="text" class="form-control" placeholder="Ciudad">
+                                <label for="floatingInput">Ciudad</label>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-2 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="zip" type="text" class="form-control" placeholder="ZIP">
+                                <label for="floatingInput">ZIP</label>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="text-danger mb-2">
+                            <p *ngIf="campoValidoUpdate('name')" class="mb-1 animated fadeIn">- El nombre es obligatorio</p>
+                            <p *ngIf="campoValidoUpdate('cedula')" class="mb-1 animated fadeIn">- La cedula de ciudadania es obligatoria</p>
+                            <p *ngIf="campoValidoUpdate('email')" class="mb-1 animated fadeIn">- El email es obligatorio y tiene que ser un email valido</p>
+                        </div>
+                    </div>
+
+
+                    <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =========================================================================
+    ACTUALIZAR CLIENTE
+========================================================================= -->

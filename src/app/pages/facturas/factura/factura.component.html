@@ -1,0 +1,154 @@
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+
+<header>
+    <div class="bg-header-blue py-2 px-3 mb-2">
+        <h5 class="text-white m-0">Facturas</h5>
+    </div>
+    
+    <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
+
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-dark active" id="facturas-tab"><i class="bi-journal-check" style="font-size: 1rem"></i> Factura <span *ngIf="factura"> #{{factura.invoice}} </span> </a>
+        </li>
+
+    </ul>
+
+</header>
+
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<div class="container-fluid">
+    
+
+    <ng-container *ngIf="factura">
+        <!-- TITLE - SUBTITLE -->
+        <div class="mt-4">
+            <h5 class="text-dark">DETALLES DE LA FACTURA #{{ factura.invoice }}</h5>
+            <p>Cajero: {{ factura.user.name }}</p>
+        </div>
+        <!-- TITLE - SUBTITLE -->
+
+        <div>
+            <button [routerLink]="['/dashboard/ventas/print', factura.iid]" type="button" class="btn btn-outline-primary btn-sm mx-1 my-2"> 
+                <i class="bi-printer"></i> Imprimir
+            </button>
+
+            <button (click)="devolucion(factura.iid)"  type="button" class="btn btn-outline-danger btn-sm mx-1 my-2"> 
+                <i class="bi-arrow-counterclockwise"></i> Devolver Factura
+            </button>
+        </div>
+
+        <!-- DETALLES DE LA FACTURA -->
+        <div class="shadow-lg p-3 mb-5 rounded bg-white">
+
+            <!-- INFORMACION DEL CLIENTE -->
+            <div class="row">
+
+                <!-- Informacion del Cliente -->
+                <div class="col-md-8 text-left text-muted">
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h6 class="text-wrap mb-0 text-capitalize"><strong>CLIENTE / RAZON SOCIAL:  </strong><br><small>{{ factura.client.name }}</small></h6>
+                        </div>
+                        <div class="col">
+                            <h6 class="text-wrap mb-0 text-capitalize"><strong>CC / Nit: </strong> <br><small> {{ factura.client.cedula }}</small></h6>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h6 class="text-wrap mb-0 text-capitalize"><strong>TELEFONO: </strong> <br><small *ngIf="factura.client.phone"> {{ factura.client.phone }}</small> </h6>
+                        </div>
+                        <div class="col">
+                            <h6 class="text-wrap mb-0"><strong>CORREO: </strong> <br><small *ngIf="factura.client.email"> {{ factura.client.email }} </small></h6>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <h6 class="text-wrap mb-0"><strong>DIRECCIÓN: </strong> <br><small *ngIf="factura.client.address"> {{ factura.client.address }} <span *ngIf="factura.client.city" > {{ factura.client.city }} </span></small></h6>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col">
+                    <h3 class="display-5 mb-0 d-flex justify-content-end text-primary"> {{ factura.invoice }} </h3>
+                    <small class="mb-0 d-flex justify-content-end"> {{ factura.fecha | date:'medium' }} </small>
+                </div>
+
+            </div>
+            <!-- INFORMACION DEL CLIENTE -->
+
+            <!-- INFORMACION DE LA FACTURA -->
+
+            <h4 class="text-center"> FACTURA </h4>
+
+            <div class=" table-responsive ">
+
+                <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                    <thead class="border-bottom ">
+                        <tr>
+                            <th class="text-muted " scope="col ">#</th>
+                            <th class="text-muted " scope="col ">Codigo de barras</th>
+                            <th class="text-muted text-left" scope="col " colspan="2 ">Nombre del Producto</th>
+                            <th class="text-muted " scope="col ">tipo</th>
+                            <th class="text-muted " scope="col ">Precio</th>
+                            <th class="text-muted " scope="col ">Cantidad</th>
+                            <th class="text-muted " scope="col ">Monto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let producto of factura.products; let i = index">
+                            <th> {{ i + 1 }} </th>
+                            <td><small class="text-wrap">{{ producto.product.code }}</small></td>
+                            <td colspan="2">{{ producto.product.name }}</td>
+                            <td>{{ producto.product.type }}</td>
+                            <td>{{ producto.price | currency}}</td>
+                            <td>{{ producto.qty }}</td>
+                            <td>{{ producto.price * producto.qty | currency}}</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <!-- TOTAL -->
+            <div>
+                <div class="d-flex py-2">
+                    
+                    <div>
+                        
+                    </div>
+                    
+                    <div class="ms-auto d-flex justify-content-end">
+                        <div class="border-start col px-4">
+                            <h5 class="display-6 fw-bold text-primary">{{ factura.amount | currency }}</h5>
+                            <h5 class="h6 fw-bold text-primary">Sub-total {{ factura.amount / 1 | currency }}</h5>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <!-- TOTAL -->
+            
+            <!-- INFORMACION DE LA FACTURA -->
+            
+        </div>
+        <!-- DETALLES DE LA FACTURA -->
+
+    </ng-container>
+    
+
+
+</div>
+<!-- =========================================================================
+    BODY 
+========================================================================= -->
+

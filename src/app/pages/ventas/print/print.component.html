@@ -1,0 +1,76 @@
+<div class="container-fluid mb-5">
+
+    <div class="my-4">
+        <h5 class="text-dark">Imprimir factura</h5>
+        <p>Si, la factura no se imprime automaticamente dar click en siguiente boton</p>
+        <button type="button" (click)="printDiv()" class="btn btn-sm btn-outline-primary"> <i class="bi-printer"></i> Imprimir ticket</button>
+    </div>
+
+    <div class="d-flex justify-content-center">
+
+        <div class="card border-0 pb-4" style="width: 14rem; color:black; background: white;" id="printDiv">
+            
+            <!-- EMPRESA -->
+            <div class="card-body px-1 mb-2" style="border-bottom: 2px solid black;">
+                <h4 class="card-title mb-2 text-wrap text-center"> {{ empresa.name }} </h4>
+                <p class="mb-0 text-wrap fw-bold text-left lh-1" *ngIf="empresa.address" >Dirección: <small class="fw-normal">{{ empresa.address }}</small></p>             
+                <p class="mb-0 text-wrap fw-bold text-left lh-sm" *ngIf="empresa.nit" >NIT: <small class="fw-normal">{{ empresa.nit }}</small></p>             
+                <p class="mb-0 text-wrap fw-bold text-left lh-sm" *ngIf="empresa.phone" >Tel: <small class="fw-normal">{{ empresa.phone }}</small></p>            
+            </div>            
+            <!-- EMPRESA -->
+
+            <!-- CLIENTE -->
+            <div class="pb-2" style="border-bottom: 2px solid black;">
+                <h6 class="mb-0 text-wrap text-left">
+                    CLIENTE / RAZON SOCIAL <br>
+                    <small class="text-wrap fw-normal"> {{ factura.client.name }} </small>
+                </h6>
+                <h6 class="mb-0 text-wrap text-left">
+                    CC / NIT <br>
+                    <small class="text-wrap fw-normal"> {{ factura.client.cedula }} </small>
+                </h6>
+                <h6 class="mb-0 text-wrap text-left" *ngIf="factura.client.phone">
+                    TELEFONO <br>
+                    <small class="text-wrap fw-normal"> {{ factura.client.phone }} </small>
+                </h6>
+                <h6 class="mb-0 text-wrap text-left" *ngIf="factura.client.address">
+                    DIRECCIÓN <br>
+                    <small class="text-wrap fw-normal"> {{ factura.client.address }} </small>
+                </h6>
+
+                <h6 class="mb-0 text-wrap text-left">
+                    <p class="text-wrap fw-normal"> {{ factura.mesa.name }} - {{ factura.mesero.name }} </p>
+                </h6>
+            </div>
+            <!-- CLIENTE -->
+
+            <!-- FACTURA -->
+            <div class="py-2" style="border-bottom: 2px solid black;">
+                <h5 class="mb-0 text-wrap text-left">Factura: {{ factura.invoice }}</h5>
+                <small class="mb-0 text-wrap text-left">Fecha: {{ factura.fecha | date:'short' }}</small>
+            </div>
+            <!-- FACTURA -->
+
+            <table class="table table-borderless table-hover table-sm">                
+                <tbody style="color: black;">
+                    <tr *ngFor="let item of factura.products" class="trHover">
+                        <td> 
+                            <small class="text-wrap"> {{ item.qty }} x {{item.price | currency}} </small> <br>
+                            <small class="text-wrap"> {{ item.product.name }} </small>
+                        </td>
+                        <td> <small class="text-wrap"> {{ item.qty * item.price | currency }} </small> </td>
+                    </tr>
+                    <tr class="" style="border-top: 2px solid black;">
+                        <td> <h6 class="mb-0 text-wrap text-left">Total</h6>  </td>
+                        <td class="fw-bold"> 
+                            <h6 class="mb-0 text-wrap text-rigth" > {{ factura.amount | currency }} </h6> 
+                        </td>
+                    </tr>
+                </tbody>
+            </table>                       
+          
+        </div>
+
+    </div>
+
+</div>

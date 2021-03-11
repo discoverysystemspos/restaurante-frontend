@@ -1,0 +1,41 @@
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<header>
+    <div class="bg-header-blue py-2 px-3 mb-2">
+        <h5 class="text-white m-0">Facturas</h5>
+    </div>
+    <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
+
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-dark active" id="facturas-tab" data-bs-toggle="tab" href="#facturas" role="tab" aria-controls="facturas" aria-selected="true"><i class="bi-journal-check" style="font-size: 1rem"></i> Facturas</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" id="creditos-tab" data-bs-toggle="tab" href="#creditos" role="tab" aria-controls="creditos" aria-selected="false"><i class="bi-clock-history" style="font-size: 1rem"></i> Creditos</a>
+        </li>
+    </ul>
+</header>
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<!-- =========================================================================
+    BODY 
+========================================================================= -->
+<div class="tab-content mt-4 bg-light2" id="myTabContent">
+
+    <!-- TAB 1 -->
+    <div class="tab-pane fade show active" id="facturas" role="tabpanel" aria-labelledby="facturas-tab">
+        <app-total></app-total>
+    </div>
+    <!-- TAB 1 -->
+
+    <!-- TAB 2 -->
+    <div class="tab-pane fade" id="creditos" role="tabpanel" aria-labelledby="creditos-tab">
+        <app-credito></app-credito>
+    </div>
+    <!-- TAB 2 -->
+
+</div>
+<!-- =========================================================================
+    BODY 
+========================================================================= -->

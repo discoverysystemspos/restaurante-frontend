@@ -1,0 +1,189 @@
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<header>
+    <div class="bg-header-blue py-2 px-3 mb-2">
+        <h5 class="text-white m-0">Configuraciones / Usuarios</h5>
+    </div>
+    <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
+
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-dark active" id="ticket1-tab"><i class="bi-gear" style="font-size: 1rem"></i> Usuarios</a>
+        </li>
+
+    </ul>
+</header>
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+
+<!-- =========================================================================
+    BODY 
+========================================================================= -->
+<div class="container-fluid">
+
+    <!-- TABLE CLIENTS -->
+    <div class="shadow-lg p-3 mb-5 rounded bg-white">
+
+        <!-- CARGANDO -->
+        <div *ngIf="cargando">
+            <div class="text-center p-4">
+                <div class="spinner-grow text-secondary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <small class="text-muted">cargando...</small>
+        </div>
+        <!-- CARGANDO -->
+
+        <div *ngIf="!cargando">
+            <div>
+                <div class="form-floating mb-2">
+                    <span class="position-absolute top-50 start-90 translate-middle"><i class=" bi-search " style="font-size: 1rem "></i></span>
+                    <input type="text" class="form-control" id="floatingInput2" placeholder="Buscar Departamento" (keyup)="buscar(search.value)" #search>
+                    <label for="floatingInput2 ">Buscar Usuarios</label>
+                </div>
+            </div>
+
+            <!-- BTN CREAR DEPARTAMENTO -->
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-sm btn-primary btnW waves-effect waves-ligth" data-bs-toggle="modal" data-bs-target="#nuevoUsuario">Crear Usuario</button>
+            </div>
+            <!-- BTN CREAR DEPARTAMENTO -->
+
+            <div class="table-responsive ">
+                <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                    <thead class="border-bottom ">
+                        <tr>
+                            <th class="text-muted " scope="col ">#</th>
+                            <th class="text-muted " scope="col " colspan="2">Nombre</th>
+                            <th class="text-muted " scope="col ">Estado</th>
+                            <th class="text-muted w100 " scope="col ">Acciones</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="!sinResultados" class="text-center ">
+                            <th colspan="10" class="py-4">
+                                <h4 class="text-muted">Sin Resultados</h4>
+                            </th>
+                        </tr>
+                        <tr class="trHover" *ngFor="let usuario of usuarios; let i = index">
+                            <th *ngIf="desde === 0 " scope="row ">{{ i + 1}}</th>
+                            <th *ngIf="desde> 0" scope="row">{{ (i + 1) + desde }}</th>
+                            <td colspan="2">{{ usuario.name }}</td>
+                            <td>
+                                <button *ngIf="usuario.status" (click)="statusUpdate(usuario.uid)" type="button" class="btn btnW waves-effect waves-ligth btn-success btn-sm">Activo</button>
+                                <button *ngIf="!usuario.status" (click)="statusUpdate(usuario.uid)" type="button" class="btn btnW waves-effect waves-ligth btn-danger btn-sm">Desactivo</button>
+                            </td>
+                            <td class="text-center">
+                                <button type="button" (click)="informacionDepartamento(usuario)" class="btn btn-link p-1 text-primary" data-bs-toggle="modal" data-bs-target="#actualizarDepartamento">
+                                    <i class="bi bi-box-arrow-up-right"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- BTN SIGUIENTE Y ANTERIOR -->
+            <div class="row">
+                <div class="col col-md-4">
+                    <small class="text-muted">Total de usuarios: ({{totalUsers}})</small>
+                    <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
+                    <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + usuarios.length }})</small>
+                </div>
+
+                <!-- <div *ngIf="search.value.length === 0" class="col d-flex justify-content-end">
+                    <button type="button" (click)="cambiarPagina(-10)" class="{{btnAtras}} btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
+                    <button type="button" (click)="cambiarPagina(10)" class="{{btnAdelante}} btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
+                </div> -->
+            </div>
+            <!-- BTN SIGUIENTE Y ANTERIOR -->
+
+        </div>
+    </div>
+    <!-- TABLE CLIENTS -->
+
+
+</div>
+
+<!-- =========================================================================
+    BODY 
+========================================================================= -->
+
+<!-- =========================================================================
+    NUEVO USUARIO 
+========================================================================= -->
+<div class="modal fade" id="nuevoUsuario" tabindex="-1" aria-labelledby="nuevoUsuarioModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="nuevoUsuarioModal"><i class="bi-person-plus" style="font-size: 1rem"></i> Crear Usuario Nuevo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <form id="newDepartmentForm" autocomplete="off" [formGroup]="newUserForm" (ngSubmit)="crearUsuario()">
+
+                    <!-- =======================================================================
+                        Informacion del Caja
+                    =========================================================================== -->
+                    <h5 class="text-muted">Información del usuario</h5>
+
+                    <div class="row mb-3">
+                        <div class="col-md-12 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="name" type="text" class="form-control text-capitalize" placeholder="Nombres">
+                                <label for="floatingInput">Nombres</label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="usuario" type="text" class="form-control" placeholder="Usuario">
+                                <label for="floatingInput">Usuario</label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="password" type="password" class="form-control" placeholder="Contraseña">
+                                <label for="floatingInput">Contraseña</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="text-danger mb-2">
+                            <p *ngIf="campoValido('name')" class="mb-1 animated fadeIn">- El nombre es obligatorio</p>
+                            <p *ngIf="campoValido('usuario')" class="mb-1 animated fadeIn">- El usuario es obligatorio, Debe de tener como minimo 4 letras</p>
+                            <p *ngIf="campoValido('password')" class="mb-1 animated fadeIn">- La contraseña es obligatoria, minimo 6 caracteres</p>
+                        </div>
+                    </div>
+
+
+                    <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =========================================================================
+    NUEVO USUARIO 
+========================================================================= -->

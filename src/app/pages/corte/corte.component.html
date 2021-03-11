@@ -1,0 +1,192 @@
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<header>
+    <div class="bg-header-blue py-2 px-3 mb-2">
+        <h5 class="text-white m-0">Corte</h5>
+    </div>
+    <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
+
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-dark active" id="facturas-tab" ><i class="bi-bar-chart" style="font-size: 1rem"></i> Corte</a>
+        </li>
+    </ul>
+</header>
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+
+<!-- =========================================================================
+    BODY
+========================================================================= -->
+<div class="container-fluid mb-5">
+
+    <div class="my-4">
+        <h5 class="text-dark">Realizar Cierre de caja</h5>
+        <p>Automaticamente se guardara toda la información de caja y el usuario</p>
+        <button type="button" class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#cierre"> <i class="bi-calculator"></i> Cerrar Caja</button>
+    </div>
+    
+    <div class="row d-flex justify-content-center">
+
+        <div class="col-auto p-2">
+            <div class="card shadow px-2" style="width: 18rem;">
+
+                <div class="card-body">
+                    <h5 class="card-title mb-0">Dinero en caja</h5>                    
+                </div>
+
+                <div class="table-responsive ">
+                    <table class="table table-borderless table-hover table-sm animated fadeIn ">
+                        
+                        <tbody>
+
+                            <tr>
+                                <td colspan="2"> <small> Fondo Caja </small> </td>
+                                <td> {{ inicial | currency }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"> <small> Ventas en efectivo </small> </td>
+                                <td> {{ efectivo | currency }} </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"> <small> Abonos en efectivo </small> </td>
+                                <td> {{ abEfectivo | currency }} </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"> <small> Entradas </small> </td>
+                                <td> {{ entradas | currency }} </td>
+                            </tr>
+                            <tr class="text-danger">
+                                <td colspan="2"> <small> Salidas </small> </td>
+                                <td> {{ salidas | currency }} </td>
+                            </tr>
+                            <tr class="border-top">
+                                <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                <td class="fw-bold"> {{ inicial + efectivo + abEfectivo + entradas + salidas | currency }} </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>                        
+              
+            </div>
+        </div>
+        <div class="col-auto p-2">
+
+            <div class="card shadow px-2" style="width: 18rem;">
+
+                <div class="card-body">
+                    <h5 class="card-title mb-0">Ventas del dia</h5>                    
+                </div>
+
+                <div class="table-responsive ">
+                    <table class="table table-borderless table-hover table-sm animated fadeIn ">
+                        
+                        <tbody>
+
+                            <tr>
+                                <td colspan="2"> <small> En Efectivo </small> </td>
+                                <td> {{ efectivo | currency }} </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"> <small> Con tarjeta </small> </td>
+                                <td> {{ tarjeta | currency }} </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"> <small> Con Transferencia </small> </td>
+                                <td> {{ transferencia | currency }} </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"> <small> A credito </small> </td>
+                                <td> {{ credito | currency }} </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"> <small> Con Vales </small> </td>
+                                <td> {{ vales | currency }} </td>
+                            </tr>
+                            <tr class="border-top">
+                                <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + credito  + vales | currency }} </td>
+                            </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>                        
+              
+            </div>
+
+        </div>
+
+        <div class="col-auto p-2">
+
+            <div class="card shadow px-2 bg-success border-0" style="width: 18rem;">
+
+                <div class="card-body text-white">
+                    <h4 class="card-title mb-0 text-center">Ventas Totales</h4>                    
+                    <h5 class="text-center"> {{ efectivo + tarjeta + transferencia + vales | currency }} </h5>
+                </div>                
+              
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =========================================================================
+    BODY
+========================================================================= -->
+
+<!-- =========================================================================
+    MODAL CIERRE DE CAJA
+========================================================================= -->
+
+<div class="modal fade" id="cierre" tabindex="-1" aria-labelledby="cierreModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cierreModal"><i class="bi-arrow-left-right" style="font-size: 1rem"></i> Cierre </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body mb-4">
+                               
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td scope="row">Efectivo esperado en caja:</td>
+                            <td>{{ inicial + efectivo + abEfectivo + entradas + salidas | currency }}</td>
+                        </tr>
+                        <tr>
+                            <td scope="row">Cuanto efectivo hay en caja</td>
+                            <td>
+                                <div class="form-group">
+                                  <input type="number" name="" id="" class="form-control" placeholder="efectivo en caja" aria-describedby="helpId" (keyup)="cajaA.value" #cajaA>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td scope="row"> Diferencia </td>
+                            <td [ngClass]=" {   'text-danger': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) !== 0, 
+                                                'text-success': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) > 0
+                                            }">
+                                 {{ cajaA.value - (inicial + efectivo + abEfectivo + entradas + salidas) | currency}} 
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="animated fadeIn mb-2 text-danger" *ngIf="(inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) !== 0 "> <i class="bi-exclamation-triangle"></i>  Existe una diferencia, todo va a quedar almacenado </p>
+                <p class="animated fadeIn mb-2 text-success" *ngIf="(inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) === 0"> <i class="bi-check2-all"></i> Todo en orden</p>
+
+                <button type="button" class="btn btn-primary" (click)="cerrarTurno(cajaA.value)">Hacer cierre</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =========================================================================
+    MODAL CIERRE DE CAJA
+========================================================================= -->

@@ -1,0 +1,37 @@
+{
+  "name": "ngx-printer",
+  "version": "0.9.1",
+  "peerDependencies": {
+    "@angular/common": "^11.0.0",
+    "@angular/core": "^11.0.0"
+  },
+  "description": "An easy to use service to print a window or parts of a window (div).\r Printing of Angular Templates or Components is possible.",
+  "main": "karma.conf.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "ngcc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plaetzchen79/ngx-printer-demo.git"
+  },
+  "keywords": [
+    "angular",
+    "print",
+    "printer",
+    "service",
+    "angular-print",
+    "library",
+    "directive"
+  ],
+  "author": "Andre Ravalico",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/plaetzchen79/ngx-printer-demo/issues"
+  },
+  "homepage": "https://plaetzchen79.github.io/"
+,
+  "dependencies": {
+    "tslib": "^2.0.0"
+  }
+}

@@ -1,0 +1,266 @@
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<header>
+    <div class="bg-header-blue py-2 px-3 mb-2">
+        <h5 class="text-white m-0">Configuraciones / Cierres</h5>
+    </div>
+    <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
+
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-dark active" id="ticket1-tab"><i class="bi-gear" style="font-size: 1rem"></i> Tablero Principal</a>
+        </li>
+
+    </ul>
+</header>
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+
+<div class="container-fluid my-4">
+
+    <!-- TABLE CLIENTS -->
+    <div class="shadow-lg p-3 mb-5 rounded bg-white">
+
+        <!-- CARGANDO -->
+        <div *ngIf="cargando">
+            <div class="text-center p-4">
+                <div class="spinner-grow text-secondary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <small class="text-muted">cargando...</small>
+        </div>
+        <!-- CARGANDO -->
+
+        <div *ngIf="!cargando">
+
+            <div class="d-flex">
+
+                <div>
+                    <button type="button" class="btn btn-outline-primary btn-sm" (click)="cargarTurno()"> <i class="bi-arrow-clockwise"></i> Recargar </button>
+                </div>
+                
+                <div class="col-4 col-md-2 ms-auto">
+                    <input type="date" class="form-control" (change)="buscar(search.value)" #search>
+                </div>
+
+            </div>
+
+            <div class="table-responsive ">
+                <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                    <thead class="border-bottom ">
+                        <tr>
+                            <th></th>
+                            <th class="text-muted " scope="col " colspan="2">Usuario</th>
+                            <th class="text-muted " scope="col ">Mesa</th>
+                            <th class="text-muted " scope="col ">Disponibilidad</th>
+                            <th class="text-muted text-center" scope="col ">Fecha</th>
+                            <th class="text-muted w100 text-rigth" scope="col ">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="!sinResultados" class="text-center ">
+                            <th colspan="10" class="py-4">
+                                <h4 class="text-muted">Sin Resultados</h4>
+                            </th>
+                        </tr>
+
+                        <tr class="trHover" *ngFor="let turno of listaTurnos; let i = index">
+
+                            <td>
+                                <i *ngIf="turno.diferencia" class="text-warning bi-exclamation-triangle"></i>
+                                <i *ngIf="!turno.diferencia" class="text-success bi-check2-all"></i>
+                            </td>
+                            
+                            <td colspan="2">{{ turno.cajero.name }}</td>
+
+                            <td>{{ turno.caja.name }}</td>
+                            <td>
+                                <span *ngIf="!turno.cerrado" class="badge rounded-pill bg-success text-white-75">Abierto</span>
+                                <span *ngIf="turno.cerrado" class="badge rounded-pill bg-danger text-white-75">Cerrado</span>
+                            </td>
+                            <td class="text-center">
+                                <small class=" badge rounded-pill bg-primary text-wrap"> {{ turno.fecha | date:'medium' }} </small>
+                                <small class=" badge rounded-pill bg-dark text-wrap">{{ turno.cierre | date:'medium' }}</small>
+                            </td>
+                            <td class="text-center">
+                                <button type="button" (click)="cargarTurnoId(turno.tid)" class="btn btn-link p-1 text-primary" data-bs-toggle="modal" data-bs-target="#turnoDetalles">
+                                    <i class="bi bi-box-arrow-up-right"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- BTN SIGUIENTE Y ANTERIOR -->
+            <div class="row">
+                <div class="col col-md-4">
+                    <small class="text-muted">Total de cajas: ({{totalTurnos}})</small>
+                    <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
+                    <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + listaTurnos.length }})</small>
+                </div>
+
+                <div *ngIf="search.value.length === 0" class="col d-flex justify-content-end">
+                    <button type="button" (click)="cambiarPagina(-10)" class="{{btnAtras}} btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
+                    <button type="button" (click)="cambiarPagina(10)" class="{{btnAdelante}} btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
+                </div>
+            </div>
+            <!-- BTN SIGUIENTE Y ANTERIOR -->
+
+        </div>
+    </div>
+    <!-- TABLE CLIENTS -->
+
+
+</div>
+
+<!-- =========================================================================
+    DETALLES DEL CIERRE
+========================================================================= -->
+<div class="modal fade" id="turnoDetalles" tabindex="-1" aria-labelledby="turnoDetallesModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="turnoDetallesModal">Detalles del Cierre</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row d-flex justify-content-center">
+
+                    <div class="col-auto p-2">
+            
+                        <div class="card shadow px-2 bg-success border-0" style="width: 18rem;">
+            
+                            <div class="card-body text-white">
+                                <h4 class="card-title mb-0 text-center">Ventas Totales</h4>                    
+                                <h5 class="text-center"> {{ efectivo + tarjeta + transferencia + vales | currency }} </h5>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-auto p-2" *ngIf="montoDiferencia !== 0">
+            
+                        <div 
+                            [ngClass]=" {   'bg-danger': montoDiferencia < 0, 
+                                            'bg-success': montoDiferencia > 0
+                            }"
+                            class="card shadow px-2 border-0" style="width: 18rem;">
+            
+                            <div class="card-body text-white">
+                                <h5 class="card-title mb-0 text-center">Diferencia</h5>                    
+                                <p class="text-center mb-0"> {{ montoDiferencia | currency }} </p>
+                            </div>
+
+                        </div>
+                                    
+                    </div>
+
+                    <div class="col-auto p-2">
+                        <div class="card shadow px-2" style="width: 18rem;">
+            
+                            <div class="card-body">
+                                <h5 class="card-title mb-0">Dinero en caja</h5>                    
+                            </div>
+            
+                            <div class="table-responsive ">
+                                <table class="table table-borderless table-hover table-sm animated fadeIn ">
+                                    
+                                    <tbody>
+            
+                                        <tr>
+                                            <td colspan="2"> <small> Fondo Caja </small> </td>
+                                            <td> {{ inicial | currency }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"> <small> Ventas en efectivo </small> </td>
+                                            <td> {{ efectivo | currency }} </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"> <small> Abonos en efectivo </small> </td>
+                                            <td> {{ abEfectivo | currency }} </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"> <small> Entradas </small> </td>
+                                            <td> {{ entradas | currency }} </td>
+                                        </tr>
+                                        <tr class="text-danger">
+                                            <td colspan="2"> <small> Salidas </small> </td>
+                                            <td> {{ salidas | currency }} </td>
+                                        </tr>
+                                        <tr class="border-top">
+                                            <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                            <td class="fw-bold"> {{ inicial + efectivo + abEfectivo + entradas + salidas | currency }} </td>
+                                        </tr>
+            
+                                    </tbody>
+                                </table>
+                            </div>                        
+                          
+                        </div>
+                    </div>
+                    <div class="col-auto p-2">
+            
+                        <div class="card shadow px-2" style="width: 18rem;">
+            
+                            <div class="card-body">
+                                <h5 class="card-title mb-0">Ventas del dia</h5>                    
+                            </div>
+            
+                            <div class="table-responsive ">
+                                <table class="table table-borderless table-hover table-sm animated fadeIn ">
+                                    
+                                    <tbody>
+            
+                                        <tr>
+                                            <td colspan="2"> <small> En Efectivo </small> </td>
+                                            <td> {{ efectivo | currency }} </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"> <small> Con tarjeta </small> </td>
+                                            <td> {{ tarjeta | currency }} </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"> <small> Con Transferencia </small> </td>
+                                            <td> {{ transferencia | currency }} </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"> <small> A credito </small> </td>
+                                            <td> {{ credito | currency }} </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"> <small> Con Vales </small> </td>
+                                            <td> {{ vales | currency }} </td>
+                                        </tr>
+                                        <tr class="border-top">
+                                            <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                            <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + credito  + vales | currency }} </td>
+                                        </tr>
+            
+            
+                                    </tbody>
+                                </table>
+                            </div>                        
+                          
+                        </div>
+            
+                    </div>
+            
+                </div>          
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =========================================================================
+    DETALLES DEL CIERRE
+========================================================================= -->

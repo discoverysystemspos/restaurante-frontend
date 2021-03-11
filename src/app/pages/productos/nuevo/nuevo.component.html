@@ -1,0 +1,308 @@
+<!-- =========================================================================
+    PRODUCTO NUEVO 
+========================================================================= -->
+<div class="container-fluid my-4">
+
+    <!-- INFO PRODUCT -->
+    <div class="col-lg-8 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                Informacion del producto
+            </div>
+            <div class="card-body">
+
+                <!-- FORM -->
+
+                <form id="productoForm" autocomplete="off" [formGroup]="productoForm" (ngSubmit)="crearProducto()">
+
+                    <!-- =======================================================================
+                            DATOS PERSONALES 
+                        =========================================================================== -->
+                    <h5 class="text-muted">Producto</h5>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="code" type="text" class="form-control text-capitalize" placeholder="Codigo de barras">
+                                <label for="floatingInput">Codigo de barras</label>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 px-md-1 ">
+
+                            <div class="form-floating">
+                                <input formControlName="name" type="text" class="form-control" placeholder="Nombre del producto">
+                                <label for="floatingInput">Nombre del producto</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <h5 class="text-muted">Tipo</h5>
+                    <div class="row mb-3">
+
+                        <div class="col-md-12 px-md-1">
+
+                            <div class="form-floating">
+                                <select class="form-select" id="floatingSelectType" aria-label="Floating label select example" formControlName="type" #type>
+                                    <option selected value="0">Seleccionar Tipo</option>
+                                    <option value="Unidad">Unidad</option>
+                                    <option value="Granel">Granel</option>
+                                    <option value="Paquete">Paquete</option>
+                                </select>
+                                <label for="floatingSelect">Seleccionar Tipo</label>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="row mb-3" *ngIf="type.value === 'Paquete'">
+                        <h6 class="text-muted">Agregar Productos</h6>
+                        <hr>
+
+                        <!-- KIT -->
+                        <!-- KIT -->
+                        <div class="col-md-12 px-md-1 mb-3">
+
+                            <div class="form-floating">
+                                <input type="text" class="form-control" placeholder="Buscar Producto" (keyup)="buscar(search.value)" #search>
+                                <label for="floatingInput">Buscar Producto</label>
+                            </div>
+
+                            <div *ngIf="sinResultados" class="bg-white py-3 px-2 shadow col-10" style="position: absolute; z-index: 1020;">
+                                <h6 class="text-muted">Sin resultados</h6>
+                            </div>
+
+                            <div *ngIf="searchProduct.length > 0" class="bg-white py-3 px-2 shadow col-10" style="position: absolute; z-index: 1020;">
+
+                                <div *ngIf="cargando" class="text-center py-3">
+                                    <div class="spinner-grow text-secondary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted">Cargando...</small>
+                                    </div>
+                                </div>
+
+
+
+                                <ul *ngIf="!cargando" class="list-group list-group-flush overflow-auto" style="max-height: 200px;">
+
+                                    <li class="list-group-item">
+                                        <h6>Resultados: ({{ searchProduct.length }})</h6>
+                                    </li>
+                                    <li class="list-group-item" *ngFor="let item of searchProduct">
+                                        <div class="d-flex ">
+                                            <div class="align-self-center">
+                                                <span> {{ item.name }} </span>
+                                            </div>
+
+                                            <div class="ms-auto">
+                                                <button class="btn btn-link p-1 text-success float-end" (click)="seleccionarProducto(item)"> <i class="bi-arrow-90deg-right"></i></button>
+                                            </div>
+                                        </div>
+
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+
+                        <div class="row mb-3">
+
+
+                            <div class="col-md-5 px-md-1">
+
+                                <input type="text" disabled class="form-control" placeholder="Producto" [value]="inProducto">
+
+                            </div>
+
+                            <div class="col-md-5 px-md-1">
+
+                                <input type="number" class="form-control" min="0" placeholder="Cantidad" #qty>
+
+                            </div>
+
+                            <div class="col-md-2 px-md-1">
+
+                                <button type="button" (click)="agregarProductoKit(qty.value)" class="{{ btnAddKit }} btn btnW waves-effect waves-ligth px-3 btn-success"><i class="bi-plus" style="font-size: 1rem"></i> </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-12 px-md-1">
+
+                            <div class="border border-redounded py-2 px-2">
+
+                                <table class="table table-sm table-borderless table-striped table-hover">
+                                    <thead class="border-bottom">
+                                        <tr class="text-muted">
+                                            <th scope="col" style="width: 30px;">#</th>
+                                            <th scope="col">Nombre</th>
+                                            <th scope="col">Cantidad</th>
+                                            <th scope="col"></th>
+                                        </tr>
+
+                                    </thead>
+                                    <tbody>
+
+
+                                        <tr class="trHover" *ngFor="let kitP of kits; let i=index">
+                                            <th scope="row"><small>{{i + 1}}</small></th>
+                                            <td><small>{{kitP.product.name}}</small></td>
+                                            <td><small>{{kitP.qty}}</small></td>
+                                            <td><button class="btn btn-link p-1 text-danger" (click)="eliminarProductoKit(kitP)"><small class="bi-trash" style="font-size: 0.9rem"></small> </button></td>
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <!-- KIT -->
+                    <!-- KIT -->
+                    <!-- =======================================================================
+                            PRECIO
+                        =========================================================================== -->
+                    <div class="row mb-3">
+
+                        <div class="col-md-3 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="cost" type="number" class="form-control" min="0" (keyup)="porcentaje('costo', costo.value)" [value]="costoN" placeholder="costo" #costo>
+                                <label for="floatingInput">costo</label>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-3 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="gain" type="number" class="form-control" min="0" (change)="porcentaje('ganancia', ganancia.value)" [value]="gananciaN" placeholder="Ganancia" #ganancia>
+                                <label for="floatingInput">Ganancia</label>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-3 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="price" type="number" class="form-control" min="0" (change)="porcentaje('precio', precio.value)" [value]="precioN" placeholder="Precio" #precio>
+                                <label for="floatingInput">Precio</label>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-3 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="wholesale" type="text" class="form-control" placeholder="Al Mayor">
+                                <label for="floatingInput">Al Mayor</label>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- KIT -->
+
+                    <div class="row mb-3">
+
+                        <div class="col-md-6 px-md-1">
+
+                            <div class="form-floating">
+                                <select class="form-select" id="floatingSelect" aria-label="Floating label select example" formControlName="department">
+                                    <option selected value="0">Seleccionar Departamento</option>
+                                        <ng-container *ngFor="let departmento of departamentos">
+                                            <option *ngIf="departmento.status" value="{{departmento.did}}">{{departmento.name}}</option>
+                                        </ng-container>
+                                    </select>
+                                <label for="floatingSelect">Seleccionar Departamento</label>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="expiration" type="date" class="form-control" placeholder="Fecha de vencimiento">
+                                <label for="floatingInput">Fecha de vencimiento</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- KIT -->
+
+                    <div class="row mb-3">
+
+                        <div class="col-md-4 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="stock" type="text" class="form-control" placeholder="Stok">
+                                <label for="floatingInput">Stock</label>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-4 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="min" type="text" class="form-control" placeholder="Minimo">
+                                <label for="floatingInput">Minimo</label>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-4 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="max" type="text" class="form-control" placeholder="Maximo">
+                                <label for="floatingInput">Maximo</label>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-4 px-md-1">
+                            <div class="form-check mt-2">
+                                <input formControlName="visibility" class="form-check-input" type="checkbox" value="" id="checkProducto" checked>
+                                <label class="form-check-label" for="checkProducto">
+                                  Producto Visible
+                                </label>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="row">
+                        <div class="text-danger mb-2">
+                            <p *ngIf="campoValido('code')" class="mb-1 animated fadeIn">- El codigo de barra es obligatorio</p>
+                            <p *ngIf="campoValido('name')" class="mb-1 animated fadeIn">- El nombre del producto es obligatorio</p>
+                            <p *ngIf="campoValido('type')" class="mb-1 animated fadeIn">- El tipo del producto es obligatorio</p>
+                            <p *ngIf="campoValido('price')" class="mb-1 animated fadeIn">- El precio es obligatorio</p>
+                            <p *ngIf="campoValido('cost')" class="mb-1 animated fadeIn">- El costo es obligatorio</p>
+                        </div>
+                    </div>
+
+
+                    <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- INFO PRODUCT -->
+</div>
+
+<!-- =========================================================================
+    PRODUCTO NUEVO 
+========================================================================= -->

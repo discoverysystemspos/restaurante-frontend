@@ -1,0 +1,453 @@
+/* You can add global styles to this file, and also import other style files */
+
+body,
+.bg-light2 {
+    background: #eff3f9;
+}
+
+.start-90 {
+    left: 95% !important;
+}
+
+.w100 {
+    width: 100px;
+}
+
+.trHover {
+    background: #fff;
+    vertical-align: middle;
+}
+
+.trHover:hover {
+    background: #eff3f9;
+}
+
+.cursor {
+    cursor: pointer;
+}
+
+.avatar {
+    display: inline-flex;
+    height: 2rem;
+    width: 2rem;
+    border-radius: 50%;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar .avatar-img {
+    border-radius: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+    height: 2rem;
+    width: auto;
+}
+
+.avatar-xs {
+    height: 1.25rem;
+    width: 1.25rem;
+}
+
+.avatar-xs .avatar-img {
+    height: 1rem;
+}
+
+.avatar-sm {
+    height: 1.75rem;
+    width: 1.75rem;
+}
+
+.avatar-sm .avatar-img {
+    height: 1.5rem;
+}
+
+.avatar-lg {
+    height: 2.5rem;
+    width: 2.5rem;
+}
+
+.avatar-lg .avatar-img {
+    height: 2.5rem;
+}
+
+.avatar-xl {
+    height: 3rem;
+    width: 3rem;
+}
+
+.avatar-xl .avatar-img {
+    height: 3rem;
+}
+
+.avatar-xxl {
+    height: 3.75rem;
+    width: 3.75rem;
+}
+
+.avatar-xxl .avatar-img {
+    height: 3.75rem;
+}
+
+.avatar-busy::before,
+.avatar-idle::before,
+.avatar-offline::before,
+.avatar-online::before {
+    content: "";
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+    width: 20%;
+    height: 20%;
+    border-radius: 50%;
+    background-color: #d7dce3;
+    border: 0.0625rem solid #fff;
+}
+
+.avatar-busy::before {
+    background-color: #e81500;
+}
+
+.avatar-idle::before {
+    background-color: #f4a100;
+}
+
+.avatar-offline::before {
+    background-color: #d7dce3;
+}
+
+.avatar-online::before {
+    background-color: #00ac69;
+}
+
+.dropdown-user .dropdown-menu .dropdown-header .dropdown-user-img {
+    height: 2.5rem;
+    width: 2.5rem;
+    margin-right: 1rem;
+    border-radius: 100%;
+}
+
+
+/*=======================================================================
+    DROPDOWN
+=======================================================================*/
+
+.dropdown-menu {
+    font-size: 0.9rem;
+    border: none;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(31, 45, 65, 0.15);
+}
+
+.dropdown-menu .dropdown-header {
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-menu .dropdown-item {
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-menu .dropdown-item .dropdown-item-icon {
+    margin-right: 0.5rem;
+    line-height: 1;
+}
+
+.dropdown-menu .dropdown-item .dropdown-item-icon svg {
+    height: 0.9em;
+    width: 0.9em;
+}
+
+.dropdown-menu .dropdown-item.active .dropdown-item-icon,
+.dropdown-menu .dropdown-item:active .dropdown-item-icon {
+    color: #fff;
+}
+
+.dropdown .dropdown-toggle {
+    display: inline-flex;
+    align-items: center;
+}
+
+.dropdown .dropdown-toggle .dropdown-arrow {
+    margin-left: 0.4rem;
+    margin-right: 0;
+    transition: transform 0.1s ease-in-out;
+    font-size: 0.6em;
+}
+
+.dropdown.show .dropdown-toggle .dropdown-arrow {
+    transform: rotate(90deg);
+}
+
+.dropdown-user .dropdown-menu {
+    min-width: 13rem;
+}
+
+.dropdown-user .dropdown-menu .dropdown-header {
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+.dropdown-user .dropdown-menu .dropdown-header .dropdown-user-img {
+    height: 2.5rem;
+    width: 2.5rem;
+    margin-right: 1rem;
+    border-radius: 100%;
+}
+
+.dropdown-user .dropdown-menu .dropdown-header .dropdown-user-details {
+    font-weight: 400;
+}
+
+.dropdown-user .dropdown-menu .dropdown-header .dropdown-user-details .dropdown-user-details-name {
+    color: #1f2d41;
+    font-weight: 500;
+    font-size: 0.9rem;
+    max-width: 10rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dropdown-user .dropdown-menu .dropdown-header .dropdown-user-details .dropdown-user-details-email {
+    color: #687281;
+    font-size: 0.75rem;
+    max-width: 10rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dropdown-user .dropdown-menu .dropdown-item {
+    align-items: center;
+}
+
+.dropdown-user .dropdown-menu .dropdown-item .dropdown-item-icon {
+    color: #a2acba;
+}
+
+.dropdown-user .dropdown-menu .dropdown-item .dropdown-item-icon svg {
+    vertical-align: inherit;
+}
+
+.dropdown-user .dropdown-menu .dropdown-item:active .dropdown-item-icon {
+    color: #fff;
+}
+
+.dropdown-notifications {
+    position: static;
+}
+
+.dropdown-notifications .dropdown-menu {
+    padding-top: 0;
+    padding-bottom: 0;
+    width: calc(100% - 1.5rem);
+    right: 0.75rem;
+    max-height: 19rem;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.dropdown-notifications .dropdown-menu::-webkit-scrollbar {
+    width: 0.75rem;
+}
+
+.dropdown-notifications .dropdown-menu::-webkit-scrollbar-thumb {
+    border-radius: 10rem;
+    border-width: 0.2rem;
+    border-style: solid;
+    background-clip: padding-box;
+    background-color: rgba(31, 45, 65, 0.2);
+    border-color: transparent;
+}
+
+.dropdown-notifications .dropdown-menu::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+.dropdown-notifications .dropdown-menu::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+
+.dropdown-notifications .dropdown-menu::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+@media (pointer: fine) and (hover: hover) {
+    .dropdown-notifications .dropdown-menu:hover {
+        overflow-y: overlay;
+    }
+}
+
+@media (pointer: coarse) and (hover: none) {
+    .dropdown-notifications .dropdown-menu {
+        overflow-y: overlay;
+    }
+}
+
+.dropdown-notifications .dropdown-menu .dropdown-notifications-header {
+    background-color: #0061f2;
+    color: #fff;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    line-height: 1;
+}
+
+.dropdown-notifications .dropdown-menu .dropdown-notifications-header svg {
+    height: 0.7rem;
+    width: 0.7rem;
+    opacity: 0.7;
+}
+
+.dropdown-notifications .dropdown-menu .dropdown-notifications-item {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e3e6ec;
+}
+
+.dropdown-notifications .dropdown-menu .dropdown-notifications-item .dropdown-notifications-item-icon,
+.dropdown-notifications .dropdown-menu .dropdown-notifications-item .dropdown-notifications-item-img {
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 100%;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.dropdown-notifications .dropdown-menu .dropdown-notifications-item .dropdown-notifications-item-icon {
+    background-color: #0061f2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dropdown-notifications .dropdown-menu .dropdown-notifications-item .dropdown-notifications-item-icon svg {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #fff;
+    height: 0.85rem;
+}
+
+.dropdown-notifications .dropdown-menu .dropdown-notifications-item .dropdown-notifications-item-content .dropdown-notifications-item-content-details {
+    color: #a2acba;
+    font-size: 0.7rem;
+}
+
+.dropdown-notifications .dropdown-menu .dropdown-notifications-item .dropdown-notifications-item-content .dropdown-notifications-item-content-text {
+    font-size: 0.9rem;
+    max-width: calc(100vw - 8.5rem);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dropdown-notifications .dropdown-menu .dropdown-notifications-item .dropdown-notifications-item-content .dropdown-notifications-item-content-actions .btn-sm,
+.dropdown-notifications .dropdown-menu .dropdown-notifications-item .dropdown-notifications-item-content .dropdown-notifications-item-content-actions .btn-group-sm>.btn {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.35rem;
+    cursor: pointer;
+}
+
+.dropdown-notifications .dropdown-menu .dropdown-notifications-footer {
+    justify-content: center;
+    font-size: 0.8rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    color: #a2acba;
+    cursor: pointer;
+}
+
+.dropdown-notifications .dropdown-menu .dropdown-notifications-footer .dropdown-notifications-footer-icon {
+    height: 1em;
+    width: 1em;
+    margin-left: 0.25rem;
+}
+
+.dropdown-notifications .dropdown-menu .dropdown-notifications-footer:active {
+    color: #fff;
+}
+
+@media (min-width: 576px) {
+    .dropdown-notifications {
+        position: relative;
+    }
+    .dropdown-notifications .dropdown-menu {
+        width: auto;
+        min-width: 18.75rem;
+        right: 0;
+    }
+    .dropdown-notifications .dropdown-menu .dropdown-notifications-item .dropdown-notifications-item-content .dropdown-notifications-item-content-text {
+        max-width: 13rem;
+    }
+}
+
+
+/* ============================================================= 
+    AVATAR REDONDO
+============================================================== */
+
+.avatar-redondo-sm {
+    /* cambia estos dos valores para definir el tamaño de tu círculo */
+    height: 80px;
+    width: 80px;
+    /* los siguientes valores son independientes del tamaño del círculo */
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: 100% auto;
+}
+
+.avatar-redondo {
+    /* cambia estos dos valores para definir el tamaño de tu círculo */
+    height: 150px;
+    width: 150px;
+    /* los siguientes valores son independientes del tamaño del círculo */
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: 100% auto;
+}
+
+.avatar-redondo-lg {
+    /* cambia estos dos valores para definir el tamaño de tu círculo */
+    height: 260px;
+    width: 260px;
+    /* los siguientes valores son independientes del tamaño del círculo */
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: 100% auto;
+}
+
+/* SCROLL */
+
+.container-scroll::-webkit-scrollbar {
+    width: 8px;     /* Tamaño del scroll en vertical */
+    height: 8px;    /* Tamaño del scroll en horizontal */
+     /* Ocultar scroll */
+}
+
+/* Ponemos un color de fondo y redondeamos las esquinas del thumb */
+.container-scroll::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+/* Cambiamos el fondo y agregamos una sombra cuando esté en hover */
+.container-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/* Cambiamos el fondo cuando esté en active o hover */
+.container-scroll::-webkit-scrollbar-track:hover,
+.container-scroll::-webkit-scrollbar-track:active {
+  background:  rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================================= 
+    COLOR SVG
+============================================================== */
+.fill-white{
+    fill: #fff;
+    stroke: #fff;
+}

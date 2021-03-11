@@ -1,0 +1,146 @@
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<header>
+    <div class="bg-header-blue py-2 px-3 mb-2">
+        <h5 class="text-white m-0">Mi Empresa</h5>
+    </div>
+    <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
+
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-dark active" id="ticket1-tab"><i class="bi-gear" style="font-size: 1rem"></i> Información de mi empresa</a>
+        </li>
+
+    </ul>
+</header>
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+
+<!-- =========================================================================
+    BODY 
+========================================================================= -->
+<div class="container-fluid my-2">
+    <!-- TITLE - SUBTITLE -->
+    <div>
+        <h5 class="text-dark">ADMINISTRACIÓN DE MI EMPRESA</h5>
+        <p>Configura toda la información de tu empresa desde este modulo.</p>
+    </div>
+    <!-- TITLE - SUBTITLE -->
+    <div class="row">
+
+        <!-- IMAGE -->
+        <div class="col-lg-4 text-center">
+            <div class="card">
+                <div class="card-body text-center">
+                    <!-- Image Product-->
+                    <!-- <img class="img-fluid rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/300x300"> -->
+                    <!-- <div class="avatar-redondo-lg mx-auto" style="background-image: url(https://www.alimentosmary.com/wp-content/uploads/2017/08/arroz-tradicional-4.jpg)">
+                    </div> -->
+
+                    <!-- Image Product-->
+                    <img *ngIf="empresa"  src="http://localhost:3000/api/uploads/logo/no-image" class="avatar-redondo-lg mx-auto" alt="">
+
+                    <!-- IMG TEMPO  imgTemp -->
+                    <img *ngIf="!empresa"  class="avatar-redondo-lg mx-auto" alt="">
+                    
+                    <!-- Description-->
+                    <div class="small font-italic text-muted mb-4">JPG - PNG - WEBP - no mayor a 5 mb</div>
+                    <div class="mb-3">
+                        <label for="formFileSm" class="form-label">Seleccionar Imagen</label>
+                        <!-- <input #fileImg class="form-control form-control-sm" id="formFileSm" type="file" (change)="cambiarImage($event.target.files[0])"> -->
+                    </div>
+                    <!-- BTN upload Image -->
+                    <!-- <button *ngIf="imgTemp" class="btn btnW btn-primary waves-effect waves-light px-3" [disabled]="!subirImagen" (click)="subirImg()" type="button">Actualizar Imagen</button> -->
+
+                </div>
+            </div>
+        </div>
+        <!-- IMAGE -->
+
+        <!-- INFO PRODUCT -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    Informaciòn
+                </div>
+                <div class="card-body">
+
+                    <!-- FORM -->
+
+                    <form id="upProductForm" autocomplete="off" [formGroup]="formUpdate" (ngSubmit)="actualizarDatos()">
+
+                        <!-- =======================================================================
+                            DATOS PERSONALES 
+                        =========================================================================== -->
+                        <h5 class="text-muted">Datos de mi empresa</h5>
+                        <div class="mb-3">
+                            <div class="form-floating">
+                                <input formControlName="name" type="text" class="form-control text-capitalize" placeholder="Nombre de mi empresa">
+                                <label for="floatingInput">Nombre de mi empresa</label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-floating">
+                                <input formControlName="address" type="text" class="form-control" placeholder="Direcciòn de mi empresa">
+                                <label for="floatingInput">Direcciòn de mi empresa</label>
+                            </div>
+                        </div>
+
+                        <div class="row ">
+
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input formControlName="phone" type="text" class="form-control" placeholder="Telefono">
+                                    <label for="floatingInput">Telefono</label>
+                                </div>
+                            </div>
+
+                            <div class="px-md-1 col-md-4">
+                                <div class="form-floating">
+                                    <input formControlName="nit" type="text" class="form-control" placeholder="Nit">
+                                    <label for="floatingInput">Nit</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input formControlName="tax" type="number" min="0" class="form-control" placeholder="Impuesto">
+                                    <label for="floatingInput">Impuesto</label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- <div class="form-check my-2">
+                            <input formControlName="impuesto" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                              Activar Impuesto
+                            </label>
+                        </div> -->
+
+
+                        <div class="row">
+                            <div class="text-danger mb-2">
+                                <p *ngIf="campoValido('name')" class="mb-1 animated fadeIn">- El nombre es obligatorio</p>
+                                <p *ngIf="campoValido('address')" class="mb-1 animated fadeIn">- La dirección es obligatoria</p>
+                                <p *ngIf="campoValido('phone')" class="mb-1 animated fadeIn">- Debes de agregar un numero telefonico</p>
+                                <p *ngIf="campoValido('nit')" class="mb-1 animated fadeIn">- El nit es obligatorio</p>
+                            </div>
+                        </div>
+
+
+                        <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- INFO PRODUCT -->
+
+
+    </div>
+
+</div>
+<!-- =========================================================================
+    BODY 
+========================================================================= -->

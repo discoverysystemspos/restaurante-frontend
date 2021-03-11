@@ -1,0 +1,132 @@
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<header>
+    <div class="bg-header-yellow py-2 px-3 mb-2">
+        <h5 class="text-white m-0">PERFIL</h5>
+    </div>
+    <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-dark active" id="nuevo-tab"><i class="bi-pencil" style="font-size: 1rem"></i> Editar Producto</a>
+        </li>
+    </ul>
+</header>
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+
+<!-- =========================================================================
+    BODY 
+========================================================================= -->
+<div class="container-fluid my-4">
+
+    <div class="row">
+
+        <!-- IMAGE -->
+        <div class="col-lg-4 text-center">
+            <div class="card">
+                <div class="card-body text-center">
+                    <!-- Image Product-->
+                    <!-- <img class="img-fluid rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/300x300"> -->
+                    <!-- <div class="avatar-redondo-lg mx-auto" style="background-image: url(https://www.alimentosmary.com/wp-content/uploads/2017/08/arroz-tradicional-4.jpg)">
+                    </div> -->
+
+                    
+                    <!-- Image Product-->
+                    <img *ngIf="!imgTemp" [src]="usuario.img | imagen:'user'" class="avatar-redondo-lg mx-auto" alt="">
+
+                    <!-- IMG TEMPO  imgTemp -->
+                    <img *ngIf="imgTemp" [src]="imgTemp" class="avatar-redondo-lg mx-auto" alt="">
+                    
+                    <!-- Description-->
+                    <div class="small font-italic text-muted mb-4">JPG - PNG - WEBP - no mayor a 5 mb</div>
+                    <div class="mb-3">
+                        <label for="formFileSm" class="form-label">Seleccionar Imagen</label>
+                        <input #fileImg class="form-control form-control-sm" id="formFileSm" type="file" (change)="cambiarImage($event.target.files[0])">
+                    </div>
+                    <!-- BTN upload Image -->
+                    <button *ngIf="imgTemp" class="btn btnW btn-primary waves-effect waves-light px-3" [disabled]="!subirImagen" (click)="subirImg()" type="button">Actualizar Imagen</button>
+
+                </div>
+            </div>
+        </div>
+        <!-- IMAGE -->
+
+        <!-- INFO PRODUCT -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    Mi Perfil
+                </div>
+                <div class="card-body">
+
+                    <!-- FORM -->
+
+                    <form id="upProductForm" autocomplete="off" [formGroup]="upUserForm" (ngSubmit)="actualizarUsuario()">
+
+                        <!-- =======================================================================
+                            DATOS PERSONALES 
+                        =========================================================================== -->
+                        <h5 class="text-muted">Datos Personales</h5>
+
+                        <div class="mb-3">
+
+                            <div class="form-floating">
+                                <input formControlName="usuario" type="text" class="form-control" placeholder="Usuario">
+                                <label for="floatingInput">Usuario</label>
+                            </div>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <div class="form-floating">
+                                <input formControlName="name" type="text" class="form-control" placeholder="Nombres">
+                                <label for="floatingInput">Nombres</label>
+                            </div>
+
+                        </div>
+
+                        <div class="row mb-3">
+
+                            <div class="form-floating">
+                                <input formControlName="password" type="password" class="form-control" placeholder="Contraseña">
+                                <label for="floatingInput">Contraseña</label>
+                            </div>
+                           
+                        </div>
+
+                        <div class="row mb-3">
+
+                            <div class="form-floating">
+                                <input formControlName="repassword" type="password" class="form-control" placeholder="Repetir Contraseña">
+                                <label for="floatingInput">Repetir Contraseña</label>
+                            </div>
+                           
+                        </div>
+
+                        <div class="row">
+                            <div class="text-danger mb-2">
+                                <!-- <p *ngIf="campoValido('name')" class="mb-1 animated fadeIn">- El nombre es obligatorio</p> -->
+                                <!-- <p *ngIf="campoValido('cedula')" class="mb-1 animated fadeIn">- La cedula de ciudadania es obligatoria</p> -->
+                                <!-- <p *ngIf="campoValido('email')" class="mb-1 animated fadeIn">- El email es obligatorio y tiene que ser un email valido</p> -->
+                                <!-- <p *ngIf="campoValido('email')" class="mb-1 animated fadeIn">- El email es obligatorio y tiene que ser un email valido</p> -->
+                            </div>
+                        </div>
+
+
+                        <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- INFO PRODUCT -->
+
+
+
+    </div>
+</div>
+
+<!-- =========================================================================
+    BODY 
+========================================================================= -->

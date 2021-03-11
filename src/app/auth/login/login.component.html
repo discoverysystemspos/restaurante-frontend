@@ -1,0 +1,40 @@
+<section class=" login bg-dark animated fadeIn">
+    <main class="form-signin">
+        <form _lpchecked="1" id="loginForm" autocomplete="off" [formGroup]="loginForm" (ngSubmit)="login()">
+
+            <h1 class="h3 mb-3 fw-normal text-white-50 text-center">Iniciar Session</h1>
+
+            <!-- USER -->
+            <div class="form-floating mb-3">
+
+                <input type="text" formControlName="usuario" class="form-control" id="floatingInput" placeholder="Usuario">
+
+                <label for="floatingInput">Usuario</label>
+            </div>
+            <!-- USER -->
+            <!-- PASSWORD -->
+            <div class="form-floating">
+
+                <input type="password" formControlName="password" class="form-control" id="floatingPassword" placeholder="Contraseña">
+
+                <label for="floatingPassword">Contraseña</label>
+            </div>
+            <!-- PASSWORD -->
+
+            <!-- REMEMBER -->
+            <div class="form-check">
+                <input class="form-check-input" formControlName="remember" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label text-white-50" for="flexCheckDefault">
+                  Recordar Usuario
+                </label>
+            </div>
+            <!-- REMEMBER -->
+
+            <!-- BUTTON LOGIN -->
+            <button class="w-100 btnW waves-effect waves-light m-0 btn-lg btn-primary mt-4" type="submit">Entrar</button>
+            <!-- BUTTON LOGIN -->
+
+            <p class="mt-5 mb-3 text-muted text-center">© Discovery Sistems Pos - {{ year }}</p>
+        </form>
+    </main>
+</section>
