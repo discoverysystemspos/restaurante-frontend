@@ -7,6 +7,8 @@ import { Mesa } from '../../models/mesas.model';
 
 // SERVICES
 import { MesasService } from '../../services/mesas.service';
+import { UserService } from '../../services/user.service';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-ventas',
@@ -27,11 +29,20 @@ export class VentasComponent implements OnInit {
 
   public btnAtras: string = '';
   public btnAdelante: string = '';
+  
+  public role : string = '';
+  public user: string;
 
   constructor(  private router: Router,
-                private mesasService: MesasService) { }
+                private mesasService: MesasService,
+                private userService:UserService) { }
 
   ngOnInit(): void {
+
+    this.role = this.userService.role;
+
+    this.user = this.userService.user.uid;
+    
 
     if (localStorage.getItem('turno') === '' && localStorage.getItem('turno') === null) {
 
@@ -68,7 +79,7 @@ export class VentasComponent implements OnInit {
             this.btnAdelante = 'disabled';
             return;                
           }
-          // COMPROBAR SI EXISTEN RESULTADOS
+          // COMPROBAR SI EXISTEN RESULTADOS          
 
           this.totalMesas = total;
           this.listaMesas = mesas;

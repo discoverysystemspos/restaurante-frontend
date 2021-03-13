@@ -9,14 +9,19 @@
     <div class="d-flex justify-content-center">
 
         <div class="card border-0 pb-4" style="width: 14rem; color:black; background: white;" id="printDiv">
-            
+
             <!-- EMPRESA -->
             <div class="card-body px-1 mb-2" style="border-bottom: 2px solid black;">
-                <h4 class="card-title mb-2 text-wrap text-center"> {{ empresa.name }} </h4>
-                <p class="mb-0 text-wrap fw-bold text-left lh-1" *ngIf="empresa.address" >Dirección: <small class="fw-normal">{{ empresa.address }}</small></p>             
-                <p class="mb-0 text-wrap fw-bold text-left lh-sm" *ngIf="empresa.nit" >NIT: <small class="fw-normal">{{ empresa.nit }}</small></p>             
-                <p class="mb-0 text-wrap fw-bold text-left lh-sm" *ngIf="empresa.phone" >Tel: <small class="fw-normal">{{ empresa.phone }}</small></p>            
-            </div>            
+                <h4 class="card-title mb-0 text-wrap text-center"> {{ empresa.name }} </h4>
+                <p class="mb-0 text-wrap fw-bolder text-center lh-sm" *ngIf="empresa.nit">{{ empresa.nit }}</p>
+                <p class="mb-0 text-center text-wrap" style="font-size: 0.7rem;">(EMILY PAOLA ROZO SAAVEDRA)</p>
+                <p class="mb-0 text-wrap text-center" *ngIf="empresa.address">{{ empresa.address }}</p>
+                <p class="mb-0 text-wrap text-center" *ngIf="empresa.phone">{{ empresa.phone }}</p>
+                <p class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Responsable nacional al consumo</p>
+                <p class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Resolución: 18764011472096</p>
+                <p class="mb-0 text-wrap text-center" style="font-size: 0.7rem;"> 2021/03 /11</p>
+                <p class="mb-1 text-wrap text-center" style="font-size: 0.7rem;">Prefijo Pos: 1 - 2000</p>
+            </div>
             <!-- EMPRESA -->
 
             <!-- CLIENTE -->
@@ -25,6 +30,7 @@
                     CLIENTE / RAZON SOCIAL <br>
                     <small class="text-wrap fw-normal"> {{ factura.client.name }} </small>
                 </h6>
+
                 <h6 class="mb-0 text-wrap text-left">
                     CC / NIT <br>
                     <small class="text-wrap fw-normal"> {{ factura.client.cedula }} </small>
@@ -39,36 +45,60 @@
                 </h6>
 
                 <h6 class="mb-0 text-wrap text-left">
-                    <p class="text-wrap fw-normal"> {{ factura.mesa.name }} - {{ factura.mesero.name }} </p>
+                    <p class="text-wrap fw-normal mb-0"> {{ factura.mesa.name }} - {{ factura.mesero.name }} </p>
                 </h6>
             </div>
             <!-- CLIENTE -->
 
             <!-- FACTURA -->
             <div class="py-2" style="border-bottom: 2px solid black;">
-                <h5 class="mb-0 text-wrap text-left">Factura: {{ factura.invoice }}</h5>
+                <h6 class="mb-0 text-wrap text-left">Factura de venta pos: {{ factura.invoice }}</h6>
                 <small class="mb-0 text-wrap text-left">Fecha: {{ factura.fecha | date:'short' }}</small>
             </div>
             <!-- FACTURA -->
 
-            <table class="table table-borderless table-hover table-sm">                
+            <table class="table table-borderless table-hover table-sm">
                 <tbody style="color: black;">
                     <tr *ngFor="let item of factura.products" class="trHover">
-                        <td> 
+                        <td>
                             <small class="text-wrap"> {{ item.qty }} x {{item.price | currency}} </small> <br>
                             <small class="text-wrap"> {{ item.product.name }} </small>
                         </td>
                         <td> <small class="text-wrap"> {{ item.qty * item.price | currency }} </small> </td>
                     </tr>
                     <tr class="" style="border-top: 2px solid black;">
-                        <td> <h6 class="mb-0 text-wrap text-left">Total</h6>  </td>
-                        <td class="fw-bold"> 
-                            <h6 class="mb-0 text-wrap text-rigth" > {{ factura.amount | currency }} </h6> 
+                        <td>
+                            <h6 class="mb-0 text-wrap text-left">Sub-total</h6>
+                        </td>
+                        <td class="fw-bold">
+                            <h6 class="mb-0 text-wrap text-rigth"> {{ factura.amount | currency }} </h6>
+                        </td>
+                    </tr>
+                    <tr class="" style="border-top: 2px solid black;">
+                        <td>
+                            <h6 class="mb-0 text-wrap text-left">Impuesto al consumo 8%</h6>
+                        </td>
+                        <td class="fw-bold">
+                            <h6 class="mb-0 text-wrap text-rigth"> {{ factura.amount * 0.08 | currency }} </h6>
+                        </td>
+                    </tr>
+                    <tr class="" style="border-top: 2px solid black;">
+                        <td>
+                            <h6 class="mb-0 text-wrap text-left">Total</h6>
+                        </td>
+                        <td class="fw-bold">
+                            <h6 class="mb-0 text-wrap text-rigth"> {{ factura.amount * 1.08 | currency }} </h6>
                         </td>
                     </tr>
                 </tbody>
-            </table>                       
-          
+            </table>
+
+            <h5 class="text-center"> GRACIAS POR SU COMPRA </h5>
+            <small class="text-wrap text-center mb-0"> Factura impresa por Discovery Systems Pos </small>
+            <small class="text-wrap text-center mb-0" style="font-size: 0.7rem;">(Elkin Daniel Castillo Perez)</small>
+            <small class="text-wrap text-center mb-0">NIT. 88243048-6</small>
+
+
         </div>
 
     </div>

@@ -66,7 +66,8 @@ export class UsuariosComponent implements OnInit {
   public newUserForm = this.fb.group({
     usuario: ['', [Validators.required, Validators.minLength(4)]],
     name: ['', [Validators.required, Validators.minLength(3)]],
-    password: ['', [Validators.required, Validators.minLength(6)]]
+    password: ['', [Validators.required, Validators.minLength(6)]],
+    role: ['STAFF']
   });
 
   crearUsuario(){
@@ -85,7 +86,9 @@ export class UsuariosComponent implements OnInit {
 
             this.formSubmitted = false;
             this.cargarUsuarios();
-            this.newUserForm.reset();
+            this.newUserForm.reset({
+              role: ['STAFF']
+            });
             Swal.fire('Estupendo', 'Se ha creado un usuario nuevo', 'success');
 
           }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });

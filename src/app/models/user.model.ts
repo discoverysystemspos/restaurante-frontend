@@ -8,7 +8,7 @@ export class User {
         public usuario: string,
         public name: string,
         public password?: string,
-        public role?: string,
+        public role?: 'ADMIN' | 'STAFF' | 'CASHIER' | 'WAITER',
         public img?: string,
         public uid?: string,
         public status?: boolean,

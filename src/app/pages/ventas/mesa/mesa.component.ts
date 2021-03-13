@@ -46,6 +46,8 @@ export class MesaComponent implements OnInit {
 
   public productUp: Carrito[] = [];
 
+  public facturar: boolean;
+
   // PRINT
   @ViewChild('PrintTemplate')
   private PrintTemplateTpl: TemplateRef<any>;
@@ -68,9 +70,7 @@ export class MesaComponent implements OnInit {
                 private printerService: NgxPrinterService,) {
 
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
-                    val => {
-                      console.log('Print window is open:', val);
-                    }
+                    val => {}
                   );
               
                   this.$printItems = this.printerService.$printItems;
@@ -79,7 +79,7 @@ export class MesaComponent implements OnInit {
 
   ngOnInit(): void {
 
-    if (localStorage.getItem('turno') !== null) {
+    
       
       // TURNOS
       this.cargarTurno();
@@ -99,11 +99,10 @@ export class MesaComponent implements OnInit {
         
       });
 
+    if (localStorage.getItem('turno') !== null) {
+      this.facturar = true;
     }else{
-      Swal.fire('Atención!', 'Debes de abrir una caja antes de poder facturar', 'info');
-      // REDIRECCIONAR AL DASHBOARD
-      this.router.navigateByUrl('/');
-      return;
+      this.facturar = false;
     }
 
   }
@@ -835,15 +834,10 @@ export class MesaComponent implements OnInit {
         mesero: this.meserID,
         fechaCredito: this.invoiceForm.value.fechaCredito
       });      
-
-      console.log(this.invoiceForm.value.mesero);
       
       this.invoiceService.createInvoice(this.invoiceForm.value, this.turno.tid)
 
-          .subscribe( (resp:{ok: boolean, invoice: Invoice } ) => {  
-            
-            console.log(resp.invoice);
-            
+          .subscribe( (resp:{ok: boolean, invoice: Invoice } ) => {              
 
             this.invoiceForm.reset({
               type: 'efectivo'

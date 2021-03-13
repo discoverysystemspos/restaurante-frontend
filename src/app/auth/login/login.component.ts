@@ -35,6 +35,11 @@ export class LoginComponent {
     this.userService.login(this.loginForm.value)
                     .subscribe( resp => {
 
+                      if (resp === false) {
+                        Swal.fire('Atención', 'Credenciales incorrectas, porfavor verificar el usuario o contraseña', 'warning')
+                      }
+                      
+
                       if ( this.loginForm.get('remember').value ) {
                         localStorage.setItem('usuario', this.loginForm.get('usuario').value);
                       }else {
@@ -44,8 +49,8 @@ export class LoginComponent {
                       // INGRESAR
                       this.router.navigateByUrl('/');
                       
-                    }, (err) => {                      
-                      Swal.fire('Error', err.error.msg, 'error');
+                    }, (err) => {                                            
+                      Swal.fire('Error', 'Error log', 'error');
                     });
     
   }

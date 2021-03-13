@@ -19,16 +19,42 @@
         <h4 class="mb-2 text-muted">Mesas</h4>
         <div class="d-flex flex-wrap">
 
-            <div class="p-2" *ngFor="let mesa of listaMesas">
-                <button [routerLink]="['/dashboard/ventas/mesa', mesa.mid]" type="button" class="bg-white p-3 btn btnW waves-effect waves-ligth position-relative"> 
-                    <small *ngIf="!mesa.disponible" class="text-danger"> Ocupada </small>
-                    <small *ngIf="mesa.disponible" class="text-success"> Disponible </small>
-                    <i [ngClass]="{'text-danger': mesa.disponible == false, 'text-success': mesa.disponible == true}" class="bi-dot position-absolute top-0 start-100 translate-middle pe-4 pt-2" style="font-size: 2.5rem;"></i>
-                    <h5 class="mb-0 text-wrap">{{ mesa.name }}</h5>                    
-                    <img src="../../../assets/img/icons/{{ mesa.img || 'ticket.svg' }}" alt="" style="max-height: 100px;">
-                    <h6 class="mb-0 text-wrap fw-normal"> {{ mesa.mesero.name }} </h6>                  
-                </button>
-            </div>
+            <ng-container *ngIf="role === 'WAITER'">
+
+                <div *ngFor="let mesa of listaMesas">
+
+                    <div class="p-2" *ngIf="mesa.mesero._id === user">
+                        <button [routerLink]="['/dashboard/ventas/mesa', mesa.mid]" type="button" class="bg-white p-3 btn btnW waves-effect waves-ligth position-relative"> 
+                            <small *ngIf="!mesa.disponible" class="text-danger"> Ocupada </small>
+                            <small *ngIf="mesa.disponible" class="text-success"> Disponible </small>
+                            <i [ngClass]="{'text-danger': mesa.disponible == false, 'text-success': mesa.disponible == true}" class="bi-dot position-absolute top-0 start-100 translate-middle pe-4 pt-2" style="font-size: 2.5rem;"></i>
+                            <h5 class="mb-0 text-wrap">{{ mesa.name }}</h5>                    
+                            <img src="../../../assets/img/icons/{{ mesa.img || 'ticket.svg' }}" alt="" style="max-height: 100px;">
+                            <h6 class="mb-0 text-wrap fw-normal"> {{ mesa.mesero.name }} </h6>                  
+                        </button>
+                    </div>
+                </div>
+
+
+            </ng-container>
+
+            <ng-container *ngIf="role !== 'WAITER'">
+
+                <div class="p-2" *ngFor="let mesa of listaMesas">
+                    <button [routerLink]="['/dashboard/ventas/mesa', mesa.mid]" type="button" class="bg-white p-3 btn btnW waves-effect waves-ligth position-relative"> 
+                        <small *ngIf="!mesa.disponible" class="text-danger"> Ocupada </small>
+                        <small *ngIf="mesa.disponible" class="text-success"> Disponible </small>
+                        <i [ngClass]="{'text-danger': mesa.disponible == false, 'text-success': mesa.disponible == true}" class="bi-dot position-absolute top-0 start-100 translate-middle pe-4 pt-2" style="font-size: 2.5rem;"></i>
+                        <h5 class="mb-0 text-wrap">{{ mesa.name }}</h5>                    
+                        <img src="../../../assets/img/icons/{{ mesa.img || 'ticket.svg' }}" alt="" style="max-height: 100px;">
+                        <h6 class="mb-0 text-wrap fw-normal"> {{ mesa.mesero.name }} </h6>                  
+                    </button>
+                </div>
+
+            </ng-container>
+
+
+
 
         </div>
     </div>

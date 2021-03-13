@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
 })
 export class AuthGuard implements CanActivate {
 
-  constructor( private userService:UserService,
+  constructor(  private userService:UserService,
                 private router:Router){}
 
   canActivate(
