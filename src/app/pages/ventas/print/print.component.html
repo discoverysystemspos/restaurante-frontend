@@ -17,7 +17,7 @@
                 <p class="mb-0 text-center text-wrap" style="font-size: 0.7rem;">(EMILY PAOLA ROZO SAAVEDRA)</p>
                 <p class="mb-0 text-wrap text-center" *ngIf="empresa.address">{{ empresa.address }}</p>
                 <p class="mb-0 text-wrap text-center" *ngIf="empresa.phone">{{ empresa.phone }}</p>
-                <p class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Responsable nacional al consumo</p>
+                <p class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Responsable al impuesto nacional al consumo</p>
                 <p class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Resolución: 18764011472096</p>
                 <p class="mb-0 text-wrap text-center" style="font-size: 0.7rem;"> 2021/03 /11</p>
                 <p class="mb-1 text-wrap text-center" style="font-size: 0.7rem;">Prefijo Pos: 1 - 2000</p>
@@ -76,10 +76,10 @@
                     </tr>
                     <tr class="" style="border-top: 2px solid black;">
                         <td>
-                            <h6 class="mb-0 text-wrap text-left">Impuesto al consumo 8%</h6>
+                            <h6 class="mb-0 text-wrap text-left">Impuesto al consumo 0%</h6>
                         </td>
                         <td class="fw-bold">
-                            <h6 class="mb-0 text-wrap text-rigth"> {{ factura.amount * 0.08 | currency }} </h6>
+                            <h6 class="mb-0 text-wrap text-rigth"> 0 </h6>
                         </td>
                     </tr>
                     <tr class="" style="border-top: 2px solid black;">
@@ -87,7 +87,7 @@
                             <h6 class="mb-0 text-wrap text-left">Total</h6>
                         </td>
                         <td class="fw-bold">
-                            <h6 class="mb-0 text-wrap text-rigth"> {{ factura.amount * 1.08 | currency }} </h6>
+                            <h6 class="mb-0 text-wrap text-rigth"> {{ factura.amount | currency }} </h6>
                         </td>
                     </tr>
                 </tbody>
