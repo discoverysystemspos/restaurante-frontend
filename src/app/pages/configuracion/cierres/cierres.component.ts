@@ -179,15 +179,10 @@ export class CierresComponent implements OnInit {
     
     // TOTALIZAR VENTAS
     const sales = this.turnoId.sales;
-    console.log(sales);
     for (let i = 0; i < sales.length; i++) {
-
-      console.log(sales[i].facturas.status);
       
-
+      //  COMPROBAR EL ESTADO DE LA FACTURA
       if (sales[i].facturas.status) {
-        
-      
 
         let pagos = sales[i].facturas.payments;
         for (let i = 0; i < pagos.length; i++) {

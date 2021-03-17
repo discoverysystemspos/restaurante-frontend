@@ -91,8 +91,6 @@ export class CorteComponent implements OnInit {
     
     // TOTALIZAR VENTAS
     const sales = this.turno.sales;
-
-    console.log(sales);
     
     
     for (let i = 0; i < sales.length; i++) {      
@@ -101,44 +99,48 @@ export class CorteComponent implements OnInit {
         return;
       }
 
+      // COMPROBAR QUE LA FACTURA ES TRUE
+      if(sales[i].facturas.status){
+
       let pagos = sales[i].facturas.payments;
       
-      for (let i = 0; i < pagos.length; i++) {
-         switch (pagos[i].type) {
-          case 'efectivo':
+        for (let i = 0; i < pagos.length; i++) {
+          switch (pagos[i].type) {
+            case 'efectivo':
 
-            this.efectivo += pagos[i].amount;
-            
-            break;
+              this.efectivo += pagos[i].amount;
+              
+              break;
 
-          case 'tarjeta':
-            
-            this.tarjeta += pagos[i].amount;
-            
-            break;
+            case 'tarjeta':
+              
+              this.tarjeta += pagos[i].amount;
+              
+              break;
 
-          case 'credito':
+            case 'credito':
 
-            this.credito += pagos[i].amount;
+              this.credito += pagos[i].amount;
+              
+              break;
             
-            break;
+            case 'vales':
+
+              this.vales += pagos[i].amount;
+              
+              break;
+            
+            case 'transferencia':
+
+              this.transferencia += pagos[i].amount;
+              
+              break;
           
-          case 'vales':
-
-            this.vales += pagos[i].amount;
-            
-            break;
+            default:
+              break;
+          }
           
-          case 'transferencia':
-
-            this.transferencia += pagos[i].amount;
-            
-            break;
-        
-          default:
-            break;
         }
-        
       }
       
     }

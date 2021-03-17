@@ -29,7 +29,7 @@
                 <div>
                     <button type="button" class="btn btn-outline-primary btn-sm" (click)="cargarFacturas()"> <i class="bi-arrow-clockwise"></i> Recargar </button>
                 </div>
-                
+
                 <div class="col-4 col-md-2 ms-auto">
                     <input type="date" class="form-control" (change)="buscar(search.value)" #search>
                 </div>
@@ -56,23 +56,26 @@
                                 <h4 class="text-muted">Sin Resultados</h4>
                             </th>
                         </tr>
-                        
+
                         <ng-container *ngFor="let factura of facturas; let i=index ">
 
-                            <tr *ngIf="!factura.credito" class="trHover" tabindex="0" data-bs-toggle="tooltip" title="Cajero: {{ factura.user.name }}" >
+                            <tr *ngIf="!factura.credito" class="trHover" tabindex="0" data-bs-toggle="tooltip" title="Cajero: {{ factura.user.name }}">
                                 <th>{{ factura.invoice }}</th>
-                                <td colspan="2"> {{ factura.client.name }} </td>
+                                <td colspan="2">
+                                    {{ factura.client.name }}
+                                    <span *ngIf="!factura.status" class="badge rounded-pill bg-danger">Cancelada</span>
+                                </td>
                                 <td> {{ factura.client.cedula }} </td>
                                 <td> {{ factura.amount | currency }} </td>
                                 <td> {{ factura.type }} </td>
                                 <td> {{ factura.fecha | date:'medium' }} </td>
-                                <td class="text-center"> 
+                                <td class="text-center">
                                     <button type="button" [routerLink]="['/dashboard/factura', factura.iid]" class="btn btn-link p-1 text-primary"><i class="bi bi-box-arrow-up-right"></i></button>
                                 </td>
                             </tr>
 
                         </ng-container>
-                        
+
                     </tbody>
                 </table>
             </div>
@@ -93,7 +96,7 @@
             <!-- BTN SIGUIENTE Y ANTERIOR -->
 
         </div>
-        
+
     </div>
     <!-- TABLE FACTURAS -->
 
