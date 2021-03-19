@@ -35,7 +35,14 @@ export class VentasComponent implements OnInit {
 
   constructor(  private router: Router,
                 private mesasService: MesasService,
-                private userService:UserService) { }
+                private userService:UserService) { 
+
+                setInterval( () => { 
+                  
+                  this.cargarMesas(); 
+                }, 5000);
+
+              }
 
   ngOnInit(): void {
 

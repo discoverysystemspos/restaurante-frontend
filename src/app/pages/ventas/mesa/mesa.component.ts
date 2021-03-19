@@ -124,6 +124,11 @@ export class MesaComponent implements OnInit {
           this.mesaID = mesa.mid;
           this.carrito = mesa.carrito;
           this.mesa = mesa;           
+          
+         if (!mesa.disponible && mesa.cliente) {
+           this.clienteTemp = mesa.cliente;
+           this.clienteTemp.cid = mesa.cliente._id;
+         }         
                 
           this.meserID = mesa.mesero._id;
 
@@ -392,6 +397,15 @@ export class MesaComponent implements OnInit {
     this.totalClientes = 0;
     this.cargandoCliente = true;
     this.sinResultadosClientes = false;
+
+    this.mesa.cliente = this.clienteTemp.cid
+
+    this.mesasServices.updateMesa(this.mesa, this.mesaID)
+        .subscribe( (resp:{ok: boolean, mesa: Mesa}) => {       
+
+        }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
+    
+    this.cargarMesa(this.mesaID);
     
   }
 
@@ -861,7 +875,7 @@ export class MesaComponent implements OnInit {
             this.credit = false;
 
             // LIMPIAMOS LA MESA
-            this.mesa.carrito = [];
+            this.mesa.carrito = [];            
             
             this.mesasServices.updateMesa(this.mesa, this.mesaID)
             .subscribe( (resp:{ok: boolean, mesa: Mesa}) => {        
@@ -891,8 +905,11 @@ export class MesaComponent implements OnInit {
             Swal.fire('Error', err.error.msg, 'error');
           });
       
-    } catch (error) {   
-      Swal.fire('Error', 'Aun faltan campos importantes, porfavor verificar', 'error');
+    } catch (err) {   
+
+      console.log(err);
+      
+      Swal.fire('Error', err.error.msg, 'error');
       
     }    
 

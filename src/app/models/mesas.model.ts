@@ -15,7 +15,8 @@ export class Mesa {
         public mesero?: _mesero,
         public fecha?: Date,
         public mid?: string,
-        public img?: string
+        public img?: string,
+        public cliente?: string
     ){}
 
     
