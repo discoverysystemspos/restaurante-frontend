@@ -50,11 +50,10 @@
                         <tr class="trHover" *ngFor="let departamento of departmentos; let i = index">
                             <th *ngIf="desde === 0 " scope="row ">{{ i + 1}}</th>
                             <th *ngIf="desde> 0" scope="row">{{ (i + 1) + desde }}</th>
-                            <td >
+                            <td>
 
-                                <img *ngIf="departamento.img" src="http://localhost:3000/api/uploads/department/{{ departamento.img }}" class="avatar avatar-img" alt="">
-                                <img *ngIf="!departamento.img" src="http://localhost:3000/api/uploads/department/no-image" class="avatar avatar-img" alt="">
-                            
+                                <img [src]="departamento.img | imagen: 'department'" class="avatar avatar-img" alt="">
+
                             </td>
                             <td colspan="2">{{ departamento.name }}</td>
                             <td>
@@ -136,7 +135,7 @@
                         <div class="text-danger mb-2">
                             <p *ngIf="campoValido('name')" class="mb-1 animated fadeIn">- El nombre es obligatorio</p>
                         </div>
-                    </div>                    
+                    </div>
 
 
                     <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>
@@ -177,13 +176,13 @@
                     <div class="col py-2 text-center">
                         <div class="card">
                             <div class="card-body text-center">
-                                
+
                                 <!-- Image Product-->
                                 <img *ngIf="!imgTemp" src="http://localhost:3000/api/uploads/department/{{imgDepartamento}}" class="avatar-redondo-lg mx-auto" alt="">
 
                                 <!-- IMG TEMPO  imgTemp -->
                                 <img *ngIf="imgTemp" [src]="imgTemp" class="avatar-redondo-lg mx-auto" alt="">
-                                
+
                                 <div class="mb-3">
                                     <label for="formFileSm" class="form-label">Seleccionar Imagen</label>
                                     <input #fileImg class="form-control form-control-sm" id="formFileSm" type="file" (change)="cambiarImage($event.target.files[0])">
@@ -207,7 +206,7 @@
 
                             <div class="form-check mt-2">
                                 <input formControlName="visibility" class="form-check-input" type="checkbox" value="" id="flexCheckChecked2">
-                                <label  class="form-check-label" for="flexCheckChecked2">
+                                <label class="form-check-label" for="flexCheckChecked2">
                                   Departamento Visible
                                 </label>
                             </div>

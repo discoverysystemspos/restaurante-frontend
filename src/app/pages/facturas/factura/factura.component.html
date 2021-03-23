@@ -27,7 +27,8 @@
         <!-- TITLE - SUBTITLE -->
         <div class="mt-4">
             <h5 class="text-dark">DETALLES DE LA FACTURA #{{ factura.invoice }}</h5>
-            <p>Cajero: {{ factura.user.name }}</p>
+            <p class="mb-0">Cajero: {{ factura.user.name }}</p>
+
         </div>
         <!-- TITLE - SUBTITLE -->
 
@@ -39,10 +40,16 @@
             <button (click)="devolucion(factura.iid)" type="button" class="btn btn-outline-danger btn-sm mx-1 my-2"> 
                 <i class="bi-arrow-counterclockwise"></i> Cancelar Factura
             </button>
+            <button *ngIf="factura.credito" (click)="focusMonto()" type="button" class="btn btn-outline-dark btn-sm mx-1 my-2" data-bs-toggle="modal" data-bs-target="#facturar"> 
+                Cobrar
+            </button>
         </div>
 
         <!-- DETALLES DE LA FACTURA -->
         <div class="shadow-lg p-3 mb-5 rounded bg-white">
+
+            <!-- SI ES A CREDITO -->
+            <span *ngIf="factura.credito" class="badge rounded-pill bg-warning text-dark mb-2">A Credito</span>
 
             <!-- INFORMACION DEL CLIENTE -->
             <div class="row">
@@ -151,4 +158,204 @@
 </div>
 <!-- =========================================================================
     BODY 
+========================================================================= -->
+
+<!-- =========================================================================
+    MODAL FACTURAR 
+========================================================================= -->
+<div class="modal fade" id="facturar" tabindex="-1" aria-labelledby="facturarModal" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+
+                <div class="container-fluid">
+                    <div class="py-2">
+
+                        <!-- COLUMNA IZQ -->
+                        <div class="col px-0 bg-white">
+
+                            <!-- TITULO -->
+                            <div class="bg-header-blue py-1 px-2">
+                                <h4 class="text-white fw-normal mb-0">Cobrar</h4>
+                            </div>
+
+                            <div class="container-fluid py-4">
+
+                                <!-- TOTAL -->
+                                <div class="text-center my-3">
+                                    <h4 class="display-4 text-primary">{{ factura.amount | currency }}</h4>
+
+                                    <small *ngIf="totalPagos > 0 && totalPagos < factura.amount" class="text-danger animated fadeIn">Resta</small>
+                                    <small *ngIf="totalPagos > 0 && totalPagos >= factura.amount" class="text-success animated fadeIn">Vueltos</small>
+                                    <h4 class="mb-0 fw-normal animated fadeIn" [ngClass]=" {   'text-danger': totalPagos < factura.amount, 
+                                                        'text-success': totalPagos >= factura.amount
+                                                    }" *ngIf="totalPagos > 0">
+                                        {{ vueltos | currency }}
+                                    </h4>
+
+                                </div>
+                                <!-- TOTAL -->
+
+
+                                <div class="d-flex justify-content-center">
+
+                                    <div>
+
+                                        <!-- FORM INVOICE - FORM INVOICE -->
+                                        <form autocomplete="off" [formGroup]="invoiceForm">
+
+                                            <div class="row text-center">
+                                                <div class="col p-2">
+
+                                                    <input type="radio" (click)="limpiarPagos()" class="btn-check" name="type" formControlName="type" id="efectivo-outlined" value="efectivo" autocomplete="off" checked>
+                                                    <label class="btn btn-outline-success" for="efectivo-outlined">
+                                                    <i class="px-3 bi-cash-stack" style="font-size: 1.5rem;"></i>
+                                                    <p class="mb-0">Efectivo</p>
+    
+                                                </label>
+
+                                                </div>
+                                                <div class="col p-2">
+
+                                                    <input type="radio" (click)="limpiarPagos()" class="btn-check" name="type" formControlName="type" id="tarjeta-outlined" value="tarjeta" autocomplete="off">
+                                                    <label class="btn btn-outline-primary" for="tarjeta-outlined">
+                                                    <i class="px-3 bi-credit-card" style="font-size: 1.5rem;"></i>
+                                                    <p class="mb-0">Tarjeta</p>
+                                                </label>
+
+                                                </div>
+
+                                                <div class="col p-2">
+
+                                                    <input type="radio" (click)="limpiarPagos()" class="btn-check" name="options-outlined" name="type" formControlName="type" id="vale-outlined" value="vale" autocomplete="off">
+                                                    <label class="btn btn-outline-secondary" for="vale-outlined">
+                                                    <i class="px-3 bi-card-heading" style="font-size: 1.5rem;"></i>
+                                                    <p class="mb-0">Vale</p>
+                                                </label>
+
+                                                </div>
+
+                                                <div class="col p-2">
+
+                                                    <input type="radio" (click)="limpiarPagos()" class="btn-check" name="options-outlined" name="type" formControlName="type" id="mixto-outlined" value="mixto" autocomplete="off">
+                                                    <label class="btn btn-outline-dark" for="mixto-outlined">
+                                                    <i class="px-3 bi-patch-question" style="font-size: 1.5rem;"></i>
+                                                    <p class="mb-0">Mixto</p>
+                                                </label>
+
+                                                </div>
+
+                                                <div class="col p-2">
+
+                                                    <input type="radio" (click)="limpiarPagos('credito')" class="btn-check" name="options-outlined" name="type" formControlName="type" id="credito-outlined" value="credito" autocomplete="off">
+                                                    <label class="btn btn-outline-warning" for="credito-outlined">
+                                                    <i class="px-3 bi-clock-history" style="font-size: 1.5rem;"></i>
+                                                    <p class="mb-0">Credito</p>
+                                                </label>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="mx-auto">
+
+                                                <!-- TABLA -->
+                                                <div class="table-responsive">
+                                                    <table class="table table-sm table-borderless">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Descripcion</th>
+                                                                <th>Monto</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody formArrayName="payments">
+                                                            <tr class="trHover" *ngFor="let control of payments; let i = index">
+                                                                <th>{{ i + 1}}</th>
+                                                                <td>
+                                                                    <p class="mb-0">{{ control.type }} <span *ngIf="control.description">- {{ control.description }}</span></p>
+                                                                </td>
+                                                                <td> {{ control.amount | currency }} </td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-link p-1 text-danger text-right" (click)="eliminarPagos(control)"> <i class="bi-trash"></i> </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+
+                                                </div>
+                                                <!-- TABLA -->
+
+                                                <!-- AGREGAR METODO DE PAGO -->
+
+                                                <div class="row g-3 d-flex justify-content-center">
+
+                                                    <div class="col-auto">
+
+                                                        <select class="form-select" aria-label="Default select example" (change)="typeAdd.value" #typeAdd>
+                                                            <option *ngIf="invoiceForm.value.type === 'efectivo' || invoiceForm.value.type === 'mixto'" value="efectivo">Efectivo</option>
+                                                            <option *ngIf="invoiceForm.value.type === 'tarjeta' || invoiceForm.value.type === 'mixto'" value="tarjeta">Tarjeta</option>
+                                                            <option *ngIf="invoiceForm.value.type === 'vale' || invoiceForm.value.type === 'mixto'" value="vale">Vale</option>
+                                                            <option *ngIf="invoiceForm.value.type === 'credito'" value="credito">Credito</option>
+                                                        </select>
+
+                                                    </div>
+
+                                                    <div class="col-auto" *ngIf="!credit">
+                                                        <label for="Descripción" class="visually-hidden">Descripción</label>
+                                                        <input type="text" class="form-control w100" id="Descripción" placeholder="Descripción" (keyup)="descripcionAdd.value" #descripcionAdd>
+                                                    </div>
+
+                                                    <div class="col-auto" *ngIf="!credit">
+                                                        <label for="monto" class="visually-hidden">Monto</label>
+                                                        <input type="number" class="form-control" id="monto" placeholder="Monto" [value]=" factura.amount " autofocus="true" (keyup)="montoAdd.value" #montoAdd>
+                                                    </div>
+
+                                                    <div class="col-auto" *ngIf="!credit">
+                                                        <button type="button" class="btn btn-primary mb-3" (click)="agregarPagos(typeAdd.value, montoAdd.value, descripcionAdd.value)">Agregar</button>
+                                                    </div>
+
+                                                    <div class="col-auto" *ngIf="credit">
+                                                        <label for="credi" class="visually-hidden">Fecha limite</label>
+                                                        <input type="date" formControlName="fechaCredito" class="form-control" id="credi" placeholder="Selecciona una fecha limite" #fechCredito>
+                                                    </div>
+
+                                                </div>
+                                                <!-- AGREGAR METODO DE PAGO -->
+
+                                            </div>
+
+
+                                        </form>
+                                        <!-- FORM INVOICE - FORM INVOICE -->
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <!-- COLUMNA IZQ -->
+
+                    </div>
+
+                    <!-- BTN CREAR FACTURA -->
+                    <div class="my-4 float-end">
+                        <button type="button" (click)="guardarPago()" class="btn btn-outline-primary">
+
+                                    Imprimir
+                        </button>
+                    </div>
+                    <!-- BTN CREAR FACTURA -->
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =========================================================================
+    MODAL FACTURAR 
 ========================================================================= -->

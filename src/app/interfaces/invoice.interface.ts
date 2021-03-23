@@ -29,8 +29,9 @@ interface _client{
     cid?: string;
 }
 
-interface _mesa{
+export interface _mesa{
     name: string;
+    id?: string
 }
 
 
@@ -39,7 +40,10 @@ export interface LoadInvoice {
     invoice: number;
     client: _client;
     mesero: User;
-    mesa: _mesa;
+    mesa: {
+        name: string;
+        id?: string
+    };
     user: User;
     products: _products[];
     type: string;

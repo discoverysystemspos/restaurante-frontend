@@ -68,7 +68,9 @@ export class ProductosComponent implements OnInit {
           this.productosTemp = products;
           this.resultado = 0;
           this.cargando = false;
-          
+
+          console.log(this.desde);
+          console.log(this.productos.length);
 
           // BOTONOS DE ADELANTE Y ATRAS          
           if (this.desde === 0 && this.totalProductos > 10) {
@@ -76,9 +78,6 @@ export class ProductosComponent implements OnInit {
             this.btnAdelante = '';
           }else if(this.desde === 0 && this.totalProductos < 11){
             this.btnAtras = 'disabled';
-            this.btnAdelante = 'disabled';
-          }else if(this.desde > this.productos.length){
-            this.btnAtras = '';
             this.btnAdelante = 'disabled';
           }else if((this.desde + 10) >= this.totalProductos){
             this.btnAtras = '';

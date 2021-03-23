@@ -45,6 +45,15 @@ export class InvoiceService {
   }
 
   /** ================================================================
+   *   UPDATE INVOICE
+  ==================================================================== */
+  updateInvoice(formData:any, id: string){
+    
+    return this.http.put(`${ base_url }/invoice/${id}`, formData, this.headers);
+
+  }
+
+  /** ================================================================
    *   LOAD INVOICE DATE
   ==================================================================== */
   loadInvoicesDate(date: Date){

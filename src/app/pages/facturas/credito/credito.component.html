@@ -7,90 +7,126 @@
     </div>
     <!-- TITLE - SUBTITLE -->
 
-    <!-- TABLE FACTURAS -->
-    <div class="shadow-lg p-3 mb-5 rounded bg-white">
+    <div class="row">
 
-        <!-- CARGANDO -->
-        <div *ngIf="cargando">
-            <div class="text-center p-4">
-                <div class="spinner-grow text-secondary" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-            </div>
-            <small class="text-muted">cargando...</small>
-        </div>
-        <!-- CARGANDO -->
+        <div class="col-md-2">
+            <div class="shadow-lg p-3 mb-5 rounded bg-white">
 
-        <div *ngIf="!cargando">
+                <h4 class="text-muted">Filtros</h4>
 
-            <!-- BUSCADOR -->
-            <div>
-                <div class="form-floating mb-2">
-                    <span class="position-absolute top-50 start-90 translate-middle"><i class=" bi-search " style="font-size: 1rem "></i></span>
-                    <input type="text" class="form-control" id="floatingInputCredito" placeholder="Buscar Factura por numero" (keyup)="buscar(search.value)" #search>
-                    <label for="floatingInputCredito ">Buscar Factura</label>
-                </div>
-            </div>
-            <!-- BUSCADOR -->
+                <h6 class="text-muted">Rutas</h6>
 
-            <div class="table-responsive ">
-                <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
-                    <thead class="border-bottom ">
-                        <tr>
-                            <th class="text-muted" scope="col ">#</th>
-                            <th class="text-muted" scope="col " colspan="2">Cliente</th>
-                            <th class="text-muted" scope="col ">Cedula</th>
-                            <th class="text-muted" scope="col ">Monto</th>
-                            <th class="text-muted" scope="col ">Metodo</th>
-                            <th class="text-muted" scope="col ">fecha</th>
-                            <th class="text-muted" scope="col "></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngIf="!sinResultados" class="text-center ">
-                            <th colspan="10" class="py-4">
-                                <h4 class="text-muted">Sin Resultados</h4>
-                            </th>
-                        </tr>
-                        
-                        <ng-container *ngFor="let factura of facturas; let i=index ">
+                <div>
+                    <div class="form-check" *ngFor="let mesa of listaMesas; let i = index">
+                        <input class="form-check-input" (click)="filtroRuta(mesa.name)" type="radio" name="exampleRadios" id="exampleRadios{{i}}" value="{{mesa.name}}">
+                        <label class="form-check-label" for="exampleRadios{{i}}">
+                          {{ mesa.name }}
+                        </label>
+                    </div>
 
-                            <tr *ngIf="factura.credito" class="trHover" tabindex="0" data-bs-toggle="tooltip" title="Cajero: {{ factura.user.name }}" >
-                                <th>{{ factura.invoice }}</th>
-                                <td colspan="2"> {{ factura.client.name }} </td>
-                                <td> {{ factura.client.cedula }} </td>
-                                <td> {{ factura.amount | currency }} </td>
-                                <td> {{ factura.type }} </td>
-                                <td> {{ factura.fecha | date:'medium' }} </td>
-                                <td class="text-center">
-                                    <button type="button" [routerLink]="['/dashboard/factura', factura.iid]" class="btn btn-link p-1 text-primary"><i class="bi bi-box-arrow-up-right"></i></button>
-                                </td>
-                            </tr>
-
-                        </ng-container>
-                        
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- BTN SIGUIENTE Y ANTERIOR -->
-            <div class="row">
-                <div class="col col-md-4">
-                    <small class="text-muted">Total de facturas: ({{totalFacturas}})</small>
-                    <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
-                    <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + facturas.length }})</small>
                 </div>
 
-                <div *ngIf="search.value.length === 0" class="col d-flex justify-content-end">
-                    <button type="button" (click)="cambiarPagina(-10)" class="{{btnAtras}} btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
-                    <button type="button" (click)="cambiarPagina(10)" class="{{btnAdelante}} btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
-                </div>
             </div>
-            <!-- BTN SIGUIENTE Y ANTERIOR -->
 
         </div>
-        
+        <!-- TABLE FACTURAS -->
+        <div class="col-md-10">
+
+            <div class="shadow-lg p-3 mb-5 rounded bg-white">
+
+                <!-- CARGANDO -->
+                <div *ngIf="cargando">
+                    <div class="text-center p-4">
+                        <div class="spinner-grow text-secondary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <small class="text-muted">cargando...</small>
+                </div>
+                <!-- CARGANDO -->
+
+                <div *ngIf="!cargando">
+
+                    <!-- BUSCADOR -->
+                    <div class="d-flex">
+
+                        <div>
+                            <button type="button" class="btn btn-outline-primary btn-sm" (click)="cargarFacturas()"> <i class="bi-arrow-clockwise"></i> Recargar </button>
+                        </div>
+
+                        <div class="col-4 col-md-2 ms-auto">
+                            <input type="date" class="form-control" (change)="buscar(search.value)" #search>
+                        </div>
+
+                    </div>
+                    <!-- BUSCADOR -->
+
+                    <div class="table-responsive ">
+                        <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                            <thead class="border-bottom ">
+                                <tr>
+                                    <th class="text-muted" scope="col ">#</th>
+                                    <th class="text-muted" scope="col " colspan="2">Cliente</th>
+                                    <th class="text-muted" scope="col ">Cedula</th>
+                                    <th class="text-muted" scope="col " colspan="2">Ruta</th>
+                                    <th class="text-muted" scope="col ">Monto</th>
+                                    <th class="text-muted" scope="col ">Metodo</th>
+                                    <th class="text-muted" scope="col ">fecha</th>
+                                    <th class="text-muted" scope="col "></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngIf="!sinResultados" class="text-center ">
+                                    <th colspan="10" class="py-4">
+                                        <h4 class="text-muted">Sin Resultados</h4>
+                                    </th>
+                                </tr>
+
+                                <ng-container *ngFor="let factura of facturas; let i=index ">
+
+                                    <tr *ngIf="factura.credito" class="trHover" tabindex="0" data-bs-toggle="tooltip" title="Cajero: {{ factura.user.name }}">
+                                        <th>{{ factura.invoice }}</th>
+                                        <td colspan="2"> {{ factura.client.name }} </td>
+                                        <td> {{ factura.client.cedula }} </td>
+                                        <td colspan="2"> {{ factura.mesa.name }} </td>
+                                        <td> {{ factura.amount | currency }} </td>
+                                        <td> {{ factura.type }} </td>
+                                        <td> {{ factura.fecha | date:'medium' }} </td>
+                                        <td class="text-center">
+                                            <button type="button" [routerLink]="['/dashboard/factura', factura.iid]" class="btn btn-link p-1 text-primary"><i class="bi bi-box-arrow-up-right"></i></button>
+                                        </td>
+                                    </tr>
+
+                                </ng-container>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- BTN SIGUIENTE Y ANTERIOR -->
+                    <div class="row">
+                        <div class="col col-md-4">
+                            <small class="text-muted">Total de facturas: ({{totalFacturas}})</small>
+                            <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
+                            <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + facturas.length }})</small>
+                            <small *ngIf="sumarMonto !== 0" class="text-muted"> - Monto: ({{sumarMonto}})</small>
+
+                        </div>
+
+                        <div *ngIf="search.value.length === 0" class="col d-flex justify-content-end">
+                            <button type="button" (click)="cambiarPagina(-10)" class="{{btnAtras}} btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
+                            <button type="button" (click)="cambiarPagina(10)" class="{{btnAdelante}} btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
+                        </div>
+                    </div>
+                    <!-- BTN SIGUIENTE Y ANTERIOR -->
+
+                </div>
+
+            </div>
+
+        </div>
+        <!-- TABLE FACTURAS -->
+
     </div>
-    <!-- TABLE FACTURAS -->
 
 </div>

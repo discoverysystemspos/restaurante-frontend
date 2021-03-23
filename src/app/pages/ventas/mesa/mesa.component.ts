@@ -941,6 +941,8 @@ export class MesaComponent implements OnInit {
   ==================================================================== */
   @ViewChild('montoE') montoE: ElementRef;
   @ViewChild('descriptionE') descriptionE: ElementRef;
+  @ViewChild('montoS') montoS: ElementRef;
+  @ViewChild('descriptionS') descriptionS: ElementRef;
 
   public movimientos: _movements[] = [];
 
@@ -975,6 +977,9 @@ export class MesaComponent implements OnInit {
       
       this.montoE.nativeElement.value = '';
       this.descriptionE.nativeElement.value = '';
+      
+      this.montoS.nativeElement.value = '';
+      this.descriptionS.nativeElement.value = '';
 
     }, (err) =>{
       Swal.fire('Error', err.error.msg, 'error');
