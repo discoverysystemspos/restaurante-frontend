@@ -50,7 +50,7 @@ export class ClientesComponent implements OnInit {
   public newClientForm = this.fb.group({
     name: [ '' , [Validators.required, Validators.minLength(3)]],
     cedula: ['', [Validators.required, Validators.minLength(3)]],
-    email: ['', [Validators.required, Validators.email, Validators.minLength(7)]],
+    email: [''],
     phone: [''],
     address: [''],
     city: [''],
@@ -210,7 +210,7 @@ export class ClientesComponent implements OnInit {
     _id: [ '' , [Validators.required, Validators.minLength(24)]],
     name: [ '' , [Validators.required, Validators.minLength(3)]],
     cedula: ['', [Validators.required, Validators.minLength(3)]],
-    email: ['', [Validators.required, Validators.email, Validators.minLength(7)]],
+    email: [''],
     phone: [''],
     address: [''],
     city: [''],
