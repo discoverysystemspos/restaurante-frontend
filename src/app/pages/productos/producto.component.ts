@@ -302,10 +302,7 @@ export class ProductoComponent implements OnInit {
       this.upProductForm.value.kit = this.kits;
     }
     
-    this.upProductForm.value.price = this.precioN;
-
-    console.log('cantidad ', this.upProductForm.value.stock);
-    
+    this.upProductForm.value.price = this.precioN;    
     
     this.productService.actualizarProducto(this.upProductForm.value, this.upProductForm.value.pid)
         .subscribe( resp => {

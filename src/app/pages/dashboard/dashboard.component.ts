@@ -26,9 +26,7 @@ export class DashboardComponent implements OnInit {
   cargarEmpresa(){
 
     this.empresaService.getDatos()
-        .subscribe( datos => {
-
-          console.log(datos);          
+        .subscribe( datos => {      
 
         });
 

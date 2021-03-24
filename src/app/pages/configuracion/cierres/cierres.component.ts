@@ -146,7 +146,11 @@ export class CierresComponent implements OnInit {
   * TURNO - TURNO - TURNO - TURNO  
   ==================================================================== */
   public turnoId: LoadTurno;
-  cargarTurnoId(id:string){  
+  cargarTurnoId(id:string){
+
+    this.movimientos = [];
+    this.inicial = 0;
+
     this.turnoService.getTurnoId(id)
     .subscribe( (turno) => { 
       this.turnoId = turno;
@@ -175,6 +179,15 @@ export class CierresComponent implements OnInit {
   
   procesarInformacion(){
 
+    this.efectivo = 0;
+    this.tarjeta = 0;
+    this.credito = 0;
+    this.vales = 0;
+    this.transferencia = 0;
+    this.inicial = 0;
+    this.abEfectivo = 0;
+    this.entradas = 0;
+    this.salidas = 0;
     this.montoDiferencia = 0;
     
     // TOTALIZAR VENTAS

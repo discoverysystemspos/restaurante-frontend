@@ -69,9 +69,6 @@ export class ProductosComponent implements OnInit {
           this.resultado = 0;
           this.cargando = false;
 
-          console.log(this.desde);
-          console.log(this.productos.length);
-
           // BOTONOS DE ADELANTE Y ATRAS          
           if (this.desde === 0 && this.totalProductos > 10) {
             this.btnAtras = 'disabled';

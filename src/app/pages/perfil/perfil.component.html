@@ -26,18 +26,13 @@
         <div class="col-lg-4 text-center">
             <div class="card">
                 <div class="card-body text-center">
-                    <!-- Image Product-->
-                    <!-- <img class="img-fluid rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/300x300"> -->
-                    <!-- <div class="avatar-redondo-lg mx-auto" style="background-image: url(https://www.alimentosmary.com/wp-content/uploads/2017/08/arroz-tradicional-4.jpg)">
-                    </div> -->
 
-                    
                     <!-- Image Product-->
                     <img *ngIf="!imgTemp" [src]="usuario.img | imagen:'user'" class="avatar-redondo-lg mx-auto" alt="">
 
                     <!-- IMG TEMPO  imgTemp -->
                     <img *ngIf="imgTemp" [src]="imgTemp" class="avatar-redondo-lg mx-auto" alt="">
-                    
+
                     <!-- Description-->
                     <div class="small font-italic text-muted mb-4">JPG - PNG - WEBP - no mayor a 5 mb</div>
                     <div class="mb-3">
@@ -93,7 +88,7 @@
                                 <input formControlName="password" type="password" class="form-control" placeholder="Contraseña">
                                 <label for="floatingInput">Contraseña</label>
                             </div>
-                           
+
                         </div>
 
                         <div class="row mb-3">
@@ -102,7 +97,7 @@
                                 <input formControlName="repassword" type="password" class="form-control" placeholder="Repetir Contraseña">
                                 <label for="floatingInput">Repetir Contraseña</label>
                             </div>
-                           
+
                         </div>
 
                         <div class="row">

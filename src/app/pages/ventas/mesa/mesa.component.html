@@ -21,12 +21,12 @@
 
                 <ng-container *ngFor="let departamento of departmentos">
 
-                    <div class="p-2" *ngIf="departamento.visibility">
+                    <div class="p-2" *ngIf="departamento.visibility && departamento.status">
 
                         <button type="button" (click)="cargarProductosDepartamento(departamento.did)" class="btn bg-white btnW waves-effect waves-blue text-muted p-2"> 
-                                <img class="avatar avatar-xs" style="max-height: 50px; width: auto;" [src]="departamento.img | imagen:'department'" class="card-img-top" alt="...">
-                                <h6>{{ departamento.name }}</h6>
-                            </button>
+                            <img class="avatar avatar-xs" style="max-height: 50px; width: auto;" [src]="departamento.img | imagen:'department'" class="card-img-top" alt="...">
+                            <h6>{{ departamento.name }}</h6>
+                        </button>
 
                     </div>
 

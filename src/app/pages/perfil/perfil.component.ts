@@ -64,8 +64,7 @@ export class PerfilComponent implements OnInit {
     
     this.userService.updateUser(this.upUserForm.value, this.usuario.uid)
         .subscribe( (resp: {ok: boolean, user: User}) =>  {
-
-          console.log(resp.user);
+          
           Swal.fire('Estupendo', 'Se ha actualizado tu perfil exitosamente', 'success');
 
         }, (err) =>{ Swal.fire('Error', err.error.msg, 'error') });

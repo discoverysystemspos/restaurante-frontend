@@ -210,10 +210,7 @@ export class MesasComponent implements OnInit {
     }
 
     this.mesasService.updateMesa(this.upMesaForm.value, this.upMesaForm.value.id)
-        .subscribe((resp:{ok: boolean, mesa: Mesa}) => {
-
-          console.log(resp);
-          
+        .subscribe((resp:{ok: boolean, mesa: Mesa}) => {          
 
           this.formSubmittedUp = false;
           this.cargarMesas();

@@ -149,10 +149,7 @@ export class CreditoComponent implements OnInit {
               return;                
             }
             // COMPROBAR SI EXISTEN RESULTADOS
-
-            console.log(invoices);
             
-
             this.totalFacturas = total;
             this.facturas = invoices; 
             this.resultado = invoices.length; 

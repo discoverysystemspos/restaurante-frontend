@@ -69,8 +69,6 @@ export class FacturaComponent implements OnInit {
 
         this.invoiceService.returnInvoice(id)
             .subscribe( resp => {
-
-              console.log(resp);
               
               Swal.fire(
                 'Devolución exitosa!',
