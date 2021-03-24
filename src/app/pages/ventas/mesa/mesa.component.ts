@@ -416,7 +416,9 @@ export class MesaComponent implements OnInit {
     name: ['' , [Validators.required, Validators.minLength(3)]],
     cedula: ['', [Validators.required, Validators.minLength(6)]],
     email: ['', [Validators.email, Validators.minLength(7)]],
-    phone: ['', [Validators.minLength(3)]]
+    phone: ['', [Validators.minLength(3)]],
+    city: ['', [Validators.minLength(3)]],
+    address: ['', [Validators.minLength(3)]]
   });
   public formSubmitted: boolean = false;
 

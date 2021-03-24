@@ -1,16 +1,20 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Validators, FormBuilder } from '@angular/forms';
 
 import Swal from 'sweetalert2';
 
 // SERVICES
 import { InvoiceService } from '../../../services/invoice.service';
+import { TurnoService } from '../../../services/turno.service';
+
+// MODELS
+import { Invoice } from '../../../models/invoice.model';
 
 // INTERFACES
 import { LoadInvoice } from '../../../interfaces/invoice.interface';
 import { _payments } from '../../../interfaces/carrito.interface';
-import { Validators, FormBuilder } from '@angular/forms';
-import { Invoice } from '../../../models/invoice.model';
+import { LoadTurno, _movements } from '../../../interfaces/load-turno.interface';
 
 @Component({
   selector: 'app-factura',
@@ -24,7 +28,8 @@ export class FacturaComponent implements OnInit {
 
   constructor(  private invoiceService: InvoiceService,
                 private activatedRoute: ActivatedRoute,
-                private fb: FormBuilder) { }
+                private fb: FormBuilder,
+                private turnoService: TurnoService) { }
 
   ngOnInit(): void {
 
@@ -91,6 +96,19 @@ export class FacturaComponent implements OnInit {
    * =============================================================================================
    * INVOICE - INVOICE - INVOICE - INVOICE  
   ==================================================================== */
+  public turno: LoadTurno;
+  public movimientos: _movements[] = [];
+  cargarTurno(){
+
+    this.turnoService.getTurnoId(localStorage.getItem('turno'))
+        .subscribe( (turno) => {
+
+          this.turno = turno;
+          this.movimientos = turno.movements;
+                    
+        });
+
+  }
   
   public payments: _payments[] = [];
   public credit: boolean = false;
@@ -218,7 +236,19 @@ export class FacturaComponent implements OnInit {
     this.invoiceService.updateInvoice( this.invoiceForm.value, this.factura.iid )
         .subscribe( ( resp:{ok: boolean, invoice: Invoice } ) => {
 
-          this.invoiceForm.reset();   
+          this.invoiceForm.reset();
+
+          window.location.reload();
+
+          // AGREGAMOS LA FACTURA AL TURNO
+          this.turno.sales.push({
+            facturas: resp.invoice.iid
+          });
+          this.turnoService.updateTurno(this.turno, this.turno.tid)
+          .subscribe((resp) => {}, (err) =>{
+            Swal.fire('Error', err.error.msg, 'error');
+          }); 
+          // AGREGAMOS LA FACTURA AL TURNO
           
 
         }, (err) => {
