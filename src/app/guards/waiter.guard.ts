@@ -18,7 +18,7 @@ export class WaiterGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
     
-      if (this.userService.role === 'ADMIN' || this.userService.role === 'WAITER' || this.userService.role === 'STAFF' ) {
+      if (this.userService.role === 'ADMIN' || this.userService.role === 'WAITER' || this.userService.role === 'STAFF'  || this.userService.role === 'CASHIER') {
         return true;
       }else {
   

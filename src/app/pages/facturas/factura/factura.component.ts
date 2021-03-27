@@ -49,7 +49,10 @@ export class FacturaComponent implements OnInit {
     this.invoiceService.loadInvoiceId(id)
         .subscribe( invoice => {
 
-          this.factura = invoice;         
+          this.factura = invoice;  
+          
+          console.log(this.factura.products);
+          
 
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
 
@@ -252,6 +255,10 @@ export class FacturaComponent implements OnInit {
           
 
         }, (err) => {
+
+          console.log(err);
+          
+
           Swal.fire('Error', err.error.msg, 'error');
         });
 
