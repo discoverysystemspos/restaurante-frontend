@@ -234,11 +234,13 @@ export class FacturaComponent implements OnInit {
       payments: this.payments,
       credito: this.credit,
       type: this.invoiceForm.value.type,
-    });  
+    });
 
     this.invoiceService.updateInvoice( this.invoiceForm.value, this.factura.iid )
         .subscribe( ( resp:{ok: boolean, invoice: Invoice } ) => {
+
           
+
           this.invoiceForm.reset();
 
           window.location.reload();
