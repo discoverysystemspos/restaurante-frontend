@@ -120,6 +120,22 @@ export class UsuariosComponent implements OnInit {
   ==================================================================== */
   statusUpdate(id: string){
     
+    // this.userService.updateUser(id)
+    //     .subscribe( (department) => {
+
+    //       let information: string;
+    //       if (department.status) {
+    //         information = 'Activado';            
+    //       }else{
+    //         information = 'Desactivado';
+    //       }
+          
+          
+    //       this.cargarDepartamentos();
+    //       Swal.fire('Estupendo', `El departamento ${department.name}, ha sido ${information}`, 'success');
+
+    //     }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
+
   }
       
 

@@ -234,24 +234,14 @@ export class FacturaComponent implements OnInit {
       payments: this.payments,
       credito: this.credit,
       type: this.invoiceForm.value.type,
-    });
+    });  
 
     this.invoiceService.updateInvoice( this.invoiceForm.value, this.factura.iid )
         .subscribe( ( resp:{ok: boolean, invoice: Invoice } ) => {
-
+          
           this.invoiceForm.reset();
 
           window.location.reload();
-
-          // AGREGAMOS LA FACTURA AL TURNO
-          this.turno.sales.push({
-            facturas: resp.invoice.iid
-          });
-          this.turnoService.updateTurno(this.turno, this.turno.tid)
-          .subscribe((resp) => {}, (err) =>{
-            Swal.fire('Error', err.error.msg, 'error');
-          }); 
-          // AGREGAMOS LA FACTURA AL TURNO
           
 
         }, (err) => {
