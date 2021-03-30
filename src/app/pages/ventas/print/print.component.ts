@@ -82,8 +82,6 @@ export class PrintComponent implements OnInit {
         .subscribe( invoice => {
 
           this.factura = invoice;
-          
-          console.log(this.factura);
 
           // IMPRIMIR FACTURA
           setTimeout( () => {

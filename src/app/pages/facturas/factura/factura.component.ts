@@ -1,15 +1,23 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Validators, FormBuilder } from '@angular/forms';
+import { Subscription, Observable } from 'rxjs';
 
 import Swal from 'sweetalert2';
+
+// PRINTER
+import { NgxPrinterService } from 'projects/ngx-printer/src/lib/ngx-printer.service';
+import { PrintItem } from 'projects/ngx-printer/src/lib/print-item';
+import { ngxPrintMarkerPosition } from 'projects/ngx-printer/src/public_api';
 
 // SERVICES
 import { InvoiceService } from '../../../services/invoice.service';
 import { TurnoService } from '../../../services/turno.service';
+import { EmpresaService } from '../../../services/empresa.service';
 
 // MODELS
 import { Invoice } from '../../../models/invoice.model';
+import { Datos } from '../../../models/empresa.model';
 
 // INTERFACES
 import { LoadInvoice } from '../../../interfaces/invoice.interface';
@@ -24,12 +32,32 @@ import { LoadTurno, _movements } from '../../../interfaces/load-turno.interface'
 })
 export class FacturaComponent implements OnInit {
 
+  @ViewChild('PrintTemplate')
+  private PrintTemplateTpl: TemplateRef<any>;
+
+  title = 'ngx-printer-demo';
+
+  printWindowSubscription: Subscription;
+  $printItems: Observable<PrintItem[]>;
+
   public factura: LoadInvoice;
 
   constructor(  private invoiceService: InvoiceService,
                 private activatedRoute: ActivatedRoute,
                 private fb: FormBuilder,
-                private turnoService: TurnoService) { }
+                private turnoService: TurnoService,
+                private empresaService: EmpresaService,
+                private printerService: NgxPrinterService,) {
+
+                  this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
+                    val => {
+                      console.log('Print window is open:', val);
+                    }
+                  );
+              
+                  this.$printItems = this.printerService.$printItems;
+
+                }
 
   ngOnInit(): void {
 
@@ -39,6 +67,27 @@ export class FacturaComponent implements OnInit {
       
     });
 
+    this.cargarDatos();
+
+  }
+
+  /** ================================================================
+   *   IMPRIMIR
+  ==================================================================== */
+  printDiv() {
+    this.printerService.printDiv('printDiv');
+  }
+
+  /** ================================================================
+   *   CARGAR DATOS DE LA EMPRESA
+  ==================================================================== */
+  public empresa: Datos;
+  cargarDatos(){
+
+    this.empresaService.getDatos()
+        .subscribe( datos => {
+          this.empresa = datos;   
+        }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
   }
 
   /** ================================================================

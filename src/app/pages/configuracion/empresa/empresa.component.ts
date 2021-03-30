@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 
 // SERVICES
@@ -95,11 +95,44 @@ export class EmpresaComponent implements OnInit {
   
   }
 
-  
-  
   /** ================================================================
-  *   ACTUALIZAR O CREAR DATOS DE LA EMPRESA
+   *   ACTUALIZAR IMAGEN
   ==================================================================== */
   public imgTemp: any = null;
   public subirImagen: File;
+  cambiarImage(file: File){
+    this.subirImagen = file;
+    
+    if (!file) { return this.imgTemp = null }
+
+    const reader = new FileReader();
+    const url64 = reader.readAsDataURL( file );
+
+    reader.onloadend = () => {
+      this.imgTemp = reader.result;
+    }
+
+  }
+      
+  /** ================================================================
+   *  SUBIR IMAGEN fileImg
+  ==================================================================== */
+  @ViewChild('fileImg') fileImg: ElementRef;
+  public imgProducto: string = 'no-image';
+  subirImg(){
+    
+    this.fileUploadService.updateImage( this.subirImagen, 'logo', this.empresa.eid)
+    .then( img => this.empresa.logo = img);
+    
+    this.fileImg.nativeElement.value = '';
+    this.imgProducto = 'no-image';
+    this.imgTemp = null;
+    
+  }
+
+
+
+
+
+
 }

@@ -33,25 +33,21 @@
         <div class="col-lg-4 text-center">
             <div class="card">
                 <div class="card-body text-center">
-                    <!-- Image Product-->
-                    <!-- <img class="img-fluid rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/300x300"> -->
-                    <!-- <div class="avatar-redondo-lg mx-auto" style="background-image: url(https://www.alimentosmary.com/wp-content/uploads/2017/08/arroz-tradicional-4.jpg)">
-                    </div> -->
 
                     <!-- Image Product-->
-                    <img *ngIf="empresa"  src="http://localhost:3000/api/uploads/logo/no-image" class="avatar-redondo-lg mx-auto" alt="">
+                    <img *ngIf="!imgTemp" [src]="empresa.logo | imagen:'logo'" class="avatar-redondo-lg mx-auto" alt="">
 
                     <!-- IMG TEMPO  imgTemp -->
-                    <img *ngIf="!empresa"  class="avatar-redondo-lg mx-auto" alt="">
-                    
+                    <img *ngIf="imgTemp" [src]="imgTemp" class="avatar-redondo-lg mx-auto" alt="">
+
                     <!-- Description-->
                     <div class="small font-italic text-muted mb-4">JPG - PNG - WEBP - no mayor a 5 mb</div>
                     <div class="mb-3">
                         <label for="formFileSm" class="form-label">Seleccionar Imagen</label>
-                        <!-- <input #fileImg class="form-control form-control-sm" id="formFileSm" type="file" (change)="cambiarImage($event.target.files[0])"> -->
+                        <input #fileImg class="form-control form-control-sm" id="formFileSm" type="file" (change)="cambiarImage($event.target.files[0])">
                     </div>
                     <!-- BTN upload Image -->
-                    <!-- <button *ngIf="imgTemp" class="btn btnW btn-primary waves-effect waves-light px-3" [disabled]="!subirImagen" (click)="subirImg()" type="button">Actualizar Imagen</button> -->
+                    <button *ngIf="imgTemp" class="btn btnW btn-primary waves-effect waves-light px-3" [disabled]="!subirImagen" (click)="subirImg()" type="button">Actualizar Imagen</button>
 
                 </div>
             </div>
@@ -111,14 +107,6 @@
                             </div>
 
                         </div>
-
-                        <!-- <div class="form-check my-2">
-                            <input formControlName="impuesto" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault">
-                              Activar Impuesto
-                            </label>
-                        </div> -->
-
 
                         <div class="row">
                             <div class="text-danger mb-2">

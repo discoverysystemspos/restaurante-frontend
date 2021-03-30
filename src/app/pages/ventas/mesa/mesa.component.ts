@@ -900,7 +900,8 @@ export class MesaComponent implements OnInit {
                 
             Swal.fire('Success', `Se ha creado la factura <strong> #${ resp.invoice.invoice }</strong>, exitosamente`, 'success');
             
-            window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
+            // window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
+            window.open(`./dashboard/factura/${ resp.invoice.iid }`, '_blank');
 
 
           }, (err) => {

@@ -15,7 +15,8 @@ export class Datos{
         public eid?:string,
         public fecha?:Date,
         public status?:string,
-        public impuesto?: boolean
+        public impuesto?: boolean,
+        public pos?: boolean
     ){}
 
     /** ================================================================

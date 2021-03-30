@@ -8,7 +8,7 @@
     <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
 
         <li class="nav-item" role="presentation">
-            <a class="nav-link text-dark active" id="facturas-tab" ><i class="bi-bar-chart" style="font-size: 1rem"></i> Corte</a>
+            <a class="nav-link text-dark active" id="facturas-tab"><i class="bi-bar-chart" style="font-size: 1rem"></i> Corte</a>
         </li>
     </ul>
 </header>
@@ -26,19 +26,19 @@
         <p>Automaticamente se guardara toda la información de caja y el usuario</p>
         <button type="button" class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#cierre"> <i class="bi-calculator"></i> Cerrar Caja</button>
     </div>
-    
+
     <div class="row d-flex justify-content-center">
 
         <div class="col-auto p-2">
             <div class="card shadow px-2" style="width: 18rem;">
 
                 <div class="card-body">
-                    <h5 class="card-title mb-0">Dinero en caja</h5>                    
+                    <h5 class="card-title mb-0">Dinero en caja</h5>
                 </div>
 
                 <div class="table-responsive ">
                     <table class="table table-borderless table-hover table-sm animated fadeIn ">
-                        
+
                         <tbody>
 
                             <tr>
@@ -68,8 +68,8 @@
 
                         </tbody>
                     </table>
-                </div>                        
-              
+                </div>
+
             </div>
         </div>
         <div class="col-auto p-2">
@@ -77,12 +77,12 @@
             <div class="card shadow px-2" style="width: 18rem;">
 
                 <div class="card-body">
-                    <h5 class="card-title mb-0">Ventas del dia</h5>                    
+                    <h5 class="card-title mb-0">Ventas del dia</h5>
                 </div>
 
                 <div class="table-responsive ">
                     <table class="table table-borderless table-hover table-sm animated fadeIn ">
-                        
+
                         <tbody>
 
                             <tr>
@@ -107,14 +107,14 @@
                             </tr>
                             <tr class="border-top">
                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + credito  + vales | currency }} </td>
+                                <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + credito + vales | currency }} </td>
                             </tr>
 
 
                         </tbody>
                     </table>
-                </div>                        
-              
+                </div>
+
             </div>
 
         </div>
@@ -124,10 +124,23 @@
             <div class="card shadow px-2 bg-success border-0" style="width: 18rem;">
 
                 <div class="card-body text-white">
-                    <h4 class="card-title mb-0 text-center">Ventas Totales</h4>                    
+                    <h4 class="card-title mb-0 text-center">Ventas Totales</h4>
                     <h5 class="text-center"> {{ efectivo + tarjeta + transferencia + vales | currency }} </h5>
-                </div>                
-              
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-auto p-2">
+
+            <div class="card shadow px-2 bg-success border-0" style="width: 18rem;">
+
+                <div class="card-body text-white">
+                    <h4 class="card-title mb-0 text-center">Comision</h4>
+                    <h5 class="text-center"> {{ (efectivo + tarjeta + transferencia + vales) *0.03 | currency }} </h5>
+                </div>
+
             </div>
 
         </div>
@@ -153,7 +166,7 @@
             </div>
 
             <div class="modal-body mb-4">
-                               
+
                 <table class="table">
                     <tbody>
                         <tr>
@@ -164,7 +177,7 @@
                             <td scope="row">Cuanto efectivo hay en caja</td>
                             <td>
                                 <div class="form-group">
-                                  <input type="number" name="" id="" class="form-control" placeholder="efectivo en caja" aria-describedby="helpId" (keyup)="cajaA.value" #cajaA>
+                                    <input type="number" name="" id="" class="form-control" placeholder="efectivo en caja" aria-describedby="helpId" (keyup)="cajaA.value" #cajaA>
                                 </div>
                             </td>
                         </tr>
@@ -173,12 +186,12 @@
                             <td [ngClass]=" {   'text-danger': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) !== 0, 
                                                 'text-success': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) > 0
                                             }">
-                                 {{ cajaA.value - (inicial + efectivo + abEfectivo + entradas + salidas) | currency}} 
+                                {{ cajaA.value - (inicial + efectivo + abEfectivo + entradas + salidas) | currency}}
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <p class="animated fadeIn mb-2 text-danger" *ngIf="(inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) !== 0 "> <i class="bi-exclamation-triangle"></i>  Existe una diferencia, todo va a quedar almacenado </p>
+                <p class="animated fadeIn mb-2 text-danger" *ngIf="(inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) !== 0 "> <i class="bi-exclamation-triangle"></i> Existe una diferencia, todo va a quedar almacenado </p>
                 <p class="animated fadeIn mb-2 text-success" *ngIf="(inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) === 0"> <i class="bi-check2-all"></i> Todo en orden</p>
 
                 <button type="button" class="btn btn-primary" (click)="cerrarTurno(cajaA.value)">Hacer cierre</button>
