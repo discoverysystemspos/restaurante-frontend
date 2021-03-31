@@ -100,7 +100,7 @@ export class FacturaComponent implements OnInit {
 
           this.factura = invoice;  
           
-          console.log(this.factura.products);
+          console.log(this.factura);
           
 
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
