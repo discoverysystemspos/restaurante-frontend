@@ -267,9 +267,10 @@ export class MesaComponent implements OnInit {
     this.mesasServices.updateMesa(this.mesa, this.mesaID)
         .subscribe( (resp:{ok: boolean, mesa: Mesa}) => {       
 
+          this.cargarMesa(this.mesaID);
+
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
     
-    this.cargarMesa(this.mesaID);
 
   }
 
@@ -295,11 +296,12 @@ export class MesaComponent implements OnInit {
         this.mesa.carrito =  this.productUp;
 
         this.mesasServices.updateMesa(this.mesa, this.mesaID)
-            .subscribe( (resp:{ok: boolean, mesa: Mesa}) => {        
+            .subscribe( (resp:{ok: boolean, mesa: Mesa}) => {
+
+              this.cargarMesa(this.mesaID);
 
             }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
         
-        this.cargarMesa(this.mesaID);
 
         Swal.fire('Eliminado!', 'El producto se a eliminado con exito.', 'success');
       }
@@ -402,10 +404,11 @@ export class MesaComponent implements OnInit {
 
     this.mesasServices.updateMesa(this.mesa, this.mesaID)
         .subscribe( (resp:{ok: boolean, mesa: Mesa}) => {       
-
+          
+          this.cargarMesa(this.mesaID);
+          
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
     
-    this.cargarMesa(this.mesaID);
     
   }
 
