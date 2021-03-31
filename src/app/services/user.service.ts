@@ -113,6 +113,20 @@ export class UserService {
   }
 
   /** ================================================================
+   *   ACTIVE OR DESACTIVE USER
+  ==================================================================== */
+  statusUser(id: string){
+
+    return this.http.delete(`${base_url}/users/${id}`, this.headers)
+                .pipe(
+                  map((resp: {ok: boolean, user: User}) => { 
+                    return resp.user
+                  })
+                );
+
+  }
+
+  /** ================================================================
    *   LOAD USERS
   ==================================================================== */
   loadUsers(){

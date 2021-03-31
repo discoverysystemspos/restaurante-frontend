@@ -113,28 +113,27 @@ export class UsuariosComponent implements OnInit {
   /** ================================================================
    *   ACTUALIZAR USUARIOS
   ==================================================================== */
-  informacionDepartamento(){}
+  informacionUsuario(){}
 
   /** ================================================================
    *   ACTUALIZAR STATUS USUARIOS
   ==================================================================== */
   statusUpdate(id: string){
     
-    // this.userService.updateUser(id)
-    //     .subscribe( (department) => {
+    this.userService.statusUser(id)
+        .subscribe( (user) => {
 
-    //       let information: string;
-    //       if (department.status) {
-    //         information = 'Activado';            
-    //       }else{
-    //         information = 'Desactivado';
-    //       }
+          let information: string;
+          if (user.status) {
+            information = 'Activado';            
+          }else{
+            information = 'Desactivado';
+          }          
           
-          
-    //       this.cargarDepartamentos();
-    //       Swal.fire('Estupendo', `El departamento ${department.name}, ha sido ${information}`, 'success');
+          this.cargarUsuarios();
+          Swal.fire('Estupendo', `El departamento ${user.name}, ha sido ${information}`, 'success');
 
-    //     }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
+        }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
 
   }
       

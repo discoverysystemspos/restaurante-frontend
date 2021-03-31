@@ -255,7 +255,7 @@ export class MesaComponent implements OnInit {
     }else{
       
       let qtyTemp = this.productUp[validarItem].qty;
-      qtyTemp += qty;
+      qtyTemp += Number(qty);
 
       this.productUp[validarItem].qty = qtyTemp;
       this.comanda[validarItem].qty = qtyTemp;
