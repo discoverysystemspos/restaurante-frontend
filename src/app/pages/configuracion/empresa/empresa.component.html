@@ -85,7 +85,7 @@
                             </div>
                         </div>
 
-                        <div class="row ">
+                        <div class="row mb-3">
 
                             <div class="col-md-4">
                                 <div class="form-floating">
@@ -110,17 +110,59 @@
 
                         </div>
 
-                        <div class="row">
+                        <h5 class="text-muted">Configuración</h5>
 
-                            <div class="col">
+                        <div class="row mb-3">
+
+                            <div class="col-md-4">
 
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                                    <label class="form-check-label" for="flexCheckChecked">
+                                    <input formControlName="printpos" class="form-check-input" type="checkbox" id="printpos" checked>
+                                    <label class="form-check-label" for="printpos">
                                     Impresora POS
                                   </label>
                                 </div>
 
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <div class="form-check">
+                                    <input formControlName="responsable" class="form-check-input" type="checkbox" value="" id="responsable">
+                                    <label class="form-check-label" for="responsable">
+                                    Responsable de iva
+                                  </label>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <div class="form-check">
+                                    <input formControlName="impuestoconsumo" class="form-check-input" type="checkbox" value="" id="impuestoconsumo">
+                                    <label class="form-check-label" for="impuestoconsumo">
+                                    Impuesto al consumo
+                                  </label>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input formControlName="resolucion" type="text" class="form-control" placeholder="Telefono">
+                                    <label for="floatingInput">Numero de Resolución</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input formControlName="prefijopos" type="text" class="form-control" placeholder="Telefono">
+                                    <label for="floatingInput">Prefijo POS</label>
+                                </div>
                             </div>
 
                         </div>

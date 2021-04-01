@@ -17,10 +17,14 @@
                 <p class="mb-0 text-center text-wrap" style="font-size: 0.7rem;"> </p>
                 <p class="mb-0 text-wrap text-center" *ngIf="empresa.address">{{ empresa.address }}</p>
                 <p class="mb-0 text-wrap text-center" *ngIf="empresa.phone">{{ empresa.phone }}</p>
-                <!-- <p class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Responsable al impuesto nacional al consumo</p>
-                <p class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Resolución: 18764011472096</p>
-                <p class="mb-0 text-wrap text-center" style="font-size: 0.7rem;"> 2021/03 /11</p>
-                <p class="mb-1 text-wrap text-center" style="font-size: 0.7rem;">Prefijo Pos: 1 - 2000</p> -->
+
+                <p *ngIf="!empresa.responsable" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">No responsable de impuesto</p>
+                <p *ngIf="empresa.responsable && !empresa.impuestoconsumo" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Responsable de iva</p>
+                <p *ngIf="empresa.responsable && empresa.impuestoconsumo" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Responsable nacional al consumo</p>
+
+                <p *ngIf="empresa.responsable" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Resolución: 18764011472096</p>
+                <p *ngIf="empresa.responsable" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;"> 2021/03 /11</p>
+                <p *ngIf="empresa.responsable" class="mb-1 text-wrap text-center" style="font-size: 0.7rem;">Prefijo Pos: 1 - 2000</p>
             </div>
             <!-- EMPRESA -->
 
@@ -76,10 +80,14 @@
                     </tr>
                     <tr class="" style="border-top: 2px solid black;">
                         <td>
-                            <h6 class="mb-0 text-wrap text-left">Impuesto 0%</h6>
+                            <h6 *ngIf="!empresa.responsable" class="mb-0 text-wrap text-left">No responsable de impuesto</h6>
+                            <h6 *ngIf="empresa.responsable && !empresa.impuestoconsumo" class="mb-0 text-wrap text-left">IVA {{empresa.tax}}% </h6>
+                            <h6 *ngIf="empresa.responsable && empresa.impuestoconsumo" class="mb-0 text-wrap text-left">Impuesto al consumo {{empresa.tax}}% </h6>
+
                         </td>
                         <td class="fw-bold">
-                            <h6 class="mb-0 text-wrap text-rigth"> 0 </h6>
+                            <h6 *ngIf="empresa.responsable" class="mb-0 text-wrap text-rigth"> {{ (factura.amount * empresa.tax)/100 | currency }} </h6>
+                            <h6 *ngIf="!empresa.responsable" class="mb-0 text-wrap text-rigth"> {{ 0 | currency }} </h6>
                         </td>
                     </tr>
                     <tr class="" style="border-top: 2px solid black;">
@@ -87,7 +95,8 @@
                             <h6 class="mb-0 text-wrap text-left">Total</h6>
                         </td>
                         <td class="fw-bold">
-                            <h6 class="mb-0 text-wrap text-rigth"> {{ factura.amount | currency }} </h6>
+                            <h6 *ngIf="empresa.responsable" class="mb-0 text-wrap text-rigth"> {{ factura.amount + (factura.amount * empresa.tax)/100 | currency}} </h6>
+                            <h6 *ngIf="!empresa.responsable" class="mb-0 text-wrap text-rigth"> {{ factura.amount | currency }} </h6>
                         </td>
                     </tr>
                 </tbody>

@@ -44,7 +44,12 @@ export class EmpresaService {
 
     return this.http.get(`${base_url}/datos`, this.headers)
                 .pipe(
-                  map( (resp: {ok: boolean, datos: Datos}) => { return resp.datos; })
+                  map( (resp: {ok: boolean, datos: Datos}) => { 
+
+                    this.myEmpresa = resp.datos;
+                    return resp.datos; 
+                    
+                  })
                 );
 
   }

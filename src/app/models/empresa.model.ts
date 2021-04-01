@@ -10,13 +10,18 @@ export class Datos{
         public address: boolean,
         public phone: string,
         public nit:string,
-        public tax?:string,
+        public printpos: boolean,
+        public tax?: number,
         public logo?:string,
         public eid?:string,
         public fecha?:Date,
         public status?:string,
         public impuesto?: boolean,
-        public pos?: boolean
+        public pos?: boolean,
+        public responsable?: boolean,
+        public impuestoconsumo?: boolean,
+        public resolucion?: string,
+        public prefijopos?: string,
     ){}
 
     /** ================================================================

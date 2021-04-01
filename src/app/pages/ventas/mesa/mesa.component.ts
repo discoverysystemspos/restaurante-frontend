@@ -15,6 +15,7 @@ import { Client } from '../../../models/client.model';
 import { Invoice } from '../../../models/invoice.model';
 import { Department } from '../../../models/department.model';
 import { Mesa } from '../../../models/mesas.model';
+import { Kit } from '../../../models/kits.model';
 
 // SERVICES
 import { ProductService } from '../../../services/product.service';
@@ -24,13 +25,13 @@ import { InvoiceService } from '../../../services/invoice.service';
 import { TurnoService } from '../../../services/turno.service';
 import { DepartmentService } from '../../../services/department.service';
 import { MesasService } from '../../../services/mesas.service';
+import { EmpresaService } from '../../../services/empresa.service';
 
 // INTERFACES
 import { Carrito, _payments, LoadCarrito } from '../../../interfaces/carrito.interface';
 import { LoadInvoice } from '../../../interfaces/invoice.interface';
 import { LoadTurno, _movements } from '../../../interfaces/load-turno.interface';
 import { LoadMesaId } from '../../../interfaces/load-mesas.interface';
-import { Kit } from '../../../models/kits.model';
 
 @Component({
   selector: 'app-mesa',
@@ -67,7 +68,8 @@ export class MesaComponent implements OnInit {
                 private activatedRoute: ActivatedRoute,
                 private mesasServices: MesasService,
                 private router: Router,
-                private printerService: NgxPrinterService,) {
+                private printerService: NgxPrinterService,
+                private empresaService: EmpresaService) {
 
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
                     val => {}
@@ -903,8 +905,13 @@ export class MesaComponent implements OnInit {
                 
             Swal.fire('Success', `Se ha creado la factura <strong> #${ resp.invoice.invoice }</strong>, exitosamente`, 'success');
             
-            // window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
-            window.open(`./dashboard/factura/${ resp.invoice.iid }`, '_blank');
+            // TIPO DE IMPRESION POS O CARTA
+            if (this.empresaService.myEmpresa.printpos) {              
+              window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
+            }else{
+              window.open(`./dashboard/factura/${ resp.invoice.iid }`, '_blank');
+            }
+
 
 
           }, (err) => {
