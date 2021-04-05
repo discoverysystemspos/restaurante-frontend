@@ -25,7 +25,7 @@
                 <p class="mb-0 text-wrap text-center" *ngIf="empresa.address">{{ empresa.address }}</p>
                 <p class="mb-0 text-wrap text-center" *ngIf="empresa.phone">{{ empresa.phone }}</p>
 
-                <p *ngIf="!empresa.responsable" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">No responsable de impuesto</p>
+                <p *ngIf="!empresa.responsable" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">No responsable de IVA</p>
                 <p *ngIf="empresa.responsable && !empresa.impuestoconsumo" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Responsable de iva</p>
                 <p *ngIf="empresa.responsable && empresa.impuestoconsumo" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Responsable nacional al consumo</p>
 
@@ -87,7 +87,7 @@
                     </tr>
                     <tr class="" style="border-top: 2px solid black;">
                         <td>
-                            <h6 *ngIf="!empresa.responsable" class="mb-0 text-wrap text-left">No responsable de impuesto</h6>
+                            <h6 *ngIf="!empresa.responsable" class="mb-0 text-wrap text-left">No responsable de IVA</h6>
                             <h6 *ngIf="empresa.responsable && !empresa.impuestoconsumo" class="mb-0 text-wrap text-left">IVA {{empresa.tax}}% </h6>
                             <h6 *ngIf="empresa.responsable && empresa.impuestoconsumo" class="mb-0 text-wrap text-left">Impuesto al consumo {{empresa.tax}}% </h6>
 
