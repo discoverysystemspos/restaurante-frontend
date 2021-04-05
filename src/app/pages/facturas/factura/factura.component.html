@@ -127,17 +127,18 @@
                     <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
                         <thead class="border-bottom ">
                             <tr>
-                                <th class="text-muted " scope="col ">#</th>
-                                <th class="text-muted " scope="col ">Codigo de barras</th>
+                                <th class="text-muted" scope="col">#</th>
+                                <th class="text-muted" scope="col">Codigo de barras</th>
                                 <th class="text-muted text-left" scope="col " colspan="2 ">Nombre del Producto</th>
-                                <th class="text-muted " scope="col ">tipo</th>
-                                <th class="text-muted " scope="col ">Precio</th>
-                                <th class="text-muted " scope="col ">Cantidad</th>
-                                <th class="text-muted " scope="col ">Monto</th>
+                                <th class="text-muted" scope="col">tipo</th>
+                                <th class="text-muted" scope="col">Precio</th>
+                                <th class="text-muted" scope="col">Cantidad</th>
+                                <th class="text-muted" scope="col">Monto</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
+
                             <tr *ngFor="let producto of factura.products; let i = index">
                                 <th> {{ i + 1 }} </th>
                                 <td><small class="text-wrap">{{ producto.product.code }}</small></td>
@@ -147,11 +148,12 @@
                                 <td>{{ producto.qty }}</td>
                                 <td>{{ producto.price * producto.qty | currency}}</td>
                                 <td>
-                                    <button type="button" class="btn btn-link p-1 text-danger">
+                                    <button type="button" (click)="eliminarProducto(producto._id)" class="btn btn-link p-1 text-danger">
                                         <i class="bi-x"></i>
                                     </button>
                                 </td>
                             </tr>
+
                         </tbody>
                     </table>
 

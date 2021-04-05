@@ -13,6 +13,7 @@ export interface _products{
     product: Product;
     qty: number;
     price: number;
+    _id: string;
 }
 
 interface _client{

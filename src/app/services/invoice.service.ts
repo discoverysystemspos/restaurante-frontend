@@ -93,6 +93,15 @@ export class InvoiceService {
     return this.http.delete(`${base_url}/invoice/${id}`, this.headers);
   }
 
+  /** ================================================================
+   *   DELETE PRODUCT INVOICE
+  ==================================================================== */
+  deleteProductInvoice(factura: string, product: string){
+
+    return this.http.delete(`${base_url}/invoice/${factura}/product/${product}`, this.headers);
+
+  }
+
 
   // FIN CLASE
 }

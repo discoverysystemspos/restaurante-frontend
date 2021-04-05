@@ -62,6 +62,8 @@ export class FacturaComponent implements OnInit {
   ngOnInit(): void {
 
     this.activatedRoute.params.subscribe( ({id}) => {
+
+      this.idFactura = id;
       
       this.cargarFactura(id);
       
@@ -93,6 +95,7 @@ export class FacturaComponent implements OnInit {
   /** ================================================================
    *   CARGAR FACTURA
   ==================================================================== */
+  public idFactura;
   cargarFactura(id: string){
     
     this.invoiceService.loadInvoiceId(id)
@@ -100,10 +103,24 @@ export class FacturaComponent implements OnInit {
 
           this.factura = invoice;  
           
-          console.log(this.factura);
+          console.log(this.factura.products);
           
 
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
+
+  }
+
+  /** ================================================================
+   *   ELIMINAR PRODUCTO
+  ==================================================================== */
+  eliminarProducto(id: string){
+
+    this.invoiceService.deleteProductInvoice(this.idFactura, id)
+        .subscribe( (resp: {ok: boolean, invoice: LoadInvoice} ) => {
+
+          this.factura = resp.invoice;
+
+        }, (err) => { Swal.fire('Error', err.error.msg, 'error'); })    
 
   }
 
@@ -174,15 +191,12 @@ export class FacturaComponent implements OnInit {
   /** ================================================================
    *   FACTURAR
   ==================================================================== */
-
   @ViewChild('descripcionAdd') descripcionAdd: ElementRef;
   @ViewChild('montoAdd') montoAdd: ElementRef;
   public vueltos: number = 0;
 
-  focusMonto(){
-        
+  focusMonto(){        
     this.montoAdd.nativeElement.focus();
-
   }
 
   agregarPagos(type: string, amount:number, description:string = ''){

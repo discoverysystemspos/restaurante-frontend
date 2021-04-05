@@ -1,9 +1,11 @@
 <div class="container-fluid mb-5">
 
     <div class="my-4">
+
         <h5 class="text-dark">Imprimir factura</h5>
         <p>Si, la factura no se imprime automaticamente dar click en siguiente boton</p>
         <button type="button" (click)="printDiv()" class="btn btn-sm btn-outline-primary"> <i class="bi-printer"></i> Imprimir ticket</button>
+
     </div>
 
     <div class="d-flex justify-content-center">
@@ -12,6 +14,11 @@
 
             <!-- EMPRESA -->
             <div class="card-body px-1 mb-2" style="border-bottom: 2px solid black;">
+
+                <div class="col-10 mx-auto">
+                    <img *ngIf="empresa.logo" [src]="empresa.logo | imagen:'logo'" class="mx-auto" width="200px" alt="">
+                </div>
+
                 <h4 class="card-title mb-0 text-wrap text-center"> {{ empresa.name }} </h4>
                 <p class="mb-0 text-wrap fw-bolder text-center lh-sm" *ngIf="empresa.nit">{{ empresa.nit }}</p>
                 <p class="mb-0 text-center text-wrap" style="font-size: 0.7rem;"> </p>
@@ -22,9 +29,9 @@
                 <p *ngIf="empresa.responsable && !empresa.impuestoconsumo" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Responsable de iva</p>
                 <p *ngIf="empresa.responsable && empresa.impuestoconsumo" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Responsable nacional al consumo</p>
 
-                <p *ngIf="empresa.responsable" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Resolución: 18764011472096</p>
-                <p *ngIf="empresa.responsable" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;"> 2021/03 /11</p>
-                <p *ngIf="empresa.responsable" class="mb-1 text-wrap text-center" style="font-size: 0.7rem;">Prefijo Pos: 1 - 2000</p>
+                <p *ngIf="empresa.responsable" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Resolución: {{ empresa.resolucion }}</p>
+                <!-- <p *ngIf="empresa.responsable" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;"> 2021/03 /11</p> -->
+                <p *ngIf="empresa.responsable" class="mb-1 text-wrap text-center" style="font-size: 0.7rem;">Prefijo Pos: {{ empresa.prefijopos }}</p>
             </div>
             <!-- EMPRESA -->
 
