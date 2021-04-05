@@ -1,4 +1,4 @@
-
+//  Model Caja
 export class Caja{
 
     constructor(
