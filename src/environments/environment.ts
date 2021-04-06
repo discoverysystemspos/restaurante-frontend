@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  base_url: 'https://distribuidoraranco.com/api'
+  base_url: 'https://demo.discoverysystemspos.com/api'
 };
 
 /*
