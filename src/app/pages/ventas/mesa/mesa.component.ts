@@ -16,6 +16,7 @@ import { Invoice } from '../../../models/invoice.model';
 import { Department } from '../../../models/department.model';
 import { Mesa } from '../../../models/mesas.model';
 import { Kit } from '../../../models/kits.model';
+import { User } from '../../../models/user.model';
 
 // SERVICES
 import { ProductService } from '../../../services/product.service';
@@ -26,6 +27,7 @@ import { TurnoService } from '../../../services/turno.service';
 import { DepartmentService } from '../../../services/department.service';
 import { MesasService } from '../../../services/mesas.service';
 import { EmpresaService } from '../../../services/empresa.service';
+import { UserService } from '../../../services/user.service';
 
 // INTERFACES
 import { Carrito, _payments, LoadCarrito } from '../../../interfaces/carrito.interface';
@@ -49,6 +51,8 @@ export class MesaComponent implements OnInit {
 
   public facturar: boolean;
 
+  public user: User;
+
   // PRINT
   @ViewChild('PrintTemplate')
   private PrintTemplateTpl: TemplateRef<any>;
@@ -69,7 +73,8 @@ export class MesaComponent implements OnInit {
                 private mesasServices: MesasService,
                 private router: Router,
                 private printerService: NgxPrinterService,
-                private empresaService: EmpresaService) {
+                private empresaService: EmpresaService,
+                private userService: UserService) {
 
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
                     val => {}
@@ -81,7 +86,7 @@ export class MesaComponent implements OnInit {
 
   ngOnInit(): void {
 
-    
+      this.user = this.userService.user;    
       
       // TURNOS
       this.cargarTurno();

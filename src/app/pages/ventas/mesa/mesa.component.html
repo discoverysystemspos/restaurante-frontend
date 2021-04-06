@@ -417,7 +417,7 @@
                         </div>
 
                         <div class="form-check form-switch mt-2">
-                            <input class="form-check-input" type="checkbox" [(ngModel)]="mayoreo.checked" #mayoreo>
+                            <input class="form-check-input" [disabled]="user.role !== 'ADMIN'" type="checkbox" [(ngModel)]="mayoreo.checked" #mayoreo>
                             <label class="form-check-label" for="mayor">Aplicar Mayoreo</label>
                         </div>
 
