@@ -123,9 +123,6 @@ export class ClientesComponent implements OnInit {
         }else if(this.desde === 0 && this.totalClientes < 11){
           this.btnAtras = 'disabled';
           this.btnAdelante = 'disabled';
-        }else if(this.desde > this.clientes.length){
-          this.btnAtras = '';
-          this.btnAdelante = 'disabled';
         }else if((this.desde + 10) >= this.totalClientes){
           this.btnAtras = '';
           this.btnAdelante = 'disabled';
@@ -133,7 +130,7 @@ export class ClientesComponent implements OnInit {
           this.btnAtras = '';
           this.btnAdelante = '';
         }   
-        // BOTONOS DE ADELANTE Y ATRAS  
+        // BOTONOS DE ADELANTE Y ATRAS
           
       });
   }

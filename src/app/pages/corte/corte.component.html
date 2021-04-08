@@ -125,7 +125,7 @@
 
                 <div class="card-body text-white">
                     <h4 class="card-title mb-0 text-center">Ventas Totales</h4>
-                    <h5 class="text-center"> {{ efectivo + tarjeta + transferencia + vales | currency }} </h5>
+                    <h5 class="text-center"> {{ efectivo + credito + tarjeta + transferencia + vales | currency }} </h5>
                 </div>
 
             </div>
@@ -138,7 +138,7 @@
 
                 <div class="card-body text-white">
                     <h4 class="card-title mb-0 text-center">Comision</h4>
-                    <h5 class="text-center"> {{ (efectivo + tarjeta + transferencia + vales) *0.03 | currency }} </h5>
+                    <h5 class="text-center"> {{ (efectivo+ credito + tarjeta + transferencia + vales) *0.03 | currency }} </h5>
                 </div>
 
             </div>

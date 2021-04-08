@@ -752,9 +752,9 @@ export class MesaComponent implements OnInit {
 
     if (type === 'credito') {
       this.credit = true;
-      this.descripcionAdd.nativeElement.value = '';
-      this.montoAdd.nativeElement.value = '';
-      return;
+      amount = this.total;
+    }else{
+      this.credit = false;
     }
 
     if (amount === 0 || amount < 1) {

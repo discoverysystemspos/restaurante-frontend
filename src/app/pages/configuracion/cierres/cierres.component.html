@@ -40,7 +40,7 @@
                 <div>
                     <button type="button" class="btn btn-outline-primary btn-sm" (click)="cargarTurno()"> <i class="bi-arrow-clockwise"></i> Recargar </button>
                 </div>
-                
+
                 <div class="col-4 col-md-2 ms-auto">
                     <input type="date" class="form-control" (change)="buscar(search.value)" #search>
                 </div>
@@ -72,7 +72,7 @@
                                 <i *ngIf="turno.diferencia" class="text-warning bi-exclamation-triangle"></i>
                                 <i *ngIf="!turno.diferencia" class="text-success bi-check2-all"></i>
                             </td>
-                            
+
                             <td colspan="2">{{ turno.cajero.name }}</td>
 
                             <td>{{ turno.caja.name }}</td>
@@ -133,11 +133,11 @@
                 <div class="row d-flex justify-content-center">
 
                     <div class="col-auto p-2">
-            
+
                         <div class="card shadow px-2 bg-success border-0" style="width: 18rem;">
-            
+
                             <div class="card-body text-white">
-                                <h4 class="card-title mb-0 text-center">Ventas Totales</h4>                    
+                                <h4 class="card-title mb-0 text-center">Ventas Totales</h4>
                                 <h5 class="text-center"> {{ efectivo + tarjeta + transferencia + vales | currency }} </h5>
                             </div>
 
@@ -145,35 +145,46 @@
 
                     </div>
 
-                    <div class="col-auto p-2" *ngIf="montoDiferencia !== 0">
-            
-                        <div 
-                            [ngClass]=" {   'bg-danger': montoDiferencia < 0, 
-                                            'bg-success': montoDiferencia > 0
-                            }"
-                            class="card shadow px-2 border-0" style="width: 18rem;">
-            
+                    <div class="col-auto p-2">
+
+                        <div class="card shadow px-2 bg-success border-0" style="width: 18rem;">
+
                             <div class="card-body text-white">
-                                <h5 class="card-title mb-0 text-center">Diferencia</h5>                    
+                                <h4 class="card-title mb-0 text-center">Comision</h4>
+                                <h5 class="text-center"> {{ (efectivo + credito + tarjeta + transferencia + vales) *0.03 | currency }} </h5>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-auto p-2" *ngIf="montoDiferencia !== 0">
+
+                        <div [ngClass]=" {   'bg-danger': montoDiferencia < 0, 
+                                            'bg-success': montoDiferencia > 0
+                            }" class="card shadow px-2 border-0" style="width: 18rem;">
+
+                            <div class="card-body text-white">
+                                <h5 class="card-title mb-0 text-center">Diferencia</h5>
                                 <p class="text-center mb-0"> {{ montoDiferencia | currency }} </p>
                             </div>
 
                         </div>
-                                    
+
                     </div>
 
                     <div class="col-auto p-2">
                         <div class="card shadow px-2" style="width: 18rem;">
-            
+
                             <div class="card-body">
-                                <h5 class="card-title mb-0">Dinero en caja</h5>                    
+                                <h5 class="card-title mb-0">Dinero en caja</h5>
                             </div>
-            
+
                             <div class="table-responsive ">
                                 <table class="table table-borderless table-hover table-sm animated fadeIn ">
-                                    
+
                                     <tbody>
-            
+
                                         <tr>
                                             <td colspan="2"> <small> Fondo Caja </small> </td>
                                             <td> {{ inicial | currency }}</td>
@@ -198,26 +209,26 @@
                                             <td colspan="2"> <small class="fw-bold"> Total </small> </td>
                                             <td class="fw-bold"> {{ inicial + efectivo + abEfectivo + entradas + salidas | currency }} </td>
                                         </tr>
-            
+
                                     </tbody>
                                 </table>
-                            </div>                        
-                          
+                            </div>
+
                         </div>
                     </div>
                     <div class="col-auto p-2">
-            
+
                         <div class="card shadow px-2" style="width: 18rem;">
-            
+
                             <div class="card-body">
-                                <h5 class="card-title mb-0">Ventas del dia</h5>                    
+                                <h5 class="card-title mb-0">Ventas del dia</h5>
                             </div>
-            
+
                             <div class="table-responsive ">
                                 <table class="table table-borderless table-hover table-sm animated fadeIn ">
-                                    
+
                                     <tbody>
-            
+
                                         <tr>
                                             <td colspan="2"> <small> En Efectivo </small> </td>
                                             <td> {{ efectivo | currency }} </td>
@@ -240,19 +251,19 @@
                                         </tr>
                                         <tr class="border-top">
                                             <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                            <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + credito  + vales | currency }} </td>
+                                            <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + credito + vales | currency }} </td>
                                         </tr>
-            
-            
+
+
                                     </tbody>
                                 </table>
-                            </div>                        
-                          
+                            </div>
+
                         </div>
-            
+
                     </div>
-            
-                </div>          
+
+                </div>
 
             </div>
             <div class="modal-footer">

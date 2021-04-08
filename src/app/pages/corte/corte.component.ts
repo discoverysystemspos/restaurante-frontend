@@ -103,6 +103,8 @@ export class CorteComponent implements OnInit {
       if(sales[i].facturas.status){
 
       let pagos = sales[i].facturas.payments;
+
+      
       
         for (let i = 0; i < pagos.length; i++) {
           switch (pagos[i].type) {

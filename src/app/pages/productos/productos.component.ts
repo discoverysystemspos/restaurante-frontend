@@ -83,7 +83,7 @@ export class ProductosComponent implements OnInit {
             this.btnAtras = '';
             this.btnAdelante = '';
           }   
-          // BOTONOS DE ADELANTE Y ATRAS       
+          // BOTONOS DE ADELANTE Y ATRAS    
             
         });
 
