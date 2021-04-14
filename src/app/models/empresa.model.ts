@@ -22,6 +22,10 @@ export class Datos{
         public impuestoconsumo?: boolean,
         public resolucion?: string,
         public prefijopos?: string,
+        public tip?: boolean,
+        public propina?: number,
+        public commission?: boolean,
+        public comision?: number,
     ){}
 
     /** ================================================================
