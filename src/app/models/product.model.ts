@@ -30,7 +30,9 @@ export class Product {
         public expiration?: Date,
         public status?: boolean,
         public pid?: string,
-        public visibility?: boolean
+        public visibility?: boolean,
+        public low?: boolean,
+        public out?: boolean,
     ){}
 
     /** ================================================================

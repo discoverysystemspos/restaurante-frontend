@@ -56,19 +56,25 @@
                 <ng-container *ngFor="let producto of listaProductos">
 
                     <div class="card m-1 animated fadeIn" style="width: 12rem;" *ngIf="producto.visibility">
+                        <div class="position-absolute ms-2 mt-2">
+                            <span *ngIf="producto.low && !producto.out" class="badge rounded-pill bg-warning text-dark">Bajo</span>
+                            <span *ngIf="producto.out" class="badge rounded-pill bg-danger">Agotado</span>
+                        </div>
 
                         <img class="avatar-xxl avatar-img avatar-redondo-lg mx-auto" style="height: 180px; width: auto;" [src]="producto.img | imagen:'products'" class="card-img-top" alt="...">
 
                         <div class="card-body py-2 d-flex align-items-start flex-column">
+
                             <div>
                                 <h5 class="card-title mb-1">{{ producto.name }}</h5>
                             </div>
                             <div class="col-12 mt-auto">
                                 <div class="d-flex align-items-center">
+
                                     <p class="mb-0 text-success">{{ producto.price | currency }}</p>
-                                    <button type="button" (click)="carritoTemp( producto, 1, producto.price )" class="btn btn-link btn-primary text-white ms-auto" style="font-size: 1rem;">
-                                            <i class="bi bi-cart-plus"></i>
-                                        </button>
+                                    <button type="button" [disabled]="producto.out" (click)="carritoTemp( producto, 1, producto.price )" class="btn btn-link btn-primary text-white ms-auto" style="font-size: 1rem;">
+                                        <i class="bi bi-cart-plus"></i>
+                                    </button>
 
                                 </div>
                             </div>
