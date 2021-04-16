@@ -38,6 +38,8 @@ export class ProductosComponent implements OnInit {
     
     this.cargarProductos();
 
+    this.cargarCosto();
+
   }
 
   /** ================================================================
@@ -86,6 +88,23 @@ export class ProductosComponent implements OnInit {
           // BOTONOS DE ADELANTE Y ATRAS    
             
         });
+
+  }
+
+  /** ================================================================
+   *   CARGAR COST PRODUCTOS
+  ==================================================================== */
+  public totalCost: number;
+  public totalPrice: number;
+  cargarCosto(){
+
+    this.productService.cargarProductoCost()
+    .subscribe(({costo, precio}) => {
+
+      this.totalCost = costo;
+      this.totalPrice = precio;
+
+    });
 
   }
 

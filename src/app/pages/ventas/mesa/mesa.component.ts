@@ -653,7 +653,8 @@ export class MesaComponent implements OnInit {
   /** ================================================================
    *  ENVIAR PRODUCTO AL CARRITO TEMPORAL POR EL BUSCADOR
   ==================================================================== */
-  evniarAlCarrito( qty:number, mayoreo: boolean, code: string ){
+  @ViewChild('precio') newPrice: ElementRef;
+  evniarAlCarrito( qty:number, mayoreo: boolean, code: string, change: boolean = false){
 
     if (code === '' || this.productTemp.price === 0) {
       Swal.fire('Atención', 'No has seleccionado ningun producto', 'info');
@@ -667,11 +668,19 @@ export class MesaComponent implements OnInit {
 
     let precio: number;
 
-    if (!mayoreo) {
-      precio = this.productTemp.price;
+    if (change) {
+
+      precio = this.newPrice.nativeElement.value;
+      
     }else{
-      precio = this.productTemp.wholesale;
+
+      if (!mayoreo) {
+        precio = this.productTemp.price;
+      }else{
+        precio = this.productTemp.wholesale;
+      }
     }
+
     
     // GUARDAR AL CARRITO
     this.carritoTemp(this.productTemp, qty, precio);

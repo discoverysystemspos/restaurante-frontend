@@ -52,6 +52,12 @@
 
                 <div *ngIf="!cargando">
                     <div>
+
+                        <div class="text-end mb-3">
+                            <p class="mb-0 text-muted"> PT {{ totalPrice | currency}} - CT {{ totalCost | currency}} </p>
+                            <h5 class="mb-0 text-success"> GT {{ totalCost - totalPrice | currency}} </h5>
+                        </div>
+
                         <div class="form-floating mb-2">
                             <span class="position-absolute top-50 start-90 translate-middle"><i class=" bi-search " style="font-size: 1rem "></i></span>
                             <input type="text" class="form-control" id="floatingInput" placeholder="Buscar Producto" (keyup)="buscar(search.value)" #search>

@@ -4,3 +4,8 @@ export interface LoadProduct{
     total: number;
     products: Product[];
 }
+
+export interface LoadCost{
+    costo: number;
+    precio: number;
+}

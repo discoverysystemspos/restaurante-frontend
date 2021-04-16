@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { delay, map, tap } from 'rxjs/operators'
 
 // INTERFACES
-import { LoadProduct } from '../interfaces/load-products.interface';
+import { LoadProduct, LoadCost } from '../interfaces/load-products.interface';
 
 // MODELS
 import { Product } from '../models/product.model';
@@ -55,6 +55,20 @@ export class ProductService {
   cargarProductos(desde: number = 0){
     const endPoint = `/products?desde=${desde}`;
     return this.http.get<LoadProduct>(`${base_url}${endPoint}`, this.headers)
+            .pipe(
+              delay(500),
+              map( resp => {
+                return resp;
+              })
+            );
+  }
+
+  /** ================================================================
+   *   CARGAR COSTS PRODUCTOS
+  ==================================================================== */
+  cargarProductoCost(){
+    const endPoint = `/products/cost/`;
+    return this.http.get<LoadCost>(`${base_url}${endPoint}`, this.headers)
             .pipe(
               delay(500),
               map( resp => {
