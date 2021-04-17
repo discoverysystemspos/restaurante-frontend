@@ -61,6 +61,7 @@ export interface LoadInvoice {
 export interface ListInvoice {
     total: number;
     invoices: LoadInvoice[];
+    montos?: number;
 }
 
 export interface CargarFactura {

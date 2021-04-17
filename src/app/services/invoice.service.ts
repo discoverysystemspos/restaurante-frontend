@@ -52,8 +52,9 @@ export class InvoiceService {
   /** ================================================================
    *   LOAD INVOICE DATE
   ==================================================================== */
-  loadInvoicesDate(date: Date){        
-    return this.http.get<ListInvoice>(`${base_url}/invoice/date/${date}`, this.headers)
+  loadInvoicesDate(initial: Date, end: Date, user: string = 'none', status:boolean, credito:boolean = false){
+    const endpoint = `${base_url}/invoice/fecha?initial=${initial}&end=${end}&user=${user}&status=${status}&credito=${credito}`  
+    return this.http.get<ListInvoice>(`${endpoint}`, this.headers)
                 .pipe(
                   map( resp => {
                     return resp;

@@ -66,6 +66,7 @@
                         <div class="card-body py-2 d-flex align-items-start flex-column">
 
                             <div>
+
                                 <h5 class="card-title mb-1">{{ producto.name }}</h5>
                             </div>
                             <div class="col-12 mt-auto">
@@ -226,7 +227,7 @@
 
                         <div class="col-4">
                             <button *ngIf="clienteTemp.cedula === '' || carrito.length === 0 || facturar === false" type="button" class="btn disabled btn-dark btnW waves-effect waves-dark text-white"> <h4 class="display-7">Facturar</h4></button>
-                            <button *ngIf="clienteTemp.cedula !== '' && carrito.length > 0 && facturar === true" (click)="focusMonto()" type="button" class="btn btn-dark btnW waves-effect waves-dark text-white" data-bs-toggle="modal" data-bs-target="#facturar"> <h4 class="display-6">Facturar</h4></button>
+                            <button *ngIf="clienteTemp.cedula !== '' && carrito.length > 0 && facturar === true" (click)="focusMonto()" type="button" class="btn btn-primary btnW waves-effect waves-dark text-white" data-bs-toggle="modal" data-bs-target="#facturar"> <h4 class="display-6">Facturar</h4></button>
                             <!-- <button type="button" class="btn btn-dark btnW waves-effect waves-dark text-white" data-bs-toggle="modal" data-bs-target="#facturar"> <h4 class="display-6">Facturar</h4></button> -->
                         </div>
 
@@ -427,7 +428,7 @@
                             <label class="form-check-label" for="mayor">Aplicar Mayoreo</label>
                         </div>
 
-                        <button type="button" (click)="evniarAlCarrito(cantidad.value, mayoreo.checked, barcode.value, change = true)" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>
+                        <button type="button" (click)="evniarAlCarrito(cantidad.value, mayoreo.checked, barcode.value, true)" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>
 
                     </div>
 

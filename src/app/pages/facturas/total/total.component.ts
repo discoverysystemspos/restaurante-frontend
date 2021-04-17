@@ -1,15 +1,20 @@
 import { Component, OnInit } from '@angular/core';
+import Swal from 'sweetalert2';
 
 // SERVICES
 import { InvoiceService } from '../../../services/invoice.service';
 import { SearchService } from '../../../services/search.service';
 import { MesasService } from '../../../services/mesas.service';
+import { UserService } from '../../../services/user.service';
+import { EmpresaService } from '../../../services/empresa.service';
 
 // INTERFACES
 import { LoadInvoice } from '../../../interfaces/invoice.interface';
 
 // MODELS
 import { Mesa } from '../../../models/mesas.model';
+import { User } from '../../../models/user.model';
+import { Datos } from '../../../models/empresa.model';
 
 @Component({
   selector: 'app-total',
@@ -21,7 +26,7 @@ export class TotalComponent implements OnInit {
 
   public totalFacturas: number = 0;
   public facturas: LoadInvoice[] = [];
-  public facturasTemp: LoadInvoice[] = [];
+  public facturasTemp: LoadInvoice[] = [];;
 
   // MESAS
   public listaMesas: Mesa[] = [];
@@ -39,16 +44,53 @@ export class TotalComponent implements OnInit {
 
   constructor(  private invoiceService: InvoiceService,
                 private searchService: SearchService,
-                private mesasService: MesasService) { }
+                private mesasService: MesasService,
+                private empresaService: EmpresaService,
+                private userService: UserService,
+                private mesaService: MesasService) { }
 
   ngOnInit(): void {
 
-    // CARGAR FACTURAS
-    this.cargarFacturas();
+    // CARGAR DATOS
+    this.cargarDatos();
 
     // CARGAR MESAS
     this.cargarMesas();
 
+    // CARGAR VENDEDORES
+    this.cargarVendedore();
+
+    // CARGAR FACTURAS
+    this.cargarFacturas();
+
+
+  }
+
+  /** ================================================================
+   *   CARGAR DATOS DE LA EMPRESA
+  ==================================================================== */
+  public empresa: Datos;
+  cargarDatos(){
+
+    this.empresaService.getDatos()
+        .subscribe( datos => {
+          this.empresa = datos;   
+        }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
+  }
+
+  /** ================================================================
+   *   CARGAR VENDEDORES
+  ==================================================================== */
+  public vendedores: User[] = [];
+  cargarVendedore(){
+
+    this.userService.loadUsers()
+    .subscribe( ({users}) => {
+      
+      this.vendedores = users;          
+      
+    }, (err) => { Swal.fire('Error', 'No se pueden cargar los vendedores', 'error') });
+    
   }
 
   /** ================================================================
@@ -103,24 +145,35 @@ export class TotalComponent implements OnInit {
   /** ================================================================
    *   BUSCAR MESA
   ==================================================================== */
-  buscar(termino){
-    
+  public totalAmount: number = 0;
+  buscar(inicial:Date, final: Date, cajeros:string, estado:boolean, credito:boolean){
+
+    this.totalAmount = 0;    
     this.sinResultados = true;
-    if (termino === null) {
+    
+    if (inicial === null && final === null) {
       this.facturas = this.facturasTemp;
       this.resultado = 0;
       return;
     }else{
 
-      if (!termino) {
+      if (!inicial) {
         this.facturas = this.facturasTemp;
         this.resultado = 0;
         return;
       }
 
+      // SET HOURS      
+      inicial = new Date(inicial);      
+      const initial = new Date(inicial.getTime() + 1000 * 60 * 60 * 5);
+
+      final = new Date(final);
+      const end = new Date(final.getTime() + 1000 * 60 * 60 * 5);      
+      // SET HOURS      
+      
       this.sinResultados = true;
-      this.invoiceService.loadInvoicesDate(termino)
-          .subscribe(({total, invoices}) => {
+      this.invoiceService.loadInvoicesDate(initial, end, cajeros, estado, credito)
+          .subscribe(({total, invoices, montos}) => {
 
             // COMPROBAR SI EXISTEN RESULTADOS
             if (invoices.length === 0) {
@@ -130,10 +183,9 @@ export class TotalComponent implements OnInit {
               return;                
             }
             // COMPROBAR SI EXISTEN RESULTADOS
-
-            this.totalFacturas = total;
             this.facturas = invoices; 
             this.resultado = invoices.length; 
+            this.totalAmount = montos;
 
           });
           

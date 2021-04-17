@@ -54,8 +54,9 @@
                     <div>
 
                         <div class="text-end mb-3">
-                            <p class="mb-0 text-muted"> PT {{ totalPrice | currency}} - CT {{ totalCost | currency}} </p>
-                            <h5 class="mb-0 text-success"> GT {{ totalCost - totalPrice | currency}} </h5>
+                            <h4 class="mb-0 text-success"> Ganancia total {{ totalPrice - totalCost | currency}} </h4>
+                            <small class="mb-0 text-muted"> Total de venta {{ totalPrice | currency}} </small>
+                            <small class="mb-0 text-muted"> Total de inversión {{ totalCost | currency}} </small>
                         </div>
 
                         <div class="form-floating mb-2">
