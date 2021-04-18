@@ -122,43 +122,43 @@ export class CreditoComponent implements OnInit {
   /** ================================================================
    *   BUSCAR FACTURA
   ==================================================================== */
-  buscar(termino){
+  // buscar(termino){
     
-    this.sinResultados = true;
-    if (termino === null) {
-      this.facturas = this.facturasTemp;
-      this.resultado = 0;
-      return;
-    }else{
+  //   this.sinResultados = true;
+  //   if (termino === null) {
+  //     this.facturas = this.facturasTemp;
+  //     this.resultado = 0;
+  //     return;
+  //   }else{
 
-      if (!termino) {
-        this.facturas = this.facturasTemp;
-        this.resultado = 0;
-        return;
-      }
+  //     if (!termino) {
+  //       this.facturas = this.facturasTemp;
+  //       this.resultado = 0;
+  //       return;
+  //     }
 
-      this.sinResultados = true;
-      this.invoiceService.loadInvoicesDate(termino)
-          .subscribe(({total, invoices}) => {
+  //     this.sinResultados = true;
+  //     this.invoiceService.loadInvoicesDate(termino)
+  //         .subscribe(({total, invoices}) => {
 
-            // COMPROBAR SI EXISTEN RESULTADOS
-            if (invoices.length === 0) {
-              this.sinResultados = false;
-              this.facturas = [];
-              this.resultado = 0;
-              return;                
-            }
-            // COMPROBAR SI EXISTEN RESULTADOS
+  //           // COMPROBAR SI EXISTEN RESULTADOS
+  //           if (invoices.length === 0) {
+  //             this.sinResultados = false;
+  //             this.facturas = [];
+  //             this.resultado = 0;
+  //             return;                
+  //           }
+  //           // COMPROBAR SI EXISTEN RESULTADOS
             
-            this.totalFacturas = total;
-            this.facturas = invoices; 
-            this.resultado = invoices.length; 
+  //           this.totalFacturas = total;
+  //           this.facturas = invoices; 
+  //           this.resultado = invoices.length; 
 
-          });
+  //         });
           
-    }
+  //   }
 
-  }
+  // }
 
   /** ================================================================
    *   CAMBIAR PAGINA

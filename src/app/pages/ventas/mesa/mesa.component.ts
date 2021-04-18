@@ -654,6 +654,7 @@ export class MesaComponent implements OnInit {
    *  ENVIAR PRODUCTO AL CARRITO TEMPORAL POR EL BUSCADOR
   ==================================================================== */
   @ViewChild('precio') newPrice: ElementRef;
+  @ViewChild('precioM') newPrice2: ElementRef;
   evniarAlCarrito( qty:number, mayoreo: boolean, code: string, change: boolean = false){
 
     if (code === '' || this.productTemp.price === 0) {
@@ -670,7 +671,11 @@ export class MesaComponent implements OnInit {
 
     if (change) {
 
-      precio = this.newPrice.nativeElement.value;
+      if (!mayoreo) {
+        precio = this.newPrice.nativeElement.value;
+      }else{
+        precio = this.newPrice2.nativeElement.value;
+      }
       
     }else{
 
