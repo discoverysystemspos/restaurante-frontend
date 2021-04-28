@@ -50,6 +50,13 @@ export class InvoiceService {
   }
 
   /** ================================================================
+   *   UPDATE INVOICE
+  ==================================================================== */
+  updateProdutInvoice(factura: string, id: string, qty: number){    
+    return this.http.put(`${ base_url }/invoice/${factura}/product/${id}/qty/${qty}`, '', this.headers);
+  }
+
+  /** ================================================================
    *   LOAD INVOICE DATE
   ==================================================================== */
   loadInvoicesDate(initial: Date, end: Date, user: string = 'none', status:boolean, credito:boolean = false){

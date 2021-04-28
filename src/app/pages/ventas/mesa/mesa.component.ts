@@ -3,6 +3,8 @@ import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
 import Swal from 'sweetalert2';
+import * as SerialPort from 'serialport';
+
 
 // PRINTER
 import { NgxPrinterService } from 'projects/ngx-printer/src/lib/ngx-printer.service';
@@ -52,6 +54,8 @@ export class MesaComponent implements OnInit {
   public facturar: boolean;
 
   public user: User;
+
+  serialPort: typeof SerialPort;
 
   // PRINT
   @ViewChild('PrintTemplate')
@@ -112,6 +116,8 @@ export class MesaComponent implements OnInit {
       this.facturar = false;
     }
 
+    // SERIAL PORT
+    
   }
   
   /** ================================================================

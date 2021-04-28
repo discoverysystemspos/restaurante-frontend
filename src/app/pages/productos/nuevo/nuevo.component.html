@@ -188,7 +188,7 @@
                         <div class="col-md-3 px-md-1">
 
                             <div class="form-floating">
-                                <input formControlName="gain" type="number" class="form-control" min="0" (change)="porcentaje('ganancia', ganancia.value)" [value]="gananciaN" placeholder="Ganancia" #ganancia>
+                                <input formControlName="gain" type="number" class="form-control" min="0" (change)="porcentaje('ganancia', ganancia.value)" [value]="gananciaN | number" placeholder="Ganancia" #ganancia>
                                 <label for="floatingInput">Ganancia</label>
                             </div>
 
@@ -281,7 +281,7 @@
                                 </label>
                             </div>
                         </div>
-                        
+
                     </div>
 
                     <div class="row">

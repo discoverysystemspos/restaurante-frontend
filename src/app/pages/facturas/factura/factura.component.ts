@@ -21,7 +21,7 @@ import { Datos } from '../../../models/empresa.model';
 
 // INTERFACES
 import { LoadInvoice } from '../../../interfaces/invoice.interface';
-import { _payments } from '../../../interfaces/carrito.interface';
+import { _payments, Carrito } from '../../../interfaces/carrito.interface';
 import { LoadTurno, _movements } from '../../../interfaces/load-turno.interface';
 
 @Component({
@@ -103,9 +103,6 @@ export class FacturaComponent implements OnInit {
 
           this.factura = invoice;  
           
-          console.log(this.factura.products);
-          
-
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
 
   }
@@ -121,6 +118,62 @@ export class FacturaComponent implements OnInit {
           this.factura = resp.invoice;
 
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); })    
+
+  }
+
+  /** ================================================================
+   *   DEVOLVER PRODUCTOS
+  ==================================================================== */
+  devolverProducto(producto: Carrito){
+
+    console.log(producto);
+
+    Swal.fire({
+      title: 'Cantidad',
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Confirmar',
+      showLoaderOnConfirm: true,
+      preConfirm: (resp) => {
+        
+        return resp;
+      }
+    }).then((result) => {
+
+      if (result.value > 0) {
+        
+        const cantidad:number = Number(result.value);
+
+        console.log(cantidad);
+        
+
+        if (cantidad < producto.qty && cantidad !== 0) {
+
+          this.invoiceService.updateProdutInvoice(this.idFactura, producto._id, cantidad)
+              .subscribe( resp => {
+
+                console.log(resp);
+                
+                this.cargarFactura(this.idFactura);
+                
+              });
+          
+        }else if (cantidad >= producto.qty) {
+          
+          Swal.fire('Información', 'No se devolvio ningun producto, si vas a devolver todos los productos dar click en eliminar', 'info');
+          
+        }
+        
+        return;
+      }else{
+        return;
+      }                
+      
+    });
+    
 
   }
 
@@ -310,9 +363,6 @@ export class FacturaComponent implements OnInit {
           
 
         }, (err) => {
-
-          console.log(err);
-          
 
           Swal.fire('Error', err.error.msg, 'error');
         });

@@ -286,7 +286,8 @@ export class ProductoComponent implements OnInit {
         break;
     }
 
-    this.upProductForm.value.price = this.precioN;
+    this.gananciaN = Math.round(this.gananciaN*100)/100;
+    this.upProductForm.value.price = Math.round(this.precioN*100)/100;
     
 
   }
@@ -302,7 +303,9 @@ export class ProductoComponent implements OnInit {
       this.upProductForm.value.kit = this.kits;
     }
     
-    this.upProductForm.value.price = this.precioN;    
+    this.upProductForm.value.price = this.precioN;
+    this.upProductForm.value.gain = this.gananciaN;
+    
     
     this.productService.actualizarProducto(this.upProductForm.value, this.upProductForm.value.pid)
         .subscribe( resp => {

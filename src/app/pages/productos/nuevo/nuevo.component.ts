@@ -176,6 +176,7 @@ export class NuevoComponent implements OnInit {
 
     // CARGAMOS EL PRECIO
     this.productoForm.value.price = this.precioN;
+    this.productoForm.value.gain = this.gananciaN;
 
     this.formSubmitted = true;
 
@@ -278,7 +279,8 @@ export class NuevoComponent implements OnInit {
         break;
     }
 
-    this.productoForm.value.price = this.precioN;    
+    this.gananciaN = Math.round(this.gananciaN*100)/100;
+    this.productoForm.value.price = Math.round(this.precioN*100)/100;
 
   }
 
