@@ -16,7 +16,6 @@
 <!-- =========================================================================
     HEADER 
 ========================================================================= -->
-
 <div class="container-fluid my-4">
 
     <!-- TABLE CLIENTS -->
@@ -35,14 +34,29 @@
 
         <div *ngIf="!cargando">
 
-            <div class="d-flex">
+            <div class="d-flex justify-content-between flex-wrap">
 
                 <div>
                     <button type="button" class="btn btn-outline-primary btn-sm" (click)="cargarTurno()"> <i class="bi-arrow-clockwise"></i> Recargar </button>
                 </div>
 
-                <div class="col-4 col-md-2 ms-auto">
-                    <input type="date" class="form-control" (change)="buscar(search.value)" #search>
+                <div class="d-flex justify-content-end flex-wrap">
+
+                    <div class="col-4 d-flex align-items-center">
+                        <label class="" for="">Desde</label>
+                        <input type="datetime-local" class="form-control" (change)="initial.value" #initial>
+                    </div>
+
+                    <div class="col-4 d-flex align-items-center ms-2">
+                        <label class="" for="">Hasta</label>
+                        <input type="datetime-local" class="form-control" (change)="end.value" #end>
+                    </div>
+
+                    <div class="col-auto ms-2 d-flex align-items-center">
+                        <button type="button" class="btn btn-outline-primary btn-sm py-auto h-100" (click)="buscar(initial.value, end.value, 'none')"> 
+                            <i class="bi-search"></i> Buscar 
+                        </button>
+                    </div>
                 </div>
 
             </div>
@@ -104,7 +118,7 @@
                     <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + listaTurnos.length }})</small>
                 </div>
 
-                <div *ngIf="search.value.length === 0" class="col d-flex justify-content-end">
+                <div *ngIf="!initial.value.length" class="col d-flex justify-content-end">
                     <button type="button" (click)="cambiarPagina(-10)" class="{{btnAtras}} btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
                     <button type="button" (click)="cambiarPagina(10)" class="{{btnAdelante}} btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
                 </div>
@@ -114,7 +128,6 @@
         </div>
     </div>
     <!-- TABLE CLIENTS -->
-
 
 </div>
 
@@ -147,11 +160,11 @@
 
                     <div class="col-auto p-2">
 
-                        <div class="card shadow px-2 bg-success border-0" style="width: 18rem;">
+                        <div class="card shadow px-2 bg-dark border-0" style="width: 18rem;">
 
                             <div class="card-body text-white">
-                                <h4 class="card-title mb-0 text-center">Comision</h4>
-                                <h5 class="text-center"> {{ (efectivo + credito + tarjeta + transferencia + vales) *0.03 | currency }} </h5>
+                                <h4 class="card-title mb-0 text-center">Ganancia Total</h4>
+                                <h5 class="text-center"> {{ (efectivo + credito + tarjeta + transferencia + vales) - costo | currency }} </h5>
                             </div>
 
                         </div>
@@ -261,6 +274,78 @@
 
                         </div>
 
+                    </div>
+
+                    <div class="col-auto p-2">
+                        <div class="card shadow px-2" style="width: 18rem;">
+
+                            <div class="card-body">
+                                <h5 class="card-title mb-0">Salidas</h5>
+                            </div>
+
+                            <div class="table-responsive ">
+                                <table class="table table-borderless table-hover table-sm animated fadeIn ">
+
+                                    <tbody>
+
+                                        <ng-container *ngFor="let movimiento of movimientos">
+
+                                            <tr *ngIf="movimiento.type === 'salida'">
+
+                                                <td colspan="2"> <small> {{ movimiento.descripcion }} </small> </td>
+                                                <td [ngClass]="{ 'text-danger':  movimiento.type == 'salida'}">
+                                                    {{ movimiento.monto | currency }}
+                                                </td>
+                                            </tr>
+
+                                        </ng-container>
+
+                                        <tr class="border-top">
+                                            <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                            <td class="fw-bold"> {{ salidas | currency }} </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-auto p-2">
+                        <div class="card shadow px-2" style="width: 18rem;">
+
+                            <div class="card-body">
+                                <h5 class="card-title mb-0">Entradas</h5>
+                            </div>
+
+                            <div class="table-responsive ">
+                                <table class="table table-borderless table-hover table-sm animated fadeIn ">
+
+                                    <tbody>
+
+                                        <ng-container *ngFor="let movimiento of movimientos">
+
+                                            <tr *ngIf="movimiento.type === 'entrada'">
+
+                                                <td colspan="2"> <small> {{ movimiento.descripcion }} </small> </td>
+                                                <td [ngClass]="{ 'text-danger':  movimiento.type == 'salida'}">
+                                                    {{ movimiento.monto | currency }}
+                                                </td>
+                                            </tr>
+
+                                        </ng-container>
+
+                                        <tr class="border-top">
+                                            <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                            <td class="fw-bold"> {{ entradas | currency }} </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
                     </div>
 
                 </div>

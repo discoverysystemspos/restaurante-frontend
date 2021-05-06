@@ -57,9 +57,9 @@ export class TurnoService {
   /** ================================================================
    *  GET TURNO DATE
   ==================================================================== */
-  loadTurnoDate(date: Date){
-        
-    return this.http.get<LoadsTurnos>(`${base_url}/turno/date/${date}`, this.headers)
+  loadTurnoDate(initial: Date, end: Date, user: string = 'none'){
+    const endpoint = `${base_url}/turno/date?initial=${initial}&end=${end}&user=${user}`  
+    return this.http.get<LoadsTurnos>(`${endpoint}`, this.headers)
                 .pipe(
                   map( resp => {
                     return resp;

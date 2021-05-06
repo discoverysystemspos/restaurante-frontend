@@ -19,8 +19,8 @@ export interface Carrito{
 
 interface _interProducto{
 
-    code: string;
     name: string;
+    code: string;
     type: string;
     cost: number;
     gain: number;
@@ -46,8 +46,9 @@ interface _interProducto{
 export interface LoadCarrito{
 
     qty: number;
-    product: _interProducto[];
+    product: _interProducto;
     price: number;
     _id?: string;
+    name?: string;
 
 }

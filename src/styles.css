@@ -132,6 +132,23 @@ body,
     DROPDOWN
 =======================================================================*/
 
+@keyframes activebtn {
+    0% {
+        background-image: linear-gradient(0deg, rgba(33, 37, 41, 0.5) 0%, rgba(255, 255, 255, 1) 0%);
+    }
+    100% {
+        background-image: linear-gradient(0deg, rgba(33, 37, 41, 0.5) 10%, rgba(255, 255, 255, 1) 5%);
+    }
+}
+
+.activeBtn {
+    background-color: rgba(33, 37, 41, 0.5);
+    background-image: linear-gradient(0deg, rgba(33, 37, 41, 0.5) 10%, rgba(255, 255, 255, 1) 5%);
+    animation-name: activebtn;
+    animation-duration: 0.5s;
+    transition: ease-in-out;
+}
+
 .dropdown-menu {
     font-size: 0.9rem;
     border: none;
@@ -387,6 +404,15 @@ body,
 
 
 /* ============================================================= 
+    CARDS
+============================================================== */
+
+.border-left-lg {
+    border-left-width: 0.25rem !important;
+}
+
+
+/* ============================================================= 
     AVATAR REDONDO
 ============================================================== */
 
@@ -420,34 +446,46 @@ body,
     background-size: 100% auto;
 }
 
+
 /* SCROLL */
 
 .container-scroll::-webkit-scrollbar {
-    width: 8px;     /* Tamaño del scroll en vertical */
-    height: 8px;    /* Tamaño del scroll en horizontal */
-     /* Ocultar scroll */
+    width: 8px;
+    /* Tamaño del scroll en vertical */
+    height: 8px;
+    /* Tamaño del scroll en horizontal */
+    /* Ocultar scroll */
 }
 
+
 /* Ponemos un color de fondo y redondeamos las esquinas del thumb */
+
 .container-scroll::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.2);
     border-radius: 4px;
 }
+
+
 /* Cambiamos el fondo y agregamos una sombra cuando esté en hover */
+
 .container-scroll::-webkit-scrollbar-thumb:hover {
     background: rgba(0, 0, 0, 0.5);
 }
 
+
 /* Cambiamos el fondo cuando esté en active o hover */
+
 .container-scroll::-webkit-scrollbar-track:hover,
 .container-scroll::-webkit-scrollbar-track:active {
-  background:  rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.2);
 }
+
 
 /* ============================================================= 
     COLOR SVG
 ============================================================== */
-.fill-white{
+
+.fill-white {
     fill: #fff;
     stroke: #fff;
 }

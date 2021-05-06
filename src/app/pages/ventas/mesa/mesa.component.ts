@@ -136,7 +136,7 @@ export class MesaComponent implements OnInit {
 
           this.mesaID = mesa.mid;
           this.carrito = mesa.carrito;
-          this.mesa = mesa;           
+          this.mesa = mesa;          
           
          if (!mesa.disponible && mesa.cliente) {
            this.clienteTemp = mesa.cliente;
@@ -325,17 +325,21 @@ export class MesaComponent implements OnInit {
   /** ================================================================
    *  SUMAR TOTALES
   ==================================================================== */
+  public totalCosto:number = 0;
   sumarTotales(){
     
     this.total = 0;
+    this.totalCosto = 0;
     if (this.carrito.length > 0) {
       
       for (let i = 0; i < this.carrito.length; i++) {
         
-        this.total += (this.carrito[i].price * this.carrito[i].qty);        
+        this.total += (this.carrito[i].price * this.carrito[i].qty);
+        this.totalCosto += (this.carrito[i].product.cost * this.carrito[i].qty);
+
       }
 
-    }
+    }    
 
   }
 
@@ -745,6 +749,7 @@ export class MesaComponent implements OnInit {
 
   public invoiceForm = this.fb.group({
     amount: ['', [Validators.required, Validators.min(this.total)]],
+    cost: [''],
     client: ['', [Validators.required]],
     type: ['efectivo', [Validators.required]],
     payments: [''],
@@ -871,6 +876,7 @@ export class MesaComponent implements OnInit {
 
       this.invoiceForm.setValue({
         amount: this.total,
+        cost: this.totalCosto,
         client: this.clienteTemp.cid,
         type: this.invoiceForm.value.type,
         payments: this.payments, 
@@ -944,8 +950,6 @@ export class MesaComponent implements OnInit {
           });
       
     } catch (err) {   
-
-      console.log(err);
       
       Swal.fire('Error', err.error.msg, 'error');
       

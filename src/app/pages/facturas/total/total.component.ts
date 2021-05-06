@@ -146,9 +146,11 @@ export class TotalComponent implements OnInit {
    *   BUSCAR MESA
   ==================================================================== */
   public totalAmount: number = 0;
+  public totalCost: number = 0;
   buscar(inicial:Date, final: Date, cajeros:string, estado:boolean, credito:boolean){
 
     this.totalAmount = 0;    
+    this.totalCost = 0;    
     this.sinResultados = true;
     
     if (inicial === null && final === null) {
@@ -169,11 +171,10 @@ export class TotalComponent implements OnInit {
 
       final = new Date(final);
       const end = new Date(final.getTime() + 1000 * 60 * 60 * 5);      
-      // SET HOURS      
-      
+      // SET HOURS          
       this.sinResultados = true;
       this.invoiceService.loadInvoicesDate(initial, end, cajeros, estado, credito)
-          .subscribe(({total, invoices, montos}) => {
+          .subscribe(({total, invoices, montos, costos}) => {
 
             // COMPROBAR SI EXISTEN RESULTADOS
             if (invoices.length === 0) {
@@ -186,6 +187,13 @@ export class TotalComponent implements OnInit {
             this.facturas = invoices; 
             this.resultado = invoices.length; 
             this.totalAmount = montos;
+            this.totalCost = costos;
+
+            console.log(this.facturas);
+            
+
+            console.log(costos);
+            
 
           });
           

@@ -103,24 +103,32 @@ export class CierresComponent implements OnInit {
   /** ===============================================================
   * BUSCAR TURNO  
   ==================================================================== */
-  buscar(termino: Date){
+  buscar(inicial:Date, final: Date, cajeros:string){
     
     this.sinResultados = true;
     
-    if (termino === null) {
+    if (inicial === null && final === null) {
       this.listaTurnos = this.listaTurnosTemp;
       this.resultado = 0;
       return;
     }else{
 
-      if (!termino) {
+      if (!inicial) {
         this.listaTurnos = this.listaTurnosTemp;
         this.resultado = 0;
         return;
       }
 
+      // SET HOURS      
+      inicial = new Date(inicial);      
+      const initial = new Date(inicial.getTime() + 1000 * 60 * 60 * 5);
+
+      final = new Date(final);
+      const end = new Date(final.getTime() + 1000 * 60 * 60 * 5);      
+      // SET HOURS          
+
       this.sinResultados = true;
-      this.turnoService.loadTurnoDate(termino)
+      this.turnoService.loadTurnoDate(initial, end, cajeros)
           .subscribe(({total, turnos}) => {
 
             // COMPROBAR SI EXISTEN RESULTADOS
@@ -166,6 +174,7 @@ export class CierresComponent implements OnInit {
   * PROCESAR LA INFORMACION 
   ==================================================================== */
   public efectivo: number = 0;
+  public costo: number = 0;
   public tarjeta: number = 0;
   public credito: number = 0;
   public vales: number = 0;
@@ -180,6 +189,7 @@ export class CierresComponent implements OnInit {
   procesarInformacion(){
 
     this.efectivo = 0;
+    this.costo = 0;
     this.tarjeta = 0;
     this.credito = 0;
     this.vales = 0;
@@ -196,6 +206,8 @@ export class CierresComponent implements OnInit {
       
       //  COMPROBAR EL ESTADO DE LA FACTURA
       if (sales[i].facturas.status) {
+
+        this.costo += sales[i].facturas.cost;
 
         let pagos = sales[i].facturas.payments;
         for (let i = 0; i < pagos.length; i++) {

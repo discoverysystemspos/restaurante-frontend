@@ -67,6 +67,9 @@ export class CorteComponent implements OnInit {
       this.turno = turno;
       this.movimientos = turno.movements;
       this.inicial = turno.initial;
+
+      console.log(this.turno);
+      
       
       this.procesarInformacion();
       
@@ -77,6 +80,7 @@ export class CorteComponent implements OnInit {
   * PROCESAR LA INFORMACION 
   ==================================================================== */
   public efectivo: number = 0;
+  public costo: number = 0;
   public tarjeta: number = 0;
   public credito: number = 0;
   public vales: number = 0;
@@ -99,14 +103,16 @@ export class CorteComponent implements OnInit {
         return;
       }
 
+      
       // COMPROBAR QUE LA FACTURA ES TRUE
       if(sales[i].facturas.status){
-
-      let pagos = sales[i].facturas.payments;
-
-      
+        
+      this.costo += sales[i].facturas.cost;
+        
+      let pagos = sales[i].facturas.payments;      
       
         for (let i = 0; i < pagos.length; i++) {
+
           switch (pagos[i].type) {
             case 'efectivo':
 

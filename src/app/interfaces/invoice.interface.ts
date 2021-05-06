@@ -62,6 +62,7 @@ export interface ListInvoice {
     total: number;
     invoices: LoadInvoice[];
     montos?: number;
+    costos?: number;
 }
 
 export interface CargarFactura {

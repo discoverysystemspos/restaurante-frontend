@@ -64,6 +64,74 @@
 
         <div class="col-md-10">
 
+            <div class="col-12">
+
+                <div class="d-flex flex-wrap gap-2">
+
+                    <div class="col-xl-3 col-md-3 mb-4">
+                        <!-- Dashboard info widget 1-->
+                        <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-primary h-100 bg-white">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-grow-1">
+                                        <div class="small font-weight-bold text-primary mb-1">Monto Total Facturas</div>
+                                        <div class="h5">({{totalAmount | currency}})</div>
+                                        <div class="text-xs font-weight-bold text-success d-inline-flex align-items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up mr-1"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                                        </div>
+                                    </div>
+                                    <div class="ml-2">
+                                        <i class="bi bi-receipt text-muted" style="font-size: 2rem;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-md-3 mb-4">
+                        <!-- Dashboard info widget 1-->
+                        <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-success h-100 bg-white">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-grow-1">
+                                        <div class="small font-weight-bold text-success mb-1">Ganancia</div>
+                                        <div class="h5"> {{ totalAmount - totalCost | currency }} </div>
+                                        <div class="text-xs font-weight-bold text-success d-inline-flex align-items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up mr-1"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                                        </div>
+                                    </div>
+                                    <div class="ml-2">
+                                        <i class="bi bi-cash text-muted" style="font-size: 2rem;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-md-3 mb-4" *ngIf="empresa.commission">
+                        <!-- Dashboard info widget 1-->
+                        <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-info h-100 bg-white">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-grow-1">
+                                        <div class="small font-weight-bold text-info mb-1">Comision</div>
+                                        <div class="h5"> ({{ (totalAmount * empresa.comision)/100 | currency}}) </div>
+                                        <div class="text-xs font-weight-bold text-info d-inline-flex align-items-center">
+                                            {{ empresa.comision }}%
+                                        </div>
+                                    </div>
+                                    <div class="ml-2">
+                                        <i class="bi bi-percent text-muted" style="font-size: 2rem;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
             <!-- TABLE FACTURAS -->
             <div class="shadow-lg p-3 mb-5 rounded bg-white">
 
@@ -161,8 +229,6 @@
                         <div class="col col-md-4">
 
                             <small class="text-muted">Total de facturas: ({{totalFacturas}})</small>
-                            <small class="text-muted"> - Monto Total: ({{totalAmount | currency}})</small>
-                            <small *ngIf="empresa.commission" class="text-muted"> - Comision: ({{ (totalAmount * empresa.comision)/100 | currency}})</small>
                             <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
                             <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + facturas.length }})</small>
                             <small *ngIf="sumarMonto !== 0" class="text-muted"> - Monto: ({{sumarMonto}})</small>
