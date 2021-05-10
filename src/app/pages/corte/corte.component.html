@@ -211,8 +211,6 @@
 
                             </ng-container>
 
-
-
                             <tr class="border-top">
                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
                                 <td class="fw-bold"> {{ entradas | currency }} </td>
@@ -248,34 +246,265 @@
 
             <div class="modal-body mb-4">
 
-                <table class="table">
-                    <tbody>
-                        <tr>
-                            <td scope="row">Efectivo esperado en caja:</td>
-                            <td>{{ inicial + efectivo + abEfectivo + entradas + salidas | currency }}</td>
-                        </tr>
-                        <tr>
-                            <td scope="row">Cuanto efectivo hay en caja</td>
-                            <td>
-                                <div class="form-group">
-                                    <input type="number" name="" id="" class="form-control" placeholder="efectivo en caja" aria-describedby="helpId" (keyup)="cajaA.value" #cajaA>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td scope="row"> Diferencia </td>
-                            <td [ngClass]=" {   'text-danger': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) !== 0, 
-                                                'text-success': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) > 0
-                                            }">
-                                {{ cajaA.value - (inicial + efectivo + abEfectivo + entradas + salidas) | currency}}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <p class="animated fadeIn mb-2 text-danger" *ngIf="(inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) !== 0 "> <i class="bi-exclamation-triangle"></i> Existe una diferencia, todo va a quedar almacenado </p>
-                <p class="animated fadeIn mb-2 text-success" *ngIf="(inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) === 0"> <i class="bi-check2-all"></i> Todo en orden</p>
+                <!-- AGREGAR TOTAL EFECTIVO DE CAJA -->
+                <div>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td scope="row">Efectivo esperado en caja:</td>
+                                <td>{{ inicial + efectivo + abEfectivo + entradas + salidas | currency }}</td>
+                            </tr>
+                            <tr>
+                                <td scope="row">Cuanto efectivo hay en caja</td>
+                                <td>
+                                    <div class="form-group">
+                                        <input type="number" name="" id="" class="form-control" placeholder="efectivo en caja" aria-describedby="helpId" (keyup)="cajaA.value" #cajaA>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td scope="row"> Diferencia </td>
+                                <td [ngClass]=" {   'text-danger': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) !== 0, 
+                                'text-success': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) > 0
+                            }">
+                                    {{ cajaA.value - (inicial + efectivo + abEfectivo + entradas + salidas) | currency}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                <button type="button" class="btn btn-primary" (click)="cerrarTurno(cajaA.value)">Hacer cierre</button>
+                    <p class="animated fadeIn mb-2 text-danger" *ngIf="(inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) !== 0 "> <i class="bi-exclamation-triangle"></i> Existe una diferencia, todo va a quedar almacenado </p>
+                    <p class="animated fadeIn mb-2 text-success" *ngIf="(inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) === 0"> <i class="bi-check2-all"></i> Todo en orden</p>
+
+                    <button type="button" class="btn btn-primary" (click)="cerrarTurno(cajaA.value)">Hacer cierre</button>
+
+                </div>
+                <!-- AGREGAR TOTAL EFECTIVO DE CAJA -->
+
+                <!-- ============================================================================
+                    IMPRIMIR 
+                ================================================================================= -->
+                <div id="printDiv">
+                    <!-- VENTAS TOTALES Y GANANCIAS -->
+
+                    <div class="card-body" *ngIf="fechaCierre">
+                        <h5 class="card-title mb-0 text-center">Fecha: {{ fechaCierre | date: "medium" }}</h5>
+                    </div>
+
+                    <div class="px-2 border-0 mx-auto " *ngIf="diferencia" style="width: 18rem;">
+
+                        <table class="table text-center">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Diferencia</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">{{ montoDiferencia | currency }} </th>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <div class="px-2 border-0 mx-auto" style="width: 18rem;">
+
+                        <table class="table text-center">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Ventas Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">{{ efectivo + credito + tarjeta + transferencia + vales | currency }} </th>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <div class="px-2 border-0 mx-auto" style="width: 18rem;">
+
+                        <table class="table text-center">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Ganancia Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">{{ (efectivo + credito + tarjeta + transferencia + vales) - costo | currency }} </th>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!-- VENTAS TOTALES Y GANANCIAS -->
+
+                    <!-- DINERO EN CAJA -->
+                    <div class="px-2 border-0 mx-auto" style="width: 18rem;">
+
+                        <div class="card-body">
+                            <h5 class="card-title mb-0 text-center">Dinero en Caja</h5>
+                        </div>
+
+                        <table class="table table-borderless table-hover table-sm animated fadeIn ">
+
+                            <tbody>
+
+                                <tr>
+                                    <td colspan="2"> <small> Fondo Caja </small> </td>
+                                    <td> {{ inicial | currency }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> <small> Ventas en efectivo </small> </td>
+                                    <td> {{ efectivo | currency }} </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> <small> Abonos en efectivo </small> </td>
+                                    <td> {{ abEfectivo | currency }} </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> <small> Entradas </small> </td>
+                                    <td> {{ entradas | currency }} </td>
+                                </tr>
+                                <tr class="text-danger">
+                                    <td colspan="2"> <small> Salidas </small> </td>
+                                    <td> {{ salidas | currency }} </td>
+                                </tr>
+                                <tr class="border-top">
+                                    <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                    <td class="fw-bold"> {{ inicial + efectivo + abEfectivo + entradas + salidas | currency }} </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!-- DINERO EN CAJA -->
+
+                    <!-- VENTAS DEL DIA -->
+                    <div class="px-2 border-0 mx-auto" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title mb-0 text-center">Ventas del dia</h5>
+                        </div>
+
+                        <div class="table-responsive ">
+                            <table class="table table-borderless table-hover table-sm animated fadeIn ">
+
+                                <tbody>
+
+                                    <tr>
+                                        <td colspan="2"> <small> En Efectivo </small> </td>
+                                        <td> {{ efectivo | currency }} </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"> <small> Con tarjeta </small> </td>
+                                        <td> {{ tarjeta | currency }} </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"> <small> Con Transferencia </small> </td>
+                                        <td> {{ transferencia | currency }} </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"> <small> A credito </small> </td>
+                                        <td> {{ credito | currency }} </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"> <small> Con Vales </small> </td>
+                                        <td> {{ vales | currency }} </td>
+                                    </tr>
+                                    <tr class="border-top">
+                                        <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                        <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + credito + vales | currency }} </td>
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- VENTAS DEL DIA -->
+
+                    <!-- TOTAL ENTRADAS -->
+                    <div class="px-2 border-0 mx-auto" style="width: 18rem;">
+
+                        <div class="card-body">
+                            <h5 class="card-title mb-0 text-center">Entradas</h5>
+                        </div>
+
+                        <div class="table-responsive ">
+                            <table class="table table-borderless table-hover table-sm animated fadeIn ">
+
+                                <tbody>
+
+                                    <ng-container *ngFor="let movimiento of movimientos">
+
+                                        <tr *ngIf="movimiento.type === 'entrada'">
+
+                                            <td colspan="2"> <small> {{ movimiento.descripcion }} </small> </td>
+                                            <td [ngClass]="{ 'text-danger':  movimiento.type == 'salida'}">
+                                                {{ movimiento.monto | currency }}
+                                            </td>
+                                        </tr>
+
+                                    </ng-container>
+
+                                    <tr class="border-top">
+                                        <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                        <td class="fw-bold"> {{ entradas | currency }} </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <!-- TOTAL ENTRADAS -->
+
+                    <!-- TOTAL SALIDAS -->
+                    <div class="px-2 border-0 mx-auto" style="width: 18rem;">
+
+                        <div class="card-body">
+                            <h5 class="card-title mb-0 text-center">Salidas</h5>
+                        </div>
+
+                        <div class="table-responsive ">
+                            <table class="table table-borderless table-hover table-sm animated fadeIn ">
+
+                                <tbody>
+
+                                    <ng-container *ngFor="let movimiento of movimientos">
+
+                                        <tr *ngIf="movimiento.type === 'salida'">
+
+                                            <td colspan="2"> <small> {{ movimiento.descripcion }} </small> </td>
+                                            <td [ngClass]="{ 'text-danger':  movimiento.type == 'salida'}">
+                                                {{ movimiento.monto | currency }}
+                                            </td>
+                                        </tr>
+
+                                    </ng-container>
+
+                                    <tr class="border-top">
+                                        <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                        <td class="fw-bold"> {{ salidas | currency }} </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <!-- TOTAL SALIDAS -->
+
+                </div>
+                <!-- ============================================================================
+                    IMPRIMIR 
+                ================================================================================= -->
+
 
             </div>
         </div>

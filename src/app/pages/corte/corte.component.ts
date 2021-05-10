@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+
+// PRINTER
+import { NgxPrinterService } from 'projects/ngx-printer/src/lib/ngx-printer.service';
+import { PrintItem } from 'projects/ngx-printer/src/lib/print-item';
+import { ngxPrintMarkerPosition } from 'projects/ngx-printer/src/public_api';
 
 // SERVICES
 import { TurnoService } from '../../services/turno.service';
@@ -12,6 +17,7 @@ import { _caja } from '../../interfaces/load-caja.interface';
 
 // MODELS
 import { Caja } from '../../models/caja.model';
+import { Subscription, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-corte',
@@ -21,9 +27,32 @@ import { Caja } from '../../models/caja.model';
 })
 export class CorteComponent implements OnInit {
 
+  @ViewChild('PrintTemplate')
+  private PrintTemplateTpl: TemplateRef<any>;
+
+  title = 'ngx-printer-demo';
+
+  printWindowSubscription: Subscription;
+  $printItems: Observable<PrintItem[]>;
+
   constructor(  private turnoService: TurnoService,
                 private cajaService: CajaService,
-                private router: Router) { }
+                private router: Router,
+                private printerService: NgxPrinterService) {
+
+                  this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
+                    val => {
+
+                      if (val) {
+                        window.location.reload();                        
+                      }
+                      console.log('Print window is open:', val);
+                    }
+                  );
+              
+                  this.$printItems = this.printerService.$printItems;
+
+                }
 
   ngOnInit(): void {    
 
@@ -40,6 +69,13 @@ export class CorteComponent implements OnInit {
       return;
     }
 
+  }
+
+  /** ================================================================
+   *   IMPRIMIR
+  ==================================================================== */
+  printDiv() {
+    this.printerService.printDiv('printDiv');
   }
 
   /** ===============================================================
@@ -66,10 +102,7 @@ export class CorteComponent implements OnInit {
     .subscribe( (turno) => { 
       this.turno = turno;
       this.movimientos = turno.movements;
-      this.inicial = turno.initial;
-
-      console.log(this.turno);
-      
+      this.inicial = turno.initial;      
       
       this.procesarInformacion();
       
@@ -178,12 +211,14 @@ export class CorteComponent implements OnInit {
     }
 
     // TOTALIZAR MOVIMIENTOS
-
   }
 
   /** ===============================================================
   * CERRAR CAJA Y TURNO 
   ==================================================================== */
+  public fechaCierre: Date;
+  public montoDiferencia: number;
+  public diferencia: boolean;
   cerrarTurno(dineroCaja: number){
 
     const totalEfectivo = (this.efectivo + this.entradas + this.inicial + this.abEfectivo + this.salidas);
@@ -198,7 +233,19 @@ export class CorteComponent implements OnInit {
 
     // CERRAR TURNO
     this.turnoService.updateTurno(this.turno, this.turno.tid)
-        .subscribe( resp => {     
+        .subscribe( (resp:{ ok:boolean, turno: LoadTurno }) => {        
+          
+          this.fechaCierre = resp.turno.cierre;
+          this.diferencia = resp.turno.diferencia;
+          this.montoDiferencia = resp.turno.montoD;
+
+          // IMPRIMIR FACTURA
+          setTimeout( () => {
+
+            this.printDiv();
+
+          },1000);
+
         }, (err) => { 
           Swal.fire('Error', err.error.msg, 'error') 
           return;
@@ -209,9 +256,7 @@ export class CorteComponent implements OnInit {
     this.cajaService.updateCaja(this.caja, this.caja.caid)
         .subscribe( resp => {
 
-          localStorage.removeItem('turno');
-          // REDIRECCIONAR AL DASHBOARD
-          this.router.navigateByUrl('/');
+          localStorage.removeItem('turno');          
           
         }, (err) => { Swal.fire('Error', err.error.msg, 'error') });
 

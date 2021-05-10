@@ -88,7 +88,7 @@ export class PrintComponent implements OnInit {
 
             this.printDiv();
 
-          },3000)          
+          },3000);          
 
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
 
