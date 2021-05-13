@@ -30,6 +30,7 @@ import { DepartmentService } from '../../../services/department.service';
 import { MesasService } from '../../../services/mesas.service';
 import { EmpresaService } from '../../../services/empresa.service';
 import { UserService } from '../../../services/user.service';
+import { BasculaService } from '../../../services/bascula.service';
 
 // INTERFACES
 import { Carrito, _payments, LoadCarrito } from '../../../interfaces/carrito.interface';
@@ -78,7 +79,8 @@ export class MesaComponent implements OnInit {
                 private router: Router,
                 private printerService: NgxPrinterService,
                 private empresaService: EmpresaService,
-                private userService: UserService) {
+                private userService: UserService,
+                private basculaService: BasculaService) {
 
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
                     val => {}
@@ -172,6 +174,7 @@ export class MesaComponent implements OnInit {
    *  BUSCAR CODIGO
   ==================================================================== */
   @ViewChild('searchCode') searchCode: ElementRef;
+  // public peso: number;
   buscarCodigo(code: string){
 
     this.productService.cargarProductoCodigo(code)
@@ -187,35 +190,57 @@ export class MesaComponent implements OnInit {
             // PEDIMOS LA CANTIDAD
             if (product.type === 'Granel') {
 
-              Swal.fire({
-                title: 'Cantidad',
-                input: 'text',
-                inputAttributes: {
-                  autocapitalize: 'off'
-                },
-                showCancelButton: true,
-                confirmButtonText: 'Confirmar',
-                showLoaderOnConfirm: true,
-                preConfirm: (resp) => {
-                  
-                  return resp;
-                }
-              }).then((result) => {
+              if (this.empresaService.myEmpresa.bascula) {
 
-                if (result.value > 0) {
-                  
-                  const qty:number = result.value;
-  
-                  // GUARDAR AL CARRITO
-                  this.carritoTemp(product, qty, product.price);
-                  // GUARDAR AL CARRITO
-  
-                  return;
-                }else{
-                  return;
-                }                
+                this.basculaService.loadPeso()
+                    .subscribe( resp => {
+
+                      const peso = parseFloat(resp);
+
+                      const qty:number = parseFloat(peso);
+    
+                      // GUARDAR AL CARRITO
+                      this.carritoTemp(product, qty, product.price);
+                      // GUARDAR AL CARRITO
+      
+                      return;
+                      
+
+                    });
                 
-              });
+                
+              }else{             
+
+                Swal.fire({
+                  title: 'Cantidad',
+                  input: 'text',
+                  inputAttributes: {
+                    autocapitalize: 'off'
+                  },
+                  showCancelButton: true,
+                  confirmButtonText: 'Confirmar',
+                  showLoaderOnConfirm: true,
+                  preConfirm: (resp) => {
+                    
+                    return resp;
+                  }
+                }).then((result) => {
+
+                  if (result.value > 0) {
+                    
+                    const qty:number = result.value;
+    
+                    // GUARDAR AL CARRITO
+                    this.carritoTemp(product, qty, product.price);
+                    // GUARDAR AL CARRITO
+    
+                    return;
+                  }else{
+                    return;
+                  }                
+                  
+                });
+              }
               
             }else{
 

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 
-import { delay, map, tap } from 'rxjs/operators'
+import { delay, map, tap } from 'rxjs/operators';
 
 // INTERFACES
 import { LoadCaja, _caja } from '../interfaces/load-caja.interface';

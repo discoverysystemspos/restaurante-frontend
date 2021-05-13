@@ -26,6 +26,7 @@ export class Datos{
         public propina?: number,
         public commission?: boolean,
         public comision?: number,
+        public bascula?: boolean,
     ){}
 
     /** ================================================================

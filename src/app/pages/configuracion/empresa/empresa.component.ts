@@ -38,9 +38,9 @@ export class EmpresaComponent implements OnInit {
 
           this.empresa = datos;
           
-          const { tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina } = datos;
+          const { tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula } = datos;
 
-          this.formUpdate.reset({ tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina });
+          this.formUpdate.reset({ tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula });
 
         });
 
@@ -67,6 +67,7 @@ export class EmpresaComponent implements OnInit {
     propina: [0],
     commission: [false],
     comision: [0],
+    bascula: false,
   })
 
   actualizarDatos(){
