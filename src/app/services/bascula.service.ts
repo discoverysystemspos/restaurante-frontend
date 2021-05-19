@@ -39,7 +39,7 @@ export class BasculaService {
 
     return this.http.get(`${base_url}/bascula`, this.headers)
                 .pipe(
-                  map( (resp: { ok: boolean, pesos: String})=> {
+                  map( (resp: { ok: boolean, pesos: number})=> {
                       return resp.pesos;
                     })
                 )

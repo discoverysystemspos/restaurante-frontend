@@ -19,6 +19,7 @@ import { Department } from '../../../models/department.model';
 import { Mesa } from '../../../models/mesas.model';
 import { Kit } from '../../../models/kits.model';
 import { User } from '../../../models/user.model';
+import { Datos } from '../../../models/empresa.model';
 
 // SERVICES
 import { ProductService } from '../../../services/product.service';
@@ -49,6 +50,8 @@ export class MesaComponent implements OnInit {
   public carrito: LoadCarrito[] = [];
   public comanda: LoadCarrito[] = [];
   public mesa: Mesa;
+  public empresa: Datos;
+
 
   public productUp: Carrito[] = [];
 
@@ -97,6 +100,9 @@ export class MesaComponent implements OnInit {
       // TURNOS
       this.cargarTurno();
 
+      // DATOS
+      this.cargarDatos();
+
       // PRODUCTOS
       this.cargarProductos();
 
@@ -120,6 +126,17 @@ export class MesaComponent implements OnInit {
 
     // SERIAL PORT
     
+  }
+
+  /** ================================================================
+   *   CARGAR DATOS DE LA EMPRESA
+  ==================================================================== */
+  cargarDatos(){
+
+    this.empresaService.getDatos()
+        .subscribe( datos => {
+          this.empresa = datos;   
+        }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
   }
   
   /** ================================================================
@@ -190,14 +207,12 @@ export class MesaComponent implements OnInit {
             // PEDIMOS LA CANTIDAD
             if (product.type === 'Granel') {
 
-              if (this.empresaService.myEmpresa.bascula) {
+              if (this.empresa.bascula) {
 
                 this.basculaService.loadPeso()
                     .subscribe( resp => {
 
-                      const peso = parseFloat(resp);
-
-                      const qty:number = parseFloat(peso);
+                      const qty:number = resp;
     
                       // GUARDAR AL CARRITO
                       this.carritoTemp(product, qty, product.price);
@@ -895,7 +910,7 @@ export class MesaComponent implements OnInit {
     if (this.invoiceForm.value.fechaCredito === '' && this.credit) {
       Swal.fire('Importante', 'Debe de asignar una fecha de caducida a la factura a credito', 'warning');
       return;      
-    }
+    }    
 
     try {
 
@@ -948,27 +963,34 @@ export class MesaComponent implements OnInit {
             this.cargarMesa(this.mesaID);
             // LIMPIAMOS LA MESA
 
-            // AGREGAMOS LA FACTURA AL TURNO
-            this.turno.sales.push({
-              facturas: resp.invoice.iid
-            });
+            this.turnoService.getTurnoId(localStorage.getItem('turno'))
+            .subscribe( (turno) => {
+              this.turno = turno;
+              this.movimientos = turno.movements;   
+              
+              // AGREGAMOS LA FACTURA AL TURNO
+              this.turno.sales.push({
+                facturas: resp.invoice.iid
+              });
 
-            this.turnoService.updateTurno(this.turno, this.turno.tid)
-            .subscribe((resp) => {}, (err) =>{
-              Swal.fire('Error', err.error.msg, 'error');
-            }); 
-            // AGREGAMOS LA FACTURA AL TURNO
-                
-            Swal.fire('Success', `Se ha creado la factura <strong> #${ resp.invoice.invoice }</strong>, exitosamente`, 'success');
-            
-            // TIPO DE IMPRESION POS O CARTA
-            if (this.empresaService.myEmpresa.printpos) {              
-              window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
-            }else{
-              window.open(`./dashboard/factura/${ resp.invoice.iid }`, '_blank');
-            }
+              this.turnoService.updateTurno(this.turno, this.turno.tid)
+              .subscribe((resp) => {}, (err) =>{
+                Swal.fire('Error', err.error.msg, 'error');
+              }); 
+              // AGREGAMOS LA FACTURA AL TURNO
+                  
+              Swal.fire('Success', `Se ha creado la factura <strong> #${ resp.invoice.invoice }</strong>, exitosamente`, 'success');
+              
+              // TIPO DE IMPRESION POS O CARTA
+              if (this.empresa.printpos) {              
+                window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
+              }else{
+                window.open(`./dashboard/factura/${ resp.invoice.iid }`, '_blank');
+              }
 
-
+              window.location.reload();
+              
+            });            
 
           }, (err) => {
             Swal.fire('Error', err.error.msg, 'error');
@@ -995,12 +1017,9 @@ export class MesaComponent implements OnInit {
 
     this.turnoService.getTurnoId(localStorage.getItem('turno'))
         .subscribe( (turno) => {
-
           this.turno = turno;
-          this.movimientos = turno.movements;
-                    
+          this.movimientos = turno.movements;                    
         });
-
   }
   
   /** ================================================================
