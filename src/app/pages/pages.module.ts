@@ -37,6 +37,7 @@ import { EmpresaComponent } from './configuracion/empresa/empresa.component';
 import { CorteComponent } from './corte/corte.component';
 import { CierresComponent } from './configuracion/cierres/cierres.component';
 import { PrintComponent } from './ventas/print/print.component';
+import { MovimientosComponent } from './productos/movimientos/movimientos.component';
 
 
 @NgModule({
@@ -66,7 +67,8 @@ import { PrintComponent } from './ventas/print/print.component';
     EmpresaComponent,
     CorteComponent,
     CierresComponent,
-    PrintComponent
+    PrintComponent,
+    MovimientosComponent
   ],
   exports: [
     PagesComponent,

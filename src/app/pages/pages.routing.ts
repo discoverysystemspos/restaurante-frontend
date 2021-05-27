@@ -27,6 +27,7 @@ import { EmpresaComponent } from './configuracion/empresa/empresa.component';
 import { CorteComponent } from './corte/corte.component';
 import { CierresComponent } from './configuracion/cierres/cierres.component';
 import { PrintComponent } from './ventas/print/print.component';
+import { MovimientosComponent } from './productos/movimientos/movimientos.component';
 
 const routes: Routes = [
     
@@ -54,8 +55,10 @@ const routes: Routes = [
 
           { path: 'inventario', component: InventarioComponent,  canActivate: [AdminGuard], data:{ titulo: 'Inventario'} },
           { path: 'perfil', component: PerfilComponent, data:{ titulo: 'Perfil'} },
+
           { path: 'productos', component: ProductosComponent,  canActivate: [AdminGuard], data:{ titulo: 'Productos'} },
           { path: 'producto/:id', component: ProductoComponent,  canActivate: [AdminGuard], data:{ titulo: 'Producto'} },
+          { path: 'productos/movimientos', component: MovimientosComponent,  canActivate: [AdminGuard], data:{ titulo: 'Movimientos'} },
           
           { path: 'ventas', component: VentasComponent,  canActivate: [WaiterGuard], data:{ titulo: 'Ventas'} },
           { path: 'ventas/mesa/:id', component: MesaComponent,  canActivate: [WaiterGuard], data:{ titulo: 'Mesa'} },
