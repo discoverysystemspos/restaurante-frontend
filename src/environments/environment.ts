@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  base_url: 'http://192.168.0.150:3000/api'
+  base_url: 'http://elrincondeyeyo.dynns.com:4000/api'
 };
 
 /*
