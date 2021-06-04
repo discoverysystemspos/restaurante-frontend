@@ -34,13 +34,16 @@
 
         <div>
 
-            <button *ngIf="empresa.printpos" [routerLink]="['/dashboard/ventas/print', factura.iid]" type="button" class="btn btn-outline-primary btn-sm mx-1 my-2"> 
-                <i class="bi-printer"></i> Imprimir
-            </button>
+            <ng-container *ngIf="empresa">
+                <button *ngIf="empresa.printpos" [routerLink]="['/dashboard/ventas/print', factura.iid]" type="button" class="btn btn-outline-primary btn-sm mx-1 my-2"> 
+                    <i class="bi-printer"></i> Imprimir
+                </button>
 
-            <button *ngIf="!empresa.printpos" (click)="printDiv()" type="button" class="btn btn-outline-primary btn-sm mx-1 my-2"> 
-                <i class="bi-printer"></i> Imprimir
-            </button>
+                <button *ngIf="!empresa.printpos" (click)="printDiv()" type="button" class="btn btn-outline-primary btn-sm mx-1 my-2"> 
+                    <i class="bi-printer"></i> Imprimir
+                </button>
+            </ng-container>
+
 
             <button (click)="devolucion(factura.iid)" type="button" class="btn btn-outline-danger btn-sm mx-1 my-2"> 
                 <i class="bi-arrow-counterclockwise"></i> Cancelar Factura
@@ -64,7 +67,7 @@
                     <!-- Informacion del Cliente -->
                     <div class="col-md-8 text-left text-muted">
 
-                        <div class="mb-2">
+                        <div class="mb-2" *ngIf="empresa">
                             <!-- Image Product-->
                             <img *ngIf="empresa.logo" [src]=" empresa.logo | imagen:'logo'" class="mx-auto" width="200px" alt="">
                         </div>
@@ -103,7 +106,7 @@
                     </div>
 
                     <div class="col">
-                        <div class="col-12">
+                        <div class="col-12" *ngIf="empresa">
                             <!-- <div class="mb-2 d-flex justify-content-end">
                                 <img *ngIf="empresa.logo" src="{{empresa.logo | imagen:'logo'}}" class="" width="200px" alt="">
                             </div> -->
@@ -126,10 +129,13 @@
                 <!-- INFORMACION DEL CLIENTE -->
 
                 <!-- INFORMACION DE LA FACTURA -->
+                <ng-container *ngIf="empresa">
+                    <h4 *ngIf="!empresa.responsable" class="text-center text-wrap"> Registro de operación de Venta </h4>
+                    <h4 *ngIf="empresa.responsable" class="text-center text-wrap"> Factura de venta pos </h4>
+                    <h4 *ngIf="!factura.status" class="text-center text-danger"> CANCELADA </h4>
+                </ng-container>
 
-                <h4 *ngIf="!empresa.responsable" class="text-center text-wrap"> Registro de operación de Venta </h4>
-                <h4 *ngIf="empresa.responsable" class="text-center text-wrap"> Factura de venta pos </h4>
-                <h4 *ngIf="!factura.status" class="text-center text-danger"> CANCELADA </h4>
+
 
                 <div class=" table-responsive ">
 
@@ -180,7 +186,7 @@
                         </div>
 
                         <div class="ms-auto d-flex justify-content-end">
-                            <div class="border-start col px-4">
+                            <div class="border-start col px-4" *ngIf="empresa">
 
                                 <!-- TOTAL -->
                                 <h5 *ngIf="empresa.responsable" class="display-6 fw-bold text-primary">{{ factura.amount + (factura.amount * empresa.tax)/100 | currency }}</h5>
@@ -243,7 +249,10 @@
 
                                 <!-- TOTAL -->
                                 <div class="text-center my-3">
-                                    <h4 class="display-4 text-primary">{{ factura.amount | currency }}</h4>
+                                    <ng-container *ngIf="factura">
+                                        <h4 class="display-4 text-primary">{{ factura.amount | currency }}</h4>
+                                    </ng-container>
+
 
                                     <small *ngIf="totalPagos > 0 && totalPagos < factura.amount" class="text-danger animated fadeIn">Resta</small>
                                     <small *ngIf="totalPagos > 0 && totalPagos >= factura.amount" class="text-success animated fadeIn">Vueltos</small>
@@ -316,15 +325,6 @@
 
                                                 </div>
 
-                                                <div class="col p-2">
-
-                                                    <input type="radio" (click)="limpiarPagos('credito')" class="btn-check" name="options-outlined" name="type" formControlName="type" id="credito-outlined" value="credito" autocomplete="off">
-                                                    <label class="btn btn-outline-warning" for="credito-outlined">
-                                                    <i class="px-3 bi-clock-history" style="font-size: 1.5rem;"></i>
-                                                    <p class="mb-0">Credito</p>
-                                                </label>
-
-                                                </div>
                                             </div>
 
                                             <div class="mx-auto">
@@ -368,7 +368,6 @@
                                                             <option *ngIf="invoiceForm.value.type === 'transferencia' || invoiceForm.value.type === 'mixto'" value="transferencia">Transferencia</option>
                                                             <option *ngIf="invoiceForm.value.type === 'tarjeta' || invoiceForm.value.type === 'mixto'" value="tarjeta">Tarjeta</option>
                                                             <option *ngIf="invoiceForm.value.type === 'vale' || invoiceForm.value.type === 'mixto'" value="vale">Vale</option>
-                                                            <option *ngIf="invoiceForm.value.type === 'credito'" value="credito">Credito</option>
                                                         </select>
 
                                                     </div>
@@ -380,7 +379,11 @@
 
                                                     <div class="col-auto" *ngIf="!credit">
                                                         <label for="monto" class="visually-hidden">Monto</label>
-                                                        <input type="number" class="form-control" id="monto" placeholder="Monto" [value]=" factura.amount " autofocus="true" (keyup)="montoAdd.value" #montoAdd>
+
+                                                        <ng-container *ngIf="factura">
+                                                            <input type="number" class="form-control" id="monto" placeholder="Monto" [value]=" factura.amount " autofocus="true" (keyup)="montoAdd.value" #montoAdd>
+                                                        </ng-container>
+
                                                     </div>
 
                                                     <div class="col-auto" *ngIf="!credit">

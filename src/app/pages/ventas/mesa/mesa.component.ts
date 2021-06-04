@@ -403,7 +403,10 @@ export class MesaComponent implements OnInit {
                         
           }
 
-          this.sumarTotales();     
+          this.sumarTotales();
+          
+          console.log(this.productUp);
+          
 
           // this.cargarMesa(this.mesaID);
 
