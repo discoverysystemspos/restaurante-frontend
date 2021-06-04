@@ -57,6 +57,7 @@
                         <tr>
                             <th class="text-muted " scope="col ">#</th>
                             <th class="text-muted " scope="col " colspan="2">Nombre</th>
+                            <th class="text-muted " scope="col ">Usuario</th>
                             <th class="text-muted " scope="col ">Estado</th>
                             <th class="text-muted w100 " scope="col ">Acciones</th>
 
@@ -72,6 +73,7 @@
                             <th *ngIf="desde === 0 " scope="row ">{{ i + 1}}</th>
                             <th *ngIf="desde> 0" scope="row">{{ (i + 1) + desde }}</th>
                             <td colspan="2">{{ usuario.name }}</td>
+                            <td>{{ usuario.usuario }}</td>
                             <td>
                                 <button *ngIf="usuario.status" (click)="statusUpdate(usuario.uid)" type="button" class="btn btnW waves-effect waves-ligth btn-success btn-sm">Activo</button>
                                 <button *ngIf="!usuario.status" (click)="statusUpdate(usuario.uid)" type="button" class="btn btnW waves-effect waves-ligth btn-danger btn-sm">Desactivo</button>

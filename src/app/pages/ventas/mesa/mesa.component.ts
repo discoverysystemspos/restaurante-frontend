@@ -5,7 +5,6 @@ import { Subscription, Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import * as SerialPort from 'serialport';
 
-
 // PRINTER
 import { NgxPrinterService } from 'projects/ngx-printer/src/lib/ngx-printer.service';
 import { PrintItem } from 'projects/ngx-printer/src/lib/print-item';
@@ -218,11 +217,9 @@ export class MesaComponent implements OnInit {
                       this.carritoTemp(product, qty, product.price);
                       // GUARDAR AL CARRITO
       
-                      return;
-                      
+                      return;                    
 
-                    });
-                
+                    });                
                 
               }else{             
 
@@ -275,6 +272,72 @@ export class MesaComponent implements OnInit {
   }
 
   /** ================================================================
+   *  AGREGAR PRODUCTO POR BOTON
+  ==================================================================== */
+  btnAddProducto( product: any, qty: number, precio: number ){
+
+    if (product.type === 'Granel') {
+
+      if (this.empresa.bascula) {
+
+        this.basculaService.loadPeso()
+            .subscribe( resp => {
+
+              qty = resp;
+
+              // GUARDAR AL CARRITO
+              this.carritoTemp(product, qty, product.price);
+              // GUARDAR AL CARRITO
+
+              return;                    
+
+            });                
+        
+      }else{             
+
+        Swal.fire({
+          title: 'Cantidad',
+          input: 'text',
+          inputAttributes: {
+            autocapitalize: 'off'
+          },
+          showCancelButton: true,
+          confirmButtonText: 'Confirmar',
+          showLoaderOnConfirm: true,
+          preConfirm: (resp) => {
+            
+            return resp;
+          }
+        }).then((result) => {
+
+          if (result.value > 0) {
+            
+            qty = result.value;
+
+            // GUARDAR AL CARRITO
+            this.carritoTemp(product, qty, product.price);
+            // GUARDAR AL CARRITO
+
+            return;
+          }else{
+            return;
+          }                
+          
+        });
+      }
+      
+    }else{
+
+      // GUARDAR AL CARRITO
+      this.carritoTemp(product, qty, product.price);
+      // GUARDAR AL CARRITO
+
+    } 
+
+  }
+
+
+  /** ================================================================
    *  ALMACENAR PRODUCTO TEMPORAL EN EL CARRITO
   ==================================================================== */
   public total: number = 0;
@@ -318,9 +381,31 @@ export class MesaComponent implements OnInit {
     this.mesa.carrito =  this.productUp;
 
     this.mesasServices.updateMesa(this.mesa, this.mesaID)
-        .subscribe( (resp:{ok: boolean, mesa: Mesa}) => {     
+        .subscribe( (resp:{ok: boolean, mesa: any}) => { 
+          
+          this.carrito = resp.mesa.carrito;
+          this.productUp = [];
+          this.comanda = [];
+          
+          for (let i = 0; i < resp.mesa.carrito.length; i++) {
 
-          this.cargarMesa(this.mesaID);
+            this.productUp.push({
+              product: resp.mesa.carrito[i].product._id,
+              qty: resp.mesa.carrito[i].qty,
+              price: resp.mesa.carrito[i].price
+            });
+            
+            this.comanda.push({
+              product: resp.mesa.carrito[i].product.name,
+              qty: resp.mesa.carrito[i].qty,
+              price: resp.mesa.carrito[i].price
+            });
+                        
+          }
+
+          this.sumarTotales();     
+
+          // this.cargarMesa(this.mesaID);
 
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
     
@@ -349,9 +434,31 @@ export class MesaComponent implements OnInit {
         this.mesa.carrito =  this.productUp;
 
         this.mesasServices.updateMesa(this.mesa, this.mesaID)
-            .subscribe( (resp:{ok: boolean, mesa: Mesa}) => {
+            .subscribe( (resp:{ok: boolean, mesa: any}) => {
 
-              this.cargarMesa(this.mesaID);
+              this.carrito = resp.mesa.carrito;
+              this.productUp = [];
+              this.comanda = [];
+              
+              for (let i = 0; i < resp.mesa.carrito.length; i++) {
+
+                this.productUp.push({
+                  product: resp.mesa.carrito[i].product._id,
+                  qty: resp.mesa.carrito[i].qty,
+                  price: resp.mesa.carrito[i].price
+                });
+                
+                this.comanda.push({
+                  product: resp.mesa.carrito[i].product.name,
+                  qty: resp.mesa.carrito[i].qty,
+                  price: resp.mesa.carrito[i].price
+                });
+                            
+              }
+
+              this.sumarTotales();
+
+              // this.cargarMesa(this.mesaID);
 
             }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
         
@@ -464,8 +571,7 @@ export class MesaComponent implements OnInit {
           
           this.cargarMesa(this.mesaID);
           
-        }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
-    
+        }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });    
     
   }
 
@@ -678,6 +784,7 @@ export class MesaComponent implements OnInit {
   /** ================================================================
    *  SELECCIONAR PRODUCTO
   ==================================================================== */
+  @ViewChild('cantidad') cantidad: ElementRef;
   public productTemp: Product = {
     code: '',
     name: '',
@@ -697,6 +804,27 @@ export class MesaComponent implements OnInit {
     this.totalProductos = 0;
 
     this.productTemp = producto;
+
+    // SI ES GRANEL
+    let qty:number = 1;
+    if (producto.type === 'Granel') {
+
+      if (this.empresa.bascula) {
+
+        this.basculaService.loadPeso()
+            .subscribe( resp => {
+
+              qty = resp;
+              this.cantidad.nativeElement.value = qty;
+              return;                    
+
+            });        
+      }
+      
+    }else{      
+      this.cantidad.nativeElement.value = qty;
+    }
+    // SI ES GRANEL
 
   }
 
@@ -735,7 +863,6 @@ export class MesaComponent implements OnInit {
         precio = this.productTemp.wholesale;
       }
     }
-
     
     // GUARDAR AL CARRITO
     this.carritoTemp(this.productTemp, qty, precio);

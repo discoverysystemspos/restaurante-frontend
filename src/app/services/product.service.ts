@@ -56,7 +56,6 @@ export class ProductService {
     const endPoint = `/products?desde=${desde}`;
     return this.http.get<LoadProduct>(`${base_url}${endPoint}`, this.headers)
             .pipe(
-              delay(500),
               map( resp => {
                 return resp;
               })
@@ -70,7 +69,6 @@ export class ProductService {
     const endPoint = `/products/cost/`;
     return this.http.get<LoadCost>(`${base_url}${endPoint}`, this.headers)
             .pipe(
-              delay(500),
               map( resp => {
                 return resp;
               })
@@ -84,7 +82,6 @@ export class ProductService {
     const endPoint = `/products/${id}`;
     return this.http.get(`${base_url}${endPoint}`, this.headers)
             .pipe(
-              delay(500),
               map( (resp: {ok: boolean, product: Product} ) => resp.product)
             );
   }
@@ -107,7 +104,6 @@ export class ProductService {
     const endPoint = `/products/department/${department}`;
     return this.http.get<LoadProduct>(`${base_url}${endPoint}`, this.headers)
                     .pipe(
-                      delay(500),
                       map( resp => {
                         return resp;
                       })

@@ -63,7 +63,7 @@
                                 <div class="d-flex align-items-center">
 
                                     <p class="mb-0 text-success">{{ producto.price | currency }}</p>
-                                    <button type="button" [disabled]="producto.out" (click)="carritoTemp( producto, 1, producto.price )" class="btn btn-link btn-primary text-white ms-auto" style="font-size: 1rem;">
+                                    <button type="button" [disabled]="producto.out" (click)="btnAddProducto( producto, 1, producto.price )" class="btn btn-link btn-primary text-white ms-auto" style="font-size: 1rem;">
                                         <i class="bi bi-cart-plus"></i>
                                     </button>
 
@@ -160,10 +160,12 @@
 
                         <div class="col">
                             <h6 class="text-wrap mb-0">
-                                <span class="text-primary text-wrap"> 
-                                {{ mesa.name }} - 
-                                {{ mesa.mesero.name }} 
-                            </span>
+                                <ng-container *ngIf="mesa">
+                                    <span class="text-primary text-wrap"> 
+                                        {{ mesa.name }} - 
+                                        {{ mesa.mesero.name }} 
+                                    </span>
+                                </ng-container>
                             </h6>
                         </div>
 
@@ -367,7 +369,7 @@
                     <div class="my-2">
                         <div>
                             <label for="precioM">Buscar Productos:</label>
-                            <input type="text" class="form-control" placeholder="buscar producto" (keyup)="buscarProducto(searchProduct.value)" #searchProduct>
+                            <input type="text" class="form-control" placeholder="buscar producto" (keyup.enter)="buscarProducto(searchProduct.value)" #searchProduct>
                         </div>
                         <div *ngIf="listaProductos.length > 0" class="bg-white px-2 shadow col-10" style="position: absolute; z-index: 1020;">
 
@@ -793,7 +795,7 @@ COMANDAS
 
                 <div class="text-center pb-2" id="printDiv">
 
-                    <h4 class="text-capitalize"> {{ mesa.name }} </h4>
+                    <h4 class="text-capitalize" *ngIf="mesa"> {{ mesa.name }} </h4>
 
                     <table class="table table-sm">
                         <thead>

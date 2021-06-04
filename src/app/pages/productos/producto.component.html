@@ -29,12 +29,14 @@
                 <div class="card-body text-center">
 
                     <p class="mb-0">Stock</p>
-                    <h4 class="display-6" *ngIf="producto.type !== 'Granel'">
-                        {{ producto.stock + ( producto.returned || 0 ) + ( producto.bought || 0 ) - (producto.sold || 0) - ( producto.damaged || 0) | number }}
-                    </h4>
-                    <h4 class="display-6" *ngIf="producto.type === 'Granel'">
-                        {{ producto.stock + ( producto.returned || 0 ) + ( producto.bought || 0 ) - (producto.sold || 0) - ( producto.damaged || 0) | number:'1.3' }}
-                    </h4>
+                    <ng-container *ngIf="producto">
+                        <h4 class="display-6" *ngIf="producto.type != 'Granel'">
+                            {{ producto.stock + ( producto.returned || 0 ) + ( producto.bought || 0 ) - (producto.sold || 0) - ( producto.damaged || 0) | number }}
+                        </h4>
+                        <h4 class="display-6" *ngIf="producto.type === 'Granel'">
+                            {{ producto.stock + ( producto.returned || 0 ) + ( producto.bought || 0 ) - (producto.sold || 0) - ( producto.damaged || 0) | number:'1.3' }}
+                        </h4>
+                    </ng-container>
 
 
 
@@ -55,7 +57,7 @@
                     </div> -->
 
                     <!-- Image Product-->
-                    <img *ngIf="!imgTemp" [src]="producto.img | imagen:'products'" class="avatar-redondo-lg mx-auto" alt="">
+                    <img *ngIf="!imgTemp" [src]="productoImg | imagen:'products'" class="avatar-redondo-lg mx-auto" alt="">
 
                     <!-- IMG TEMPO  imgTemp -->
                     <img *ngIf="imgTemp" [src]="imgTemp" class="avatar-redondo-lg mx-auto" alt="">

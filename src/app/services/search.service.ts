@@ -39,7 +39,6 @@ export class SearchService {
     const endPoint = `/search/${tipo}/${termino}`;
     return this.http.get<any[]>(`${base_url}${endPoint}`, this.headers)
             .pipe(
-              delay(500),
               map( (resp: any) => {              
                 return resp;
               })

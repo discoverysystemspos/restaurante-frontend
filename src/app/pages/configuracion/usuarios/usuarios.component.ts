@@ -119,6 +119,11 @@ export class UsuariosComponent implements OnInit {
    *   ACTUALIZAR STATUS USUARIOS
   ==================================================================== */
   statusUpdate(id: string){
+
+    if (id === this.userService.user.uid) {
+      Swal.fire('Atención', `No puedes cambiar tu estado`, 'info');
+      return;
+    }
     
     this.userService.statusUser(id)
         .subscribe( (user) => {

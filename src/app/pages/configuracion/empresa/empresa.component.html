@@ -35,7 +35,9 @@
                 <div class="card-body text-center">
 
                     <!-- Image Product-->
-                    <img *ngIf="!imgTemp" [src]="empresa.logo | imagen:'logo'" class="avatar-redondo-lg mx-auto" alt="">
+                    <ng-container *ngIf="empresa">
+                        <img *ngIf="!imgTemp" [src]="empresa.logo | imagen:'logo'" class="avatar-redondo-lg mx-auto" alt="">
+                    </ng-container>
 
                     <!-- IMG TEMPO  imgTemp -->
                     <img *ngIf="imgTemp" [src]="imgTemp" class="avatar-redondo-lg mx-auto" alt="">

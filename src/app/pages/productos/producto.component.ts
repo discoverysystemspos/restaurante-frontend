@@ -37,7 +37,7 @@ export class ProductoComponent implements OnInit {
 
     code: [''],
     name: [''],
-    type: ['' || 0],
+    type: [''],
     cost: [''],
     gain: [''],
     price: [''],
@@ -85,7 +85,7 @@ export class ProductoComponent implements OnInit {
   cargarProducto(id: string){
     
     this.productService.cargarProductoId(id)
-        .subscribe( product => {          
+        .subscribe( product => {   
 
           this.producto = product;
           this.productoImg = product.img;          
@@ -350,7 +350,7 @@ export class ProductoComponent implements OnInit {
   subirImg(){
     
     this.fileUploadService.updateImage( this.subirImagen, 'products', this.productoID)
-    .then( img => this.producto.img = img);
+    .then( img => this.productoImg = img);
     
     this.fileImg.nativeElement.value = '';
     this.imgProducto = 'no-image';
