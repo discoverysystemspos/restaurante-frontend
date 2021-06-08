@@ -235,10 +235,16 @@
                             <!-- <button type="button" class="btn btn-dark btnW waves-effect waves-dark text-white" data-bs-toggle="modal" data-bs-target="#facturar"> <h4 class="display-6">Facturar</h4></button> -->
                         </div>
 
-                        <div class="col ms-auto text-end">
-                            <h4 class="fw-normal text-primary">{{ total | currency }}</h4>
-                            <small class="h6 fw-normal text-primary">Sub-total {{ total / 1 | currency }}</small>
+                        <div class="col ms-auto text-end" *ngIf="empresa">
+                            <p class="h6 fw-normal text-primary mb-0" *ngIf="!empresa.responsable">Sub-total {{ total / 1 | currency }}</p>
+                            <p class="h6 fw-normal text-primary mb-0" *ngIf="empresa.responsable">Sub-total {{ total / ((empresa.tax/100)+1) | currency }}</p>
+                            <p class="h6 fw-normal text-primary mb-0" *ngIf="empresa.responsable">IVA {{empresa.tax}}% {{ total - (total / ((empresa.tax/100)+1)) | currency }}</p>
+                            <h4 class="fw-normal text-primary" *ngIf="!empresa.responsable">{{ total | currency }}</h4>
+                            <h4 class="fw-normal text-primary" *ngIf="empresa.responsable">{{ total | currency }}</h4>
                         </div>
+
+
+
                     </div>
 
                 </div>
@@ -472,8 +478,9 @@
                             <div class="container-fluid py-4">
 
                                 <!-- TOTAL -->
-                                <div class="text-center my-3">
+                                <div class="text-center my-3" *ngIf="empresa">
                                     <h4 class="display-4 text-primary">{{ total | currency }}</h4>
+                                    <!-- <h4 class="display-4 text-primary" *ngIf="empresa.responsable">{{ total + ((total * empresa.tax)/100) | currency }}</h4> -->
 
                                     <small *ngIf="totalPagos > 0 && totalPagos < total" class="text-danger animated fadeIn">Resta</small>
                                     <small *ngIf="totalPagos > 0 && totalPagos >= total" class="text-success animated fadeIn">Vueltos</small>
@@ -610,7 +617,7 @@
 
                                                     <div class="col-auto">
                                                         <label for="monto" class="visually-hidden">Monto</label>
-                                                        <input type="number" class="form-control" id="monto" placeholder="Monto" [value]=" total " autofocus="true" (keyup)="montoAdd.value" #montoAdd>
+                                                        <input type="number" class="form-control" id="monto" placeholder="Monto" autofocus="true" (keyup)="montoAdd.value" #montoAdd>
                                                     </div>
 
 

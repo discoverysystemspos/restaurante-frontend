@@ -403,10 +403,7 @@ export class MesaComponent implements OnInit {
                         
           }
 
-          this.sumarTotales();
-          
-          console.log(this.productUp);
-          
+          this.sumarTotales();          
 
           // this.cargarMesa(this.mesaID);
 
@@ -487,6 +484,10 @@ export class MesaComponent implements OnInit {
         this.total += (this.carrito[i].price * this.carrito[i].qty);
         this.totalCosto += (this.carrito[i].product.cost * this.carrito[i].qty);
 
+      }
+
+      if (this.empresa.responsable) {
+        this.total = this.total + ((this.total * this.empresa.tax)/100);
       }
 
     }    
@@ -938,7 +939,8 @@ export class MesaComponent implements OnInit {
   public vueltos: number = 0;
 
   focusMonto(){
-        
+
+    this.montoAdd.nativeElement.value = this.total;  
     this.montoAdd.nativeElement.focus();
 
   }

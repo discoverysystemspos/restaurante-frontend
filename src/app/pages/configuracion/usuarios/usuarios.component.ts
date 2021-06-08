@@ -51,9 +51,9 @@ export class UsuariosComponent implements OnInit {
       
       this.totalUsers = total;
       this.usuarios = users;
-          this.usuariosTemp = users;
-          this.resultado = 0;
-          this.cargando = false;          
+      this.usuariosTemp = users;
+      this.resultado = 0;
+      this.cargando = false;          
           
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
 
@@ -79,10 +79,7 @@ export class UsuariosComponent implements OnInit {
     }else{
 
       this.userService.createUser(this.newUserForm.value)
-          .subscribe( (resp:{ok: boolean, user: User}) => {
-
-            console.log(resp);
-            
+          .subscribe( (resp:{ok: boolean, user: User}) => {            
 
             this.formSubmitted = false;
             this.cargarUsuarios();
@@ -111,9 +108,63 @@ export class UsuariosComponent implements OnInit {
   }    
 
   /** ================================================================
+   *   INFORMACION DEL USUARIO
+  ==================================================================== */
+  public formSubmittedUp:boolean = false;
+  public updateUserForm = this.fb.group({
+    usuario: ['', [Validators.required, Validators.minLength(4)]],
+    name: ['', [Validators.required, Validators.minLength(3)]],
+    id: [''],
+    role: ['STAFF']
+  });
+
+  informacionUsuario(user: User){   
+
+    this.updateUserForm.setValue({
+      usuario: user.usuario,
+      name: user.name,
+      id: user.uid,
+      role: user.role
+    });
+
+  }
+  /** ================================================================
    *   ACTUALIZAR USUARIOS
   ==================================================================== */
-  informacionUsuario(){}
+  actualizarUsuario(){
+
+    this.formSubmittedUp = true;
+    
+    if (this.updateUserForm.invalid) {
+      return;
+    }
+
+    this.userService.updateUser(this.updateUserForm.value, this.updateUserForm.value.id)
+        .subscribe((resp:{ok: boolean, user: User}) => {          
+
+          this.formSubmittedUp = false;
+          this.cargarUsuarios();
+          this.updateUserForm.reset();
+          Swal.fire('Estupendo', 'Se ha actualizado el Usuario exitosamente!', 'success');
+
+        }, (err) => { Swal.fire('Error', err.error.msg, 'error'); 
+      });
+
+
+  }
+
+  /** ================================================================
+   *   VALIDAR CAMPOS
+  ==================================================================== */
+  campoValidoUpdate(campo: string): boolean{
+
+    if ( this.updateUserForm.get(campo).invalid &&  this.formSubmittedUp) {      
+      return true;      
+    } else{      
+      return false;
+    }
+
+  }
 
   /** ================================================================
    *   ACTUALIZAR STATUS USUARIOS

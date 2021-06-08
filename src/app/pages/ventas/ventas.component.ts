@@ -35,14 +35,24 @@ export class VentasComponent implements OnInit {
 
   constructor(  private router: Router,
                 private mesasService: MesasService,
-                private userService:UserService) { 
+                private userService:UserService) {
 
-                setInterval( () => { 
+                  const reloadMesa = setInterval( () => {
+
+                    let ruta = window.location.href;
+                    let rutaArray = ruta.split('/');
                   
-                  this.cargarMesas(); 
-                }, 5000);
+                    if (rutaArray.length > 5 ) {
+                      clearInterval(reloadMesa);
+                    }else if (rutaArray[4] === 'ventas'){                      
+                      this.cargarMesas();          
+                    }else{
+                      clearInterval(reloadMesa);
+                    }
+            
+                  }, 5000);
 
-              }
+                }
 
   ngOnInit(): void {
 
@@ -63,7 +73,6 @@ export class VentasComponent implements OnInit {
     this.cargarMesas();
 
   }
-
 
   /** ================================================================
    *   CARGAR MESAS
