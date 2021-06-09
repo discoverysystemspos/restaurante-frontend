@@ -705,8 +705,7 @@ export class MesaComponent implements OnInit {
    *  CARGAR PRODUCTOS
   ==================================================================== */
   cargarProductos(){
-
-    
+   
     this.cargando = true;
     this.sinResultados = true;
     this.productService.cargarProductos(this.desde)
@@ -1008,6 +1007,9 @@ export class MesaComponent implements OnInit {
 
     this.payments = [];
     this.vueltos = 0;
+    this.totalPagos = 0;
+
+    this.sumarPagos();
   }
 
   /** ================================================================
