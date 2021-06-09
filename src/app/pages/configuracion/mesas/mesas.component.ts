@@ -139,7 +139,7 @@ export class MesasComponent implements OnInit {
   public formSubmitted:boolean = false;
   public newMesaForm = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(1), Validators.min(1)]],
-    mesero: [''],
+    mesero: [0, [Validators.required, Validators.minLength(2)]],
     img: ['ticket.svg']
   });
 

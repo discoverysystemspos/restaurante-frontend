@@ -130,7 +130,7 @@
                     <h5 class="text-muted">Informaciòn</h5>
 
                     <div class="row mb-2">
-                        
+
                         <div class="col-md-12 px-md-1">
                             <label for="">Tipo</label>
                             <select class="form-select" aria-label="Default select example" formControlName="img">
@@ -156,15 +156,16 @@
                     </div>
 
                     <div class="row mb-3">
-                        
+
                         <div class="col-md-12 px-md-1">
 
                             <div class="form-group">
-                              <label for="">Usuario</label>
-                              <select formControlName="mesero" class="form-control" name="">
-                                <option *ngFor="let mesero of meseros" [value]="mesero.uid">
-                                    {{ mesero.name }}
-                                </option>
+                                <label for="">Usuario</label>
+                                <select formControlName="mesero" class="form-control" name="" *ngIf="meseros">
+                                    <option selected value="0">Seleccionar</option>
+                                    <option *ngFor="let mesero of meseros" [value]="mesero.uid">
+                                        {{ mesero.name }}
+                                    </option>
                               </select>
                             </div>
 
@@ -175,6 +176,7 @@
                     <div class="row">
                         <div class="text-danger mb-2">
                             <p *ngIf="campoValido('name')" class="mb-1 animated fadeIn">- El numero de mesa es obligatorio</p>
+                            <p *ngIf="campoValido('mesero')" class="mb-1 animated fadeIn">- Debes seleccionar un usuario</p>
                         </div>
                     </div>
 
@@ -214,7 +216,7 @@
                     <h5 class="text-muted">Información de la mesa</h5>
 
                     <div class="row mb-2">
-                        
+
                         <div class="col-md-12 px-md-1">
                             <label for="">Tipo</label>
                             <select class="form-select" aria-label="Default select example" formControlName="img">
@@ -238,12 +240,12 @@
                     </div>
 
                     <div class="row mb-3">
-                        
+
                         <div class="col-md-12 px-md-1">
 
                             <div class="form-group">
-                              <label for="">Seleccionar Mesero</label>
-                              <select formControlName="mesero" class="form-control" name="" id="">
+                                <label for="">Seleccionar Mesero</label>
+                                <select formControlName="mesero" class="form-control" name="" id="">
                                 <option *ngFor="let mesero of meseros" [value]="mesero.uid">
                                     {{ mesero.name }}
                                 </option>
