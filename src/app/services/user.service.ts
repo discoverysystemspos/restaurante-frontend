@@ -82,9 +82,9 @@ export class UserService {
     }).pipe(
       tap( (resp: any) => {
         
-        const { usuario, name, role, img, uid } = resp.usuario;
+        const { usuario, name, role, img, uid, cerrada } = resp.usuario;
 
-        this.user = new User( usuario, name, '', role, img, uid );        
+        this.user = new User( usuario, name, '', role, img, uid, cerrada );        
 
         localStorage.setItem('token', resp.token);
       }),

@@ -1,5 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription, Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 
 // PRINTER
@@ -10,6 +11,7 @@ import { ngxPrintMarkerPosition } from 'projects/ngx-printer/src/public_api';
 // SERVICES
 import { TurnoService } from '../../services/turno.service';
 import { CajaService } from '../../services/caja.service';
+import { UserService } from '../../services/user.service';
 
 // INTERFACES
 import { LoadTurno, _movements } from '../../interfaces/load-turno.interface';
@@ -17,7 +19,7 @@ import { _caja } from '../../interfaces/load-caja.interface';
 
 // MODELS
 import { Caja } from '../../models/caja.model';
-import { Subscription, Observable } from 'rxjs';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-corte',
@@ -35,10 +37,13 @@ export class CorteComponent implements OnInit {
   printWindowSubscription: Subscription;
   $printItems: Observable<PrintItem[]>;
 
+  public user:User;
+
   constructor(  private turnoService: TurnoService,
                 private cajaService: CajaService,
                 private router: Router,
-                private printerService: NgxPrinterService) {
+                private printerService: NgxPrinterService,
+                private userService: UserService) {
 
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
                     val => {
@@ -56,6 +61,8 @@ export class CorteComponent implements OnInit {
 
   ngOnInit(): void {    
 
+    this.user = this.userService.user;
+
     if (localStorage.getItem('turno') !== null) {
       
       // TURNO
@@ -67,7 +74,8 @@ export class CorteComponent implements OnInit {
     }else{
       Swal.fire('Atención!', 'No existe un turno asignado, no puedes hacer cortes ni cierres', 'info');
       return;
-    }
+    }   
+    
 
   }
 
@@ -219,6 +227,8 @@ export class CorteComponent implements OnInit {
   public fechaCierre: Date;
   public montoDiferencia: number;
   public diferencia: boolean;
+  public updateUser:any[];
+
   cerrarTurno(dineroCaja: number){
 
     const totalEfectivo = (this.efectivo + this.entradas + this.inicial + this.abEfectivo + this.salidas);
@@ -231,6 +241,8 @@ export class CorteComponent implements OnInit {
     this.turno.cerrado = true;
     this.turno.cierre = new Date();
 
+    this.updateUser = [];
+
     // CERRAR TURNO
     this.turnoService.updateTurno(this.turno, this.turno.tid)
         .subscribe( (resp:{ ok:boolean, turno: LoadTurno }) => {        
@@ -238,6 +250,15 @@ export class CorteComponent implements OnInit {
           this.fechaCierre = resp.turno.cierre;
           this.diferencia = resp.turno.diferencia;
           this.montoDiferencia = resp.turno.montoD;
+
+          this.updateUser.push({
+            name: this.user.name,
+            usuario: this.user.usuario,
+            cerrada: this.turno.cerrado,
+          });
+
+          this.userService.updateUser(this.updateUser, this.user.uid)
+              .subscribe()
 
           // IMPRIMIR FACTURA
           setTimeout( () => {

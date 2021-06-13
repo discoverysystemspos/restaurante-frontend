@@ -12,6 +12,8 @@ export class User {
         public img?: string,
         public uid?: string,
         public status?: boolean,
+        public cerrada?: boolean,
+        public turno?: string,
     ){}
 
     /** ================================================================
