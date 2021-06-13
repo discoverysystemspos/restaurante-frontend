@@ -923,7 +923,7 @@ export class MesaComponent implements OnInit {
     client: ['', [Validators.required]],
     type: ['efectivo', [Validators.required]],
     payments: [''],
-    mesero: [''],
+    mesero: [0],
     mesa: [''],
     products: [''],
     credito: [this.credit],
