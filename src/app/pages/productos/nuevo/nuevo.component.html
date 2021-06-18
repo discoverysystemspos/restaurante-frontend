@@ -273,6 +273,10 @@
 
                         </div>
 
+                    </div>
+
+                    <div class="row mb-3">
+
                         <div class="col-md-4 px-md-1">
                             <div class="form-check mt-2">
                                 <input formControlName="visibility" class="form-check-input" type="checkbox" value="" id="checkProducto" checked>
@@ -280,6 +284,30 @@
                                   Producto Visible
                                 </label>
                             </div>
+                        </div>
+
+                        <div class="col-md-4 px-md-1">
+                            <div class="form-check mt-2">
+                                <input formControlName="comanda" class="form-check-input" type="checkbox" value="" id="checkComanda">
+                                <label class="form-check-label" for="checkComanda">
+                                  Comanda
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 px-md-1">
+
+                            <div class="form-floating">
+                                <select class="form-select" id="tipo" aria-label="Floating label select example" formControlName="tipo">
+                                    <option selected value="0">Seleccionar Tipo</option>
+                                        <option value="">Seleccionar</option>
+                                        <option value="Cocina">Cocina</option>
+                                        <option value="Bebidas">Bebidas</option>
+                                        <option value="Barra">Barra</option>
+                                    </select>
+                                <label for="Comanda">Seleccionar Departamento</label>
+                            </div>
+
                         </div>
 
                     </div>

@@ -40,7 +40,9 @@ export class NuevoComponent implements OnInit {
     min: ['' || 0],
     max: ['' || 0],
     expiration: [''],
-    visibility: [true]
+    visibility: [true],
+    comanda: [false],
+    tipo: ['']
   });
 
   constructor( private fb: FormBuilder,

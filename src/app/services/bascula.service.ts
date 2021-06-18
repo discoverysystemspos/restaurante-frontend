@@ -35,7 +35,7 @@ export class BasculaService {
   /** ================================================================
    *  LOAD PESO
   ==================================================================== */
-  loadPeso(init:number = 4, end:number = -7){
+  loadPeso(init:number = 4, end:number = -3){
 
     return this.http.get(`${base_url}/bascula?init=${init}&end=${end}`, this.headers)
                 .pipe(
