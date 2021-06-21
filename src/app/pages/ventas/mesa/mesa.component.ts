@@ -737,11 +737,12 @@ export class MesaComponent implements OnInit {
   /** ================================================================
    *  CARGAR PRODUCTOS
   ==================================================================== */
+  public endPoint: string = `?desde=${this.desde}`;
   cargarProductos(){
    
     this.cargando = true;
     this.sinResultados = true;
-    this.productService.cargarProductos(this.desde)
+    this.productService.cargarProductos(this.endPoint)
         .subscribe(({total, products}) => {
             
           // COMPROBAR SI EXISTEN RESULTADOS

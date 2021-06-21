@@ -423,50 +423,50 @@ export class TicketComponent implements OnInit {
   cargarProductos(){
 
     
-    this.cargando = true;
-    this.sinResultados = true;
-    this.productService.cargarProductos(this.desde)
-        .subscribe(({total, products}) => {
+    // this.cargando = true;
+    // this.sinResultados = true;
+    // this.productService.cargarProductos(this.desde)
+    //     .subscribe(({total, products}) => {
             
-          // COMPROBAR SI EXISTEN RESULTADOS
-          if (products.length === 0) {
-            this.sinResultados = false;
-            this.cargando = false;
-            this.listaProductos = [];
-            this.resultado = 0;
-            this.btnAtras = 'disabled';
-            this.btnAdelante = 'disabled';
-            return;                
-          }
-          // COMPROBAR SI EXISTEN RESULTADOS
+    //       // COMPROBAR SI EXISTEN RESULTADOS
+    //       if (products.length === 0) {
+    //         this.sinResultados = false;
+    //         this.cargando = false;
+    //         this.listaProductos = [];
+    //         this.resultado = 0;
+    //         this.btnAtras = 'disabled';
+    //         this.btnAdelante = 'disabled';
+    //         return;                
+    //       }
+    //       // COMPROBAR SI EXISTEN RESULTADOS
         
-          this.totalProductos = total;
-          this.listaProductos = products;
-          this.listaProductosTemp = products;
-          this.resultado = 0;
-          this.cargando = false;
+    //       this.totalProductos = total;
+    //       this.listaProductos = products;
+    //       this.listaProductosTemp = products;
+    //       this.resultado = 0;
+    //       this.cargando = false;
           
 
-          // BOTONOS DE ADELANTE Y ATRAS          
-          if (this.desde === 0 && this.totalProductos > 10) {
-            this.btnAtras = 'disabled';
-            this.btnAdelante = '';
-          }else if(this.desde === 0 && this.totalProductos < 11){
-            this.btnAtras = 'disabled';
-            this.btnAdelante = 'disabled';
-          }else if(this.desde > this.listaProductos.length){
-            this.btnAtras = '';
-            this.btnAdelante = 'disabled';
-          }else if((this.desde + 10) >= this.totalProductos){
-            this.btnAtras = '';
-            this.btnAdelante = 'disabled';
-          }else{
-            this.btnAtras = '';
-            this.btnAdelante = '';
-          }   
-          // BOTONOS DE ADELANTE Y ATRAS       
+    //       // BOTONOS DE ADELANTE Y ATRAS          
+    //       if (this.desde === 0 && this.totalProductos > 10) {
+    //         this.btnAtras = 'disabled';
+    //         this.btnAdelante = '';
+    //       }else if(this.desde === 0 && this.totalProductos < 11){
+    //         this.btnAtras = 'disabled';
+    //         this.btnAdelante = 'disabled';
+    //       }else if(this.desde > this.listaProductos.length){
+    //         this.btnAtras = '';
+    //         this.btnAdelante = 'disabled';
+    //       }else if((this.desde + 10) >= this.totalProductos){
+    //         this.btnAtras = '';
+    //         this.btnAdelante = 'disabled';
+    //       }else{
+    //         this.btnAtras = '';
+    //         this.btnAdelante = '';
+    //       }   
+    //       // BOTONOS DE ADELANTE Y ATRAS       
             
-        });
+    //     });
 
   }
 
