@@ -82,11 +82,12 @@ export class UserService {
     }).pipe(
       tap( (resp: any) => {
         
-        const { usuario, name, role, img, uid, cerrada } = resp.usuario;
+        const { usuario, name, role, img, uid, status, cerrada, turno} = resp.usuario;
 
-        this.user = new User( usuario, name, '', role, img, uid, cerrada );        
+        this.user = new User( usuario, name, '', role, img || 'no-image', uid, status, cerrada, turno);        
 
         localStorage.setItem('token', resp.token);
+
       }),
       map( resp => true ),
       catchError( error => of(false) )
@@ -146,23 +147,7 @@ export class UserService {
     return this.http.post(`${base_url}/login`, formData)
                       .pipe(
                         tap( (resp: any) => {
-
                           localStorage.setItem('token', resp.token);
-
-                        }),
-                        map( resp => {
-
-                          const turno = localStorage.getItem('turno') || '';
-
-                          if (turno !== '' || turno !== null) {
-
-                            this.turnoService.getTurnoId(turno)
-                                .subscribe( (resp) => {
-                                  
-                                })       
-                                    
-                          }
-                          
                         }),
                         catchError( error => of(false) )
                       );

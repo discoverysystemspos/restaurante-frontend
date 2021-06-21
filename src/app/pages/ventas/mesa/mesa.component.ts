@@ -48,6 +48,7 @@ export class MesaComponent implements OnInit {
 
   public carrito: LoadCarrito[] = [];
   public comanda: LoadCarrito[] = [];
+  public comandaTemp: LoadCarrito[] = [];
   public mesa: Mesa;
   public empresa: Datos;
 
@@ -84,6 +85,9 @@ export class MesaComponent implements OnInit {
                 private userService: UserService,
                 private basculaService: BasculaService) {
 
+                  // CARGAR INFORMACION DEL USUARIO
+                  this.user = this.userService.user;                  
+
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
                     val => {}
                   );
@@ -93,8 +97,6 @@ export class MesaComponent implements OnInit {
                 }
 
   ngOnInit(): void {
-
-      this.user = this.userService.user;    
       
       // TURNOS
       this.cargarTurno();
@@ -117,7 +119,7 @@ export class MesaComponent implements OnInit {
         
       });
 
-    if (localStorage.getItem('turno') !== null) {
+    if (!this.user.cerrada) {
       this.facturar = true;
     }else{
       this.facturar = false;
@@ -173,11 +175,16 @@ export class MesaComponent implements OnInit {
             
             this.comanda.push({
               product: mesa.carrito[i].product.name,
+              tipo: mesa.carrito[i].product.tipo,
+              comanda: mesa.carrito[i].product.comanda,
               qty: mesa.carrito[i].qty,
               price: mesa.carrito[i].price
             });
                         
           }
+
+          this.comandaTemp = this.comanda;
+          
 
           this.sumarTotales();
 
@@ -363,6 +370,8 @@ export class MesaComponent implements OnInit {
       // AGREGAMOS A LA COMANDA
       this.comanda.push({
         product: product.name,
+        comanda: product.comanda,
+        tipo: product.tipo,
         qty,  
         price: precio
       });
@@ -396,12 +405,16 @@ export class MesaComponent implements OnInit {
             });
             
             this.comanda.push({
-              product: resp.mesa.carrito[i].product.name,
-              qty: resp.mesa.carrito[i].qty,
-              price: resp.mesa.carrito[i].price
+              product:  resp.mesa.carrito[i].product.name,
+              comanda:  resp.mesa.carrito[i].product.comanda,
+              tipo:     resp.mesa.carrito[i].product.tipo,
+              qty:      resp.mesa.carrito[i].qty,
+              price:    resp.mesa.carrito[i].price
             });
                         
           }
+
+          this.comandaTemp = this.comanda;
 
           this.sumarTotales();          
 
@@ -450,11 +463,15 @@ export class MesaComponent implements OnInit {
                 
                 this.comanda.push({
                   product: resp.mesa.carrito[i].product.name,
+                  comanda: resp.mesa.carrito[i].product.comanda,
+                  tipo: resp.mesa.carrito[i].product.tipo,
                   qty: resp.mesa.carrito[i].qty,
                   price: resp.mesa.carrito[i].price
                 });
                             
               }
+
+              this.comandaTemp = this.comanda;
 
               this.sumarTotales();
 
@@ -927,7 +944,8 @@ export class MesaComponent implements OnInit {
     mesa: [''],
     products: [''],
     credito: [this.credit],
-    fechaCredito: ['']
+    fechaCredito: [''],
+    turno: ['']
   })
 
   /** ================================================================
@@ -1058,11 +1076,11 @@ export class MesaComponent implements OnInit {
         credito: this.credit,
         mesa: this.mesaID,
         mesero: this.meserID,
-        fechaCredito: this.invoiceForm.value.fechaCredito
+        fechaCredito: this.invoiceForm.value.fechaCredito,
+        turno: this.user.turno
       });      
       
-      this.invoiceService.createInvoice(this.invoiceForm.value, this.turno.tid)
-
+      this.invoiceService.createInvoice(this.invoiceForm.value, this.user.turno)
           .subscribe( (resp:{ok: boolean, invoice: Invoice } ) => {              
 
             this.invoiceForm.reset({
@@ -1090,14 +1108,14 @@ export class MesaComponent implements OnInit {
             this.mesa.carrito = [];            
             
             this.mesasServices.updateMesa(this.mesa, this.mesaID)
-            .subscribe( (resp:{ok: boolean, mesa: Mesa}) => {        
+            .subscribe( (resp:{ok: boolean, mesa: Mesa}) => {      
 
-                }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
+            }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
             
-            this.cargarMesa(this.mesaID);
+            // this.cargarMesa(this.mesaID);
             // LIMPIAMOS LA MESA
 
-            this.turnoService.getTurnoId(localStorage.getItem('turno'))
+            this.turnoService.getTurnoId(this.user.turno)
             .subscribe( (turno) => {
               this.turno = turno;
               this.movimientos = turno.movements;   
@@ -1130,8 +1148,7 @@ export class MesaComponent implements OnInit {
             Swal.fire('Error', err.error.msg, 'error');
           });
       
-    } catch (err) {   
-      
+    } catch (err) {         
       Swal.fire('Error', err.error.msg, 'error');
       
     }    
@@ -1149,11 +1166,15 @@ export class MesaComponent implements OnInit {
   public turno: LoadTurno;
   cargarTurno(){
 
-    this.turnoService.getTurnoId(localStorage.getItem('turno'))
-        .subscribe( (turno) => {
-          this.turno = turno;
-          this.movimientos = turno.movements;                    
-        });
+    if (this.user.cerrada === false) {
+      
+      this.turnoService.getTurnoId(this.user.turno)
+          .subscribe( (turno) => {
+            this.turno = turno;
+            this.movimientos = turno.movements;                    
+          });
+    }
+
   }
   
   /** ================================================================
@@ -1238,6 +1259,27 @@ export class MesaComponent implements OnInit {
   }
 
   /** ================================================================
+   *   FILTRAR COMANDA
+  ==================================================================== */
+  filtrarComanda(tipo:string){
+
+    if (tipo === 'Todos') {
+      this.comanda = this.comandaTemp;
+      return;
+    }
+
+    const filtro = this.comandaTemp.filter( command => {
+      return command.tipo === tipo;
+    });
+
+    this.comanda = filtro;
+
+    return;
+    
+
+  }
+
+  /** ================================================================
    *   ELIMINAR PRODUCTO DE LA COMANDA
   ==================================================================== */
   eliminarProductoComanda(i: number){
@@ -1252,9 +1294,63 @@ export class MesaComponent implements OnInit {
   @ViewChild('nota') nota: ElementRef;
   printDiv() {
     this.printerService.printDiv('printDiv');
-
+    
     this.nota.nativeElement.value = '';
   }
 
+  /** ================================================================
+   *   ABRIR CAJA
+  ==================================================================== */
+  abrirCaja(){
+    
+    if (!this.user.cerrada) {
+
+      Swal.fire('Ya existe una caja abierta', 'Debes de cerrar caja para poder abrir he iniciar un turno nuevo', 'warning');
+      return;
+
+    }
+    
+    Swal.fire({
+      title: 'Monto Inicial de caja',
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Confirmar',
+      showLoaderOnConfirm: true,
+      preConfirm: (resp) => {
+        
+        return resp;
+      }
+    }).then((result) => {
+
+      if (result.value > 0) {
+
+        const initial:number = result.value;
+
+        const open = {
+          initial
+        };
+
+        this.turnoService.createCaja(open)
+            .subscribe( (resp:{ ok:boolean, turno:any}) => {
+
+              this.userService.user.turno = resp.turno.tid;
+              this.userService.user.cerrada = false;
+              this.facturar = true;
+              
+            });  
+            
+        return;
+      }else{
+        return;
+      }                
+      
+    });
+
+
+  }
+  
   // FIN DE LA CLASE
 }

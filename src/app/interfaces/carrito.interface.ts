@@ -18,7 +18,6 @@ export interface Carrito{
 }
 
 interface _interProducto{
-
     name: string;
     code: string;
     type: string;
@@ -40,15 +39,16 @@ interface _interProducto{
     status?: boolean;
     pid?: string;
     visibility?: boolean;
-
+    comanda?: boolean;
+    tipo?: string;
 }
 
 export interface LoadCarrito{
-
     qty: number;
     product: _interProducto;
     price: number;
     _id?: string;
     name?: string;
-
+    comanda?: boolean;
+    tipo?: string;
 }

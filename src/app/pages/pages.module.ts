@@ -4,10 +4,10 @@ import { CommonModule } from '@angular/common';
 import { NgxPrinterModule, ngxPrintMarkerPosition } from 'projects/ngx-printer/src/public_api';
 
 // MODULES
-import { SharedModule } from '../shared/shared.module';
 import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PipesModule } from '../pipes/pipes.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 
 
 // COMPONENTS

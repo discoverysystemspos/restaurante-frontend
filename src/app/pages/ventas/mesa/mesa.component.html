@@ -83,6 +83,13 @@
 
         <div class="col-md-4 bg-white py-4 px-2 border-start" style="min-height: 100vh;">
 
+            <div class="d-grid gap-2 mx-auto" *ngIf="this.user.role !== 'WAITER'">
+                <button *ngIf="this.user.cerrada" (click)="abrirCaja()" class="btn btn-success btn-sm" type="button">Abrir caja</button>
+                <button *ngIf="!this.user.cerrada" [routerLink]="['/dashboard', 'corte']" class="btn btn-secondary btn-sm" type="button">Cerrar caja</button>
+            </div>
+
+            <hr>
+
             <!-- BOTONES -->
             <div class="mb-3">
                 <button type="button" class="btn btn-outline-success btn-sm m-2" data-bs-toggle="modal" data-bs-target="#buscarCliente"><i class="bi-people"></i> Crear Cliente </button>
@@ -800,6 +807,13 @@ COMANDAS
 
             <div class="modal-body">
 
+                <div class="row d-flex justify-content-center mb-3">
+                    <div class="col-auto"><button (click)="filtrarComanda('Todos')" class="btn btn-sm btn-primary">Todos</button></div>
+                    <div class="col-auto"><button (click)="filtrarComanda('Cocina')" class="btn btn-sm btn-primary">Cocina</button></div>
+                    <div class="col-auto"><button (click)="filtrarComanda('Bebidas')" class="btn btn-sm btn-primary">Bebidas</button></div>
+                    <div class="col-auto"><button (click)="filtrarComanda('Barra')" class="btn btn-sm btn-primary">Barra</button></div>
+                </div>
+
                 <div class="text-center pb-2" id="printDiv">
 
                     <h4 class="text-capitalize" *ngIf="mesa"> {{ mesa.name }} </h4>
@@ -814,24 +828,30 @@ COMANDAS
                         </thead>
                         <tbody>
 
+                            <ng-container *ngFor="let item of comanda; let i = index">
 
-                            <tr *ngFor="let item of comanda; let i = index">
+                                <tr>
 
-                                <td scope="row">
-                                    {{ item.product }}
-                                </td>
+                                    <td scope="row">
+                                        {{ item.product }}
+                                    </td>
 
-                                <td>
-                                    {{ item.qty }}
-                                </td>
+                                    <td>
+                                        {{ item.qty }}
+                                    </td>
 
-                                <td>
-                                    <button type="button" (click)="eliminarProductoComanda(i)" class="btn btn-link p-1 text-danger">
-                                        <i class="bi-trash" style="font-size: 0.9rem"></i>
-                                    </button>
-                                </td>
+                                    <td>
+                                        <button type="button" (click)="eliminarProductoComanda(i)" class="btn btn-link p-1 text-danger">
+                                            <i class="bi-trash" style="font-size: 0.9rem"></i>
+                                        </button>
+                                    </td>
 
-                            </tr>
+                                </tr>
+
+                            </ng-container>
+
+
+
 
                         </tbody>
 

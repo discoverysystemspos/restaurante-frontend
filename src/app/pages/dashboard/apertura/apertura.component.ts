@@ -8,6 +8,10 @@ import { TurnoService } from '../../../services/turno.service';
 // INTERFACES
 import { _caja } from '../../../interfaces/load-caja.interface';
 
+// MODELO
+import { User } from '../../../models/user.model';
+import { UserService } from '../../../services/user.service';
+
 @Component({
   selector: 'app-apertura',
   templateUrl: './apertura.component.html',
@@ -17,9 +21,15 @@ import { _caja } from '../../../interfaces/load-caja.interface';
 export class AperturaComponent implements OnInit {
 
   public listaCaja: _caja[] = [];
+  public usuario: User;
 
   constructor(  private cajaService: CajaService,
-                private turnoService: TurnoService) { }
+                private turnoService: TurnoService,
+                private userService: UserService) {
+
+                  // INFO USER
+                  this.usuario = userService.user;
+                }
 
   ngOnInit(): void {
     
@@ -48,7 +58,7 @@ export class AperturaComponent implements OnInit {
   abrirCaja(caja: string){
     
 
-    if (localStorage.getItem('turno') !== '' && localStorage.getItem('turno') !== null) {
+    if (!this.usuario.cerrada) {
 
       Swal.fire('Ya existe una caja abierta', 'Debes de cerrar caja para poder abrir he iniciar un turno nuevo', 'warning');
       return;
@@ -84,6 +94,9 @@ export class AperturaComponent implements OnInit {
 
               this.cargarCajas();
               localStorage.setItem('turno', resp.turno.tid);
+
+              this.userService.user.turno = resp.turno.tid;
+              this.userService.user.cerrada = resp.turno.cerrado;
               
             });  
             

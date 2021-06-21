@@ -48,6 +48,11 @@ export class CorteComponent implements OnInit {
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
                     val => {
 
+                      this.user = this.userService.user;
+
+                      console.log(this.user);
+                      
+
                       if (val) {
                         window.location.reload();                        
                       }
@@ -61,15 +66,13 @@ export class CorteComponent implements OnInit {
 
   ngOnInit(): void {    
 
-    this.user = this.userService.user;
-
-    if (localStorage.getItem('turno') !== null) {
+    if (!this.user.cerrada) {
       
       // TURNO
       this.cargarTurno();
   
       // CAJA
-      this.cargarCaja();
+      // this.cargarCaja();
 
     }else{
       Swal.fire('Atención!', 'No existe un turno asignado, no puedes hacer cortes ni cierres', 'info');
@@ -90,23 +93,23 @@ export class CorteComponent implements OnInit {
   * CAJA - CAJA - CAJA - CAJA  
   ==================================================================== */
   public caja: Caja;
-  cargarCaja(){
+  // cargarCaja(){
 
-    this.cajaService.loadOneCaja(localStorage.getItem('turno'))
-        .subscribe( (caja) => {
+  //   this.cajaService.loadOneCaja(this.user.turno)
+  //       .subscribe( (caja) => {
 
-          this.caja = caja;      
+  //         this.caja = caja;      
 
-        }, (err) => { Swal.fire('Error', err.error.msg, 'error') });
+  //       }, (err) => { Swal.fire('Error', err.error.msg, 'error') });
 
-  }
+  // }
 
   /** ===============================================================
   * TURNO - TURNO - TURNO - TURNO  
   ==================================================================== */
   public turno: LoadTurno;
   cargarTurno(){  
-    this.turnoService.getTurnoId(localStorage.getItem('turno'))
+    this.turnoService.getTurnoId(this.user.turno)
     .subscribe( (turno) => { 
       this.turno = turno;
       this.movimientos = turno.movements;
@@ -227,7 +230,6 @@ export class CorteComponent implements OnInit {
   public fechaCierre: Date;
   public montoDiferencia: number;
   public diferencia: boolean;
-  public updateUser:any[];
 
   cerrarTurno(dineroCaja: number){
 
@@ -241,8 +243,6 @@ export class CorteComponent implements OnInit {
     this.turno.cerrado = true;
     this.turno.cierre = new Date();
 
-    this.updateUser = [];
-
     // CERRAR TURNO
     this.turnoService.updateTurno(this.turno, this.turno.tid)
         .subscribe( (resp:{ ok:boolean, turno: LoadTurno }) => {        
@@ -251,14 +251,7 @@ export class CorteComponent implements OnInit {
           this.diferencia = resp.turno.diferencia;
           this.montoDiferencia = resp.turno.montoD;
 
-          this.updateUser.push({
-            name: this.user.name,
-            usuario: this.user.usuario,
-            cerrada: this.turno.cerrado,
-          });
-
-          this.userService.updateUser(this.updateUser, this.user.uid)
-              .subscribe()
+          this.userService.user.cerrada = true;
 
           // IMPRIMIR FACTURA
           setTimeout( () => {
@@ -273,13 +266,13 @@ export class CorteComponent implements OnInit {
         });
     
     // CERRAR CAJA 
-    this.caja.cerrada = true;
-    this.cajaService.updateCaja(this.caja, this.caja.caid)
-        .subscribe( resp => {
+    // this.caja.cerrada = true;
+    // this.cajaService.updateCaja(this.caja, this.caja.caid)
+    //     .subscribe( resp => {
 
-          localStorage.removeItem('turno');          
+    //       localStorage.removeItem('turno');          
           
-        }, (err) => { Swal.fire('Error', err.error.msg, 'error') });
+    //     }, (err) => { Swal.fire('Error', err.error.msg, 'error') });
 
   }
 
