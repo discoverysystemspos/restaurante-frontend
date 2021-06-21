@@ -208,7 +208,23 @@ export class MesaComponent implements OnInit {
               this.searchCode.nativeElement.value = '';
               this.searchCode.nativeElement.onFocus = true;
               return;              
-            }            
+            }
+            
+            if (product.type !== 'Paquete') {
+              if (product.out) {
+                Swal.fire('Error', 'El producto esta agotado. Porfavor, verifica el stock de este prodcuto.', 'error');             
+                return;
+              }else{
+                if (product.low) {
+                  Swal.fire({
+                    icon: 'warning',
+                    title: 'Pocas unidades de este productos, verificar inventario',
+                    showConfirmButton: true,
+                    timer: 1500
+                  });
+                }
+              }             
+            }
             
             // PEDIMOS LA CANTIDAD
             if (product.type === 'Granel') {
@@ -282,7 +298,7 @@ export class MesaComponent implements OnInit {
    *  AGREGAR PRODUCTO POR BOTON
   ==================================================================== */
   btnAddProducto( product: any, qty: number, precio: number ){
-
+    
     if (product.type === 'Granel') {
 
       if (this.empresa.bascula) {
@@ -817,6 +833,22 @@ export class MesaComponent implements OnInit {
   };
 
   seleccionarProducto( producto: Product ){
+
+    if (producto.type !== 'Paquete') {
+      if (producto.out) {
+        Swal.fire('Error', 'El producto esta agotado. Porfavor, verifica el stock de este prodcuto.', 'error');             
+        return;
+      }else{
+        if (producto.low) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Pocas unidades de este productos, verificar inventario',
+            showConfirmButton: true,
+            timer: 1500
+          });
+        }
+      }             
+    }
 
     this.searchProduct.nativeElement.value = '';
 

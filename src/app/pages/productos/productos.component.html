@@ -39,114 +39,162 @@
             </div>
             <!-- TITLE - SUBTITLE -->
 
-            <!-- TABLE CLIENTS -->
-            <div class="shadow-lg p-3 mb-5 rounded bg-white">
+            <div class="row">
 
-                <!-- CARGANDO -->
-                <div *ngIf="cargando">
-                    <div class="text-center p-4">
-                        <div class="spinner-grow text-secondary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    </div>
-                    <small class="text-muted">cargando...</small>
-                </div>
-                <!-- CARGANDO -->
+                <div class="col-md-2">
 
-                <div *ngIf="!cargando">
-                    <div>
+                    <div class="shadow-lg p-3 mb-5 rounded bg-white">
 
-                        <div class="text-end mb-3">
-                            <h4 class="mb-0 text-success"> Ganancia total {{ totalPrice - totalCost | currency}} </h4>
-                            <small class="mb-0 text-muted"> Total de venta {{ totalPrice | currency}} </small>
-                            <small class="mb-0 text-muted"> Total de inversión {{ totalCost | currency}} </small>
+                        <h4 class="text-muted">Filtros</h4>
+
+                        <div>
+                            <h6 class="text-muted">Agotados</h6>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" (change)="cargarProductos('agotados', agotados.checked)" type="checkbox" id="flexSwitchCheckChecked" #agotados>
+                                <label class="form-check-label" for="flexSwitchCheckChecked">Agotados</label>
+                            </div>
                         </div>
 
-                        <div class="form-floating mb-2">
-                            <span class="position-absolute top-50 start-90 translate-middle"><i class=" bi-search " style="font-size: 1rem "></i></span>
-                            <input type="text" class="form-control" id="floatingInput" placeholder="Buscar Producto" (keyup)="buscar(search.value)" #search>
-                            <label for="floatingInput ">Buscar Producto</label>
+                        <hr>
+
+                        <div>
+                            <h6 class="text-muted">Vencidos</h6>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" (change)="cargarProductos('vencidos', vencidos.checked)" type="checkbox" id="flexSwitchCheckChecked" #vencidos>
+                                <label class="form-check-label" for="flexSwitchCheckChecked">Vencidos</label>
+                            </div>
+
                         </div>
-                    </div>
-                    <div class="table-responsive ">
-                        <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
-                            <thead class="border-bottom ">
-                                <tr>
-                                    <th class="text-muted " scope="col ">#</th>
-                                    <th class="text-muted " scope="col "></th>
-                                    <th class="text-muted " scope="col ">Codigo</th>
-                                    <th class="text-muted " scope="col " colspan="2">Nombre</th>
-                                    <th class="text-muted " scope="col ">Departamento</th>
-                                    <th class="text-muted " scope="col ">stock</th>
-                                    <th class="text-muted " scope="col ">Tipo</th>
-                                    <th class="text-muted " scope="col ">Costo</th>
-                                    <th class="text-muted " scope="col ">Ganancia</th>
-                                    <th class="text-muted " scope="col ">Precio</th>
-                                    <th class="text-muted " scope="col ">Precio Mayor</th>
-                                    <th class="text-muted w100 " scope="col ">Acciones</th>
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngIf="!sinResultados" class="text-center ">
-                                    <th colspan="13" class="py-4">
-                                        <h4 class="text-muted">Sin Resultados</h4>
-                                    </th>
-                                </tr>
-                                <tr class="trHover " *ngFor="let producto of productos; let i=index ">
-                                    <th *ngIf="desde === 0 " scope="row ">{{ i + 1}}</th>
-                                    <th *ngIf="desde> 0" scope="row">{{ (i + 1) + desde }}</th>
-                                    <td>
-                                        <img [src]="producto.img | imagen:'products'" class="avatar avatar-img" alt="">
-                                    </td>
-                                    <td><small>{{ producto.code }}</small></td>
+                        <hr>
 
-                                    <td colspan="2">
-                                        {{ producto.name }}
-                                        <span *ngIf="producto.low && !producto.out" class="badge rounded-pill bg-warning text-dark">Bajo</span>
-                                        <span *ngIf="producto.out" class="badge rounded-pill bg-danger">Agotado</span>
-                                    </td>
-
-                                    <td>{{ producto.department.name }}</td>
-                                    <td>
-                                        <span *ngIf="producto.type === 'Granel'"> {{  producto.stock + ( producto.returned || 0 ) + ( producto.bought || 0 ) - (producto.sold || 0) - ( producto.damaged || 0) | number:'1.3'}} </span>
-                                        <span *ngIf="producto.type !== 'Granel'"> {{  producto.stock + ( producto.returned || 0 ) + ( producto.bought || 0 ) - (producto.sold || 0) - ( producto.damaged || 0) | number }} </span>
-
-                                    </td>
-                                    <td>{{ producto.type }}</td>
-                                    <td>{{ producto.cost | currency }}</td>
-                                    <td>{{ producto.gain }}%</td>
-                                    <td>{{ producto.price | currency }}</td>
-                                    <td>{{ producto.wholesale | currency }}</td>
-                                    <td class="text-center">
-                                        <button type="button" [routerLink]="['/dashboard/producto', producto.pid]" class="btn btn-link p-1 text-primary"><i class="bi bi-box-arrow-up-right"></i></button>
-                                        <button type="button" (click)="borrarProducto(producto.pid)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-
-                        </table>
+                        <div>
+                            <h6 class="text-muted">Departamentos</h6>
+                            <select class="form-select" aria-label="Default select example" #departamentos>
+                                <option value="none" selected>Todos</option>
+                            </select>
+                        </div>
 
                     </div>
-
-                    <!-- BTN SIGUIENTE Y ANTERIOR -->
-                    <div class="row">
-                        <div class="col col-md-4">
-                            <small class="text-muted">Total de productos: ({{totalProductos}})</small>
-                            <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
-                            <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + productos.length }})</small>
-                        </div>
-
-                        <div *ngIf="search.value.length === 0" class="col d-flex justify-content-end">
-                            <button type="button" (click)="cambiarPagina(-10)" class="{{btnAtras}} btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
-                            <button type="button" (click)="cambiarPagina(10)" class="{{btnAdelante}} btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
-                        </div>
-                    </div>
-                    <!-- BTN SIGUIENTE Y ANTERIOR -->
 
                 </div>
+
+                <!-- PRODUCTOS LISTA COMPLETA -->
+                <div class="col-md-10">
+
+                    <!-- TABLE PRODUCTS -->
+                    <div class="shadow-lg p-3 mb-5 rounded bg-white">
+
+                        <!-- CARGANDO -->
+                        <div *ngIf="cargando">
+                            <div class="text-center p-4">
+                                <div class="spinner-grow text-secondary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                            <small class="text-muted">cargando...</small>
+                        </div>
+                        <!-- CARGANDO -->
+
+                        <div *ngIf="!cargando">
+                            <div>
+
+                                <div class="text-end mb-3">
+                                    <h4 class="mb-0 text-success"> Ganancia total {{ totalPrice - totalCost | currency}} </h4>
+                                    <small class="mb-0 text-muted"> Total de venta {{ totalPrice | currency}} </small>
+                                    <small class="mb-0 text-muted"> Total de inversión {{ totalCost | currency}} </small>
+                                </div>
+
+                                <div class="form-floating mb-2">
+                                    <span class="position-absolute top-50 start-90 translate-middle"><i class=" bi-search " style="font-size: 1rem "></i></span>
+                                    <input type="text" class="form-control" id="floatingInput" placeholder="Buscar Producto" (keyup)="buscar(search.value)" #search>
+                                    <label for="floatingInput ">Buscar Producto</label>
+                                </div>
+                            </div>
+                            <div class="table-responsive ">
+                                <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                                    <thead class="border-bottom ">
+                                        <tr>
+                                            <th class="text-muted " scope="col ">#</th>
+                                            <th class="text-muted " scope="col "></th>
+                                            <th class="text-muted " scope="col ">Codigo</th>
+                                            <th class="text-muted " scope="col " colspan="2">Nombre</th>
+                                            <th class="text-muted " scope="col ">Departamento</th>
+                                            <th class="text-muted " scope="col ">stock</th>
+                                            <th class="text-muted " scope="col ">Tipo</th>
+                                            <th class="text-muted " scope="col ">Costo</th>
+                                            <th class="text-muted " scope="col ">Ganancia</th>
+                                            <th class="text-muted " scope="col ">Precio</th>
+                                            <th class="text-muted " scope="col ">Precio Mayor</th>
+                                            <th class="text-muted w100 " scope="col ">Acciones</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngIf="!sinResultados" class="text-center ">
+                                            <th colspan="13" class="py-4">
+                                                <h4 class="text-muted">Sin Resultados</h4>
+                                            </th>
+                                        </tr>
+                                        <tr class="trHover " *ngFor="let producto of productos; let i=index ">
+                                            <th *ngIf="desde === 0 " scope="row ">{{ i + 1}}</th>
+                                            <th *ngIf="desde> 0" scope="row">{{ (i + 1) + desde }}</th>
+                                            <td>
+                                                <img [src]="producto.img | imagen:'products'" class="avatar avatar-img" alt="">
+                                            </td>
+                                            <td><small>{{ producto.code }}</small></td>
+
+                                            <td colspan="2">
+                                                {{ producto.name }}
+                                                <span *ngIf="producto.low && !producto.out" class="badge rounded-pill bg-warning text-dark">Bajo</span>
+                                                <span *ngIf="producto.out" class="badge rounded-pill bg-danger">Agotado</span>
+                                            </td>
+
+                                            <td>{{ producto.department.name }}</td>
+                                            <td>
+                                                <span *ngIf="producto.type === 'Granel'"> {{  producto.stock + ( producto.returned || 0 ) + ( producto.bought || 0 ) - (producto.sold || 0) - ( producto.damaged || 0) | number:'1.3'}} </span>
+                                                <span *ngIf="producto.type !== 'Granel'"> {{  producto.stock + ( producto.returned || 0 ) + ( producto.bought || 0 ) - (producto.sold || 0) - ( producto.damaged || 0) | number }} </span>
+
+                                            </td>
+                                            <td>{{ producto.type }}</td>
+                                            <td>{{ producto.cost | currency }}</td>
+                                            <td>{{ producto.gain }}%</td>
+                                            <td>{{ producto.price | currency }}</td>
+                                            <td>{{ producto.wholesale | currency }}</td>
+                                            <td class="text-center">
+                                                <button type="button" [routerLink]="['/dashboard/producto', producto.pid]" class="btn btn-link p-1 text-primary"><i class="bi bi-box-arrow-up-right"></i></button>
+                                                <button type="button" (click)="borrarProducto(producto.pid)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                            <!-- BTN SIGUIENTE Y ANTERIOR -->
+                            <div class="row">
+                                <div class="col col-md-4">
+                                    <small class="text-muted">Total de productos: ({{totalProductos}})</small>
+                                    <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
+                                    <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + productos.length }})</small>
+                                </div>
+
+                                <div *ngIf="search.value.length === 0" class="col d-flex justify-content-end">
+                                    <button type="button" (click)="cambiarPagina(-10)" class="{{btnAtras}} btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
+                                    <button type="button" (click)="cambiarPagina(10)" class="{{btnAdelante}} btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
+                                </div>
+                            </div>
+                            <!-- BTN SIGUIENTE Y ANTERIOR -->
+
+                        </div>
+                    </div>
+                    <!-- TABLE PRODUCTS -->
+
+                </div>
+                <!-- PRODUCTOS LISTA COMPLETA -->
+
             </div>
-            <!-- TABLE CLIENTS -->
 
 
 

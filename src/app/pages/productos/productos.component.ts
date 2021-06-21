@@ -36,7 +36,7 @@ export class ProductosComponent implements OnInit {
 
   ngOnInit(): void {
     
-    this.cargarProductos();
+    this.cargarProductos('none', false);
 
     this.cargarCosto();
 
@@ -45,12 +45,20 @@ export class ProductosComponent implements OnInit {
   /** ================================================================
    *   CARGAR PRODUCTOS
   ==================================================================== */
-  cargarProductos(){
+  public endPoint: string = `?desde=${this.desde}`;
+  cargarProductos(tipo: string, valor: boolean){
 
+    if (tipo === 'agotados' && valor === true) {
+      this.endPoint = `?desde=${this.desde}&tipo=${tipo}&valor=${valor}`;      
+    }else if(tipo === 'vencidos' && valor === true){
+      this.endPoint = `?desde=${this.desde}`; 
+    }else{
+      this.endPoint = `?desde=${this.desde}`;
+    }
     
     this.cargando = true;
     this.sinResultados = true;
-    this.productService.cargarProductos(this.desde)
+    this.productService.cargarProductos(this.endPoint)
         .subscribe(({total, products}) => {
             
           // COMPROBAR SI EXISTEN RESULTADOS
@@ -120,7 +128,7 @@ export class ProductosComponent implements OnInit {
       this.desde -= valor;
     }
 
-    this.cargarProductos();
+    this.cargarProductos('none', false);
 
   }
     
@@ -159,6 +167,14 @@ export class ProductosComponent implements OnInit {
   }
 
   /** ================================================================
+   *   BUSCAR POR PRODUCTOS AGOTADOS O VENCIDOS
+  ==================================================================== */
+  buscarLowOut(){
+    this.sinResultados = true;
+
+  }
+
+  /** ================================================================
    *   BORRAR Producto
   ==================================================================== */
   borrarProducto(_id: string){
@@ -166,7 +182,7 @@ export class ProductosComponent implements OnInit {
     this.productService.deleteProduct(_id)
         .subscribe(resp =>{
           Swal.fire('Estupendo', 'Se ha borrado el Producto exitosamente!', 'success');
-          this.cargarProductos();
+          this.cargarProductos('none', false);
         }, (err) =>{
           Swal.fire('Error', err.error.msg, 'error');
         });

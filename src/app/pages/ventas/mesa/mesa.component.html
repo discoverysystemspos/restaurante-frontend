@@ -396,10 +396,13 @@
                                     <div class="d-flex ">
                                         <div class="align-self-center">
                                             <span> {{ item.name }} </span>
+                                            <span *ngIf="item.out" class="badge rounded-pill bg-danger">Agotado</span>
+                                            <span *ngIf="item.low && !item.out" class="badge rounded-pill bg-warning text-dark">Bajo</span>
                                         </div>
 
                                         <div class="ms-auto">
-                                            <button class="btn btn-link p-1 text-success float-end" (click)="seleccionarProducto(item)"> <i class="bi-arrow-90deg-right"></i></button>
+                                            <button *ngIf="!item.out" class="btn btn-link p-1 text-success float-end" (click)="seleccionarProducto(item)"> <i class="bi-arrow-90deg-right"></i></button>
+                                            <button *ngIf="item.out" class="btn btn-link p-1 text-success float-end"> <i class="bi-arrow-90deg-right"></i></button>
                                         </div>
                                     </div>
 

@@ -27,7 +27,6 @@ import { DepartamentosComponent } from './productos/departamentos/departamentos.
 import { TicketComponent } from './ventas/ticket/ticket.component';
 import { CajaComponent } from './configuracion/caja/caja.component';
 import { UsuariosComponent } from './configuracion/usuarios/usuarios.component';
-import { AperturaComponent } from './dashboard/apertura/apertura.component';
 import { TotalComponent } from './facturas/total/total.component';
 import { CreditoComponent } from './facturas/credito/credito.component';
 import { FacturaComponent } from './facturas/factura/factura.component';
@@ -58,7 +57,6 @@ import { MovimientosComponent } from './productos/movimientos/movimientos.compon
     TicketComponent,
     CajaComponent,
     UsuariosComponent,
-    AperturaComponent,
     TotalComponent,
     CreditoComponent,
     FacturaComponent,
