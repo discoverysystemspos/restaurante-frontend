@@ -52,7 +52,7 @@ export class ProductService {
   /** ================================================================
    *   CARGAR PRODUCTOS
   ==================================================================== */
-  cargarProductos(endPoitn: string = '?desde=0'){
+  cargarProductos(endPoitn: string){
     const endPoint = `/products${endPoitn}`;
     return this.http.get<LoadProduct>(`${base_url}${endPoint}`, this.headers)
             .pipe(

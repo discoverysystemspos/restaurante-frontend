@@ -24,13 +24,226 @@
 
     <div class="row">
 
-        <div class="col-md-12">
+        <div class="col-md-6">
+
+            <!-- TABLE CLIENTS -->
+            <div class="shadow-lg p-3 mb-5 rounded bg-white" style="max-height: 400px; height: auto;">
+                <h5 class="">
+                    <span class="badge rounded-pill bg-danger">Productos Agotados</span>
+                </h5>
+                <!-- CARGANDO -->
+                <div *ngIf="cargandoAgotados">
+                    <div class="text-center p-4">
+                        <div class="spinner-grow text-secondary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <small class="text-muted">cargando...</small>
+                </div>
+                <!-- CARGANDO -->
+
+                <div *ngIf="!cargandoAgotados" style="max-height: 100vh">
+
+                    <div class="table-responsive " class="overflow-auto" style="max-height: 200px;">
+                        <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                            <thead class="border-bottom ">
+                                <tr>
+                                    <th class="text-muted " scope="col ">Codigo</th>
+                                    <th class="text-muted " scope="col ">Nombre</th>
+                                    <th class="text-muted " scope="col ">Estado</th>
+                                    <th class="text-muted w100 " scope="col ">Acciones</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tr *ngIf="!sinResultados" class="text-center ">
+                                    <th colspan="10" class="py-4">
+                                        <h4 class="text-muted">No existen productos agotados</h4>
+                                    </th>
+                                </tr>
+
+
+                                <tr class="trHover" *ngFor="let agotado of agotados; let i = index">
+                                    <td>{{ agotado.code }}</td>
+                                    <td>{{ agotado.name }}</td>
+                                    <td>
+                                        <span class="badge rounded-pill bg-danger">Agotado</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <button type="button" [routerLink]="['/dashboard/producto', agotado.pid]" class="btn btn-link p-1 text-primary"><i class="bi bi-box-arrow-up-right"></i></button>
+
+                                    </td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <!-- BTN SIGUIENTE Y ANTERIOR -->
+                    <div class="row">
+                        <div class="col col-md-4">
+                            <small class="text-muted">Total de productos agotados: ({{totalAgotados}})</small>
+                        </div>
+                    </div>
+                    <!-- BTN SIGUIENTE Y ANTERIOR -->
+
+                </div>
+            </div>
+            <!-- TABLE CLIENTS -->
+
         </div>
 
+        <div class="col-md-6">
+
+            <!-- TABLE CLIENTS -->
+            <div class="shadow-lg p-3 mb-5 rounded bg-white" style="max-height: 400px; height: auto;">
+                <h5 class="">
+                    <span class="badge rounded-pill bg-warning">Productos Vencidos</span>
+                </h5>
+                <!-- CARGANDO -->
+                <div *ngIf=" cargandoVencidos">
+                    <div class="text-center p-4">
+                        <div class="spinner-grow text-secondary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <small class="text-muted">cargando...</small>
+                </div>
+                <!-- CARGANDO -->
+
+                <div *ngIf="!cargandoVencidos" style="max-height: 100vh">
+
+                    <div class="table-responsive " class="overflow-auto" style="max-height: 200px;">
+                        <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                            <thead class="border-bottom ">
+                                <tr>
+                                    <th class="text-muted " scope="col ">Codigo</th>
+                                    <th class="text-muted " scope="col ">Nombre</th>
+                                    <th class="text-muted " scope="col ">Estado</th>
+                                    <th class="text-muted w100 " scope="col ">Acciones</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tr *ngIf="!sinResultadosVencidos" class="text-center ">
+                                    <th colspan="10" class="py-4">
+                                        <h4 class="text-muted">No existen productos vencidos</h4>
+                                    </th>
+                                </tr>
 
 
-        <div class="col"></div>
+                                <tr class="trHover" *ngFor="let vencido of vencidos; let i = index">
+                                    <td>{{ vencido.code }}</td>
+                                    <td>{{ vencido.name }}</td>
+                                    <td>
+                                        <span class="badge rounded-pill bg-warning">Vencido</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <button type="button" [routerLink]="['/dashboard/producto', vencido.pid]" class="btn btn-link p-1 text-primary"><i class="bi bi-box-arrow-up-right"></i></button>
 
+                                    </td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <!-- BTN SIGUIENTE Y ANTERIOR -->
+                    <div class="row">
+                        <div class="col col-md-4">
+                            <small class="text-muted">Total de productos agotados: ({{ totalVencidos}})</small>
+                        </div>
+                    </div>
+                    <!-- BTN SIGUIENTE Y ANTERIOR -->
+
+                </div>
+            </div>
+            <!-- TABLE CLIENTS -->
+
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+
+            <!-- TABLE CLIENTS -->
+            <div class="shadow-lg p-3 mb-5 rounded bg-white" style="max-height: 400px; height: auto;">
+                <h5 class="">
+                    <span class="badge rounded-pill bg-success">TOP mas vendidos</span>
+                </h5>
+                <!-- CARGANDO -->
+                <div *ngIf=" cargandoTop ">
+                    <div class="text-center p-4">
+                        <div class="spinner-grow text-secondary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <small class="text-muted">cargando...</small>
+                </div>
+                <!-- CARGANDO -->
+
+                <div *ngIf=" !cargandoTop" style="max-height: 100vh">
+
+                    <div class="table-responsive " class="overflow-auto" style="max-height: 200px;">
+                        <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                            <thead class="border-bottom ">
+                                <tr>
+                                    <th class="text-muted " scope="col ">Codigo</th>
+                                    <th class="text-muted " scope="col ">Nombre</th>
+                                    <th class="text-muted " scope="col ">Cantidad</th>
+                                    <th class="text-muted w100 " scope="col ">Acciones</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tr *ngIf="!sinResultadosTop" class="text-center ">
+                                    <th colspan="10" class="py-4">
+                                        <h4 class="text-muted">No se han vendido productos</h4>
+                                    </th>
+                                </tr>
+
+
+                                <tr class="trHover" *ngFor="let item of top; let i = index">
+                                    <td>{{ item.code }}</td>
+                                    <td>{{ item.name }}</td>
+                                    <td>
+                                        <p class="text-center">
+                                            {{ item.sold }}
+                                        </p>
+                                    </td>
+                                    <td class="text-center">
+                                        <button type="button" [routerLink]="['/dashboard/producto', item.pid]" class="btn btn-link p-1 text-primary"><i class="bi bi-box-arrow-up-right"></i></button>
+
+                                    </td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <!-- BTN SIGUIENTE Y ANTERIOR -->
+                    <div class="row">
+                        <div class="col col-md-4">
+                            <small class="text-muted">Total de productos agotados: ({{ totalTop }})</small>
+                        </div>
+                    </div>
+                    <!-- BTN SIGUIENTE Y ANTERIOR -->
+
+                </div>
+            </div>
+            <!-- TABLE CLIENTS -->
+
+        </div>
     </div>
 
 

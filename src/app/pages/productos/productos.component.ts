@@ -51,10 +51,11 @@ export class ProductosComponent implements OnInit {
     if (tipo === 'agotados' && valor === true) {
       this.endPoint = `?desde=${this.desde}&tipo=${tipo}&valor=${valor}`;      
     }else if(tipo === 'vencidos' && valor === true){
-      this.endPoint = `?desde=${this.desde}`; 
+      this.endPoint = `?desde=${this.desde}&tipo=${tipo}&valor=${valor}`; 
     }else{
       this.endPoint = `?desde=${this.desde}`;
     }
+    
     
     this.cargando = true;
     this.sinResultados = true;
@@ -77,7 +78,7 @@ export class ProductosComponent implements OnInit {
           this.productos = products;
           this.productosTemp = products;
           this.resultado = 0;
-          this.cargando = false;
+          this.cargando = false;          
 
           // BOTONOS DE ADELANTE Y ATRAS          
           if (this.desde === 0 && this.totalProductos > 10) {
