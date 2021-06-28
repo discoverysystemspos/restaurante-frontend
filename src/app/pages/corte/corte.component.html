@@ -50,10 +50,6 @@
                                 <td> {{ efectivo | currency }} </td>
                             </tr>
                             <tr>
-                                <td colspan="2"> <small> Abonos en efectivo </small> </td>
-                                <td> {{ abEfectivo | currency }} </td>
-                            </tr>
-                            <tr>
                                 <td colspan="2"> <small> Entradas </small> </td>
                                 <td> {{ entradas | currency }} </td>
                             </tr>
@@ -126,7 +122,7 @@
 
                 <div class="card-body text-white">
                     <h4 class="card-title mb-0 text-center">Ventas Totales</h4>
-                    <h5 class="text-center"> {{ efectivo + credito + tarjeta + transferencia + vales | currency }} </h5>
+                    <h5 class="text-center"> {{ montos | currency }} </h5>
                 </div>
 
             </div>
@@ -135,7 +131,7 @@
 
                 <div class="card-body text-white">
                     <h4 class="card-title mb-0 text-center">Ganancia Total</h4>
-                    <h5 class="text-center"> {{ (efectivo + credito + tarjeta + transferencia + vales) - costo | currency }} </h5>
+                    <h5 class="text-center"> {{ montos - costo | currency }} </h5>
                 </div>
 
             </div>

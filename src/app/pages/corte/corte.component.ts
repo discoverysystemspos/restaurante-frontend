@@ -12,6 +12,7 @@ import { ngxPrintMarkerPosition } from 'projects/ngx-printer/src/public_api';
 import { TurnoService } from '../../services/turno.service';
 import { CajaService } from '../../services/caja.service';
 import { UserService } from '../../services/user.service';
+import { InvoiceService } from '../../services/invoice.service';
 
 // INTERFACES
 import { LoadTurno, _movements } from '../../interfaces/load-turno.interface';
@@ -43,15 +44,13 @@ export class CorteComponent implements OnInit {
                 private cajaService: CajaService,
                 private router: Router,
                 private printerService: NgxPrinterService,
-                private userService: UserService) {
+                private userService: UserService,
+                private invoiceService: InvoiceService) {
 
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
                     val => {
 
-                      this.user = this.userService.user;
-
-                      console.log(this.user);
-                      
+                      this.user = this.userService.user;                      
 
                       if (val) {
                         window.location.reload();                        
@@ -71,6 +70,8 @@ export class CorteComponent implements OnInit {
       // TURNO
       this.cargarTurno();
   
+      // FACTURAS
+      this.cargarFacturasTurno();
       // CAJA
       // this.cargarCaja();
 
@@ -123,12 +124,34 @@ export class CorteComponent implements OnInit {
   /** ===============================================================
   * PROCESAR LA INFORMACION 
   ==================================================================== */
-  public efectivo: number = 0;
+  public montos: number = 0;
   public costo: number = 0;
+  public efectivo: number = 0;
   public tarjeta: number = 0;
+  public transferencia: number = 0;
   public credito: number = 0;
   public vales: number = 0;
-  public transferencia: number = 0;
+  cargarFacturasTurno(){
+
+    const endPoint = `?turno=${this.user.turno}`;
+
+    this.invoiceService.loadInvoiceCierre(endPoint)
+        .subscribe( ({total, montos, costos, efectivo, tarjeta, transferencia, credit, vales}) => {
+
+          this.montos = montos;
+          this.costo = costos;
+          this.efectivo = efectivo;
+          this.tarjeta = tarjeta;
+          this.transferencia = transferencia;
+          this.credito = credit;
+          this.vales = vales;
+
+        });
+  }
+
+  /** ===============================================================
+  * PROCESAR LA INFORMACION 
+  ==================================================================== */
   public inicial: number = 0;
   public abEfectivo: number = 0;
   public entradas: number = 0;
@@ -136,67 +159,6 @@ export class CorteComponent implements OnInit {
   public movimientos: _movements[] = [];
   
   procesarInformacion(){
-    
-    // TOTALIZAR VENTAS
-    const sales = this.turno.sales;
-    
-    
-    for (let i = 0; i < sales.length; i++) {      
-
-      if (sales[i].facturas.payments  === null) {
-        return;
-      }
-
-      
-      // COMPROBAR QUE LA FACTURA ES TRUE
-      if(sales[i].facturas.status){
-        
-      this.costo += sales[i].facturas.cost;
-        
-      let pagos = sales[i].facturas.payments;      
-      
-        for (let i = 0; i < pagos.length; i++) {
-
-          switch (pagos[i].type) {
-            case 'efectivo':
-
-              this.efectivo += pagos[i].amount;
-              
-              break;
-
-            case 'tarjeta':
-              
-              this.tarjeta += pagos[i].amount;
-              
-              break;
-
-            case 'credito':
-
-              this.credito += pagos[i].amount;
-              
-              break;
-            
-            case 'vales':
-
-              this.vales += pagos[i].amount;
-              
-              break;
-            
-            case 'transferencia':
-
-              this.transferencia += pagos[i].amount;
-              
-              break;
-          
-            default:
-              break;
-          }
-          
-        }
-      }
-      
-    }
-    // TOTALIZAR VENTAS
 
     // TOTALIZAR MOVIMIENTOS
     const movements = this.movimientos;

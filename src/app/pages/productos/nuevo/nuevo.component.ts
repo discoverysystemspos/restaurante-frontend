@@ -42,7 +42,8 @@ export class NuevoComponent implements OnInit {
     expiration: [''],
     visibility: [true],
     comanda: [false],
-    tipo: ['']
+    tipo: [''],
+    description: ['']
   });
 
   constructor( private fb: FormBuilder,

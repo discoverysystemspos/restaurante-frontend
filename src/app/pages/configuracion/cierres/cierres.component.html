@@ -67,7 +67,6 @@
                         <tr>
                             <th></th>
                             <th class="text-muted " scope="col " colspan="2">Usuario</th>
-                            <th class="text-muted " scope="col ">Mesa</th>
                             <th class="text-muted " scope="col ">Disponibilidad</th>
                             <th class="text-muted text-center" scope="col ">Fecha</th>
                             <th class="text-muted w100 text-rigth" scope="col ">Acciones</th>
@@ -88,8 +87,6 @@
                             </td>
 
                             <td colspan="2">{{ turno.cajero.name }}</td>
-
-                            <td>{{ turno.caja.name }}</td>
                             <td>
                                 <span *ngIf="!turno.cerrado" class="badge rounded-pill bg-success text-white-75">Abierto</span>
                                 <span *ngIf="turno.cerrado" class="badge rounded-pill bg-danger text-white-75">Cerrado</span>
@@ -151,7 +148,7 @@
 
                             <div class="card-body text-white">
                                 <h4 class="card-title mb-0 text-center">Ventas Totales</h4>
-                                <h5 class="text-center"> {{ efectivo + tarjeta + transferencia + vales | currency }} </h5>
+                                <h5 class="text-center"> {{ montos | currency }} </h5>
                             </div>
 
                         </div>
@@ -159,16 +156,12 @@
                     </div>
 
                     <div class="col-auto p-2">
-
                         <div class="card shadow px-2 bg-dark border-0" style="width: 18rem;">
-
                             <div class="card-body text-white">
                                 <h4 class="card-title mb-0 text-center">Ganancia Total</h4>
-                                <h5 class="text-center"> {{ (efectivo + credito + tarjeta + transferencia + vales) - costo | currency }} </h5>
+                                <h5 class="text-center"> {{ montos - costo | currency }} </h5>
                             </div>
-
                         </div>
-
                     </div>
 
                     <div class="col-auto p-2" *ngIf="montoDiferencia !== 0">
@@ -264,7 +257,7 @@
                                         </tr>
                                         <tr class="border-top">
                                             <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                            <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + credito + vales | currency }} </td>
+                                            <td class="fw-bold"> {{ montos | currency }} </td>
                                         </tr>
 
 

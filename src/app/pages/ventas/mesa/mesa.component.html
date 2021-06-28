@@ -95,7 +95,7 @@
                 <button type="button" class="btn btn-outline-success btn-sm m-2" data-bs-toggle="modal" data-bs-target="#buscarCliente"><i class="bi-people"></i> Crear Cliente </button>
                 <button type="button" class="btn btn-outline-primary btn-sm m-2" data-bs-toggle="modal" data-bs-target="#buscarProducto"><i class="bi-box"></i> Productos </button>
                 <button type="button" class="btn btn-outline-primary btn-sm m-2" data-bs-toggle="modal" data-bs-target="#entradaSalidas"><i class="bi-arrow-left-right"></i> Entradas y Salidas </button>
-                <button type="button" class="btn btn-outline-info btn-sm m-2" data-bs-toggle="modal" data-bs-target="#comandas"><i class="bi-receipt"></i> Comandas </button>
+                <button type="button" (click)="timeCommand()" class="btn btn-outline-info btn-sm m-2" data-bs-toggle="modal" data-bs-target="#comandas"><i class="bi-receipt"></i> Comandas </button>
             </div>
 
             <div class="d-grid">
@@ -237,8 +237,8 @@
                     <div class="d-flex justify-content-center">
 
                         <div class="col-4">
-                            <button *ngIf="clienteTemp.cedula === '' || carrito.length === 0 || facturar === false" type="button" class="btn disabled btn-dark btnW waves-effect waves-dark text-white"> <h4 class="display-7">Facturar</h4></button>
-                            <button *ngIf="clienteTemp.cedula !== '' && carrito.length > 0 && facturar === true" (click)="focusMonto()" type="button" class="btn btn-primary btnW waves-effect waves-dark text-white" data-bs-toggle="modal" data-bs-target="#facturar"> <h4 class="display-6">Facturar</h4></button>
+                            <button *ngIf="clienteTemp.cedula === '' || carrito.length === 0 || facturar === false" type="button" class="btn disabled btn-dark btnW waves-effect waves-dark text-white"> <h4 class="display-7">Cobrar</h4></button>
+                            <button *ngIf="clienteTemp.cedula !== '' && carrito.length > 0 && facturar === true" (click)="focusMonto()" type="button" class="btn btn-primary btnW waves-effect waves-dark text-white" data-bs-toggle="modal" data-bs-target="#facturar"> <h4 class="display-6">Cobrar</h4></button>
                             <!-- <button type="button" class="btn btn-dark btnW waves-effect waves-dark text-white" data-bs-toggle="modal" data-bs-target="#facturar"> <h4 class="display-6">Facturar</h4></button> -->
                         </div>
 
@@ -663,8 +663,7 @@
                     <!-- BTN CREAR FACTURA -->
                     <div class="my-4 float-end">
                         <button type="button" (click)="crearFactura()" class="btn btn-outline-primary">
-
-                                    Imprimir
+                            Crear Factura
                         </button>
                     </div>
                     <!-- BTN CREAR FACTURA -->
@@ -820,6 +819,7 @@ COMANDAS
                 <div class="text-center pb-2" id="printDiv">
 
                     <h4 class="text-capitalize" *ngIf="mesa"> {{ mesa.name }} </h4>
+                    <p> {{ timeComanda | date:'medium' }} </p>
 
                     <table class="table table-sm">
                         <thead>
@@ -852,9 +852,6 @@ COMANDAS
                                 </tr>
 
                             </ng-container>
-
-
-
 
                         </tbody>
 

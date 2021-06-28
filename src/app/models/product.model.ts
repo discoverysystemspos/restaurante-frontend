@@ -33,7 +33,8 @@ export class Product {
         public visibility?: boolean,
         public low?: boolean,
         public out?: boolean,
-        public vencido?: boolean
+        public vencido?: boolean,
+        public description?: string
     ){}
 
     /** ================================================================

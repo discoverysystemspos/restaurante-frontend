@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 // SERVICES
 import { TurnoService } from '../../../services/turno.service';
 import { SearchService } from '../../../services/search.service';
+import { InvoiceService } from '../../../services/invoice.service';
 
 // INTERFACES
 import { LoadTurno, _movements } from '../../../interfaces/load-turno.interface';
@@ -28,7 +29,8 @@ export class CierresComponent implements OnInit {
   public btnAdelante: string = '';
 
   constructor(  private turnoService: TurnoService,
-                private searchService: SearchService) { }
+                private searchService: SearchService,
+                private invoiceService: InvoiceService) { }
 
   ngOnInit(): void {
 
@@ -165,7 +167,7 @@ export class CierresComponent implements OnInit {
       this.movimientos = turno.movements;
       this.inicial = turno.initial;
       
-      this.procesarInformacion();
+      this.procesarInformacion(id);
       
     });
   }
@@ -173,8 +175,9 @@ export class CierresComponent implements OnInit {
   /** ===============================================================
   * PROCESAR LA INFORMACION 
   ==================================================================== */
-  public efectivo: number = 0;
+  public montos: number = 0;
   public costo: number = 0;
+  public efectivo: number = 0;
   public tarjeta: number = 0;
   public credito: number = 0;
   public vales: number = 0;
@@ -186,72 +189,35 @@ export class CierresComponent implements OnInit {
   public montoDiferencia: number = 0;
   public movimientos: _movements[] = [];
   
-  procesarInformacion(){
+  procesarInformacion(id){
 
-    this.efectivo = 0;
+    this.montos = 0;
     this.costo = 0;
+    this.efectivo = 0;
     this.tarjeta = 0;
+    this.transferencia = 0;
     this.credito = 0;
     this.vales = 0;
-    this.transferencia = 0;
     this.inicial = 0;
-    this.abEfectivo = 0;
     this.entradas = 0;
     this.salidas = 0;
+    this.abEfectivo = 0;
     this.montoDiferencia = 0;
     
-    // TOTALIZAR VENTAS
-    const sales = this.turnoId.sales;
-    for (let i = 0; i < sales.length; i++) {
-      
-      //  COMPROBAR EL ESTADO DE LA FACTURA
-      if (sales[i].facturas.status) {
+    const endPoint = `?turno=${id}`;
 
-        this.costo += sales[i].facturas.cost;
+    this.invoiceService.loadInvoiceCierre(endPoint)
+        .subscribe(({total, montos, costos, efectivo, tarjeta, transferencia, credit, vales}) => {
 
-        let pagos = sales[i].facturas.payments;
-        for (let i = 0; i < pagos.length; i++) {
-          switch (pagos[i].type) {
-            case 'efectivo':
+          this.montos = montos;
+          this.costo = costos;
+          this.efectivo = efectivo;
+          this.tarjeta = tarjeta;
+          this.transferencia = transferencia;
+          this.credito = credit;
+          this.vales = vales;
 
-              this.efectivo += pagos[i].amount;
-              
-              break;
-
-            case 'tarjeta':
-              
-              this.tarjeta += pagos[i].amount;
-              
-              break;
-
-            case 'credito':
-
-              this.credito += pagos[i].amount;
-              
-              break;
-            
-            case 'vales':
-
-              this.vales += pagos[i].amount;
-              
-              break;
-            
-            case 'transferencia':
-
-              this.transferencia += pagos[i].amount;
-              
-              break;
-          
-            default:
-              break;
-          }
-          
-        }
-
-      }
-      
-    }
-    // TOTALIZAR VENTAS
+        });
 
     // TOTALIZAR MOVIMIENTOS
     const movements = this.movimientos;

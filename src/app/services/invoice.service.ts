@@ -95,6 +95,19 @@ export class InvoiceService {
   }
 
   /** ================================================================
+   *   LOAD INVOICE TURNS
+  ==================================================================== */
+  loadInvoiceCierre( endPoint: string ){
+    return this.http.get<ListInvoice>(`${base_url}/invoice/cierre${endPoint}`, this.headers)
+                    .pipe(
+                      map( resp => {
+                        return resp;
+                      })
+                    );
+
+  }
+
+  /** ================================================================
    *   RETURN INVOICE ID
   ==================================================================== */
   returnInvoice(id: string){

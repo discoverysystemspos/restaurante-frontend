@@ -63,6 +63,11 @@ export interface ListInvoice {
     invoices: LoadInvoice[];
     montos?: number;
     costos?: number;
+    efectivo: number;
+    tarjeta?: number;
+    transferencia?: number;
+    credit?: number;
+    vales?: number;
 }
 
 export interface CargarFactura {

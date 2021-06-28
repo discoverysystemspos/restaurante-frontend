@@ -1114,7 +1114,10 @@ export class MesaComponent implements OnInit {
       });      
       
       this.invoiceService.createInvoice(this.invoiceForm.value, this.user.turno)
-          .subscribe( (resp:{ok: boolean, invoice: Invoice } ) => {              
+          .subscribe( (resp:{ok: boolean, invoice: Invoice } ) => {
+            
+            console.log(resp.invoice);
+            
 
             this.invoiceForm.reset({
               type: 'efectivo'
@@ -1138,7 +1141,7 @@ export class MesaComponent implements OnInit {
             this.credit = false;
 
             // LIMPIAMOS LA MESA
-            this.mesa.carrito = [];            
+            this.mesa.carrito = [];
             
             this.mesasServices.updateMesa(this.mesa, this.mesaID)
             .subscribe( (resp:{ok: boolean, mesa: Mesa}) => {      
@@ -1148,34 +1151,16 @@ export class MesaComponent implements OnInit {
             // this.cargarMesa(this.mesaID);
             // LIMPIAMOS LA MESA
 
-            this.turnoService.getTurnoId(this.user.turno)
-            .subscribe( (turno) => {
-              this.turno = turno;
-              this.movimientos = turno.movements;   
+            Swal.fire('Success', `Se ha creado la factura <strong> #${ resp.invoice.invoice }</strong>, exitosamente`, 'success');
               
-              // AGREGAMOS LA FACTURA AL TURNO
-              this.turno.sales.push({
-                facturas: resp.invoice.iid
-              });
+            // TIPO DE IMPRESION POS O CARTA
+            if (this.empresa.printpos) {              
+              window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
+            }else{
+              window.open(`./dashboard/factura/${ resp.invoice.iid }`, '_blank');
+            }
 
-              this.turnoService.updateTurno(this.turno, this.turno.tid)
-              .subscribe((resp) => {}, (err) =>{
-                Swal.fire('Error', err.error.msg, 'error');
-              }); 
-              // AGREGAMOS LA FACTURA AL TURNO
-                  
-              Swal.fire('Success', `Se ha creado la factura <strong> #${ resp.invoice.invoice }</strong>, exitosamente`, 'success');
-              
-              // TIPO DE IMPRESION POS O CARTA
-              if (this.empresa.printpos) {              
-                window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
-              }else{
-                window.open(`./dashboard/factura/${ resp.invoice.iid }`, '_blank');
-              }
-
-              window.location.reload();
-              
-            });            
+            // window.location.reload();            
 
           }, (err) => {
             Swal.fire('Error', err.error.msg, 'error');
@@ -1289,6 +1274,13 @@ export class MesaComponent implements OnInit {
 
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); }
         )
+  }
+  /** ================================================================
+   *   FILTRAR COMANDA
+  ==================================================================== */
+  public timeComanda: Date;
+  timeCommand(){
+    this.timeComanda = new Date();
   }
 
   /** ================================================================
