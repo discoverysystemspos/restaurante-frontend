@@ -1084,6 +1084,7 @@ export class MesaComponent implements OnInit {
   /** ================================================================
    *   CREAR FACTURA
   ==================================================================== */
+  public factura: LoadInvoice;
   @ViewChild('fechCredito') fechCredito: ElementRef;  
   crearFactura(){
 
@@ -1114,10 +1115,9 @@ export class MesaComponent implements OnInit {
       });      
       
       this.invoiceService.createInvoice(this.invoiceForm.value, this.user.turno)
-          .subscribe( (resp:{ok: boolean, invoice: Invoice } ) => {
+          .subscribe( (resp:{ok: boolean, invoice: LoadInvoice } ) => {
             
-            console.log(resp.invoice);
-            
+            this.factura = resp.invoice;
 
             this.invoiceForm.reset({
               type: 'efectivo'
@@ -1151,16 +1151,20 @@ export class MesaComponent implements OnInit {
             // this.cargarMesa(this.mesaID);
             // LIMPIAMOS LA MESA
 
-            Swal.fire('Success', `Se ha creado la factura <strong> #${ resp.invoice.invoice }</strong>, exitosamente`, 'success');
+            // Swal.fire('Success', `Se ha creado la factura <strong> #${ resp.invoice.invoice }</strong>, exitosamente`, 'success');
               
             // TIPO DE IMPRESION POS O CARTA
             if (this.empresa.printpos) {              
-              window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
+              // window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
+              // IMPRIMIR FACTURA
+              setTimeout( () => {
+                this.printDiv2();                      
+              },1000);
+              
             }else{
               window.open(`./dashboard/factura/${ resp.invoice.iid }`, '_blank');
             }
 
-            // window.location.reload();            
 
           }, (err) => {
             Swal.fire('Error', err.error.msg, 'error');
@@ -1321,6 +1325,26 @@ export class MesaComponent implements OnInit {
     this.printerService.printDiv('printDiv');
     
     this.nota.nativeElement.value = '';
+  }
+
+  /** ================================================================
+   *   IMPRIMIR
+  ==================================================================== */
+  printDiv2() {
+    this.printerService.printDiv('printDiv2');
+    setTimeout( () => {
+      // Swal.fire('Success', `Se ha creado la factura <strong> #${ this.factura.invoice }</strong>, exitosamente`, 'success');
+      Swal.fire({
+        icon: 'success',
+        title: `Factura #${ this.factura.invoice }`,
+        text: `Se ha creado exitosamente`,
+        showDenyButton: false,
+        showCancelButton: false,
+        confirmButtonText: `ok`,
+      }).then((result) => {
+        window.location.reload();
+      })       
+    },1500);
   }
 
   /** ================================================================

@@ -671,6 +671,135 @@
 
                 </div>
 
+                <div class="d-flex justify-content-center">
+                    <div class="card border-0 pb-4" style="width: 14rem; color:black; background: white;" id="printDiv2" *ngIf="factura">
+
+                        <!-- EMPRESA -->
+                        <div class="card-body px-1 mb-2" style="border-bottom: 2px solid black;" *ngIf="empresa">
+
+                            <div class="col-10 mx-auto">
+                                <img *ngIf="empresa.logo" [src]="empresa.logo | imagen:'logo'" class="mx-auto" width="200px" alt="">
+                            </div>
+
+                            <h4 class="card-title mb-0 text-wrap text-center"> {{ empresa.name }} </h4>
+                            <p class="mb-0 text-wrap fw-bolder text-center lh-sm" *ngIf="empresa.nit">{{ empresa.nit }}</p>
+                            <p class="mb-0 text-center text-wrap" style="font-size: 0.7rem;"> </p>
+                            <p class="mb-0 text-wrap text-center" *ngIf="empresa.address">{{ empresa.address }}</p>
+                            <p class="mb-0 text-wrap text-center" *ngIf="empresa.phone">{{ empresa.phone }}</p>
+
+                            <p *ngIf="!empresa.responsable" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">No responsable de IVA</p>
+                            <p *ngIf="empresa.responsable && !empresa.impuestoconsumo" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Responsable de iva</p>
+                            <p *ngIf="empresa.responsable && empresa.impuestoconsumo" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Responsable nacional al consumo</p>
+
+                            <p *ngIf="empresa.responsable" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Resolución: {{ empresa.resolucion }}</p>
+                            <!-- <p *ngIf="empresa.responsable" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;"> 2021/03 /11</p> -->
+                            <p *ngIf="empresa.responsable" class="mb-1 text-wrap text-center" style="font-size: 0.7rem;">Prefijo Pos: {{ empresa.prefijopos }}</p>
+
+                        </div>
+                        <!-- EMPRESA -->
+
+                        <!-- CLIENTE -->
+                        <div class="pb-2" style="border-bottom: 2px solid black;">
+                            <h6 class="mb-0 text-wrap text-left">
+                                CLIENTE / RAZON SOCIAL <br>
+                                <small class="text-wrap fw-normal"> {{ factura.client.name }} </small>
+                            </h6>
+
+                            <h6 class="mb-0 text-wrap text-left">
+                                CC / NIT <br>
+                                <small class="text-wrap fw-normal"> {{ factura.client.cedula }} </small>
+                            </h6>
+                            <h6 class="mb-0 text-wrap text-left">
+                                TELEFONO <br>
+                                <small class="text-wrap fw-normal"> {{ factura.client.phone }} </small>
+                            </h6>
+                            <h6 class="mb-0 text-wrap text-left" *ngIf="factura.client.address">
+                                DIRECCIÓN <br>
+                                <small class="text-wrap fw-normal"> {{ factura.client.address }} </small>
+                            </h6>
+
+                            <h6 class="mb-0 text-wrap text-left">
+                                <p class="text-wrap fw-normal mb-0"> {{ factura.mesa.name }} - {{ factura.mesero.name }} </p>
+                            </h6>
+                        </div>
+                        <!-- CLIENTE -->
+
+                        <!-- FACTURA -->
+                        <div class="py-2" style="border-bottom: 2px solid black;">
+                            <h6 class="mb-0 text-wrap text-left">Factura de venta pos: {{ factura.invoice }}</h6>
+                            <small class="mb-0 text-wrap text-left">Fecha: {{ factura.fecha | date:'short' }}</small>
+                        </div>
+                        <!-- FACTURA -->
+
+                        <table class="table table-borderless table-hover table-sm">
+                            <tbody style="color: black;">
+                                <tr *ngFor="let item of factura.products" class="trHover">
+                                    <td>
+                                        <small class="text-wrap"> {{ item.qty }} x {{item.price | currency}} </small> <br>
+                                        <small class="text-wrap"> {{ item.product.name }} </small>
+                                    </td>
+                                    <td> <small class="text-wrap"> {{ item.qty * item.price | currency }} </small> </td>
+                                </tr>
+                                <tr class="" style="border-top: 2px solid black;">
+                                    <td>
+                                        <h6 class="mb-0 text-wrap text-left">Sub-total</h6>
+                                    </td>
+                                    <td class="fw-bold">
+                                        <h6 class="mb-0 text-wrap text-rigth" *ngIf="!empresa.responsable"> {{ factura.amount | currency }} </h6>
+                                        <h6 class="mb-0 text-wrap text-rigth" *ngIf="empresa.responsable"> {{ factura.amount / ((empresa.tax/100)+1) | currency }} </h6>
+                                    </td>
+                                </tr>
+                                <tr class="" style="border-top: 2px solid black;">
+                                    <td>
+                                        <h6 *ngIf="!empresa.responsable" class="mb-0 text-wrap text-left">No responsable de IVA</h6>
+                                        <h6 *ngIf="empresa.responsable && !empresa.impuestoconsumo" class="mb-0 text-wrap text-left">IVA {{empresa.tax}}% </h6>
+                                        <h6 *ngIf="empresa.responsable && empresa.impuestoconsumo" class="mb-0 text-wrap text-left">Impuesto al consumo {{empresa.tax}}% </h6>
+
+                                    </td>
+                                    <td class="fw-bold">
+                                        <h6 *ngIf="empresa.responsable" class="mb-0 text-wrap text-rigth"> {{ factura.amount - (factura.amount / ((empresa.tax/100)+1)) | currency }} </h6>
+                                        <h6 *ngIf="!empresa.responsable" class="mb-0 text-wrap text-rigth"> {{ 0 | currency }} </h6>
+                                    </td>
+                                </tr>
+                                <tr class="" style="border-top: 2px solid black;">
+                                    <td>
+                                        <h6 class="mb-0 text-wrap text-left">Total</h6>
+                                    </td>
+                                    <td class="fw-bold">
+                                        <h6 *ngIf="empresa.responsable" class="mb-0 text-wrap text-rigth"> {{ factura.amount | currency}} </h6>
+                                        <h6 *ngIf="!empresa.responsable" class="mb-0 text-wrap text-rigth"> {{ factura.amount | currency }} </h6>
+                                    </td>
+                                </tr>
+                                <tr class="" style="border-top: 2px solid black;" *ngIf="empresa.tip">
+                                    <td>
+                                        <h6 class="mb-0 text-wrap text-left">Propina Sugerida del {{empresa.propina}}%</h6>
+                                    </td>
+                                    <td class="fw-bold">
+                                        <h6 class="mb-0 text-wrap text-rigth"> {{ (factura.amount * empresa.propina)/100 | currency }} </h6>
+                                    </td>
+                                </tr>
+                                <tr class="" style="border-top: 2px solid black;" *ngIf="empresa.tip">
+                                    <td>
+                                        <h6 class="mb-0 text-wrap text-left">Total + Propina</h6>
+                                    </td>
+                                    <td class="fw-bold">
+                                        <h6 *ngIf="empresa.responsable" class="mb-0 text-wrap text-rigth"> {{ factura.amount+ (factura.amount * empresa.propina)/100 + (factura.amount * empresa.tax)/100 | currency}} </h6>
+                                        <h6 *ngIf="!empresa.responsable" class="mb-0 text-wrap text-rigth"> {{ factura.amount + (factura.amount * empresa.propina)/100 | currency }} </h6>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                        <h5 class="text-center"> GRACIAS POR SU COMPRA </h5>
+                        <small class="text-wrap text-center mb-0"> Factura impresa por Discovery Systems Pos </small>
+                        <small class="text-wrap text-center mb-0" style="font-size: 0.7rem;">(Elkin Daniel Castillo Perez)</small>
+                        <small class="text-wrap text-center mb-0">NIT. 88243048-6</small>
+
+
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
