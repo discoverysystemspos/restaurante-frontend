@@ -249,6 +249,28 @@
                     </div>
 
                     <div class="row mb-3">
+                        <div class="col-md-12 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="password" type="password" class="form-control" placeholder="Contraseña">
+                                <label for="floatingInput">Contraseña</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-12 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="repassword" type="password" class="form-control" placeholder="Repetir Contraseña">
+                                <label for="floatingInput">Repetir contraseña</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
 
                         <div class="col-md-12 px-md-1">
 
@@ -270,6 +292,7 @@
                         <div class="text-danger mb-2">
                             <p *ngIf="campoValidoUpdate('name')" class="mb-1 animated fadeIn">- El nombre es obligatorio</p>
                             <p *ngIf="campoValidoUpdate('usuario')" class="mb-1 animated fadeIn">- El usuario es obligatorio, Debe de tener como minimo 4 letras</p>
+                            <p *ngIf="campoValidoUpdate('password')" class="mb-1 animated fadeIn">- La contraseña debe de tener una longitud minima de 6</p>
                         </div>
                     </div>
 

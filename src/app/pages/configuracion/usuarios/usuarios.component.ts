@@ -115,6 +115,15 @@ export class UsuariosComponent implements OnInit {
     usuario: ['', [Validators.required, Validators.minLength(4)]],
     name: ['', [Validators.required, Validators.minLength(3)]],
     id: [''],
+    password: ['', [Validators.minLength(6)]],
+    repassword: ['', [Validators.minLength(6)]],
+    role: ['STAFF']
+  });
+
+  public updateUserForm2 = this.fb.group({
+    usuario: ['', [Validators.required, Validators.minLength(4)]],
+    name: ['', [Validators.required, Validators.minLength(3)]],
+    id: [''],
     role: ['STAFF']
   });
 
@@ -123,6 +132,8 @@ export class UsuariosComponent implements OnInit {
     this.updateUserForm.setValue({
       usuario: user.usuario,
       name: user.name,
+      password: [''],
+      repassword: [''],
       id: user.uid,
       role: user.role
     });
@@ -135,11 +146,18 @@ export class UsuariosComponent implements OnInit {
 
     this.formSubmittedUp = true;
     
-    if (this.updateUserForm.invalid) {
-      return;
-    }
+        
+    
+    if (this.updateUserForm.value.password.length === 1) {
+            
+      this.updateUserForm2.setValue({
+        usuario: this.updateUserForm.value.usuario,
+        name: this.updateUserForm.value.name,
+        id: this.updateUserForm.value.id,
+        role: this.updateUserForm.value.role
+      });
 
-    this.userService.updateUser(this.updateUserForm.value, this.updateUserForm.value.id)
+      this.userService.updateUser(this.updateUserForm2.value, this.updateUserForm2.value.id)
         .subscribe((resp:{ok: boolean, user: User}) => {          
 
           this.formSubmittedUp = false;
@@ -149,6 +167,35 @@ export class UsuariosComponent implements OnInit {
 
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); 
       });
+
+      
+    }else{
+
+      if (this.updateUserForm.invalid) {
+        return;
+      }
+
+      if(this.updateUserForm.value.password !== this.updateUserForm.value.repassword){
+        Swal.fire('Atención', 'Las contraseñas no son iguales', 'warning');
+        return;  
+      }
+
+      this.userService.updateUser(this.updateUserForm.value, this.updateUserForm.value.id)
+        .subscribe((resp:{ok: boolean, user: User}) => {          
+
+          this.formSubmittedUp = false;
+          this.cargarUsuarios();
+          this.updateUserForm.reset();
+          Swal.fire('Estupendo', 'Se ha actualizado el Usuario exitosamente!', 'success');
+
+        }, (err) => { Swal.fire('Error', err.error.msg, 'error'); 
+      });
+
+    }
+
+    
+
+    
 
 
   }
