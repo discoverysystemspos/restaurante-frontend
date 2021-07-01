@@ -10,10 +10,10 @@
             <a class="nav-link text-dark" id="administracion-tab" data-bs-toggle="tab" routerLink="/dashboard/productos" role="tab" aria-controls="administracion" aria-selected="false"><i class="bi-files" style="font-size: 1rem"></i> Administracion de Productos</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-primary" id="nuevo-tab" data-bs-toggle="tab" routerLink="/dashboard/productos" role="tab" aria-controls="nuevo" aria-selected="false"><i class="bi-pencil-square" style="font-size: 1rem"></i> Crear Producto</a>
+            <a class="nav-link text-primary" id="nuevo-tab" data-bs-toggle="tab" routerLink="/dashboard/productos/nuevo" role="tab" aria-controls="nuevo" aria-selected="false"><i class="bi-pencil-square" style="font-size: 1rem"></i> Crear Producto</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" id="departamentos-tab" data-bs-toggle="tab" routerLink="/dashboard/productos" role="tab" aria-controls="departamentos" aria-selected="false"><i class="bi-collection" style="font-size: 1rem"></i> Departamentos</a>
+            <a class="nav-link text-dark" id="departamentos-tab" data-bs-toggle="tab" routerLink="/dashboard/productos/departamento" role="tab" aria-controls="departamentos" aria-selected="false"><i class="bi-collection" style="font-size: 1rem"></i> Departamentos</a>
         </li>
         <li class="nav-item">
             <a class="nav-link text-dark active" id="departamentos-tab" aria-selected="true"><i class="bi-collection" style="font-size: 1rem"></i> Movimientos</a>
@@ -99,7 +99,14 @@
                         <th scope="row ">{{ i + 1}}</th>
                         <td colspan="2">{{ item.code }}</td>
                         <td colspan="2">{{ item.name }}</td>
-                        <td>{{ item.description }}</td>
+                        <td>
+                            <a *ngIf="item.invoice" [routerLink]="['/dashboard/factura', item.invoice._id]">                            
+                                {{ item.description }}
+                            </a>
+                            <span *ngIf="!item.invoice">
+                                {{ item.description }}                                
+                            </span>
+                        </td>
                         <td>
                             <span *ngIf="item.type === 'Salida'" class="badge rounded-pill bg-danger text-white-75">{{ item.type }}</span>
                             <span *ngIf="item.type === 'Agrego'" class="badge rounded-pill bg-success text-white-75">{{ item.type }}</span>

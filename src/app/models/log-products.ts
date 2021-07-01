@@ -1,4 +1,5 @@
 import { _cajero } from '../interfaces/load-caja.interface';
+import { Invoice } from './invoice.model';
 //  Model Caja
 export class LogProductsModel{
 
@@ -12,7 +13,8 @@ export class LogProductsModel{
         public stock?: number,
         public cajero?: _cajero,
         public fecha?: Date,
-        public lpid?: string
+        public lpid?: string,
+        public invoice?: Invoice
     ){}
 
 }

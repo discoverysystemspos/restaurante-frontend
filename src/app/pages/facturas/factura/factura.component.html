@@ -188,19 +188,24 @@
                         <div class="ms-auto d-flex justify-content-end">
                             <div class="border-start col px-4" *ngIf="empresa">
 
+                                <!-- NO RESPONSABLE -->
+                                <h6 class="mb-0 text-wrap text-primary text-rigth" *ngIf="!empresa.responsable"> {{ factura.amount | currency }} </h6>
+                                <h6 class="mb-0 text-wrap text-primary text-rigth" *ngIf="empresa.responsable"> {{ factura.amount / ((empresa.tax/100)+1) | currency }} </h6>
+                                <!-- NO RESPONSABLE -->
+
+                                <h6 *ngIf="!empresa.responsable" class="mb-0 text-wrap text-primary text-left">No responsable de IVA</h6>
+                                <h6 *ngIf="empresa.responsable && !empresa.impuestoconsumo" class="mb-0 text-wrap text-primary text-left">IVA {{empresa.tax}}% {{factura.amount - (factura.amount / ((empresa.tax/100)+1)) | currency }}% </h6>
+                                <h6 *ngIf="empresa.responsable && empresa.impuestoconsumo" class="mb-0 text-wrap text-primary text-left">Impuesto al consumo {{empresa.tax}}% {{factura.amount - (factura.amount / ((empresa.tax/100)+1)) | currency }}% </h6>
+
                                 <!-- TOTAL -->
-                                <h5 *ngIf="empresa.responsable" class="display-6 fw-bold text-primary">{{ factura.amount + (factura.amount * empresa.tax)/100 | currency }}</h5>
+                                <h5 *ngIf="empresa.responsable" class="display-6 fw-bold text-primary">{{ factura.amount | currency }}</h5>
+
                                 <h5 *ngIf="!empresa.responsable" class="display-6 fw-bold text-primary">{{ factura.amount | currency }}</h5>
                                 <!-- TOTAL -->
 
-                                <!-- RESPONSABLE -->
-                                <h5 *ngIf="empresa.responsable && !empresa.impuestoconsumo" class="h6 fw-bold text-primary">IVA {{empresa.tax}}% {{ (factura.amount * empresa.tax)/100 | currency }} </h5>
-                                <h5 *ngIf="empresa.responsable && empresa.impuestoconsumo" class="h6 fw-bold text-primary text-wrapp">Impuesto al consumo {{empresa.tax}}% {{ (factura.amount * empresa.tax)/100 | currency }}</h5>
-                                <!-- RESPONSABLE -->
 
-                                <!-- NO RESPONSABLE -->
-                                <h5 class="h6 fw-bold text-primary">Sub-total {{ factura.amount | currency }}</h5>
-                                <!-- NO RESPONSABLE -->
+
+
 
 
                             </div>
