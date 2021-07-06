@@ -48,7 +48,9 @@ export class ProductoComponent implements OnInit {
     max: ['' || 0],
     expiration: [''],
     pid: [''],
-    visibility: [true]
+    visibility: [true],
+    comanda: [''],
+    tipo: ['']
   });
 
   constructor(  private productService: ProductService,
@@ -90,7 +92,7 @@ export class ProductoComponent implements OnInit {
           this.producto = product;
           this.productoImg = product.img;          
           
-          const { code, name, type, cost, gain, expiration, visibility, price, returned, sold,  wholesale, department:{ _id } , pid } = product;
+          const { code, name, type, cost, gain, expiration, visibility, price, returned, sold,  wholesale, department:{ _id } , pid, comanda, tipo } = product;
           
           const stock = product.stock || 0;
           const min = product.min || 0;
@@ -111,7 +113,7 @@ export class ProductoComponent implements OnInit {
             expiracion = expiration.toString().slice(0,10);          
           }
           
-          this.upProductForm.reset({code, name, type, cost, price, visibility, wholesale, gain, department: _id, min, max, expiration: expiracion, pid});
+          this.upProductForm.reset({code, name, type, cost, price, visibility, wholesale, gain, department: _id, min, max, expiration: expiracion, pid, comanda, tipo});
 
         });
   }

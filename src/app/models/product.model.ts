@@ -34,7 +34,9 @@ export class Product {
         public low?: boolean,
         public out?: boolean,
         public vencido?: boolean,
-        public description?: string
+        public description?: string,
+        public comanda?: boolean,
+        public tipo?: string
     ){}
 
     /** ================================================================
