@@ -321,14 +321,22 @@
                                                 </div>
 
                                                 <div class="col p-2">
-
                                                     <input type="radio" (click)="limpiarPagos()" class="btn-check" name="options-outlined" name="type" formControlName="type" id="mixto-outlined" value="mixto" autocomplete="off">
                                                     <label class="btn btn-outline-dark" for="mixto-outlined">
                                                     <i class="px-3 bi-patch-question" style="font-size: 1.5rem;"></i>
                                                     <p class="mb-0">Mixto</p>
-                                                </label>
-
+                                                    </label>
                                                 </div>
+
+                                                <div class="col p-2">
+                                                    <input type="radio" (click)="limpiarPagos('credito')" #tcredito class="btn-check" name="options-outlined" name="type" formControlName="type" id="credito-outlined" value="credito" autocomplete="off">
+                                                    <label class="btn btn-outline-warning" for="credito-outlined">
+                                                    <i class="px-3 bi-clock-history" style="font-size: 1.5rem;"></i>
+                                                    <p class="mb-0">Abono</p>
+                                                    </label>
+                                                </div>
+
+
 
                                             </div>
 
@@ -369,36 +377,36 @@
                                                     <div class="col-auto">
 
                                                         <select class="form-select" aria-label="Default select example" (change)="typeAdd.value" #typeAdd>
-                                                            <option *ngIf="invoiceForm.value.type === 'efectivo' || invoiceForm.value.type === 'mixto'" value="efectivo">Efectivo</option>
-                                                            <option *ngIf="invoiceForm.value.type === 'transferencia' || invoiceForm.value.type === 'mixto'" value="transferencia">Transferencia</option>
-                                                            <option *ngIf="invoiceForm.value.type === 'tarjeta' || invoiceForm.value.type === 'mixto'" value="tarjeta">Tarjeta</option>
-                                                            <option *ngIf="invoiceForm.value.type === 'vale' || invoiceForm.value.type === 'mixto'" value="vale">Vale</option>
+                                                            <option *ngIf="invoiceForm.value.type === 'efectivo' || invoiceForm.value.type === 'mixto' || invoiceForm.value.type === 'credito'" value="efectivo">Efectivo</option>
+                                                            <option *ngIf="invoiceForm.value.type === 'transferencia' || invoiceForm.value.type === 'mixto' || invoiceForm.value.type === 'credito'" value="transferencia">Transferencia</option>
+                                                            <option *ngIf="invoiceForm.value.type === 'tarjeta' || invoiceForm.value.type === 'mixto' || invoiceForm.value.type === 'credito'" value="tarjeta">Tarjeta</option>
+                                                            <option *ngIf="invoiceForm.value.type === 'vale' || invoiceForm.value.type === 'mixto' || invoiceForm.value.type === 'credito'" value="vale">Vale</option>
                                                         </select>
 
                                                     </div>
 
-                                                    <div class="col-auto" *ngIf="!credit">
+                                                    <div class="col-auto">
                                                         <label for="Descripción" class="visually-hidden">Descripción</label>
                                                         <input type="text" class="form-control w100" id="Descripción" placeholder="Descripción" (keyup)="descripcionAdd.value" #descripcionAdd>
                                                     </div>
 
-                                                    <div class="col-auto" *ngIf="!credit">
+                                                    <div class="col-auto">
                                                         <label for="monto" class="visually-hidden">Monto</label>
 
                                                         <ng-container *ngIf="factura">
-                                                            <input type="number" class="form-control" id="monto" placeholder="Monto" [value]=" factura.amount " autofocus="true" (keyup)="montoAdd.value" #montoAdd>
+                                                            <input type="number" class="form-control" id="monto" placeholder="Monto" [value]=" vueltos " autofocus="true" (keyup)="montoAdd.value" #montoAdd>
                                                         </ng-container>
 
                                                     </div>
 
-                                                    <div class="col-auto" *ngIf="!credit">
-                                                        <button type="button" class="btn btn-primary mb-3" (click)="agregarPagos(typeAdd.value, montoAdd.value, descripcionAdd.value)">Agregar</button>
+                                                    <div class="col-auto">
+                                                        <button type="button" class="btn btn-primary mb-3" (click)="agregarPagos(typeAdd.value, montoAdd.nativeElement.value, descripcionAdd.value, tcredito.checked)">Agregar</button>
                                                     </div>
 
-                                                    <div class="col-auto" *ngIf="credit">
+                                                    <!-- <div class="col-auto" *ngIf="credit">
                                                         <label for="credi" class="visually-hidden">Fecha limite</label>
                                                         <input type="date" formControlName="fechaCredito" class="form-control" id="credi" placeholder="Selecciona una fecha limite" #fechCredito>
-                                                    </div>
+                                                    </div> -->
 
                                                 </div>
                                                 <!-- AGREGAR METODO DE PAGO -->

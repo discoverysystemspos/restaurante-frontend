@@ -989,17 +989,15 @@ export class MesaComponent implements OnInit {
   public vueltos: number = 0;
 
   focusMonto(){
-
     this.montoAdd.nativeElement.value = this.total;  
     this.montoAdd.nativeElement.focus();
-
   }
 
-  agregarPagos(type: string, amount:number, description:string = ''){
+  agregarPagos(type: string, amount:number, description:string = '', credito: boolean){
 
-    if (type === 'credito') {
+    if (credito) {
       this.credit = true;
-      amount = this.total;
+      // amount = this.total;
     }else{
       this.credit = false;
     }
@@ -1088,15 +1086,21 @@ export class MesaComponent implements OnInit {
   @ViewChild('fechCredito') fechCredito: ElementRef;  
   crearFactura(){
 
-    if (this.totalPagos < this.total && !this.credit) {
-      Swal.fire('Importante', 'El monto del pago es diferente al del total, porfavor verificar', 'warning');
-      return;      
+    if(!this.credit){
+
+      if (this.totalPagos < this.total) {
+        Swal.fire('Importante', 'El monto del pago es diferente al del total, porfavor verificar', 'warning');
+        return;      
+      }
+
+    }else{
+      if (this.invoiceForm.value.fechaCredito === '') {
+        Swal.fire('Importante', 'Debe de asignar una fecha de caducida a la factura a credito', 'warning');
+        return;      
+      }   
     }
 
-    if (this.invoiceForm.value.fechaCredito === '' && this.credit) {
-      Swal.fire('Importante', 'Debe de asignar una fecha de caducida a la factura a credito', 'warning');
-      return;      
-    }    
+
 
     try {
 

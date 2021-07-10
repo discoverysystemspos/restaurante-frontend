@@ -565,7 +565,7 @@
 
                                                 <div class="col p-2">
 
-                                                    <input type="radio" (click)="limpiarPagos('credito')" class="btn-check" name="options-outlined" name="type" formControlName="type" id="credito-outlined" value="credito" autocomplete="off">
+                                                    <input type="radio" (click)="limpiarPagos('credito')" #tcredito class="btn-check" name="options-outlined" name="type" formControlName="type" id="credito-outlined" value="credito" autocomplete="off">
                                                     <label class="btn btn-outline-warning" for="credito-outlined">
                                                     <i class="px-3 bi-clock-history" style="font-size: 1.5rem;"></i>
                                                     <p class="mb-0">Credito</p>
@@ -611,11 +611,11 @@
                                                     <div class="col-auto">
 
                                                         <select class="form-select" aria-label="Default select example" (change)="typeAdd.value" #typeAdd>
-                                                            <option *ngIf="invoiceForm.value.type === 'efectivo' || invoiceForm.value.type === 'mixto'" value="efectivo">Efectivo</option>
-                                                            <option *ngIf="invoiceForm.value.type === 'transferencia' || invoiceForm.value.type === 'mixto'" value="transferencia">Transferencia</option>
-                                                            <option *ngIf="invoiceForm.value.type === 'tarjeta' || invoiceForm.value.type === 'mixto'" value="tarjeta">Tarjeta</option>
-                                                            <option *ngIf="invoiceForm.value.type === 'vale' || invoiceForm.value.type === 'mixto'" value="vale">Vale</option>
-                                                            <option *ngIf="invoiceForm.value.type === 'credito'" value="credito">Credito</option>
+                                                            <option *ngIf="invoiceForm.value.type === 'efectivo' || invoiceForm.value.type === 'mixto' || invoiceForm.value.type === 'credito'" value="efectivo">Efectivo</option>
+                                                            <option *ngIf="invoiceForm.value.type === 'transferencia' || invoiceForm.value.type === 'mixto' || invoiceForm.value.type === 'credito'" value="transferencia">Transferencia</option>
+                                                            <option *ngIf="invoiceForm.value.type === 'tarjeta' || invoiceForm.value.type === 'mixto' || invoiceForm.value.type === 'credito'" value="tarjeta">Tarjeta</option>
+                                                            <option *ngIf="invoiceForm.value.type === 'vale' || invoiceForm.value.type === 'mixto' || invoiceForm.value.type === 'credito'" value="vale">Vale</option>
+                                                            <!-- <option *ngIf="invoiceForm.value.type === 'credito'" value="credito">Credito</option> -->
                                                         </select>
 
                                                     </div>
@@ -637,7 +637,7 @@
                                                     </div>
 
                                                     <div class="col-auto">
-                                                        <button type="button" class="btn btn-primary mb-3" (click)="agregarPagos(typeAdd.value, montoAdd.value, descripcionAdd.value)">Agregar</button>
+                                                        <button type="button" class="btn btn-primary mb-3" (click)="agregarPagos(typeAdd.value, montoAdd.value, descripcionAdd.value, tcredito.checked)">Agregar</button>
                                                     </div>
 
                                                 </div>

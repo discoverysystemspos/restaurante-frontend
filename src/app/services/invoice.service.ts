@@ -45,8 +45,8 @@ export class InvoiceService {
   /** ================================================================
    *   UPDATE INVOICE
   ==================================================================== */
-  updateInvoice(formData:any, id: string){    
-    return this.http.put(`${ base_url }/invoice/pago/${id}`, formData, this.headers);
+  updateInvoice(formData:any, id: string, abono:boolean = false){    
+    return this.http.put(`${ base_url }/invoice/pago/${id}?abono=${abono}`, formData, this.headers);
   }
 
   /** ================================================================

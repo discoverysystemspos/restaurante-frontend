@@ -101,7 +101,12 @@ export class FacturaComponent implements OnInit {
     this.invoiceService.loadInvoiceId(id)
         .subscribe( invoice => {
 
-          this.factura = invoice;  
+          this.factura = invoice;
+
+          this.payments = this.factura.payments;
+          this.sumarPagos();
+
+          this.vueltos = Number( this.factura.amount - this.totalPagos);
           
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
 
@@ -252,14 +257,9 @@ export class FacturaComponent implements OnInit {
     this.montoAdd.nativeElement.focus();
   }
 
-  agregarPagos(type: string, amount:number, description:string = ''){
+  agregarPagos(type: string, amount:number, description:string = '', credito: boolean){
 
-    if (type === 'credito') {
-      this.credit = true;
-      this.descripcionAdd.nativeElement.value = '';
-      this.montoAdd.nativeElement.value = '';
-      return;
-    }
+    
 
     if (amount === 0 || amount < 1) {
       Swal.fire('Atención', 'No has agregado un monto', 'info');
@@ -286,7 +286,30 @@ export class FacturaComponent implements OnInit {
     this.descripcionAdd.nativeElement.value = '';
     this.montoAdd.nativeElement.value = '';
 
+    
+
     this.sumarPagos();
+
+    if (credito) {
+
+      this.invoiceForm.setValue({
+        payments: this.payments,
+        credito: true,
+        type: this.invoiceForm.value.type,
+      });
+
+      this.invoiceService.updateInvoice( this.invoiceForm.value, this.factura.iid )
+        .subscribe( ( resp:{ok: boolean, invoice: Invoice } ) => {
+
+          
+          window.location.reload();
+          
+
+        }, (err) => {
+
+          Swal.fire('Error', err.error.msg, 'error');
+        });
+    }
   }
   /** ================================================================
    *   ELIMINAR METODO DE PAGO
@@ -301,6 +324,27 @@ export class FacturaComponent implements OnInit {
 
     this.vueltos = (this.factura.amount - this.totalPagos);
 
+    this.invoiceForm.setValue({
+      payments: this.payments,
+      credito: true,
+      type: this.invoiceForm.value.type,
+    });
+
+    this.invoiceService.updateInvoice( this.invoiceForm.value, this.factura.iid )
+        .subscribe( ( resp:{ok: boolean, invoice: Invoice } ) => {
+
+          
+
+          this.invoiceForm.reset();
+
+          window.location.reload();
+          
+
+        }, (err) => {
+
+          Swal.fire('Error', err.error.msg, 'error');
+        });
+
   }
 
   /** ================================================================
@@ -314,8 +358,10 @@ export class FacturaComponent implements OnInit {
       this.credit = true;
     }
 
-    this.payments = [];
-    this.vueltos = 0;
+    this.payments = this.factura.payments;
+    this.sumarPagos();
+    this.vueltos = Number( this.factura.amount - this.totalPagos);
+    
   }
 
   /** ================================================================
@@ -332,7 +378,11 @@ export class FacturaComponent implements OnInit {
         this.totalPagos += Number( this.payments[i].amount );        
       }
 
-    }   
+    }
+
+    if (this.vueltos < 0) {
+      this.vueltos = this.vueltos * -1;
+    }    
 
   }
 
