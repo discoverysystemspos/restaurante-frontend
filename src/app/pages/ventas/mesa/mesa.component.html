@@ -37,6 +37,10 @@
             <!-- DEPARTAMENTOS -->
 
             <!-- PRODUCTOS -->
+            <div class="col-10 mx-auto my-3">
+                <input type="text" class="form-control" placeholder="buscar producto" (keyup.enter)="buscarProducto(searchProduct.value)" #searchProduct>
+            </div>
+
             <div class="d-flex justify-content-center flex-wrap">
 
                 <div *ngIf="listaProductos.length < 1" class="py-4">
@@ -48,7 +52,8 @@
                     <div class="card m-1 animated fadeIn" style="width: 12rem;" *ngIf="producto.visibility">
                         <div class="position-absolute ms-2 mt-2">
                             <span *ngIf="producto.low && !producto.out" class="badge rounded-pill bg-warning text-dark">Bajo</span>
-                            <span *ngIf="producto.out" class="badge rounded-pill bg-danger">Agotado</span>
+                            <span *ngIf="producto.out && producto.type !== 'Paquete'" class="badge rounded-pill bg-danger">Agotado</span>
+                            <span *ngIf="producto.vencido" class="badge rounded-pill bg-warning">Vencido</span>
                         </div>
 
                         <img class="avatar-xxl avatar-img avatar-redondo-lg mx-auto" style="height: 180px; width: auto;" [src]="producto.img | imagen:'products'" class="card-img-top" alt="...">
@@ -63,7 +68,7 @@
                                 <div class="d-flex align-items-center">
 
                                     <p class="mb-0 text-success">{{ producto.price | currency }}</p>
-                                    <button type="button" [disabled]="producto.out" (click)="btnAddProducto( producto, 1, producto.price )" class="btn btn-link btn-primary text-white ms-auto" style="font-size: 1rem;">
+                                    <button type="button" [disabled]="producto.out &&  producto.type !== 'Paquete' || producto.vencido" (click)="btnAddProducto( producto, 1, producto.price )" class="btn btn-link btn-primary text-white ms-auto" style="font-size: 1rem;">
                                         <i class="bi bi-cart-plus"></i>
                                     </button>
 

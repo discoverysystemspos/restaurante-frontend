@@ -108,6 +108,7 @@ export class FacturaComponent implements OnInit {
 
           this.vueltos = Number( this.factura.amount - this.totalPagos);
           
+          
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
 
   }
