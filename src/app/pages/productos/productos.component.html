@@ -72,8 +72,13 @@
 
                         <div>
                             <h6 class="text-muted">Departamentos</h6>
-                            <select class="form-select" aria-label="Default select example" #departamentos>
+                            <select class="form-select" aria-label="Default select example" #departamentos (change)="cargarProductos('', false, departamentos.value)">
                                 <option value="none" selected>Todos</option>
+
+                                <ng-container *ngFor="let departmento of listaDepartamentos">
+                                    <option *ngIf="departmento.status" value="{{departmento.did}}">{{departmento.name}}</option>
+                                </ng-container>
+
                             </select>
                         </div>
 

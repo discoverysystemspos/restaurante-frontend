@@ -7,7 +7,9 @@
     </div>
     <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <a class="nav-link text-dark active" id="nuevo-tab"><i class="bi-pencil" style="font-size: 1rem"></i> Editar Producto</a>
+            <a class="nav-link text-dark active" id="nuevo-tab">
+                <i class="bi-pencil" style="font-size: 1rem"></i> Editar Producto
+            </a>
         </li>
     </ul>
 </header>
@@ -25,7 +27,7 @@
         <!-- IMAGE -->
         <div class="col-lg-4 text-center">
 
-            <div *ngIf="producto.type !== 'Paquete'" class="card bg-success text-white">
+            <div class="card bg-success text-white">
                 <div class="card-body text-center">
 
                     <p class="mb-0">Stock</p>
@@ -43,7 +45,7 @@
                 </div>
             </div>
 
-            <div *ngIf="producto.type !== 'Paquete'" class="d-grid gap-2 mt-2 mb-4">
+            <div class="d-grid gap-2 mt-2 mb-4">
                 <button data-bs-toggle="modal" data-bs-target="#ajustarInventario" class="btn btn-dark" type="button"> 
                     <i class="bi-card-checklist"></i> Ajustar Inventario
                 </button>

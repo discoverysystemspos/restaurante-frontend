@@ -9,6 +9,8 @@ import { Product } from '../../models/product.model';
 import { ProductService } from '../../services/product.service';
 import { SearchService } from '../../services/search.service';
 import Swal from 'sweetalert2';
+import { DepartmentService } from '../../services/department.service';
+import { Department } from 'src/app/models/department.model';
 
 @Component({
   selector: 'app-productos',
@@ -16,11 +18,14 @@ import Swal from 'sweetalert2';
   styles: [
   ]
 })
+
 export class ProductosComponent implements OnInit {
 
   public totalProductos: number = 0;
   public productos: Product[] = [];
   public productosTemp: Product[] = [];
+
+  public listaDepartamentos: Department[] = [];
   
   public resultado: number = 0;
   public desde: number = 0;
@@ -30,9 +35,10 @@ export class ProductosComponent implements OnInit {
   public btnAtras: string = '';
   public btnAdelante: string = '';
 
-  constructor( private productService: ProductService,
+  constructor(  private productService: ProductService,
                 private searchService: SearchService,
-                private fb:FormBuilder) { }
+                private fb:FormBuilder,
+                private departmentService: DepartmentService) { }
 
   ngOnInit(): void {
     
@@ -40,22 +46,37 @@ export class ProductosComponent implements OnInit {
 
     this.cargarCosto();
 
+    this.cargarDepartamentos();
+
+  }
+
+  /** ================================================================
+   *   CARGAR DEPARTAMENTOS
+  ==================================================================== */
+  cargarDepartamentos(){
+
+    this.departmentService.loadDepartment()
+        .subscribe( ({departments, total}) => {
+          
+          this.listaDepartamentos = departments;          
+          
+        });
+
   }
 
   /** ================================================================
    *   CARGAR PRODUCTOS
   ==================================================================== */
   public endPoint: string = `?desde=${this.desde}`;
-  cargarProductos(tipo: string, valor: boolean){
-
-    if (tipo === 'agotados' && valor === true) {
-      this.endPoint = `?desde=${this.desde}&tipo=${tipo}&valor=${valor}`;      
-    }else if(tipo === 'vencidos' && valor === true){
-      this.endPoint = `?desde=${this.desde}&tipo=${tipo}&valor=${valor}`; 
-    }else{
-      this.endPoint = `?desde=${this.desde}`;
-    }
+  cargarProductos(tipo: string = '', valor: boolean = false, departamento: string = 'none'){
     
+    if (tipo === 'agotados' && valor === true) {
+      this.endPoint = `?desde=${this.desde}&tipo=${tipo}&valor=${valor}&departamento=${departamento}`;      
+    }else if(tipo === 'vencidos' && valor === true){
+      this.endPoint = `?desde=${this.desde}&tipo=${tipo}&valor=${valor}&departamento=${departamento}`; 
+    }else{
+      this.endPoint = `?desde=${this.desde}&departamento=${departamento}`;
+    }
     
     this.cargando = true;
     this.sinResultados = true;

@@ -37,9 +37,7 @@
             <!-- DEPARTAMENTOS -->
 
             <!-- PRODUCTOS -->
-            <div class="col-10 mx-auto my-3">
-                <input type="text" class="form-control" placeholder="buscar producto" (keyup.enter)="buscarProducto(searchProduct.value)" #searchProduct>
-            </div>
+
 
             <div class="d-flex justify-content-center flex-wrap">
 
@@ -96,16 +94,106 @@
             <hr>
 
             <!-- BOTONES -->
-            <div class="mb-3">
+            <div class="mb-2">
                 <button type="button" class="btn btn-outline-success btn-sm m-2" data-bs-toggle="modal" data-bs-target="#buscarCliente"><i class="bi-people"></i> Crear Cliente </button>
-                <button type="button" class="btn btn-outline-primary btn-sm m-2" data-bs-toggle="modal" data-bs-target="#buscarProducto"><i class="bi-box"></i> Productos </button>
+
+                <button type="button" class="btn btn-outline-primary btn-sm m-2" data-bs-toggle="collapse" href="#productsColl" role="button" aria-expanded="false" aria-controls="collapseExample"><i class="bi-box"></i> Productos </button>
+                <!-- <button type="button" class="btn btn-outline-primary btn-sm m-2" data-bs-toggle="modal" data-bs-target="#buscarProducto"><i class="bi-box"></i> Productos </button> -->
+
                 <button type="button" class="btn btn-outline-primary btn-sm m-2" data-bs-toggle="modal" data-bs-target="#entradaSalidas"><i class="bi-arrow-left-right"></i> Entradas y Salidas </button>
                 <button type="button" (click)="timeCommand()" class="btn btn-outline-info btn-sm m-2" data-bs-toggle="modal" data-bs-target="#comandas"><i class="bi-receipt"></i> Comandas </button>
             </div>
 
             <div class="d-grid">
 
+                <div class="">
+
+                    <!-- ACORDION DE PRODUCTOS -->
+                    <div class="collapse mb-3" id="productsColl">
+
+                        <hr>
+
+                        <div>
+                            <label for="precioM">Buscar Productos:</label>
+                            <!-- <input type="text" class="form-control" placeholder="buscar producto" (keyup.enter)="buscarProducto(searchProduct.value)" #searchProduct> -->
+                            <input type="text" class="form-control" placeholder="buscar producto" (keyup.enter)="buscarProducto(searchProduct.value)" #searchProduct>
+                        </div>
+                        <div *ngIf="listaProductos.length > 0 && searchProduct.value.length !== 0" class="bg-white px-2 shadow col-auto" style="position: absolute; z-index: 1020;">
+
+                            <ul class="list-group list-group-flush overflow-auto" style="max-height: 150px;">
+
+                                <li class="list-group-item py-1">
+                                    <h6>Resultados: ({{ listaProductos.length }})</h6>
+                                </li>
+
+                                <li class="list-group-item py-1 trHover" *ngFor="let item of listaProductos">
+                                    <div class="d-flex ">
+                                        <div class="align-self-center">
+                                            <span> {{ item.name }} </span>
+                                            <span *ngIf="item.out" class="badge rounded-pill bg-danger">Agotado</span>
+                                            <span *ngIf="item.low && !item.out" class="badge rounded-pill bg-warning text-dark">Bajo</span>
+                                        </div>
+
+                                        <div class="ms-auto">
+                                            <button *ngIf="!item.out" class="btn btn-link p-1 text-success float-end" (click)="seleccionarProducto(item)"> <i class="bi-arrow-90deg-right"></i></button>
+                                            <button *ngIf="item.out" class="btn btn-link p-1 text-success float-end"> <i class="bi-arrow-90deg-right"></i></button>
+                                        </div>
+                                    </div>
+
+                                </li>
+
+                            </ul>
+
+                        </div>
+
+                        <div class="mt-4">
+
+                            <div class="form-group">
+                                <label for="">Codigo de barras:</label>
+                                <input readonly type="text" class="form-control" placeholder="Codigo de Barras" [value]="productTemp.code" #barcode>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Nombre:</label>
+                                <input readonly type="text" class="form-control" placeholder="Nombre" [value]="productTemp.name">
+                            </div>
+
+                            <div class="row">
+
+                                <div *ngIf="!mayoreo.checked" class="form-group col-md-6">
+                                    <label for="precio">Precio:</label>
+                                    <input type="number" min="1" class="form-control" placeholder="Precio" [value]="productTemp.price" #precio>
+                                </div>
+
+                                <div *ngIf="mayoreo.checked" class="form-group col-md-6">
+                                    <label for="precioM">Precio Al Mayor:</label>
+                                    <input type="number" min="1" class="form-control" placeholder="Precio Al Mayor" [value]="productTemp.wholesale" #precioM>
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="cantidad">Cantidad:</label>
+                                    <input type="number" min="1" class="form-control" placeholder="" value="1" #cantidad>
+                                </div>
+
+                            </div>
+
+                            <div class="form-check form-switch mt-2">
+                                <input class="form-check-input" [disabled]="user.role !== 'ADMIN'" type="checkbox" [(ngModel)]="mayoreo.checked" #mayoreo>
+                                <label class="form-check-label" for="mayor">Aplicar Mayoreo</label>
+                            </div>
+
+                            <button type="button" (click)="evniarAlCarrito(cantidad.value, mayoreo.checked, barcode.value, true)" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Registrar</button>
+
+                        </div>
+
+                        <hr>
+
+                    </div>
+                    <!-- ACORDION DE PRODUCTOS -->
+
+                </div>
+
                 <div class="mb-3">
+
 
                     <div>
                         <input type="text" class="form-control" placeholder="buscar cliente" (keyup)="buscarCliente(searchClient.value)" #searchClient>
