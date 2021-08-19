@@ -58,9 +58,6 @@ export class MovimientosComponent implements OnInit {
           }
           // COMPROBAR SI EXISTEN RESULTADOS
 
-          console.log(products);
-          
-
           this.total = total;
           this.productosLog = products;
           this.productosLogTemp = products;
@@ -82,7 +79,6 @@ export class MovimientosComponent implements OnInit {
             this.btnAdelante = '';
           }   
           // BOTONOS DE ADELANTE Y ATRAS
-
 
         });
 

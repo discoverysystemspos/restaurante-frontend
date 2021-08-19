@@ -206,7 +206,7 @@
                             <div class="card-body text-center">
 
                                 <!-- Image Product-->
-                                <img *ngIf="!imgTemp" src="http://localhost:3000/api/uploads/department/{{imgDepartamento}}" class="avatar-redondo-lg mx-auto" alt="">
+                                <img *ngIf="!imgTemp" [src]="imgDepartamento | imagen:'department'" class="avatar-redondo-lg mx-auto" alt="">
 
                                 <!-- IMG TEMPO  imgTemp -->
                                 <img *ngIf="imgTemp" [src]="imgTemp" class="avatar-redondo-lg mx-auto" alt="">

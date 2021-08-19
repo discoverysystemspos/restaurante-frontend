@@ -15,6 +15,7 @@ export interface Carrito{
     price: number;
     producto?: Product;
     _id?: string;
+    iva?: number
 }
 
 interface _interProducto{
@@ -51,4 +52,5 @@ export interface LoadCarrito{
     name?: string;
     comanda?: boolean;
     tipo?: string;
+    iva?: number;
 }

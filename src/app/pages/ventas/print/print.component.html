@@ -82,8 +82,8 @@
                             <h6 class="mb-0 text-wrap text-left">Sub-total</h6>
                         </td>
                         <td class="fw-bold">
-                            <h6 class="mb-0 text-wrap text-rigth" *ngIf="!empresa.responsable"> {{ factura.amount | currency }} </h6>
-                            <h6 class="mb-0 text-wrap text-rigth" *ngIf="empresa.responsable"> {{ factura.amount / ((empresa.tax/100)+1) | currency }} </h6>
+                            <h6 class="mb-0 text-wrap text-rigth" *ngIf="!empresa.responsable"> {{ factura.base | currency }} </h6>
+                            <h6 class="mb-0 text-wrap text-rigth" *ngIf="empresa.responsable"> {{ factura.base | currency }} </h6>
                         </td>
                     </tr>
                     <tr class="" style="border-top: 2px solid black;">
@@ -94,7 +94,7 @@
 
                         </td>
                         <td class="fw-bold">
-                            <h6 *ngIf="empresa.responsable" class="mb-0 text-wrap text-rigth"> {{ factura.amount - (factura.amount / ((empresa.tax/100)+1)) | currency }} </h6>
+                            <h6 *ngIf="empresa.responsable" class="mb-0 text-wrap text-rigth"> {{ factura.iva | currency }} </h6>
                             <h6 *ngIf="!empresa.responsable" class="mb-0 text-wrap text-rigth"> {{ 0 | currency }} </h6>
                         </td>
                     </tr>

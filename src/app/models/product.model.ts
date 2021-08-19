@@ -3,6 +3,7 @@ import { environment } from "../../environments/environment"
 // MODELS
 import { Kit } from "./kits.model";
 import { Department } from './department.model';
+import { Impuesto } from './impuesto.model';
 
 const base_url = environment.base_url;
 
@@ -36,7 +37,9 @@ export class Product {
         public vencido?: boolean,
         public description?: string,
         public comanda?: boolean,
-        public tipo?: string
+        public tipo?: string,
+        public tax?: boolean,
+        public impuesto?: Impuesto[]
     ){}
 
     /** ================================================================

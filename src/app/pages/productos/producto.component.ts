@@ -14,6 +14,7 @@ import { FileUploadService } from '../../services/file-upload.service';
 import { Product } from '../../models/product.model';
 import { Kit } from 'src/app/models/kits.model';
 import { Department } from '../../models/department.model';
+import { Impuesto } from '../../models/impuesto.model';
 
 
 @Component({
@@ -50,7 +51,11 @@ export class ProductoComponent implements OnInit {
     pid: [''],
     visibility: [true],
     comanda: [''],
-    tipo: ['']
+    tipo: [''],
+    description: [''],
+    tax: [],
+    impuestoT:[],
+    valor: []
   });
 
   constructor(  private productService: ProductService,
@@ -92,7 +97,7 @@ export class ProductoComponent implements OnInit {
           this.producto = product;
           this.productoImg = product.img;          
           
-          const { code, name, type, cost, gain, expiration, visibility, price, returned, sold,  wholesale, department:{ _id } , pid, comanda, tipo } = product;
+          const { code, name, type, cost, gain, expiration, visibility, price, returned, sold,  wholesale, department:{ _id } , pid, comanda, tipo, description, tax, impuesto } = product;
           
           const stock = product.stock || 0;
           const min = product.min || 0;
@@ -107,13 +112,23 @@ export class ProductoComponent implements OnInit {
           this.kits = product.kit;
 
           let expiracion;
+          
+          let impuestoT = '';
+          let valorT = 0;
+
+          if (tax) {
+            
+            impuestoT = impuesto[0].name;
+            valorT = impuesto[0].valor;
+          }
+          
 
           if (expiration !==  null || expiration ) {
             
             expiracion = expiration.toString().slice(0,10);          
           }
           
-          this.upProductForm.reset({code, name, type, cost, price, visibility, wholesale, gain, department: _id, min, max, expiration: expiracion, pid, comanda, tipo});
+          this.upProductForm.reset({code, name, type, cost, price, visibility, wholesale, gain, department: _id, min, max, expiration: expiracion, pid, comanda, tipo, description, tax, impuestoT, valor: valorT });
 
         });
   }
@@ -297,8 +312,9 @@ export class ProductoComponent implements OnInit {
   /** ================================================================
    *   ACTUALIZAR PRODUCTO
   ==================================================================== */
+  public impuesto: any[] = [];
   actualizarProducto(){
-    
+        
     if (this.upProductForm.value.type !== 'Paquete' ) {
       this.upProductForm.value.kit = [];      
     }else{
@@ -307,7 +323,25 @@ export class ProductoComponent implements OnInit {
     
     this.upProductForm.value.price = this.precioN;
     this.upProductForm.value.gain = this.gananciaN;
+
+    let impuestoN = '';
+    let valorImp = 0;
+
+    if (this.upProductForm.value.tax === true) {
+      impuestoN = this.upProductForm.value.impuestoT;
+      valorImp = this.upProductForm.value.valor;     
+    }else{
+      this.upProductForm.value.impuesto = [];  
+      impuestoN = '';
+      valorImp = 0;
+    }
+
+    this.impuesto.push({
+      name: impuestoN,
+      valor: valorImp
+    });    
     
+    this.upProductForm.value.impuesto = this.impuesto;  
     
     this.productService.actualizarProducto(this.upProductForm.value, this.upProductForm.value.pid)
         .subscribe( resp => {
