@@ -168,9 +168,11 @@ export class TotalComponent implements OnInit {
       // SET HOURS      
       inicial = new Date(inicial);      
       const initial = new Date(inicial);
+      // const initial = new Date(inicial.getTime() + 1000 * 60 * 60 * 5);
 
       final = new Date(final);
       const end = new Date(final);      
+      // const end = new Date(final.getTime() + 1000 * 60 * 60 * 5);      
       // SET HOURS          
       this.sinResultados = true;
       this.invoiceService.loadInvoicesDate(initial, end, cajeros, estado, credito)
