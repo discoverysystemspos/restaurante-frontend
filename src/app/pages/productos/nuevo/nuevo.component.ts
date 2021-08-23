@@ -45,7 +45,7 @@ export class NuevoComponent implements OnInit {
     comanda: [false],
     tipo: [''],
     description: [''],
-    tax: [''],
+    tax: [false],
     impuestoT: [''],
     valor: [''],
     impuesto: []
