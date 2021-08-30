@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 // MODELS
 import { Kit } from '../../../models/kits.model';
 import { Product } from '../../../models/product.model';
+import { Impuesto } from '../../../models/impuesto.model';
 
 // SERVICES
 import { DepartmentService } from '../../../services/department.service';
@@ -43,7 +44,11 @@ export class NuevoComponent implements OnInit {
     visibility: [true],
     comanda: [false],
     tipo: [''],
-    description: ['']
+    description: [''],
+    tax: [false],
+    impuestoT: [''],
+    valor: [''],
+    impuesto: []
   });
 
   constructor( private fb: FormBuilder,
@@ -169,7 +174,10 @@ export class NuevoComponent implements OnInit {
   /** ================================================================
    *   CREAR PRODUCTO
   ==================================================================== */
+  public impuesto: Impuesto[] = [];
   crearProducto(){
+
+    this.impuesto = [];
 
     if (this.productoForm.value.type !== 'Paquete' ) {
       this.productoForm.value.kit = [];      
@@ -180,6 +188,29 @@ export class NuevoComponent implements OnInit {
     // CARGAMOS EL PRECIO
     this.productoForm.value.price = this.precioN;
     this.productoForm.value.gain = this.gananciaN;
+
+    let impuestoN = '';
+    let valorImp = 0;
+
+    if (this.productoForm.value.tax === true) {
+
+      impuestoN = this.productoForm.value.impuestoT;
+      valorImp = this.productoForm.value.valor;
+      
+    }else{
+
+      impuestoN = '';
+      valorImp = 0;
+
+    }
+
+    this.impuesto.push({
+      name: impuestoN,
+      valor: valorImp
+    });
+    
+    this.productoForm.value.impuesto = this.impuesto;
+    
 
     this.formSubmitted = true;
 
@@ -206,7 +237,11 @@ export class NuevoComponent implements OnInit {
               stock: 0,
               min: 0,
               max: 0,
-              expiration: ''
+              expiration: '',
+              tax: [''],
+              impuestoT: [''],
+              valor: [''],
+              impuesto: ['']
             });
 
           }, (err) => {            

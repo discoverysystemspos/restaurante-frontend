@@ -7,6 +7,7 @@ import { _payments } from './carrito.interface';
 // MODELS
 import { User } from '../models/user.model';
 import { Product } from '../models/product.model';
+import { Impuesto } from '../models/impuesto.model';
 
 // INTERFACES INVOICE
 export interface _products{
@@ -55,6 +56,10 @@ export interface LoadInvoice {
     status: boolean;
     fecha: Date;
     iid: string;
+    tax: boolean;
+    impuesto: Impuesto;
+    iva: number;
+    base: number;
 
 }
 

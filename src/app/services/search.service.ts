@@ -35,7 +35,7 @@ export class SearchService {
    *   SEARCH
   ==================================================================== */
   search(
-      tipo: 'users'|'clients' |'departments'|'products' |'caja' |'mesa' |'turno',
+      tipo: 'users'|'clients' |'departments'|'products' |'caja' |'mesa' |'turno'|'log',
       termino: string
     ){
 

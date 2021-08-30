@@ -373,14 +373,24 @@ export class MesaComponent implements OnInit {
         return false;
       }
     });
+    
+    let ivaP:number = 0;
+
+    if (product.tax) {
+
+      ivaP = Number(product.price * qty) * Number(product.impuesto[0].valor / 100);      
+      
+    }
 
     if ( validarItem === -1 ) {
+
 
       // AGREGAMOS EL PRODUCTO
       this.productUp.push({
         product: product.pid,
         qty,
-        price: precio
+        price: precio,
+        iva: ivaP
       });
 
       // AGREGAMOS A LA COMANDA
@@ -398,12 +408,16 @@ export class MesaComponent implements OnInit {
       let qtyTemp = this.productUp[validarItem].qty;
       qtyTemp += Number(qty);
 
+      let ivaTemp = this.productUp[validarItem].iva;
+      ivaTemp += Number(ivaP);
+
+      this.productUp[validarItem].iva = ivaTemp;
       this.productUp[validarItem].qty = qtyTemp;
       this.comanda[validarItem].qty = qtyTemp;
       
     }
     
-    this.mesa.carrito =  this.productUp;
+    this.mesa.carrito =  this.productUp;    
 
     this.mesasServices.updateMesa(this.mesa, this.mesaID)
         .subscribe( (resp:{ok: boolean, mesa: any}) => { 
@@ -417,7 +431,8 @@ export class MesaComponent implements OnInit {
             this.productUp.push({
               product: resp.mesa.carrito[i].product._id,
               qty: resp.mesa.carrito[i].qty,
-              price: resp.mesa.carrito[i].price
+              price: resp.mesa.carrito[i].price,
+              iva: resp.mesa.carrito[i].iva
             });
             
             this.comanda.push({
@@ -474,7 +489,8 @@ export class MesaComponent implements OnInit {
                 this.productUp.push({
                   product: resp.mesa.carrito[i].product._id,
                   qty: resp.mesa.carrito[i].qty,
-                  price: resp.mesa.carrito[i].price
+                  price: resp.mesa.carrito[i].price,
+                  iva: resp.mesa.carrito[i].iva
                 });
                 
                 this.comanda.push({
@@ -506,9 +522,12 @@ export class MesaComponent implements OnInit {
    *  SUMAR TOTALES
   ==================================================================== */
   public totalCosto:number = 0;
+  public iva:number = 0;
+  public base:number = 0;
   sumarTotales(){
     
     this.total = 0;
+    this.iva = 0;
     this.totalCosto = 0;
     if (this.carrito.length > 0) {
       
@@ -516,11 +535,14 @@ export class MesaComponent implements OnInit {
         
         this.total += (this.carrito[i].price * this.carrito[i].qty);
         this.totalCosto += (this.carrito[i].product.cost * this.carrito[i].qty);
+        this.iva += this.carrito[i].iva;
 
       }
 
+      this.base = this.total;
+
       if (this.empresa.responsable) {
-        this.total = this.total + ((this.total * this.empresa.tax)/100);
+        this.total = this.total + this.iva;
       }
 
     }    
@@ -978,7 +1000,9 @@ export class MesaComponent implements OnInit {
     products: [''],
     credito: [this.credit],
     fechaCredito: [''],
-    turno: ['']
+    turno: [''],
+    iva: [''],
+    base:['']
   })
 
   /** ================================================================
@@ -1115,7 +1139,9 @@ export class MesaComponent implements OnInit {
         mesa: this.mesaID,
         mesero: this.meserID,
         fechaCredito: this.invoiceForm.value.fechaCredito,
-        turno: this.user.turno
+        turno: this.user.turno,
+        iva: this.iva,
+        base: this.base
       });      
       
       this.invoiceService.createInvoice(this.invoiceForm.value, this.user.turno)
@@ -1128,6 +1154,8 @@ export class MesaComponent implements OnInit {
             });
 
             this.total = 0;
+            this.iva = 0;
+            this.base = 0;
             this.totalPagos = 0;
             this.carrito = [];
             this.payments = [];

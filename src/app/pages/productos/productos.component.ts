@@ -75,7 +75,7 @@ export class ProductosComponent implements OnInit {
     }else if(tipo === 'vencidos' && valor === true){
       this.endPoint = `?desde=${this.desde}&tipo=${tipo}&valor=${valor}&departamento=${departamento}`; 
     }else{
-      this.endPoint = `?desde=${this.desde}&departamento=${departamento}`;
+      this.endPoint = `?desde=${this.desde}&tipo=none&departamento=${departamento}`;
     }
     
     this.cargando = true;

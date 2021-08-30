@@ -177,7 +177,7 @@
                             </div>
 
                             <div class="form-check form-switch mt-2">
-                                <input class="form-check-input" [disabled]="user.role !== 'ADMIN'" type="checkbox" [(ngModel)]="mayoreo.checked" #mayoreo>
+                                <input class="form-check-input" [disabled]="user.role !== 'ADMIN' && user.role !== 'CASHIER' " type="checkbox" [(ngModel)]="mayoreo.checked" #mayoreo>
                                 <label class="form-check-label" for="mayor">Aplicar Mayoreo</label>
                             </div>
 
@@ -337,13 +337,11 @@
 
                         <div class="col ms-auto text-end" *ngIf="empresa">
                             <p class="h6 fw-normal text-primary mb-0" *ngIf="!empresa.responsable">Sub-total {{ total / 1 | currency }}</p>
-                            <p class="h6 fw-normal text-primary mb-0" *ngIf="empresa.responsable">Sub-total {{ total / ((empresa.tax/100)+1) | currency }}</p>
-                            <p class="h6 fw-normal text-primary mb-0" *ngIf="empresa.responsable">IVA {{empresa.tax}}% {{ total - (total / ((empresa.tax/100)+1)) | currency }}</p>
+                            <p class="h6 fw-normal text-primary mb-0" *ngIf="empresa.responsable">Sub-total {{ total - iva | currency }}</p>
+                            <p class="h6 fw-normal text-primary mb-0" *ngIf="empresa.responsable">IVA {{ iva | currency }}</p>
                             <h4 class="fw-normal text-primary" *ngIf="!empresa.responsable">{{ total | currency }}</h4>
                             <h4 class="fw-normal text-primary" *ngIf="empresa.responsable">{{ total | currency }}</h4>
                         </div>
-
-
 
                     </div>
 
@@ -838,8 +836,8 @@
                                         <h6 class="mb-0 text-wrap text-left">Sub-total</h6>
                                     </td>
                                     <td class="fw-bold">
-                                        <h6 class="mb-0 text-wrap text-rigth" *ngIf="!empresa.responsable"> {{ factura.amount | currency }} </h6>
-                                        <h6 class="mb-0 text-wrap text-rigth" *ngIf="empresa.responsable"> {{ factura.amount / ((empresa.tax/100)+1) | currency }} </h6>
+                                        <h6 class="mb-0 text-wrap text-rigth" *ngIf="!empresa.responsable"> {{ factura.base | currency }} </h6>
+                                        <h6 class="mb-0 text-wrap text-rigth" *ngIf="empresa.responsable"> {{ factura.base | currency }} </h6>
                                     </td>
                                 </tr>
                                 <tr class="" style="border-top: 2px solid black;">
@@ -850,7 +848,7 @@
 
                                     </td>
                                     <td class="fw-bold">
-                                        <h6 *ngIf="empresa.responsable" class="mb-0 text-wrap text-rigth"> {{ factura.amount - (factura.amount / ((empresa.tax/100)+1)) | currency }} </h6>
+                                        <h6 *ngIf="empresa.responsable" class="mb-0 text-wrap text-rigth"> {{ factura.iva | currency }} </h6>
                                         <h6 *ngIf="!empresa.responsable" class="mb-0 text-wrap text-rigth"> {{ 0 | currency }} </h6>
                                     </td>
                                 </tr>

@@ -5,6 +5,7 @@ import { LogProductsModel } from '../../../models/log-products';
 
 // SERVICES
 import { LogProductsService } from '../../../services/log-products.service';
+import { SearchService } from '../../../services/search.service';
 
 @Component({
   selector: 'app-movimientos',
@@ -27,7 +28,8 @@ export class MovimientosComponent implements OnInit {
   public btnAtras: string = '';
   public btnAdelante: string = '';
 
-  constructor(  private logProductsServices: LogProductsService ) { }
+  constructor(  private logProductsServices: LogProductsService,
+                private searchService: SearchService ) { }
 
   ngOnInit(): void {
 
@@ -121,6 +123,40 @@ export class MovimientosComponent implements OnInit {
     this.limite = limite;
     // this.limit.nativeElement.value = this.limit;
     this.cargarLogProductos();    
+
+  }
+
+  /** ================================================================
+   *   BUSCAR
+  ==================================================================== */
+  buscar( termino:string ){
+
+    this.sinResultados = true;
+
+    if (termino.length === 0) {
+      this.productosLog = this.productosLogTemp;
+      this.resultado = 0;
+      return;
+    }else{
+      this.sinResultados = true;
+
+      this.searchService.search('log', termino)
+            .subscribe(({total, resultados}) => {
+              
+              // COMPROBAR SI EXISTEN RESULTADOS
+              if (resultados.length === 0) {
+                this.sinResultados = false;
+                this.productosLog = [];
+                this.resultado = 0;
+                return;                
+              }
+              // COMPROBAR SI EXISTEN RESULTADOS
+
+              this.total = total;
+              this.productosLog = resultados; 
+              this.resultado = resultados.length;          
+            });
+    }    
 
   }
 

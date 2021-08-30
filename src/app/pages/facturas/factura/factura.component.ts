@@ -20,7 +20,7 @@ import { Invoice } from '../../../models/invoice.model';
 import { Datos } from '../../../models/empresa.model';
 
 // INTERFACES
-import { LoadInvoice } from '../../../interfaces/invoice.interface';
+import { LoadInvoice, _products } from '../../../interfaces/invoice.interface';
 import { _payments, Carrito } from '../../../interfaces/carrito.interface';
 import { LoadTurno, _movements } from '../../../interfaces/load-turno.interface';
 
@@ -96,6 +96,7 @@ export class FacturaComponent implements OnInit {
    *   CARGAR FACTURA
   ==================================================================== */
   public idFactura;
+  public iva: number = 0;
   cargarFactura(id: string){
     
     this.invoiceService.loadInvoiceId(id)
@@ -104,7 +105,8 @@ export class FacturaComponent implements OnInit {
           this.factura = invoice;
 
           this.payments = this.factura.payments;
-          this.sumarPagos();
+          this.iva = invoice.iva;
+          this.sumarPagos();          
 
           this.vueltos = Number( this.factura.amount - this.totalPagos);
           
@@ -132,8 +134,6 @@ export class FacturaComponent implements OnInit {
   ==================================================================== */
   devolverProducto(producto: Carrito){
 
-    console.log(producto);
-
     Swal.fire({
       title: 'Cantidad',
       input: 'text',
@@ -153,16 +153,12 @@ export class FacturaComponent implements OnInit {
         
         const cantidad:number = Number(result.value);
 
-        console.log(cantidad);
-        
-
         if (cantidad < producto.qty && cantidad !== 0) {
 
           this.invoiceService.updateProdutInvoice(this.idFactura, producto._id, cantidad)
               .subscribe( resp => {
 
-                console.log(resp);
-                
+                                
                 this.cargarFactura(this.idFactura);
                 
               });
