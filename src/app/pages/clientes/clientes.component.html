@@ -87,6 +87,7 @@
                                     <td>{{ cliente.department }} <span *ngIf="cliente.city || cliente.department">-</span> {{ cliente.city }}</td>
                                     <td>{{ cliente.zip }}</td>
                                     <td class="text-center">
+                                        <button type="button" (click)="credito(cliente, true)" class="btn btn-link p-1 text-warning" data-bs-toggle="modal" data-bs-target="#credito"><i class="bi-calendar-event" style="font-size: 0.9rem"></i></button>
                                         <button type="button" (click)="actualizarCliente(cliente)" class="btn btn-link p-1 text-primary" data-bs-toggle="modal" data-bs-target="#actualizarCLiente"><i class="bi-pen" style="font-size: 0.9rem"></i></button>
                                         <button type="button" (click)="borrarCliente(cliente.cid)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
                                     </td>
@@ -127,7 +128,7 @@
     BODY 
 ========================================================================= -->
 <!-- =========================================================================
-    NUEVO CLIENTE 
+    NUEVO CLIENTE  credito
 ========================================================================= -->
 <div class="modal fade" id="nuevoCliente" tabindex="-1" aria-labelledby="nuevoClienteModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -385,4 +386,85 @@
 </div>
 <!-- =========================================================================
     ACTUALIZAR CLIENTE
+========================================================================= -->
+
+<!-- =========================================================================
+    LISTAR FACTURAS A CREDITOS  
+========================================================================= -->
+<div class="modal fade" id="credito" tabindex="-1" aria-labelledby="nuevoClienteModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <div *ngIf="clienteCredito">
+                    <h5 class="modal-title" id="nuevoClienteModal">
+                        <i class="bi-calendar-event" style="font-size: 2rem"></i> LISTAR FACTURAS A CREDITOS
+                    </h5>
+                    <p class="mb-0 text-muted">{{ clienteCredito.name}} - {{ clienteCredito.cedula}} </p>
+                    <p class="mb-0 text-muted">{{ clienteCredito.phone}} </p>
+                </div>
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <!-- TABLA DE FACTURAS A CREDITOS DEL CLIENTE -->
+
+                <div class="table-responsive ">
+                    <table class="table table-borderless table-striped table-hover table-sm animated fadeIn overflow-auto">
+                        <thead class="border-bottom ">
+                            <tr>
+                                <th class="text-muted" scope="col ">#</th>
+                                <th class="text-muted" scope="col " colspan="2">Cliente</th>
+                                <th class="text-muted" scope="col ">Cedula</th>
+                                <th class="text-muted" scope="col " colspan="2">Ruta</th>
+                                <th class="text-muted" scope="col ">Monto</th>
+                                <th class="text-muted" scope="col ">Metodo</th>
+                                <th class="text-muted" scope="col ">fecha</th>
+                                <th class="text-muted" scope="col "></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="creditos.length === 0" class="text-center ">
+                                <th colspan="10" class="py-4">
+                                    <h4 class="text-muted">Este Clinte no tiene facturas a credito</h4>
+                                </th>
+                            </tr>
+
+                            <ng-container *ngFor="let factura of creditos; let i=index ">
+
+                                <tr class="trHover" tabindex="0" data-bs-toggle="tooltip" title="Cajero: {{ factura.user.name }}">
+                                    <th>{{ factura.invoice }}</th>
+                                    <td colspan="2">
+                                        {{ factura.client.name }}
+                                        <span *ngIf="!factura.status" class="badge rounded-pill bg-danger">Cancelada</span>
+                                        <span *ngIf="factura.credito && factura.status" class="badge rounded-pill bg-warning">Credito</span>
+                                    </td>
+                                    <td> {{ factura.client.cedula }} </td>
+                                    <td colspan="2"> {{ factura.mesa.name }} </td>
+                                    <td> {{ factura.amount | currency }} </td>
+                                    <td> {{ factura.type }} </td>
+                                    <td> {{ factura.fecha | date:'medium' }} </td>
+                                    <td class="text-center">
+                                        <button type="button" data-bs-dismiss="modal" [routerLink]="['/dashboard/factura', factura.iid]" class="btn btn-link p-1 text-primary"><i class="bi bi-box-arrow-up-right"></i></button>
+                                    </td>
+                                </tr>
+
+                            </ng-container>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- TABLA DE FACTURAS A CREDITOS DEL CLIENTE -->
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =========================================================================
+    LISTAR FACTURAS A CREDITOS 
 ========================================================================= -->

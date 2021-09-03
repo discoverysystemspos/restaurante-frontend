@@ -8,6 +8,8 @@ import { Client } from 'src/app/models/client.model';
 // SERVICES
 import { ClientService } from '../../services/client.service';
 import { SearchService } from '../../services/search.service';
+import { InvoiceService } from '../../services/invoice.service';
+import { LoadInvoice, ListInvoice, ListCreditoCliente } from '../../interfaces/invoice.interface';
 
 
 @Component({
@@ -32,9 +34,10 @@ export class ClientesComponent implements OnInit {
   public btnAdelante: string = '';
 
   
-  constructor( private clientService: ClientService,
+  constructor(  private clientService: ClientService,
                 private searchService: SearchService,
-                private fb:FormBuilder, ) {  }
+                private fb:FormBuilder,
+                private invoicesService: InvoiceService ) {  }
 
   ngOnInit(): void {
     
@@ -264,7 +267,7 @@ export class ClientesComponent implements OnInit {
   }
 
   /** ================================================================
-   *  VALIDAR CAMPOS
+   *  VALIDAR CAMPOScredito
   ==================================================================== */
   campoValidoUpdate(campo: string): boolean{
 
@@ -275,6 +278,26 @@ export class ClientesComponent implements OnInit {
       return false;
     }
   
+  }
+
+  /** ================================================================
+   *  CARGAR LAS FACTURAS A CREDITO DEL CLIENTE
+  ==================================================================== */
+  public creditos: LoadInvoice[] = [];
+  public clienteCredito: Client;
+  credito(client: Client, credito: boolean){
+
+    this.creditos = [];
+    this.clienteCredito = client;
+
+    this.invoicesService.loadInvoiceCreditClient(client.cid, credito)
+        .subscribe( (invoices) => {
+
+          this.creditos = invoices;          
+
+        });
+    
+
   }
   
   // FIN DE LA CLASE

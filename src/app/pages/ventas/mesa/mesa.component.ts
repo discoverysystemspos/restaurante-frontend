@@ -1002,7 +1002,9 @@ export class MesaComponent implements OnInit {
     fechaCredito: [''],
     turno: [''],
     iva: [''],
-    base:['']
+    base:[''],
+    pago: [0],
+    vueltos: [0]
   })
 
   /** ================================================================
@@ -1011,6 +1013,7 @@ export class MesaComponent implements OnInit {
   @ViewChild('descripcionAdd') descripcionAdd: ElementRef;
   @ViewChild('montoAdd') montoAdd: ElementRef;
   public vueltos: number = 0;
+  public pago: number = 0;
 
   focusMonto(){
     this.montoAdd.nativeElement.value = this.total;  
@@ -1031,6 +1034,10 @@ export class MesaComponent implements OnInit {
       return;      
     }
 
+    if(type === 'efectivo'){
+      this.pago += amount;
+    }
+
     let totales = Number( this.total - this.totalPagos );
 
     // COMPROBAR SI EL MONTO ES MAYOR AL RESTANTE
@@ -1041,6 +1048,8 @@ export class MesaComponent implements OnInit {
       amount = this.montoAdd.nativeElement.value;
       this.vueltos = (this.montoAdd.nativeElement.value - totales);
     }
+
+    
 
     this.payments.push({
       type,
@@ -1141,7 +1150,9 @@ export class MesaComponent implements OnInit {
         fechaCredito: this.invoiceForm.value.fechaCredito,
         turno: this.user.turno,
         iva: this.iva,
-        base: this.base
+        base: this.base,
+        pago: this.pago,
+        vueltos: this.vueltos
       });      
       
       this.invoiceService.createInvoice(this.invoiceForm.value, this.user.turno)

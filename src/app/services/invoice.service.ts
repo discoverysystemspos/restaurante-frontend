@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { delay, map, tap } from 'rxjs/operators'
 
 // INTERFACES
-import { LoadInvoice, ListInvoice } from '../interfaces/invoice.interface';
+import { LoadInvoice, ListInvoice, ListCreditoCliente } from '../interfaces/invoice.interface';
 
 import { environment } from '../../environments/environment';
 
@@ -90,6 +90,17 @@ export class InvoiceService {
     return this.http.get(`${base_url}/invoice/${id}`, this.headers)
                     .pipe(
                       map( (resp: {ok: boolean, invoice: LoadInvoice} ) => resp.invoice)
+                    );
+
+  }
+
+  /** ================================================================
+   *   LOAD INVOICE CREDIT CLIENT
+  ==================================================================== */
+  loadInvoiceCreditClient( client: string, credito:boolean ){
+    return this.http.get(`${base_url}/invoice/${client}/${credito}`, this.headers)
+                    .pipe(
+                      map( (resp: {ok: boolean, invoice: LoadInvoice[]} ) => resp.invoice)
                     );
 
   }

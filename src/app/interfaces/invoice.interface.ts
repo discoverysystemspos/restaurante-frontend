@@ -60,6 +60,8 @@ export interface LoadInvoice {
     impuesto: Impuesto;
     iva: number;
     base: number;
+    pago: number;
+    vueltos: number;
 
 }
 
@@ -73,6 +75,11 @@ export interface ListInvoice {
     transferencia?: number;
     credit?: number;
     vales?: number;
+}
+
+export interface ListCreditoCliente{
+    ok: boolean;
+    invoices: LoadInvoice[];
 }
 
 export interface CargarFactura {

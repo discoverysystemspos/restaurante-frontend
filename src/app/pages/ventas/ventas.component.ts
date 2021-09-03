@@ -83,10 +83,7 @@ export class VentasComponent implements OnInit {
     this.sinResultados = true;
 
     this.mesasService.loadMesas(this.desde)
-        .subscribe(({ total, mesas }) => {
-
-          console.log(mesas);
-          
+        .subscribe(({ total, mesas }) => {          
 
           // COMPROBAR SI EXISTEN RESULTADOS
           if (mesas.length === 0) {
