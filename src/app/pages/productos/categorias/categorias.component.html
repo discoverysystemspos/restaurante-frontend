@@ -15,10 +15,10 @@
             <a class="nav-link text-primary" id="nuevo-tab" [routerLink]="['/dashboard/productos', 'nuevo']"><i class="bi-pencil-square" style="font-size: 1rem"></i> Crear Producto</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark active" id="departamentos-tab" [routerLink]="['/dashboard/productos', 'departamento']"><i class="bi-collection" style="font-size: 1rem"></i> Departamentos</a>
+            <a class="nav-link text-dark " id="departamentos-tab" [routerLink]="['/dashboard/productos', 'departamento']"><i class="bi-collection" style="font-size: 1rem"></i> Departamentos</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" id="departamentos-tab" [routerLink]="['/dashboard/productos', 'categorias']" aria-selected="false"><i class="bi-collection" style="font-size: 1rem"></i> Categorias</a>
+            <a class="nav-link text-dark active" id="departamentos-tab" [routerLink]="['/dashboard/productos', 'categorias']" aria-selected="false"><i class="bi-collection" style="font-size: 1rem"></i> Categorias</a>
         </li>
         <li class="nav-item">
             <a class="nav-link text-dark" id="departamentos-tab" [routerLink]="['/dashboard/productos', 'movimientos']" aria-selected="false"><i class="bi-collection" style="font-size: 1rem"></i> Movimientos</a>
@@ -49,16 +49,16 @@
             <div>
                 <div class="form-floating mb-2">
                     <span class="position-absolute top-50 start-90 translate-middle"><i class=" bi-search " style="font-size: 1rem "></i></span>
-                    <input type="text" class="form-control" id="floatingInput2" placeholder="Buscar Departamento" (keyup)="buscar(search.value)" #search>
-                    <label for="floatingInput2 ">Buscar Departamento</label>
+                    <input type="text" class="form-control" id="floatingInput2" placeholder="Buscar Categoria" (keyup)="buscar(search.value)" #search>
+                    <label for="floatingInput2 ">Buscar Categoria</label>
                 </div>
             </div>
 
-            <!-- BTN CREAR DEPARTAMENTO -->
+            <!-- BTN CREAR Categoria -->
             <div class="d-flex justify-content-end">
-                <button type="button" class="btn btn-sm btn-primary btnW waves-effect waves-ligth" data-bs-toggle="modal" data-bs-target="#nuevoDepartamento">Crear Departamento</button>
+                <button type="button" class="btn btn-sm btn-primary btnW waves-effect waves-ligth" data-bs-toggle="modal" data-bs-target="#nuevoCategoria">Crear Categoria</button>
             </div>
-            <!-- BTN CREAR DEPARTAMENTO -->
+            <!-- BTN CREAR Categoria -->
 
             <div class="table-responsive ">
                 <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
@@ -78,21 +78,21 @@
                                 <h4 class="text-muted">Sin Resultados</h4>
                             </th>
                         </tr>
-                        <tr class="trHover" *ngFor="let departamento of departmentos; let i = index">
+                        <tr class="trHover" *ngFor="let categoria of categorias; let i = index">
                             <th *ngIf="desde === 0 " scope="row ">{{ i + 1}}</th>
                             <th *ngIf="desde> 0" scope="row">{{ (i + 1) + desde }}</th>
                             <td>
 
-                                <img [src]="departamento.img | imagen: 'department'" class="avatar avatar-img" alt="">
+                                <img [src]="categoria.img | imagen: 'department'" class="avatar avatar-img" alt="">
 
                             </td>
-                            <td colspan="2">{{ departamento.name }}</td>
+                            <td colspan="2">{{ categoria.name }}</td>
                             <td>
-                                <button *ngIf="departamento.status" (click)="statusUpdate(departamento.did)" type="button" class="btn btnW waves-effect waves-ligth btn-success btn-sm">Activo</button>
-                                <button *ngIf="!departamento.status" (click)="statusUpdate(departamento.did)" type="button" class="btn btnW waves-effect waves-ligth btn-danger btn-sm">Desactivo</button>
+                                <button *ngIf="categoria.status" (click)="statusUpdate(categoria.did)" type="button" class="btn btnW waves-effect waves-ligth btn-success btn-sm">Activo</button>
+                                <button *ngIf="!categoria.status" (click)="statusUpdate(categoria.did)" type="button" class="btn btnW waves-effect waves-ligth btn-danger btn-sm">Desactivo</button>
                             </td>
                             <td class="text-center">
-                                <button type="button" (click)="informacionDepartamento(departamento)" class="btn btn-link p-1 text-primary" data-bs-toggle="modal" data-bs-target="#actualizarDepartamento"><i class="bi bi-box-arrow-up-right"></i></button>
+                                <button type="button" (click)="informacionCategoria(categoria)" class="btn btn-link p-1 text-primary" data-bs-toggle="modal" data-bs-target="#actualizarCategoria"><i class="bi bi-box-arrow-up-right"></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -104,7 +104,7 @@
             <!-- BTN SIGUIENTE Y ANTERIOR -->
             <div class="row">
                 <div class="col col-md-4">
-                    <small class="text-muted">Total de departamentos: ({{totalDepartamentos}})</small>
+                    <small class="text-muted">Total de categorias: ({{totalDepartamentos}})</small>
                     <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
                     <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + departmentos.length }})</small>
                 </div>
@@ -127,35 +127,35 @@
 <!-- =========================================================================
     NUEVO DEPARTAMENTO 
 ========================================================================= -->
-<div class="modal fade" id="nuevoDepartamento" tabindex="-1" aria-labelledby="nuevoDepartamentoModal" aria-hidden="true">
+<div class="modal fade" id="nuevoCategoria" tabindex="-1" aria-labelledby="nuevoCategoriaModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="nuevoDepartamentoModal"><i class="bi-collection" style="font-size: 1rem"></i> Crear Departamento</h5>
+                <h5 class="modal-title" id="nuevoCategoriaModal"><i class="bi-collection" style="font-size: 1rem"></i> Crear Categoria</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
 
 
-                <form id="newDepartmentForm" autocomplete="off" [formGroup]="newDepartmentForm" (ngSubmit)="crearDepartamento()">
+                <form id="newCategoriaForm" autocomplete="off" [formGroup]="newCategoriaForm" (ngSubmit)="crearCategoria()">
 
                     <!-- =======================================================================
-                        Informacion del Departamento
+                        Informacion del Categoria
                     =========================================================================== -->
-                    <h5 class="text-muted">Informacion del Departamento</h5>
+                    <h5 class="text-muted">Informacion de la Categoria</h5>
 
                     <div class="row mb-3">
                         <div class="col-md-12 px-md-1">
 
                             <div class="form-floating">
-                                <input formControlName="name" type="text" class="form-control text-capitalize" placeholder="Nombre del Departamento">
-                                <label for="floatingInput">Nombre del Departamento</label>
+                                <input formControlName="name" type="text" class="form-control text-capitalize" placeholder="Nombre de la Categoria">
+                                <label for="floatingInput">Nombre del Categoria</label>
                             </div>
 
                             <div class="form-check mt-2">
                                 <input formControlName="visibility" class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
                                 <label class="form-check-label" for="flexCheckChecked">
-                                  Departamento Visible
+                                  Categoria Visible
                                 </label>
                             </div>
 
@@ -180,70 +180,120 @@
     </div>
 </div>
 <!-- =========================================================================
-    NUEVO DEPARTAMENTO 
+    NUEVO CATEGORIA 
 ========================================================================= -->
 
 <!-- =========================================================================
-    ACTUALIZAR DEPARTAMENTO 
+    ACTUALIZAR CATEGORIA 
 ========================================================================= -->
-<div class="modal fade" id="actualizarDepartamento" tabindex="-1" aria-labelledby="actualizarDepartamentoModal" aria-hidden="true">
+<div class="modal fade" id="actualizarCategoria" tabindex="-1" aria-labelledby="actualizarCategoriaModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="actualizarDepartamentoModal"><i class="bi-collection" style="font-size: 1rem"></i> Crear Departamento</h5>
+                <h5 class="modal-title" id="actualizarCategoriaModal"><i class="bi-collection" style="font-size: 1rem"></i> Crear Departamento</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
 
 
-                <form id="upDepartmentForm" autocomplete="off" [formGroup]="upDepartmentForm" (ngSubmit)="actualizarDepartamento()">
+                <form id="upCategoriaForm" autocomplete="off" [formGroup]="upCategoriaForm" (ngSubmit)="actualizarCategoria()">
 
                     <!-- =======================================================================
                         Informacion del Departamento
                     =========================================================================== -->
-                    <h5 class="text-muted">Informacion del Departamento</h5>
-
-                    <!-- IMAGE -->
-                    <div class="col py-2 text-center">
-                        <div class="card">
-                            <div class="card-body text-center">
-
-                                <!-- Image Product-->
-                                <img *ngIf="!imgTemp" [src]="imgDepartamento | imagen: 'department'" class="avatar-redondo-lg mx-auto" alt="">
-
-                                <!-- IMG TEMPO  imgTemp -->
-                                <img *ngIf="imgTemp" [src]="imgTemp" class="avatar-redondo-lg mx-auto" alt="">
-
-                                <div class="mb-3">
-                                    <label for="formFileSm" class="form-label">Seleccionar Imagen</label>
-                                    <input #fileImg class="form-control form-control-sm" id="formFileSm" type="file" (change)="cambiarImage($event.target.files[0])">
-                                </div>
-                                <!-- Description-->
-                                <div class="small font-italic text-muted mb-4">JPG - PNG - WEBP - no mayor a 5 mb</div>
-                                <!-- BTN upload Image -->
-                                <button *ngIf="imgTemp" class="btn btnW btn-primary waves-effect waves-light px-3" [disabled]="!subirImagen" (click)="subirImg()" type="button">Actualizar Imagen</button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- IMAGE -->
+                    <h5 class="text-muted">Informacion de la Categoria</h5>
 
                     <div class="row mb-3">
                         <div class="col-md-12 px-md-1">
 
                             <div class="form-floating">
                                 <input formControlName="name" type="text" class="form-control text-capitalize" placeholder="Nombre del Departamento">
-                                <label for="floatingInput">Nombre del Departamento</label>
+                                <label for="floatingInput">Nombre de la Categoria</label>
                             </div>
 
                             <div class="form-check mt-2">
                                 <input formControlName="visibility" class="form-check-input" type="checkbox" value="" id="flexCheckChecked2">
                                 <label class="form-check-label" for="flexCheckChecked2">
-                                  Departamento Visible
+                                  Categoria Visible
                                 </label>
                             </div>
 
                         </div>
                     </div>
+
+                    <!-- BUSCAR DEPARTAMENTOS -->
+
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            <span class="position-absolute top-50 start-90 translate-middle"><i class=" bi-search " style="font-size: 1rem "></i></span>
+                            <input type="text" class="form-control" id="buscarDepart" placeholder="Buscar Departamento" (keyup)="buscarDepartamento(searchDepartamento.value)" #searchDepartamento>
+                            <label for="buscarDepart ">Buscar Departamento</label>
+                        </div>
+
+                        <div *ngIf="departamentos.length > 0" class="bg-white py-3 px-2 shadow col-10" style="position: absolute; z-index: 1020;">
+
+                            <div *ngIf="cargando2" class="text-center py-3">
+                                <div class="spinner-grow text-secondary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <div>
+                                    <small class="text-muted">Cargando...</small>
+                                </div>
+                            </div>
+
+                            <ul *ngIf="!cargando" class="list-group list-group-flush overflow-auto" style="max-height: 200px;">
+
+
+                                <li class="list-group-item" *ngFor="let item of departamentos">
+                                    <div class="d-flex ">
+                                        <div class="align-self-center">
+                                            <span> {{ item.name }} </span>
+                                        </div>
+
+                                        <div class="ms-auto">
+                                            <button type="button" class="btn btn-link p-1 text-success float-end" (click)="seleccionarDepartamento(item.did, item.name)"> <i class="bi-arrow-90deg-right"></i></button>
+                                        </div>
+                                    </div>
+
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- BUSCAR DEPARTAMENTOS -->
+
+                    <!-- TABLA DEPARTAMENTOS -->
+                    <div class="table-responsive ">
+                        <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                            <thead class="border-bottom ">
+                                <tr>
+                                    <th class="text-muted " scope="col ">#</th>
+                                    <th class="text-muted " scope="col " colspan="2">Nombre</th>
+                                    <th class="text-muted w100 " scope="col ">Acciones</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr *ngIf="listadoDepartamento.length === 0" class="text-center ">
+                                    <th colspan="10" class="py-4">
+                                        <h4 class="text-muted">No se a asignado ningun departamento a esta categoria</h4>
+                                    </th>
+                                </tr>
+
+                                <tr class="trHover" *ngFor="let departamento of listadoDepartamento; let i = index">
+                                    <th scope="row ">{{ i + 1}}</th>
+                                    <td colspan="2">{{ departamento.name }}</td>
+                                    <td class="text-center">
+                                        <button type="button" (click)="eliminarProductoCarrito(i)" class="btn btn-link p-1 text-danger"><i class="bi bi-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                    <!-- TABLA DEPARTAMENTOS -->
 
                     <div class="row">
                         <div class="text-danger mb-2">

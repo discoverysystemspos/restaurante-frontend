@@ -30,6 +30,7 @@ import { PrintComponent } from './ventas/print/print.component';
 import { MovimientosComponent } from './productos/movimientos/movimientos.component';
 import { NuevoComponent } from './productos/nuevo/nuevo.component';
 import { DepartamentosComponent } from './productos/departamentos/departamentos.component';
+import { CategoriasComponent } from './productos/categorias/categorias.component';
 
 const routes: Routes = [
     
@@ -63,6 +64,7 @@ const routes: Routes = [
           { path: 'productos/movimientos', component: MovimientosComponent,  canActivate: [AdminGuard], data:{ titulo: 'Movimientos'} },
           { path: 'productos/nuevo', component: NuevoComponent,  canActivate: [AdminGuard], data:{ titulo: 'Crear Producto Nuevo'} },
           { path: 'productos/departamento', component: DepartamentosComponent,  canActivate: [AdminGuard], data:{ titulo: 'Departamentos'} },
+          { path: 'productos/categorias', component: CategoriasComponent,  canActivate: [AdminGuard], data:{ titulo: 'Categorias'} },
           
           { path: 'ventas', component: VentasComponent,  canActivate: [WaiterGuard], data:{ titulo: 'Ventas'} },
           { path: 'ventas/mesa/:id', component: MesaComponent,  canActivate: [WaiterGuard], data:{ titulo: 'Mesa'} },

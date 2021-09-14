@@ -37,6 +37,7 @@ import { CorteComponent } from './corte/corte.component';
 import { CierresComponent } from './configuracion/cierres/cierres.component';
 import { PrintComponent } from './ventas/print/print.component';
 import { MovimientosComponent } from './productos/movimientos/movimientos.component';
+import { CategoriasComponent } from './productos/categorias/categorias.component';
 
 
 @NgModule({
@@ -66,7 +67,8 @@ import { MovimientosComponent } from './productos/movimientos/movimientos.compon
     CorteComponent,
     CierresComponent,
     PrintComponent,
-    MovimientosComponent
+    MovimientosComponent,
+    CategoriasComponent
   ],
   exports: [
     PagesComponent,

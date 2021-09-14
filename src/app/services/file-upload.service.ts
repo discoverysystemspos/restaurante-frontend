@@ -34,7 +34,7 @@ export class FileUploadService {
   ==================================================================== */
   async updateImage(
     archivo: File,
-    type: 'products' | 'logo' | 'user' | 'department',
+    type: 'products' | 'logo' | 'user' | 'department' | 'categoria',
     id: string
   ){
 

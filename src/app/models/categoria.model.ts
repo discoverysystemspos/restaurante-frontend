@@ -1,15 +1,17 @@
 import { environment } from "../../environments/environment"
+import { Department } from './department.model';
 
 const base_url = environment.base_url;
 
-export class Department{
+export class Categoria{
 
     constructor(
         public name:string,
         public status?: boolean,
         public visibility?: boolean,
+        public department?: any[],
         public img?: string,
-        public did?:string,
+        public catid?:string,
         public _id?:string
     ){}
 
@@ -19,18 +21,10 @@ export class Department{
     get getImage(){        
         
         if (this.img) {            
-            return `${base_url}/uploads/department/${this.img}`;
+            return `${base_url}/uploads/categoria/${this.img}`;
         }else{
-            return `${base_url}/uploads/department/no-image`;
+            return `${base_url}/uploads/categoria/no-image`;
         }
     }
-
-}
-
-export class ListDepartamento{
-
-    constructor(
-        public department: string
-    ){}
 
 }

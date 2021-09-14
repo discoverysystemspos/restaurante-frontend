@@ -1035,7 +1035,7 @@ export class MesaComponent implements OnInit {
     }
 
     if(type === 'efectivo'){
-      this.pago += amount;
+      this.pago += Number(amount);
     }
 
     let totales = Number( this.total - this.totalPagos );
@@ -1048,8 +1048,6 @@ export class MesaComponent implements OnInit {
       amount = this.montoAdd.nativeElement.value;
       this.vueltos = (this.montoAdd.nativeElement.value - totales);
     }
-
-    
 
     this.payments.push({
       type,
@@ -1066,6 +1064,10 @@ export class MesaComponent implements OnInit {
    *   ELIMINAR METODO DE PAGO
   ==================================================================== */
   eliminarPagos( item: any ){
+
+    console.log(item);
+
+    this.pago -= Number(item.amount);    
     
     const i = this.payments.indexOf(item);
 
@@ -1090,6 +1092,7 @@ export class MesaComponent implements OnInit {
     this.payments = [];
     this.vueltos = 0;
     this.totalPagos = 0;
+    this.pago = 0;
 
     this.sumarPagos();
   }
@@ -1108,7 +1111,12 @@ export class MesaComponent implements OnInit {
         this.totalPagos += Number( this.payments[i].amount );        
       }
 
-    }   
+    }else{
+      this.pago = 0;
+    }
+
+    console.log('Pago con: ', this.pago);
+    
 
   }
   
