@@ -60,6 +60,13 @@ export class CalendarioService {
 
   }
 
+  /** ================================================================
+   *   DELETE EVENT OF CALENDAR
+  ==================================================================== */
+  deleteCalendario( _id: string){
+    return this.http.delete(`${base_url}/calendario/${_id}`, this.headers);
+  }
+
 
 
   // FIN DE LA CLASE

@@ -71,16 +71,38 @@ export class CalendarioComponent implements OnInit {
     event: CalendarEvent;
   };
 
+  // ELIMINAR EVENTOS
+  
   actions: CalendarEventAction[] = [
     {
       label: '<i class="bi-trash"></i>',
       a11yLabel: 'Delete',
       onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.events = this.events.filter((iEvent) => iEvent !== event);
-        this.handleEvent('Deleted', event);
+        
+        console.log(event);
+
+        this.calendarioService.deleteCalendario(event.calid)
+            .subscribe( (resp: { ok: boolean, msg: string }) => {
+
+              if (resp.ok) {
+                
+                this.events = this.events.filter((iEvent) => iEvent !== event);
+                this.handleEvent('Deleted', event);
+                
+                Swal.fire('Estupendo', resp.msg, 'success');
+                
+              }else{
+                
+                Swal.fire('Error', resp.msg, 'error');
+              }
+              
+
+            });
+        
       },
     },
   ];
+  // ELIMINAR EVENTOS
 
   refresh: Subject<any> = new Subject();
 
@@ -153,8 +175,11 @@ export class CalendarioComponent implements OnInit {
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
-    this.modalData = { event, action };
-    this.modal.open(this.modalContent, { size: 'sm' });
+
+    if (action !== 'Deleted') {      
+      this.modalData = { event, action };
+      this.modal.open(this.modalContent, { size: 'sm' });
+    }
   }
 
   /** ================================================================
@@ -200,14 +225,10 @@ export class CalendarioComponent implements OnInit {
 
           this.evento = resp.calendario;
 
-          console.log(resp.calendario);         
-          
-
           this.formSubmitted = false;
           this.newCalendarioForm.reset();    
 
           this.addEvent();
-
 
         });
         
@@ -235,14 +256,15 @@ export class CalendarioComponent implements OnInit {
         end: end,
         color: colors.blue,
         actions: this.actions,
+        user: this.evento.user,
+        calid: this.evento.calid,
+        resizable: {
+          beforeStart: true,
+          afterEnd: true,
+         },
       },
     ];
-  }
-
-  
-
-  
-  
+  } 
 
   /** ================================================================
    *  VALIDAR CAMPOS
@@ -266,32 +288,37 @@ export class CalendarioComponent implements OnInit {
         .subscribe( ({calendarios}) => {
 
           this.events = [];
-
+          
           calendarios.forEach(calendario => {
 
-            // SET HOURS  
-            let inicial;
-            let final;    
+           // SET HOURS  
+           let inicial;
+           let final;    
 
-            inicial = new Date(calendario.start);      
-            const initial = new Date(inicial.getTime());
-            
+           inicial = new Date(calendario.start);      
+           const initial = new Date(inicial.getTime() + 1000 * 60 * 60 * 5);
+           
 
-            final = new Date(calendario.end);
-            const end = new Date(final.getTime());    
-            // SET HOURS 
-
-            this.events = [
-              ...this.events,
-              {
-                title: calendario.title,
-                start: initial,
-                end: end,
-                color: colors.blue,
-                actions: this.actions,
-                user: calendario.user
-              },
-            ];
+           final = new Date(calendario.end);
+           const end = new Date(final.getTime() + 1000 * 60 * 60 * 5);    
+           // SET HOURS 
+           
+           this.events = [
+             ...this.events,
+             {
+               title: calendario.title,
+               start: addDays(setHours(setMinutes(new Date(initial), Number(initial.getMinutes())), Number(initial.getHours())), 0),
+               color: colors.blue,
+               actions: this.actions,
+               user: calendario.user,
+               calid: calendario.calid,
+               resizable: {
+                 beforeStart: true,
+                 afterEnd: true,
+                },
+               end: addDays(setHours(setMinutes(new Date(end), Number(end.getMinutes())), Number(end.getHours())),0),
+             },
+           ];
                         
           });
 
@@ -302,9 +329,8 @@ export class CalendarioComponent implements OnInit {
   /** ================================================================
    *  ELIMINAR CALENDARIO
   ==================================================================== */
-
   deleteEvent(eventToDelete: CalendarEvent) {
-    this.events = this.events.filter((event) => event !== eventToDelete);
+    this.events = this.events.filter((event) => event !== eventToDelete);    
   }
 
   setView(view: CalendarView) {
