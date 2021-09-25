@@ -171,7 +171,8 @@ export class TotalComponent implements OnInit {
 
       final = new Date(final);
       const end = new Date(final.getTime() + 1000 * 60 * 60 * 5);      
-      // SET HOURS          
+      // SET HOURS 
+               
       this.sinResultados = true;
       this.invoiceService.loadInvoicesDate(initial, end, cajeros, estado, credito)
           .subscribe(({total, invoices, montos, costos}) => {

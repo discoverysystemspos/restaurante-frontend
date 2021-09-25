@@ -8,6 +8,8 @@ import { RouterModule } from '@angular/router';
 import { PipesModule } from '../pipes/pipes.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
+import { CalendarModule, DateAdapter  } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 
 // COMPONENTS
@@ -38,6 +40,8 @@ import { CierresComponent } from './configuracion/cierres/cierres.component';
 import { PrintComponent } from './ventas/print/print.component';
 import { MovimientosComponent } from './productos/movimientos/movimientos.component';
 import { CategoriasComponent } from './productos/categorias/categorias.component';
+import { CalendarioComponent } from './calendario/calendario.component';
+
 
 
 @NgModule({
@@ -68,7 +72,8 @@ import { CategoriasComponent } from './productos/categorias/categorias.component
     CierresComponent,
     PrintComponent,
     MovimientosComponent,
-    CategoriasComponent
+    CategoriasComponent,
+    CalendarioComponent
   ],
   exports: [
     PagesComponent,
@@ -83,7 +88,8 @@ import { CategoriasComponent } from './productos/categorias/categorias.component
     FormsModule,
     ReactiveFormsModule,
     PipesModule,
-    NgxPrinterModule.forRoot({printOpenWindow: true})
+    NgxPrinterModule.forRoot({printOpenWindow: true}),
+    CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA]
 })

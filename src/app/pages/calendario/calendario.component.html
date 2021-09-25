@@ -1,0 +1,200 @@
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<header>
+    <div class="bg-header-blue py-2 px-3 mb-2">
+        <h5 class="text-white m-0">Facturas</h5>
+    </div>
+    <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
+
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-dark active" id="facturas-tab" data-bs-toggle="tab" href="#facturas" role="tab" aria-controls="facturas" aria-selected="true"><i class="bi-calendar3" style="font-size: 1rem"></i> Calendario</a>
+        </li>
+    </ul>
+</header>
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<!-- =========================================================================
+    BODY 
+========================================================================= -->
+<div class="container-fluid mt-4 bg-light2">
+
+    <!-- TITLE - SUBTITLE -->
+    <div>
+        <h5 class="text-dark">CALENDARIOS Y CITAS</h5>
+        <p>Usa este modulo para crear eventos y citas</p>
+    </div>
+    <!-- TITLE - SUBTITLE -->
+
+    <!-- CALENDARIO -->
+    <div class="shadow-lg p-3 mb-5 rounded bg-white">
+
+        <!-- BTN CREAR CALENDARIO -->
+        <div class="d-flex justify-content-end mb-4">
+            <button type="button" class="btn btn-sm btn-primary btnW waves-effect waves-ligth" data-bs-toggle="modal" data-bs-target="#nuevoEvento">Crear Evento</button>
+        </div>
+        <!-- BTN CREAR CALENDARIO -->
+
+        <div class="row text-center">
+            <div class="col-md-4">
+                <div class="btn-group">
+                    <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+                        Atras
+                    </div>
+                    <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate">
+                        Hoy
+                    </div>
+                    <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+                        Siguiente
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'es' }}</h3>
+            </div>
+            <!-- <div class="col-md-4">
+                <div class="btn-group">
+                    <div class="btn btn-primary" (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">
+                        Mes
+                    </div>
+                    <div class="btn btn-primary" (click)="setView(CalendarView.Week)" [class.active]="view === CalendarView.Week">
+                        Semana
+                    </div>
+                    <div class="btn btn-primary" (click)="setView(CalendarView.Day)" [class.active]="view === CalendarView.Day">
+                        Dia
+                    </div>
+                </div>
+            </div> -->
+        </div>
+
+        <br />
+
+        <div [ngSwitch]="view">
+            <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events" [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)" (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+            </mwl-calendar-month-view>
+            <!-- 
+            <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events" [refresh]="refresh" (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+            </mwl-calendar-week-view>
+
+            <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events" [refresh]="refresh" (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+            </mwl-calendar-day-view> -->
+        </div>
+
+
+
+
+        <!-- CALENDARIO -->
+
+
+
+    </div>
+
+    <!-- =========================================================================
+    BODY 
+========================================================================= -->
+
+    <!-- =========================================================================
+    NUEVO EVENTO 
+========================================================================= -->
+    <div class="modal fade" id="nuevoEvento" tabindex="-1" aria-labelledby="nuevoEventoModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="nuevoEventoModal"><i class="bi-collection" style="font-size: 1rem"></i> Crear Evento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+
+                    <form id="newCategoriaForm" autocomplete="off" [formGroup]="newCalendarioForm" (ngSubmit)="crearCalendario()">
+
+                        <!-- =======================================================================
+                        Informacion del EVENTO
+                    =========================================================================== -->
+                        <h5 class="text-muted">Informacion</h5>
+
+                        <div class="row mb-3">
+                            <div class="col-md-12 px-md-1">
+
+                                <div class="form-floating mb-2">
+                                    <input formControlName="title" type="text" class="form-control text-capitalize" placeholder="Nombre de la Categoria">
+                                    <label for="floatingInput">Titulo</label>
+                                </div>
+
+                                <div class="">
+                                    <label class="" for="">Desde</label>
+                                    <input formControlName="start" type="datetime-local" class="form-control" (change)="initial.value" #initial>
+                                </div>
+
+                                <div class="">
+                                    <label class="" for="">Hasta</label>
+                                    <input formControlName="end" type="datetime-local" class="form-control" (change)="end.value" #end>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="text-danger mb-2">
+                                <p *ngIf="campoValido('title')" class="mb-1 animated fadeIn">- El titulo es obligatorio</p>
+                                <p *ngIf="campoValido('start')" class="mb-1 animated fadeIn">- Agrega una fecha de inicio</p>
+                                <p *ngIf="campoValido('end')" class="mb-1 animated fadeIn">- Agrega una fecha final</p>
+                            </div>
+                        </div>
+
+
+                        <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- =========================================================================
+    NUEVO EVENTO 
+========================================================================= -->
+
+    <!-- =========================================================================
+        MODAL EVENTO 
+    ========================================================================= -->
+    <!-- MODAL -->
+    <ng-template #modalContent let-close="close">
+        <div class="modal-header">
+            <h5 class="modal-title">Información</h5>
+            <button type="button" class="close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+        </div>
+        <div class="modal-body">
+            <div>
+                <h3 class="text-center text-wrapp">
+                    {{ modalData?.event.title }}
+                </h3>
+            </div>
+            <div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <i class="bi-calendar-range"></i> <span class="fw-bold"> Desde: </span>
+                        <p class="mb-0">{{ modalData?.event.start | date : 'medium' }}</p>
+                    </li>
+                    <li class="list-group-item">
+                        <i class="bi-calendar-range"></i> <span class="fw-bold"> Hasta: </span>
+                        <p class="mb-0">{{ modalData?.event.end | date : 'medium' }}</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" (click)="close()">
+        OK
+      </button>
+        </div>
+    </ng-template>
+    <!-- MODAL -->
+    <!-- =========================================================================
+        MODAL EVENTO 
+    ========================================================================= -->

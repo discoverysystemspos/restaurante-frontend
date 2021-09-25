@@ -9,6 +9,9 @@ import { AuthModule } from './auth/auth.module';
 // COMPONENTS
 import { AppComponent } from './app.component';
 import { NopagefoundComponent } from './nopagefound/nopagefound.component';
+// import { CalendarModule, DateAdapter  } from 'angular-calendar';
+// import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -20,7 +23,8 @@ import { NopagefoundComponent } from './nopagefound/nopagefound.component';
     BrowserModule,
     AppRoutingModule,
     PagesModule,
-    AuthModule
+    AuthModule,    
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

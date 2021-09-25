@@ -31,6 +31,7 @@ import { MovimientosComponent } from './productos/movimientos/movimientos.compon
 import { NuevoComponent } from './productos/nuevo/nuevo.component';
 import { DepartamentosComponent } from './productos/departamentos/departamentos.component';
 import { CategoriasComponent } from './productos/categorias/categorias.component';
+import { CalendarioComponent } from './calendario/calendario.component';
 
 const routes: Routes = [
     
@@ -41,6 +42,7 @@ const routes: Routes = [
         children: [
     
           { path: '', component: DashboardComponent, data:{ titulo: 'Dashboard'} },
+          { path: 'calendario', component: CalendarioComponent, data:{ titulo: 'Calendario'} },
           { path: 'clientes', component: ClientesComponent, data:{ titulo: 'Clientes'} },
           { path: 'compras', component: ComprasComponent, data:{ titulo: 'Compras'} },
           
