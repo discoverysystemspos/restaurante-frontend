@@ -206,11 +206,11 @@
                                     <tr class="trHover" tabindex="0" data-bs-toggle="tooltip" title="Cajero: {{ factura.user.name }}">
                                         <th>{{ factura.invoice }}</th>
                                         <td colspan="2">
-                                            {{ factura.client.name }}
+                                            {{ factura.client?.name }}
                                             <span *ngIf="!factura.status" class="badge rounded-pill bg-danger">Cancelada</span>
                                             <span *ngIf="factura.credito && factura.status" class="badge rounded-pill bg-warning">Credito</span>
                                         </td>
-                                        <td> {{ factura.client.cedula }} </td>
+                                        <td> {{ factura.client?.cedula }} </td>
                                         <td colspan="2"> {{ factura.mesa.name }} </td>
                                         <td> {{ factura.amount | currency }} </td>
                                         <td> {{ factura.type }} </td>

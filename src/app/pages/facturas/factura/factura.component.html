@@ -77,31 +77,31 @@
 
                             <div class="row">
                                 <div class="col-md-4">
-                                    <h6 class="text-wrap mb-0 text-capitalize"><strong>CLIENTE / RAZON SOCIAL:  </strong><br><small>{{ factura.client.name }}</small></h6>
+                                    <h6 class="text-wrap mb-0 text-capitalize"><strong>CLIENTE / RAZON SOCIAL:  </strong><br><small>{{ factura.client?.name }}</small></h6>
                                 </div>
                                 <div class="col">
-                                    <h6 class="text-wrap mb-0 text-capitalize"><strong>CC / Nit: </strong> <br><small> {{ factura.client.cedula }}</small></h6>
+                                    <h6 class="text-wrap mb-0 text-capitalize"><strong>CC / Nit: </strong> <br><small> {{ factura.client?.cedula }}</small></h6>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-4">
-                                    <h6 class="text-wrap mb-0 text-capitalize"><strong>TELEFONO: </strong> <br><small *ngIf="factura.client.phone"> {{ factura.client.phone }}</small> </h6>
+                                    <h6 class="text-wrap mb-0 text-capitalize"><strong>TELEFONO: </strong> <br><small *ngIf="factura.client?.phone"> {{ factura.client?.phone }}</small> </h6>
                                 </div>
                                 <div class="col">
-                                    <h6 class="text-wrap mb-0"><strong>CORREO: </strong> <br><small *ngIf="factura.client.email"> {{ factura.client.email }} </small></h6>
+                                    <h6 class="text-wrap mb-0"><strong>CORREO: </strong> <br><small *ngIf="factura.client?.email"> {{ factura.client?.email }} </small></h6>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col">
-                                    <h6 class="text-wrap mb-0"><strong>DIRECCIÓN: </strong> <br><small *ngIf="factura.client.address"> {{ factura.client.address }} <span *ngIf="factura.client.city" > {{ factura.client.city }} </span></small></h6>
+                                    <h6 class="text-wrap mb-0"><strong>DIRECCIÓN: </strong> <br><small *ngIf="factura.client?.address"> {{ factura.client?.address }} <span *ngIf="factura.client?.city" > {{ factura.client?.city }} </span></small></h6>
 
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <h6 class="text-wrap mb-0"><strong>VENDEDOR: </strong> <br><small *ngIf="factura.client.address"> {{ factura.mesero.name }} </small></h6>
+                                    <h6 class="text-wrap mb-0"><strong>VENDEDOR: </strong> <br><small *ngIf="factura.client?.address"> {{ factura.mesero.name }} </small></h6>
 
                                 </div>
                             </div>
