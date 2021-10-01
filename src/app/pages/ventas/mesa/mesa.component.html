@@ -59,7 +59,7 @@
                         <div class="card-body py-2 d-flex align-items-start flex-column">
 
                             <div>
-
+                                <p class="mb-0">cant. {{ producto.stock + ( producto.returned || 0 ) + ( producto.bought || 0 ) - (producto.sold || 0) - ( producto.damaged || 0) | number }}</p>
                                 <h5 class="card-title mb-1">{{ producto.name }}</h5>
                             </div>
                             <div class="col-12 mt-auto">

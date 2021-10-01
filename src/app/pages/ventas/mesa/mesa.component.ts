@@ -279,11 +279,49 @@ export class MesaComponent implements OnInit {
               
             }else{
 
-              const qty:number = 1;
+              // const qty:number = 1;
 
-              // GUARDAR AL CARRITO
-              this.carritoTemp(product, qty, product.price);
-              // GUARDAR AL CARRITO
+              // // GUARDAR AL CARRITO
+              // this.carritoTemp(product, qty, product.price);
+              // // GUARDAR AL CARRITO
+
+              Swal.fire({
+                title: 'Cantidad',
+                input: 'text',
+                inputAttributes: {
+                  autocapitalize: 'off'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Confirmar',
+                showLoaderOnConfirm: true,
+                preConfirm: (resp) => {
+                  
+                  return resp;
+                }
+              }).then((result) => {
+
+                if (result.value > 0) {
+                  
+                  const qty:number = result.value;
+  
+                  // GUARDAR AL CARRITO
+                  this.carritoTemp(product, qty, product.price);
+                  // GUARDAR AL CARRITO
+  
+                  return;
+                }else{
+
+                  const qty:number = 1;
+
+                  // GUARDAR AL CARRITO
+                  this.carritoTemp(product, qty, product.price);
+                  // GUARDAR AL CARRIT
+
+                  return;
+                }                
+                
+              });
+
 
             }            
             
@@ -351,9 +389,46 @@ export class MesaComponent implements OnInit {
       
     }else{
 
-      // GUARDAR AL CARRITO
-      this.carritoTemp(product, qty, product.price);
-      // GUARDAR AL CARRITO
+      // // GUARDAR AL CARRITO
+      // this.carritoTemp(product, qty, product.price);
+      // // GUARDAR AL CARRITO
+
+      Swal.fire({
+        title: 'Cantidad',
+        input: 'text',
+        inputAttributes: {
+          autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Confirmar',
+        showLoaderOnConfirm: true,
+        preConfirm: (resp) => {
+          
+          return resp;
+        }
+      }).then((result) => {
+
+        if (result.value > 0) {
+          
+          const qty:number = result.value;
+
+          // GUARDAR AL CARRITO
+          this.carritoTemp(product, qty, product.price);
+          // GUARDAR AL CARRITO
+
+          return;
+        }else{
+
+          const qty:number = 1;
+
+          // GUARDAR AL CARRITO
+          this.carritoTemp(product, qty, product.price);
+          // GUARDAR AL CARRIT
+
+          return;
+        }                
+        
+      });
 
     } 
 
