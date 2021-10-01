@@ -1,0 +1,110 @@
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<header>
+    <div class="bg-header-dark py-2 px-3 mb-2">
+        <h5 class="text-white m-0">PEDIDOS</h5>
+    </div>
+    <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><i class="bi-truck" style="font-size: 1rem"></i> Administración de Pedidos </a>
+        </li>
+    </ul>
+</header>
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<div class="container-fluid mt-4">
+
+    <!-- TABLE CLIENTS -->
+    <div class="shadow-lg p-3 mb-5 rounded bg-white">
+
+        <!-- CARGANDO -->
+        <div *ngIf="cargando">
+            <div class="text-center p-4">
+                <div class="spinner-grow text-secondary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <small class="text-muted">cargando...</small>
+        </div>
+        <!-- CARGANDO -->
+
+        <div *ngIf="!cargando">
+
+            <div>
+                <div class="form-floating mb-2">
+                    <span class="position-absolute top-50 start-90 translate-middle"><i class=" bi-search " style="font-size: 1rem "></i></span>
+                    <input type="text" class="form-control" id="floatingInput2" placeholder="Buscar Categoria" (keyup)="buscar(search.value)" #search>
+                    <label for="floatingInput2 ">Buscar Pedido</label>
+                </div>
+            </div>
+
+            <!-- BTN CREAR Categoria -->
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-sm btn-primary btnW waves-effect waves-ligth" disabled data-bs-toggle="modal" data-bs-target="#nuevoCategoria">Crear Pedido</button>
+            </div>
+            <!-- BTN CREAR Categoria -->
+
+            <div class="table-responsive ">
+                <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                    <thead class="border-bottom ">
+                        <tr>
+                            <th class="text-muted " scope="col ">#</th>
+                            <th class="text-muted " scope="col " colspan="2">Nombre</th>
+                            <th class="text-muted " scope="col ">Estado</th>
+                            <th class="text-muted w100 " scope="col ">Acciones</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="!sinResultados" class="text-center ">
+                            <th colspan="10" class="py-4">
+                                <h4 class="text-muted">Sin Resultados</h4>
+                            </th>
+                        </tr>
+                        <tr class="trHover" *ngFor="let pedido of pedidos; let i = index">
+                            <th *ngIf="desde === 0 " scope="row ">{{ pedido.pedido}}</th>
+
+                            <td colspan="2">{{ pedido.client.name }}</td>
+                            <td>
+                                <span class="badge rounded-pill" [ngClass]="{   'bg-succes': pedido.estado == 'Entregado', 
+                                                                                'bg-warning': pedido.estado == 'Pendiente',
+                                                                                'bg-danger': pedido.estado == 'Cancelado'
+                                                                            }"> 
+                                    {{ pedido.estado}} 
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <a class="btn btn-link p-1 text-primary" [routerLink]="['/dashboard/pedido', pedido.peid]">
+                                    <i class="bi bi-box-arrow-up-right"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- BTN SIGUIENTE Y ANTERIOR -->
+            <div class="row">
+                <div class="col col-md-4">
+                    <small class="text-muted">Pedidos Totales: ({{totalDepartamentos}})</small>
+                    <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
+                    <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + departmentos.length }})</small>
+                </div>
+
+                <!-- <div *ngIf="search.value.length === 0" class="col d-flex justify-content-end">
+                    <button type="button" (click)="cambiarPagina(-10)" class="{{btnAtras}} btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
+                    <button type="button" (click)="cambiarPagina(10)" class="{{btnAdelante}} btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
+                </div> -->
+            </div>
+            <!-- BTN SIGUIENTE Y ANTERIOR -->
+
+        </div>
+    </div>
+    <!-- TABLE CLIENTS -->
+
+
+</div>

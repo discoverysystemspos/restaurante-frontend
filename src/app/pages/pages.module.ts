@@ -41,6 +41,8 @@ import { PrintComponent } from './ventas/print/print.component';
 import { MovimientosComponent } from './productos/movimientos/movimientos.component';
 import { CategoriasComponent } from './productos/categorias/categorias.component';
 import { CalendarioComponent } from './calendario/calendario.component';
+import { PedidosComponent } from './pedidos/pedidos.component';
+import { PedidoComponent } from './pedido/pedido.component';
 
 
 
@@ -73,7 +75,9 @@ import { CalendarioComponent } from './calendario/calendario.component';
     PrintComponent,
     MovimientosComponent,
     CategoriasComponent,
-    CalendarioComponent
+    CalendarioComponent,
+    PedidosComponent,
+    PedidoComponent
   ],
   exports: [
     PagesComponent,

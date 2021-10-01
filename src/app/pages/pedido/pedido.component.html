@@ -1,0 +1,288 @@
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+
+<header>
+    <div class="bg-header-blue py-2 px-3 mb-2">
+        <h5 class="text-white m-0">PEDIDO</h5>
+    </div>
+
+    <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
+
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-dark active" id="pedidos-tab"><i class="bi-journal-check" style="font-size: 1rem"></i> Pedido <span *ngIf="pedido"> #{{pedido.pedido}} </span> </a>
+        </li>
+
+    </ul>
+
+</header>
+
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<div class="container-fluid">
+
+
+    <ng-container *ngIf="pedido">
+        <!-- TITLE - SUBTITLE -->
+        <div class="mt-4">
+            <h5 class="text-dark">DETALLES DEL PEDIDO #{{ pedido.pedido }}</h5>
+
+        </div>
+        <!-- TITLE - SUBTITLE -->
+
+        <div>
+
+            <ng-container *ngIf="empresa">
+
+                <button (click)="printDiv()" type="button" class="btn btn-outline-primary btn-sm mx-1 my-2"> 
+                    <i class="bi-printer"></i> Imprimir
+                </button>
+            </ng-container>
+
+
+            <button (click)="devolucion(pedido.peid)" type="button" class="btn btn-outline-danger btn-sm mx-1 my-2"> 
+                <i class="bi-arrow-counterclockwise"></i> Cancelar Pedido
+            </button>
+
+        </div>
+
+        <div class="row">
+
+
+            <!-- DETALLES DE LA pedido -->
+            <div class="col-md-8 shadow-lg p-3 mb-5 rounded bg-white">
+
+                <div id="printDiv">
+
+                    <!-- ESTADO -->
+                    <span *ngIf="pedido.estado" class="badge rounded-pill bg-warning text-dark mb-2" [ngClass]="{    'bg-succes': pedido.estado == 'Entregado', 
+                                        'bg-warning': pedido.estado == 'Pendiente',
+                                        'bg-danger': pedido.estado == 'Cancelado'}">
+                                        {{pedido.estado}}
+                    </span>
+
+                    <!-- INFORMACION DEL CLIENTE -->
+                    <div class="row">
+
+                        <!-- Informacion del Cliente -->
+                        <div class="col-md-8 text-left text-muted">
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h6 class="text-wrap mb-0 text-capitalize"><strong>CLIENTE / RAZON SOCIAL:  </strong><br><small>{{ pedido.client?.name }}</small></h6>
+                                </div>
+                                <div class="col">
+                                    <h6 class="text-wrap mb-0 text-capitalize"><strong>CC / Nit: </strong> <br><small> {{ pedido.client?.cedula }}</small></h6>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h6 class="text-wrap mb-0 text-capitalize"><strong>TELEFONO: </strong> <br><small *ngIf="pedido.client?.phone"> {{ pedido.client?.phone }}</small> </h6>
+                                </div>
+                                <div class="col">
+                                    <h6 class="text-wrap mb-0"><strong>CORREO: </strong> <br><small *ngIf="pedido.client?.email"> {{ pedido.client?.email }} </small></h6>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <h6 class="text-wrap mb-0"><strong>DIRECCIÓN: </strong> <br><small *ngIf="pedido.client?.address"> {{ pedido.client?.address }} <span *ngIf="pedido.client?.city" > {{ pedido.client?.city }} </span></small></h6>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col">
+                            <div class="col-12" *ngIf="empresa">
+                                <!-- <div class="mb-2 d-flex justify-content-end">
+                                <img *ngIf="empresa.logo" src="{{empresa.logo | imagen:'logo'}}" class="" width="200px" alt="">
+                            </div> -->
+                                <h5 class="text-muted mb-0 d-flex justify-content-end text-wrap text-end fw-bold"> {{ empresa.name }} </h5>
+                                <p class="text-muted mb-0 d-flex justify-content-end text-wrap text-end"> {{ empresa.address }} </p>
+                                <p class="text-muted mb-0 d-flex justify-content-end text-wrap text-end">Nit: {{ empresa.nit }} </p>
+
+                                <small *ngIf="!empresa.responsable" class="mb-0 d-flex justify-content-end"> No responsable de IVA </small>
+                                <small *ngIf="empresa.responsable && !empresa.impuestoconsumo" class="mb-0 d-flex justify-content-end"> Responsable de iva </small>
+                                <small *ngIf="empresa.responsable && empresa.impuestoconsumo" class="mb-0 d-flex justify-content-end"> Responsable nacional al consumo </small>
+
+                                <small *ngIf="empresa.responsable" class="mb-0 d-flex justify-content-end"> Resolución: {{ empresa.resolucion }} </small>
+                                <small *ngIf="empresa.responsable" class="mb-0 d-flex justify-content-end"> Prefijo Pos: {{ empresa.prefijopos }} </small>
+                                <h3 class="display-5 mb-0 d-flex justify-content-end text-primary"> {{ pedido.invoice }} </h3>
+                                <small class="mb-0 d-flex justify-content-end"> {{ pedido.fecha | date:'medium' }} </small>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- INFORMACION DEL CLIENTE -->
+
+                    <!-- INFORMACION DE LA pedido -->
+                    <!-- <ng-container *ngIf="empresa">
+                        <h4 *ngIf="!empresa.responsable" class="text-center text-wrap"> Registro de operación de Venta </h4>
+                        <h4 *ngIf="empresa.responsable" class="text-center text-wrap"> pedido de venta pos </h4>
+                        <h4 *ngIf="!pedido.status" class="text-center text-danger"> CANCELADA </h4>
+                    </ng-container> -->
+
+
+
+                    <div class=" table-responsive ">
+
+                        <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                            <thead class="border-bottom ">
+                                <tr>
+                                    <th class="text-muted" scope="col">#</th>
+                                    <th class="text-muted" scope="col">Codigo de barras</th>
+                                    <th class="text-muted text-left" scope="col " colspan="2 ">Nombre del Producto</th>
+                                    <th class="text-muted" scope="col">tipo</th>
+                                    <th class="text-muted" scope="col">Precio</th>
+                                    <th class="text-muted" scope="col">Cantidad</th>
+                                    <th class="text-muted" scope="col">Monto</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr *ngFor="let producto of pedido.products; let i = index">
+                                    <th> {{ i + 1 }} </th>
+                                    <td><small class="text-wrap">{{ producto.product.code }}</small></td>
+                                    <td colspan="2">{{ producto.product.name }}</td>
+                                    <td>{{ producto.product.type }}</td>
+                                    <td>{{ producto.price | currency}}</td>
+                                    <td>{{ producto.qty }}</td>
+                                    <td>{{ producto.price * producto.qty | currency}}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-link p-1 text-warning" (click)="devolverProducto(producto)">
+                                        <i class="bi-arrow-90deg-left"></i>
+                                    </button>
+                                        <button type="button" (click)="eliminarProducto(producto._id)" class="btn btn-link p-1 text-danger">
+                                        <i class="bi-x"></i>
+                                    </button>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <!-- TOTAL -->
+                    <div>
+                        <div class="d-flex py-2">
+
+                            <div>
+
+                            </div>
+
+                            <div class="ms-auto d-flex justify-content-end">
+                                <div class="border-start col px-4" *ngIf="empresa">
+
+                                    <!-- NO RESPONSABLE -->
+                                    <h6 class="mb-0 text-wrap text-primary text-rigth" *ngIf="!empresa.responsable"> {{ pedido.base | currency }} </h6>
+                                    <h6 class="mb-0 text-wrap text-primary text-rigth" *ngIf="empresa.responsable"> {{ pedido.base | currency }} </h6>
+                                    <!-- NO RESPONSABLE -->
+
+                                    <h6 *ngIf="!empresa.responsable" class="mb-0 text-wrap text-primary text-left">No responsable de IVA</h6>
+                                    <h6 *ngIf="empresa.responsable && !empresa.impuestoconsumo" class="mb-0 text-wrap text-primary text-left">IVA {{empresa.tax}}% {{ iva | currency }}% </h6>
+                                    <h6 *ngIf="empresa.responsable && empresa.impuestoconsumo" class="mb-0 text-wrap text-primary text-left">Impuesto al consumo {{empresa.tax}}% {{iva | currency }} </h6>
+
+                                    <!-- TOTAL -->
+                                    <h5 *ngIf="empresa.responsable" class="display-6 fw-bold text-primary">{{ pedido.amount | currency }}</h5>
+
+                                    <h5 *ngIf="!empresa.responsable" class="display-6 fw-bold text-primary">{{ pedido.amount | currency }}</h5>
+                                    <!-- TOTAL -->
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- TOTAL -->
+
+                </div>
+
+                <!-- INFORMACION DE LA pedido -->
+
+            </div>
+            <!-- DETALLES DE LA pedido -->
+
+            <!-- PAGOS -->
+            <div class="col-md-4">
+
+                <!-- TABLE CLIENTS -->
+                <div class="shadow-lg p-3 mb-5 rounded bg-white" style="max-height: 400px; height: auto;">
+                    <h5 class="">
+                        Pagos
+                    </h5>
+                    <!-- CARGANDO -->
+                    <div *ngIf="cargandoAgotados">
+                        <div class="text-center p-4">
+                            <div class="spinner-grow text-secondary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                        <small class="text-muted">cargando...</small>
+                    </div>
+                    <!-- CARGANDO -->
+
+                    <div *ngIf="!cargandoAgotados" style="max-height: 100vh">
+
+                        <div class="table-responsive " class="overflow-auto" style="max-height: 200px;">
+                            <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                                <thead class="border-bottom ">
+                                    <tr>
+                                        <th class="text-muted " scope="col ">Descripcion</th>
+                                        <th class="text-muted " scope="col ">Tipo</th>
+                                        <th class="text-muted " scope="col ">Monto</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    <tr class="trHover" *ngFor="let pay of payments; let i = index">
+                                        <td>
+                                            <span *ngIf="pay.description !== ''">{{ pay.description }}</span>
+                                            <span *ngIf="pay.description === ''">Sin descripción</span>
+                                        </td>
+                                        <td>{{ pay.type }}</td>
+                                        <td>{{ pay.amount | currency }} </td>
+                                    </tr>
+
+                                </tbody>
+                                <tfoot>
+                                    <tr class="border-top">
+                                        <td colspan="2"> <span class="fw-bold"> Total </span></td>
+                                        <td> <span class="fw-bold">{{this.totalPagos | currency }}</span> </td>
+                                    </tr>
+                                </tfoot>
+
+                            </table>
+
+                        </div>
+
+                        <!-- BTN SIGUIENTE Y ANTERIOR -->
+                        <div class="row">
+                            <div class="col">
+                                <small class="text-muted">Total de pagos: ({{payments.length}})</small>
+                            </div>
+                        </div>
+                        <!-- BTN SIGUIENTE Y ANTERIOR -->
+
+                    </div>
+                </div>
+                <!-- TABLE CLIENTS -->
+
+            </div>
+            <!-- PAGOS -->
+
+        </div>
+
+    </ng-container>
+
+
+
+</div>
+<!-- =========================================================================
+    BODY 
+========================================================================= -->

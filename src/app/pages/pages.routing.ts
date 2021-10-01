@@ -32,6 +32,8 @@ import { NuevoComponent } from './productos/nuevo/nuevo.component';
 import { DepartamentosComponent } from './productos/departamentos/departamentos.component';
 import { CategoriasComponent } from './productos/categorias/categorias.component';
 import { CalendarioComponent } from './calendario/calendario.component';
+import { PedidosComponent } from './pedidos/pedidos.component';
+import { PedidoComponent } from './pedido/pedido.component';
 
 const routes: Routes = [
     
@@ -60,6 +62,9 @@ const routes: Routes = [
 
           { path: 'inventario', component: InventarioComponent,  canActivate: [AdminGuard], data:{ titulo: 'Inventario'} },
           { path: 'perfil', component: PerfilComponent, data:{ titulo: 'Perfil'} },
+
+          { path: 'pedido/:id', component: PedidoComponent, data:{ titulo: 'Pedido'} },
+          { path: 'pedidos', component: PedidosComponent, data:{ titulo: 'Pedidos'} },
 
           { path: 'productos', component: ProductosComponent,  canActivate: [AdminGuard], data:{ titulo: 'Productos'} },
           { path: 'producto/:id', component: ProductoComponent,  canActivate: [AdminGuard], data:{ titulo: 'Producto'} },
