@@ -1,4 +1,4 @@
-import { Carrito } from '../interfaces/carrito.interface';
+import { Carrito, _notas } from '../interfaces/carrito.interface';
 
 interface _mesero{
     name: string;
@@ -17,7 +17,7 @@ export class Mesa {
         public mid?: string,
         public img?: string,
         public cliente?: string,
-        public nota?: string,
+        public nota?: _notas[],
     ){}
 
     

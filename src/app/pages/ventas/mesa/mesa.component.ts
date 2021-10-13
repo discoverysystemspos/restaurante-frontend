@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, TemplateRef  } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, TemplateRef, HostListener, ViewChildren, QueryList  } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
@@ -33,7 +33,7 @@ import { UserService } from '../../../services/user.service';
 import { BasculaService } from '../../../services/bascula.service';
 
 // INTERFACES
-import { Carrito, _payments, LoadCarrito } from '../../../interfaces/carrito.interface';
+import { Carrito, _payments, LoadCarrito, _notas } from '../../../interfaces/carrito.interface';
 import { LoadInvoice } from '../../../interfaces/invoice.interface';
 import { LoadTurno, _movements } from '../../../interfaces/load-turno.interface';
 import { LoadMesaId } from '../../../interfaces/load-mesas.interface';
@@ -124,10 +124,10 @@ export class MesaComponent implements OnInit {
     }else{
       this.facturar = false;
     }
-
-    // SERIAL PORT
     
   }
+
+  
 
   /** ================================================================
    *   CARGAR DATOS DE LA EMPRESA
@@ -184,6 +184,13 @@ export class MesaComponent implements OnInit {
           }
 
           this.comandaTemp = this.comanda;
+
+          // OBTENER NOTAS DE LA COMANDAS
+          if (this.mesa.nota.length > 0) {
+            this.notas = this.mesa.nota;         
+          }else{
+            this.notas = [];
+          }
           
 
           this.sumarTotales();
@@ -1523,6 +1530,52 @@ export class MesaComponent implements OnInit {
     });
 
 
+  }
+
+  /** ================================================================
+   *   COMANDA
+  ==================================================================== */
+  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
+  public notas: _notas[] = [];
+  enviarNota(msg: string){
+    
+    let nota = {};    
+    
+    nota = {
+      nota: msg,
+      date: new Date()
+    }
+    
+    this.notas.push({
+      nota: msg,
+      date: new Date()
+    });
+    
+    this.mesasServices.updateNotaMesa(nota, this.mesaID)
+    .subscribe( resp => {
+      console.log(resp);
+      
+      this.nota.nativeElement.value = '';
+      this.nota.nativeElement.focus = true;
+      
+    });
+        
+  }
+  /** ================================================================
+   *   SCROLL AL FONDO
+  ==================================================================== */
+  @ViewChildren('messages') messages: QueryList<any>;
+  @ViewChild('content') content: ElementRef;
+
+  ngAfterViewInit() {
+    this.scrollToBottom();
+    this.messages.changes.subscribe(this.scrollToBottom);
+  }
+
+  scrollToBottom = () => {
+    try {
+      this.content.nativeElement.scrollTop = this.content.nativeElement.scrollHeight;
+    } catch (err) {}
   }
   
   // FIN DE LA CLASE

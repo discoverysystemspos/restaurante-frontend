@@ -1,6 +1,6 @@
 // MESAS
 import { Mesa } from '../models/mesas.model';
-import { LoadCarrito, Carrito } from './carrito.interface';
+import { LoadCarrito, Carrito, _notas } from './carrito.interface';
 
 
 export interface LoadMesas{
@@ -17,5 +17,5 @@ export interface LoadMesaId{
     fecha?: Date;
     mid?: string;
     img?: string;
-    nota?: string;
+    nota?: _notas[];
 }

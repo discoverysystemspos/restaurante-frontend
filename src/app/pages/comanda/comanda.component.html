@@ -68,8 +68,28 @@
                             </tbody>
                         </table>
 
-                        <hr class="my-2" *ngIf="item?.nota">
-                        <p class="mb-0" *ngIf="item?.nota"> {{ item?.nota }} </p>
+                        <!-- NOTAS -->
+                        <div *ngIf="mesa?.nota.length > 0" class="container border rounded overflow-auto" #content style="max-height: 15rem; min-height: 5rem;">
+                            <ul class="list-group list-group-flush py-2" #messages>
+                                <li class="list-group-item border-0 py-1 px-1" *ngFor="let nota of mesa.nota">
+                                    <div class="d-flex justify-content-start">
+                                        <!-- <div>
+                                            <button type="button" disabled class="btn btn-link p-1 text-danger">
+                                                <i class="bi-trash" style="font-size: 0.9rem"></i>
+                                            </button>
+                                        </div> -->
+                                        <div class="badge bg-light2 text-muted px-2 py-2 text-wrap text-start" style="width: auto;">
+                                            <h6 class="mb-0">
+                                                {{ nota.nota }}
+                                            </h6>
+                                            <p class="mb-0 text-end" *ngIf="nota.date "><small class="text-muted"> {{ nota?.date  | date: "medium" }} </small></p>
+                                        </div>
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </div>
+                        <!-- NOTAS -->
 
                     </div>
 

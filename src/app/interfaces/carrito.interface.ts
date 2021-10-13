@@ -9,6 +9,11 @@ export interface _payments {
     description?: string;
 }
 
+export interface _notas{
+    nota: string;
+    date?: Date;
+}
+
 export interface Carrito{
     qty: number;
     product: string;

@@ -93,5 +93,12 @@ export class MesasService {
     return this.http.put(`${base_url}/mesas/${id}`, data, this.headers);
   }
 
+  /** ================================================================
+   *   UPDATE MESA ID
+  ==================================================================== */
+  updateNotaMesa(data: any, id: string){
+    return this.http.put(`${base_url}/mesas/notas/${id}`, data, this.headers);
+  }
+
 
 }

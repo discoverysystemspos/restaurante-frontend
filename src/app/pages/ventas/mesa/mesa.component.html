@@ -101,7 +101,7 @@
                 <!-- <button type="button" class="btn btn-outline-primary btn-sm m-2" data-bs-toggle="modal" data-bs-target="#buscarProducto"><i class="bi-box"></i> Productos </button> -->
 
                 <button type="button" class="btn btn-outline-primary btn-sm m-2" data-bs-toggle="modal" data-bs-target="#entradaSalidas"><i class="bi-arrow-left-right"></i> Entradas y Salidas </button>
-                <button type="button" (click)="timeCommand()" class="btn btn-outline-info btn-sm m-2" data-bs-toggle="modal" data-bs-target="#comandas"><i class="bi-receipt"></i> Comandas </button>
+                <button type="button" (click)="scrollToBottom()" (click)="timeCommand()" class="btn btn-outline-info btn-sm m-2" data-bs-toggle="modal" data-bs-target="#comandas"><i class="bi-receipt"></i> Comandas </button>
             </div>
 
             <div class="d-grid">
@@ -193,7 +193,6 @@
                 </div>
 
                 <div class="mb-3">
-
 
                     <div>
                         <input type="text" class="form-control" placeholder="buscar cliente" (keyup)="buscarCliente(searchClient.value)" #searchClient>
@@ -1028,6 +1027,49 @@ COMANDAS
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
+                <h5 class="modal-title" id="comandasModal"><i class="bi-upc-scan" style="font-size: 1rem"></i> Notas: </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="container border rounded overflow-auto" #content style="max-height: 15rem; min-height: 10rem;">
+                    <ul class="list-group list-group-flush py-2" #messages>
+                        <li class="list-group-item border-0 py-1 px-1" *ngFor="let nota of notas">
+                            <div class="d-flex justify-content-start">
+                                <div>
+                                    <button type="button" disabled class="btn btn-link p-1 text-danger">
+                                        <i class="bi-trash" style="font-size: 0.9rem"></i>
+                                    </button>
+                                </div>
+                                <div class="badge bg-light2 text-muted px-2 py-2 text-wrap text-start" style="width: auto;">
+                                    <h6 class="mb-0">
+                                        {{ nota.nota }}
+                                    </h6>
+                                    <p class="mb-0 text-end" *ngIf="nota.date "><small class="text-muted"> {{ nota?.date  | date: "medium" }} </small></p>
+                                </div>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+
+                <div class="clearfix my-2">
+                    <input type="text" name="" id="" class="form-control float-start col-10" placeholder="Notas" (keyup)="nota.value" (keyup.enter)="enviarNota(nota.value)" #nota>
+                    <button type="button" (click)="enviarNota(nota.value)" class="btn btn-primary ms-auto float-end col-auto">Enviar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =========================================================================
+COMANDAS
+========================================================================= -->
+<!-- <div class="modal fade" id="comandas" tabindex="-1" aria-labelledby="comandasModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
                 <h5 class="modal-title" id="comandasModal"><i class="bi-upc-scan" style="font-size: 1rem"></i> Comandas </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -1105,7 +1147,7 @@ COMANDAS
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 <!-- =========================================================================
 COMANDAS

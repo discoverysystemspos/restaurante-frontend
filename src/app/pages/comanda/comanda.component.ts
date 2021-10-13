@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren, ElementRef, ViewChild } from '@angular/core';
 
 // MODELS
 import { Mesa } from '../../models/mesas.model';
@@ -39,7 +39,7 @@ export class ComandaComponent implements OnInit {
                       clearInterval(reloadMesa);
                     }
             
-                  }, 300000);
+                  }, 5000);
 
                 }
 
@@ -58,13 +58,10 @@ export class ComandaComponent implements OnInit {
     this.sinResultados = true;
 
     this.mesasService.loadMesasComanda()
-        .subscribe(({ total, mesas }) => {          
+        .subscribe(({ total, mesas }) => {    
 
           this.totalMesas = total;
           this.listaMesas = mesas;
-
-          console.log(mesas);
-          
 
         });    
   }
@@ -79,7 +76,7 @@ export class ComandaComponent implements OnInit {
     this.carrito = [];
     this.carrito = carrito;
 
-    const validarItem = this.carrito.findIndex( (resp) =>{      
+    const validarItem = this.carrito.findIndex( (resp) =>{    
       if (resp.product === id ) {
         return true;
       }else {
@@ -96,11 +93,26 @@ export class ComandaComponent implements OnInit {
         .subscribe( (resp:{ok: boolean, mesa: any}) => {
 
           console.log(resp.mesa);
-          
 
         })
-    
 
+  }
+
+  /** ================================================================
+   *   SCROLL AL FONDO
+  ==================================================================== */
+  @ViewChildren('messages') messages: QueryList<any>;
+  @ViewChild('content') content: ElementRef;
+
+  ngAfterViewInit() {
+    this.scrollToBottom();
+    this.messages.changes.subscribe(this.scrollToBottom);
+  }
+
+  scrollToBottom = () => {
+    try {
+      this.content.nativeElement.scrollTop = this.content.nativeElement.scrollHeight;
+    } catch (err) {}
   }
 
 }
