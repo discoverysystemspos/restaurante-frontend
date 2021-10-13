@@ -1,0 +1,82 @@
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<header>
+    <div class="bg-header-blue py-2 px-3 mb-2">
+        <h5 class="text-white m-0">Comandas</h5>
+    </div>
+    <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
+
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-dark active" id="comandas-tab" data-bs-toggle="tab" href="#comandas" role="tab" aria-controls="comandas" aria-selected="true"><i class="bi-app" style="font-size: 1rem"></i> Comandas</a>
+        </li>
+    </ul>
+</header>
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+
+<!-- =========================================================================
+    BODY 
+========================================================================= -->
+<div class="container-fluid mt-4 bg-light2">
+
+    <!-- TITLE - SUBTITLE -->
+    <div>
+        <h5 class="text-dark">Comandas</h5>
+    </div>
+    <!-- TITLE - SUBTITLE -->
+
+    <!-- COMANDAS -->
+    <div class="d-flex flex-wrap">
+
+        <div *ngFor="let mesa of listaMesas">
+            <div class="p-2" *ngIf="mesa.img === 'mesa.svg'">
+                <div style="width: 22rem;" class=" text-wrap bg-white p-3 btn btnW waves-effect waves-ligth position-relative">
+                    <i [ngClass]="{'text-danger': mesa.disponible == false, 'text-success': mesa.disponible == true}" class="bi-dot position-absolute top-0 start-100 translate-middle pe-4 pt-2" style="font-size: 2.5rem;"></i>
+                    <h5 class="mb-0 text-wrap text-capitalize">{{ mesa.name }}</h5>
+                    <h6 class="mb-0 text-wrap text-capitalize fw-normal"> {{ mesa.mesero.name }} </h6>
+
+                    <div class="table-responsive">
+
+                        <table class="table table-sm align-middle">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Item</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <ng-container *ngFor="let item of mesa.carrito; let i = index">
+
+                                    <tr [ngClass]=" { 'table-danger': item.estado === 'Pendiente', 'table-warning': item.estado === 'Preparando', 'table-success': item.estado === 'Entregado'}">
+                                        <td>
+                                            <p class="mb-0 lh-1"> <small class="lh-1"> {{item.product.name}}  </small></p>
+                                        </td>
+                                        <td> <small> {{ item.qty }} </small> </td>
+                                        <td>
+                                            <select class="form-select form-select-sm" aria-label=".form-select-sm example" (change)="cambiarEstado(mesa.carrito, item.product, esta.value, mesa)" #esta>
+                                                <option class="text-danger" value="Pendiente" [selected]="item.estado === 'Pendiente'">Pendiente</option>
+                                                <option class="text-warning" value="Preparando" [selected]="item.estado === 'Preparando'">Preparando</option>
+                                                <option class="text-success" value="Entregado" [selected]="item.estado === 'Entregado'">Entregado</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+
+                        <hr class="my-2" *ngIf="item?.nota">
+                        <p class="mb-0" *ngIf="item?.nota"> {{ item?.nota }} </p>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

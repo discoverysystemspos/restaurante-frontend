@@ -150,6 +150,12 @@ export class MesasComponent implements OnInit {
     if (this.newMesaForm.invalid) {
       return;
     }
+
+    // COMPROBAR SI SELECCIONO UN MESERO
+    if (this.newMesaForm.value.mesero === 0) {
+      Swal.fire('Error', 'Debes de asignar un usuario para crear el item', 'error');
+      return;
+    }
     
     this.mesasService.createMesa(this.newMesaForm.value)
         .subscribe( (resp:{ok: boolean, caja: Mesa}) => {

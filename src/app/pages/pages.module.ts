@@ -43,6 +43,7 @@ import { CategoriasComponent } from './productos/categorias/categorias.component
 import { CalendarioComponent } from './calendario/calendario.component';
 import { PedidosComponent } from './pedidos/pedidos.component';
 import { PedidoComponent } from './pedido/pedido.component';
+import { ComandaComponent } from './comanda/comanda.component';
 
 
 
@@ -77,7 +78,8 @@ import { PedidoComponent } from './pedido/pedido.component';
     CategoriasComponent,
     CalendarioComponent,
     PedidosComponent,
-    PedidoComponent
+    PedidoComponent,
+    ComandaComponent
   ],
   exports: [
     PagesComponent,

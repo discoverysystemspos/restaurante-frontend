@@ -34,6 +34,7 @@ import { CategoriasComponent } from './productos/categorias/categorias.component
 import { CalendarioComponent } from './calendario/calendario.component';
 import { PedidosComponent } from './pedidos/pedidos.component';
 import { PedidoComponent } from './pedido/pedido.component';
+import { ComandaComponent } from './comanda/comanda.component';
 
 const routes: Routes = [
     
@@ -46,6 +47,7 @@ const routes: Routes = [
           { path: '', component: DashboardComponent, data:{ titulo: 'Dashboard'} },
           { path: 'calendario', component: CalendarioComponent, data:{ titulo: 'Calendario'} },
           { path: 'clientes', component: ClientesComponent, data:{ titulo: 'Clientes'} },
+          { path: 'comandas', component: ComandaComponent, data:{ titulo: 'Comandas'} },
           { path: 'compras', component: ComprasComponent, data:{ titulo: 'Compras'} },
           
           { path: 'configuracion', component: ConfiguracionComponent, canActivate: [AdminGuard], data:{ titulo: 'Configuracion'} },
@@ -56,6 +58,7 @@ const routes: Routes = [
           { path: 'configuracion/usuarios', component: UsuariosComponent, canActivate: [AdminGuard], data:{ titulo: 'Usuarios' } },
 
           { path: 'corte', component: CorteComponent, data:{ titulo: 'Corte'} },
+
 
           { path: 'facturas', component: FacturasComponent, data:{ titulo: 'Facturas'} },
           { path: 'factura/:id', component: FacturaComponent, data:{ titulo: 'Detalles de factura' } },

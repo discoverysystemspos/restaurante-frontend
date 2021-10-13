@@ -1140,8 +1140,6 @@ export class MesaComponent implements OnInit {
   ==================================================================== */
   eliminarPagos( item: any ){
 
-    console.log(item);
-
     this.pago -= Number(item.amount);    
     
     const i = this.payments.indexOf(item);

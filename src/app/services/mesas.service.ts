@@ -61,6 +61,19 @@ export class MesasService {
   }
 
   /** ================================================================
+   *   LOAD MESAS COMANDA
+  ==================================================================== */
+  loadMesasComanda(){
+    const endPoint = `/mesas/comandas/`;
+    return this.http.get<LoadMesas>(`${base_url}${endPoint}`, this.headers)
+                .pipe(
+                  delay(500),
+                  map( resp => { return resp; })
+                );
+
+  }
+
+  /** ================================================================
    *   LOAD MESA ID
   ==================================================================== */
   loadMesaId(id: string){

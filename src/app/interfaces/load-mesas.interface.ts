@@ -17,4 +17,5 @@ export interface LoadMesaId{
     fecha?: Date;
     mid?: string;
     img?: string;
+    nota?: string;
 }
