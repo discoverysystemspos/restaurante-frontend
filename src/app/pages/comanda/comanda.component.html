@@ -32,10 +32,17 @@
 
         <div *ngFor="let mesa of listaMesas">
             <div class="p-2" *ngIf="mesa.img === 'mesa.svg'">
-                <div style="width: 22rem;" class=" text-wrap bg-white p-3 btn btnW waves-effect waves-ligth position-relative">
+                <div style="width: 22rem;" class=" text-wrap bg-white p-3 position-relative">
                     <i [ngClass]="{'text-danger': mesa.disponible == false, 'text-success': mesa.disponible == true}" class="bi-dot position-absolute top-0 start-100 translate-middle pe-4 pt-2" style="font-size: 2.5rem;"></i>
-                    <h5 class="mb-0 text-wrap text-capitalize">{{ mesa.name }}</h5>
-                    <h6 class="mb-0 text-wrap text-capitalize fw-normal"> {{ mesa.mesero.name }} </h6>
+                    <h5 class="mb-0 text-center text-wrap text-capitalize">{{ mesa.name }}</h5>
+                    <h6 class="mb-0 text-center text-wrap text-capitalize fw-normal"> {{ mesa.mesero.name }} </h6>
+                    <p class="mb-0 text-center"> Fecha: {{ mesa.fecha | date: "medium" }} </p>
+
+                    <div class="d-flex justify-content-end my-2">
+                        <button type="button" (click)="comandaModal(mesa)" data-bs-toggle="modal" data-bs-target="#comanda" class="btn btn-sm btn-primary btnW waves-effect waves-ligth">
+                            Ver comanda
+                        </button>
+                    </div>
 
                     <div class="table-responsive">
 
@@ -100,3 +107,103 @@
     </div>
 
 </div>
+
+<!-- =========================================================================
+    VER DETALLES DE LA COMANDA
+========================================================================= -->
+<div class="modal fade" id="comanda" tabindex="-1" aria-labelledby="comandaModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <div>
+                    <h5 class="modal-title text-capitalize" id="comandaModal">
+                        <i class="bi-app" style="font-size: 2rem"></i> Detalles de la comanda
+                    </h5>
+                </div>
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body" *ngIf="comanda">
+
+                <div class="d-flex justify-content-end my-2">
+                    <button type="button" (click)="printDiv()" class="btn btn-sm btn-success btnW waves-effect waves-ligth">
+                        Imprimir
+                    </button>
+                </div>
+
+                <!-- DETALLES DE LA COMANDA -->
+                <div id="printDiv">
+
+                    <div class="p-2 d-flex justify-content-center" *ngIf="comanda.img === 'mesa.svg'">
+                        <div style="width: 22rem;" class=" text-wrap bg-white p-3 position-relative">
+                            <i [ngClass]="{'text-danger': comanda?.disponible == false, 'text-success': comanda?.disponible == true}" class="bi-dot position-absolute top-0 start-100 translate-middle pe-4 pt-2" style="font-size: 2.5rem;"></i>
+                            <h5 class="mb-0 text-center text-wrap text-capitalize">{{ comanda?.name }}</h5>
+                            <h6 class="mb-0 text-center text-wrap text-capitalize fw-normal"> {{ comanda?.mesero.name }} </h6>
+                            <p class="mb-0 text-center"> Fecha: {{ comanda?.fecha | date: "medium" }} </p>
+
+
+                            <div class="table-responsive">
+
+                                <table class="table table-sm align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Item</th>
+                                            <th scope="col">Cantidad</th>
+                                            <th scope="col">Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <ng-container *ngFor="let item of comanda?.carrito; let i = index">
+
+                                            <tr>
+                                                <td>
+                                                    <p class="mb-0 lh-1 text-capitalize"> <span class="lh-1"> {{item.product.name}}  </span></p>
+                                                </td>
+                                                <td class="text-center"> <span> {{ item.qty }} </span> </td>
+                                                <td>
+                                                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" (change)="cambiarEstado(comanda?.carrito, item.product, esta.value, mesa)" #esta>
+                                                    <option class="text-danger" value="Pendiente" [selected]="item.estado === 'Pendiente'">Pendiente</option>
+                                                    <option class="text-warning" value="Preparando" [selected]="item.estado === 'Preparando'">Preparando</option>
+                                                    <option class="text-success" value="Entregado" [selected]="item.estado === 'Entregado'">Entregado</option>
+                                                </select>
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+
+                                <!-- NOTAS -->
+                                <div *ngIf="comanda?.nota.length > 0" class="container border rounded" #content>
+                                    <p class="mb-0 fw-bold">Notas:</p>
+
+                                    <ul class="list-group list-group-flush" #messages>
+                                        <li class="list-group-item py-2" *ngFor="let nota of comanda?.nota">
+                                            <p class="mb-0 text-capitalize">
+                                                - {{ nota.nota }}
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- NOTAS -->
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- DETALLES DE LA COMANDA -->
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =========================================================================
+    VER DETALLES DE LA COMANDA 
+========================================================================= -->

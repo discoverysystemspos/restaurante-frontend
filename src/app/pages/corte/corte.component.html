@@ -94,14 +94,6 @@
                                 <td colspan="2"> <small> Con Transferencia </small> </td>
                                 <td> {{ transferencia | currency }} </td>
                             </tr>
-                            <tr>
-                                <td colspan="2"> <small> A credito </small> </td>
-                                <td> {{ credito | currency }} </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"> <small> Con Vales </small> </td>
-                                <td> {{ vales | currency }} </td>
-                            </tr>
                             <tr class="border-top">
                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
                                 <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + credito + vales | currency }} </td>
@@ -403,14 +395,6 @@
                                     <tr>
                                         <td colspan="2"> <small> Con Transferencia </small> </td>
                                         <td> {{ transferencia | currency }} </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2"> <small> A credito </small> </td>
-                                        <td> {{ credito | currency }} </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2"> <small> Con Vales </small> </td>
-                                        <td> {{ vales | currency }} </td>
                                     </tr>
                                     <tr class="border-top">
                                         <td colspan="2"> <small class="fw-bold"> Total </small> </td>

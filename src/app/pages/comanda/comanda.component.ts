@@ -1,4 +1,10 @@
-import { Component, OnInit, QueryList, ViewChildren, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren, ElementRef, ViewChild, TemplateRef } from '@angular/core';
+import { Subscription, Observable } from 'rxjs';
+
+// PRINTER
+import { NgxPrinterService } from 'projects/ngx-printer/src/lib/ngx-printer.service';
+import { PrintItem } from 'projects/ngx-printer/src/lib/print-item';
+import { ngxPrintMarkerPosition } from 'projects/ngx-printer/src/public_api';
 
 // MODELS
 import { Mesa } from '../../models/mesas.model';
@@ -14,6 +20,14 @@ import { Carrito, LoadCarrito } from '../../interfaces/carrito.interface';
 })
 export class ComandaComponent implements OnInit {
 
+  @ViewChild('PrintTemplate')
+  private PrintTemplateTpl: TemplateRef<any>;
+
+  title = 'ngx-printer-demo';
+
+  printWindowSubscription: Subscription;
+  $printItems: Observable<PrintItem[]>;
+
   public listaMesas: Mesa[] = [];
   public listaMesasTemp: Mesa[] = [];
   public totalMesas: number = 0;
@@ -24,6 +38,7 @@ export class ComandaComponent implements OnInit {
   public sinResultados: boolean = true;
 
   constructor(  private mesasService: MesasService,
+                private printerService: NgxPrinterService,
                 private userService:UserService) {
 
                   const reloadMesa = setInterval( () => {
@@ -41,12 +56,32 @@ export class ComandaComponent implements OnInit {
             
                   }, 5000);
 
+                  // IMPRIMIR
+                  this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
+                    val => {                
+
+                      if (val) {
+                        window.location.reload();                        
+                      }
+                      console.log('Print window is open:', val);
+                    }
+                  );
+              
+                  this.$printItems = this.printerService.$printItems;
+
                 }
 
   ngOnInit(): void {
 
     // CARGAR MESAS
     this.cargarMesas();
+  }
+
+  /** ================================================================
+   *   IMPRIMIR
+  ==================================================================== */
+  printDiv() {
+    this.printerService.printDiv('printDiv');
   }
 
   /** ================================================================
@@ -61,7 +96,7 @@ export class ComandaComponent implements OnInit {
         .subscribe(({ total, mesas }) => {    
 
           this.totalMesas = total;
-          this.listaMesas = mesas;
+          this.listaMesas = mesas;          
 
         });    
   }
@@ -92,8 +127,6 @@ export class ComandaComponent implements OnInit {
     this.mesasService.updateMesa(this.mesa, mesaID)
         .subscribe( (resp:{ok: boolean, mesa: any}) => {
 
-          console.log(resp.mesa);
-
         })
 
   }
@@ -113,6 +146,19 @@ export class ComandaComponent implements OnInit {
     try {
       this.content.nativeElement.scrollTop = this.content.nativeElement.scrollHeight;
     } catch (err) {}
+  }
+
+  /** ================================================================
+   *   COMANDA
+  ==================================================================== */
+  public comanda: Mesa;
+  comandaModal(comanda: Mesa){
+
+    this.comanda = comanda;
+
+    console.log(comanda);
+    
+
   }
 
 }

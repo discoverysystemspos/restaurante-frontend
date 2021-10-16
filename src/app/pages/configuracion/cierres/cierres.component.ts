@@ -203,6 +203,7 @@ export class CierresComponent implements OnInit {
     this.salidas = 0;
     this.abEfectivo = 0;
     this.montoDiferencia = 0;
+    this.movimientos = [];
     
     const endPoint = `?turno=${id}`;
 
