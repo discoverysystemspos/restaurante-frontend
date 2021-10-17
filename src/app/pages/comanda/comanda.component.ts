@@ -58,12 +58,10 @@ export class ComandaComponent implements OnInit {
 
                   // IMPRIMIR
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
-                    val => {                
+                    val => {  
 
-                      if (val) {
-                        window.location.reload();                        
-                      }
                       console.log('Print window is open:', val);
+                      
                     }
                   );
               
