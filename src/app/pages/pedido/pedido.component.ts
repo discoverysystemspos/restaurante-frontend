@@ -81,11 +81,10 @@ export class PedidoComponent implements OnInit {
   }
 
   /** ================================================================
-   *   CARGAR FACTURA
+   *   CARGAR PEDIDO
   ==================================================================== */
   public pedido: any;
-  public pedidoID: string;
-  
+  public pedidoID: string;  
 
   cargarPedido(id: string){
     
@@ -93,11 +92,62 @@ export class PedidoComponent implements OnInit {
         .subscribe( ({pedido}) => {
 
           this.pedido = pedido;
-          console.log(pedido);
           
+          console.log(pedido)
           
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
 
   }
 
+  /** ================================================================
+   *   CAMBIAR ESTADO DEL PEDIDO
+  ==================================================================== */
+  cambiarEstado(estado: string){
+
+    this.pedido.estado = estado;
+
+    this.pedidosService.actualizarEstatusPedido(this.pedido, this.pedidoID)
+        .subscribe( (resp: {pedido}) => {
+
+          this.pedido = resp.pedido;
+
+        }, (err) => { Swal.fire('Error', err.error.msg, 'error'); }); 
+
+  }
+
+  /** ================================================================
+   *   CANCELAR PEDIDO
+  ==================================================================== */
+  cancelarPedido(){
+
+    Swal.fire({
+      title: 'Estas Seguro?',
+      text: "De cancelar este pedido!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, cancelar!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        this.pedido.status = false;
+        this.pedido.estado = 'Cancelado';
+
+        this.pedidosService.actualizarEstatusPedido(this.pedido, this.pedidoID)
+        .subscribe( (resp: {pedido}) => {
+
+          this.pedido = resp.pedido;
+
+        }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
+
+      }
+
+
+    });
+
+  }
+
+
+  // FIN DE LA CLASE
 }

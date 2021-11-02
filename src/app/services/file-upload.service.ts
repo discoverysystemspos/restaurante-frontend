@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 
 const base_url = environment.base_url;
+const local_url = environment.local_url;
 
 @Injectable({
   providedIn: 'root'

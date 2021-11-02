@@ -73,6 +73,20 @@ export class PedidosService {
         
   }
 
+  /** ================================================================
+   *   ACTUALIZAR PEDIDO
+  ==================================================================== */
+  actualizarEstatusPedido(formData:any, _id:string){
+    return this.http.put(`${base_url}/pedidos/${_id}`, formData, this.headers);
+  }
+
+  /** ================================================================
+   *   DELETE PEDIDO
+  ==================================================================== */
+  deletePedidos( _id: string){
+    return this.http.delete(`${base_url}/pedidos/${_id}`, this.headers);
+  }
+
 
   // FIN DE LA CLASE
 }

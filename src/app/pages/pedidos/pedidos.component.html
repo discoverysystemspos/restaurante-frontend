@@ -66,7 +66,11 @@
                         <tr class="trHover" *ngFor="let pedido of pedidos; let i = index">
                             <th *ngIf="desde === 0 " scope="row ">{{ pedido.pedido}}</th>
 
-                            <td colspan="2">{{ pedido.client.name }}</td>
+                            <td colspan="2">
+                                <a class="btn btn-link p-1 text-primary" [routerLink]="['/dashboard/pedido', pedido.peid]">
+                                    {{ pedido.client.name }}
+                                </a>
+                            </td>
                             <td>
                                 <span class="badge rounded-pill" [ngClass]="{   'bg-succes': pedido.estado == 'Entregado', 
                                                                                 'bg-warning': pedido.estado == 'Pendiente',

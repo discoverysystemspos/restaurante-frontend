@@ -31,19 +31,31 @@
         </div>
         <!-- TITLE - SUBTITLE -->
 
-        <div>
+        <div class="row d-flex align-items-center">
 
-            <ng-container *ngIf="empresa">
+            <div class="col-auto">
+                <select class="form-select" aria-label="Default select example" [disabled]=" pedido.status === false " [value]="pedido.estado" (change)="cambiarEstado(pedidoEstado.value)" #pedidoEstado>
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Procesando">Procesando</option>
+                    <option value="Enviado">Enviado</option>
+                    <option value="Entregado">Entregado</option>
+                </select>
+            </div>
+
+            <div class="col-auto" *ngIf="empresa">
 
                 <button (click)="printDiv()" type="button" class="btn btn-outline-primary btn-sm mx-1 my-2"> 
                     <i class="bi-printer"></i> Imprimir
                 </button>
-            </ng-container>
+            </div>
 
 
-            <button (click)="devolucion(pedido.peid)" type="button" class="btn btn-outline-danger btn-sm mx-1 my-2"> 
-                <i class="bi-arrow-counterclockwise"></i> Cancelar Pedido
-            </button>
+            <div class="col-auto">
+
+                <button (click)="cancelarPedido(pedido.peid)" [disabled]=" pedido.status === false " type="button" class="btn btn-outline-danger btn-sm mx-1 my-2"> 
+                    <i class="bi-arrow-counterclockwise"></i> Cancelar Pedido
+                </button>
+            </div>
 
         </div>
 
@@ -56,9 +68,11 @@
                 <div id="printDiv">
 
                     <!-- ESTADO -->
-                    <span *ngIf="pedido.estado" class="badge rounded-pill bg-warning text-dark mb-2" [ngClass]="{    'bg-succes': pedido.estado == 'Entregado', 
+                    <span *ngIf="pedido.estado" class="badge rounded-pill bg-warning text-dark mb-2" [ngClass]="{'bg-success': pedido.estado == 'Entregado', 
                                         'bg-warning': pedido.estado == 'Pendiente',
-                                        'bg-danger': pedido.estado == 'Cancelado'}">
+                                        'bg-info text-white': pedido.estado == 'Procesando',
+                                        'bg-primary text-white': pedido.estado == 'Enviado',
+                                        'bg-danger text-white': pedido.estado == 'Cancelado'}">
                                         {{pedido.estado}}
                     </span>
 
@@ -110,7 +124,7 @@
 
                                 <small *ngIf="empresa.responsable" class="mb-0 d-flex justify-content-end"> Resolución: {{ empresa.resolucion }} </small>
                                 <small *ngIf="empresa.responsable" class="mb-0 d-flex justify-content-end"> Prefijo Pos: {{ empresa.prefijopos }} </small>
-                                <h3 class="display-5 mb-0 d-flex justify-content-end text-primary"> {{ pedido.invoice }} </h3>
+                                <h3 class="display-5 mb-0 d-flex justify-content-end text-primary"> {{ pedido.pedido }} </h3>
                                 <small class="mb-0 d-flex justify-content-end"> {{ pedido.fecha | date:'medium' }} </small>
                             </div>
                         </div>
@@ -122,9 +136,9 @@
                     <!-- <ng-container *ngIf="empresa">
                         <h4 *ngIf="!empresa.responsable" class="text-center text-wrap"> Registro de operación de Venta </h4>
                         <h4 *ngIf="empresa.responsable" class="text-center text-wrap"> pedido de venta pos </h4>
-                        <h4 *ngIf="!pedido.status" class="text-center text-danger"> CANCELADA </h4>
                     </ng-container> -->
 
+                    <h4 *ngIf="!pedido.status" class="text-center text-danger"> CANCELADO </h4>
 
 
                     <div class=" table-responsive ">
@@ -258,11 +272,11 @@
                         </div>
 
                         <!-- BTN SIGUIENTE Y ANTERIOR -->
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col">
                                 <small class="text-muted">Total de pagos: ({{payments.length}})</small>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- BTN SIGUIENTE Y ANTERIOR -->
 
                     </div>
