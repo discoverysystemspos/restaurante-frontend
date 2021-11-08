@@ -94,7 +94,7 @@
                     <form id="upProductForm" autocomplete="off" [formGroup]="upProductForm" (ngSubmit)="actualizarProducto()">
 
                         <!-- =======================================================================
-                            DATOS PERSONALES 
+                            DATOS 
                         =========================================================================== -->
                         <h5 class="text-muted">Producto</h5>
 
@@ -260,51 +260,12 @@
                         <!-- =======================================================================
                             PRECIO
                         =========================================================================== -->
-                        <div class="row mb-3">
-
-                            <div class="col-md-3 px-md-1">
-
-                                <div class="form-floating">
-                                    <input formControlName="cost" type="number" class="form-control" min="0" (keyup)="porcentaje('costo', costo.value)" [value]="costoN" placeholder="costo" #costo>
-                                    <label for="floatingInput">costo</label>
-                                </div>
-
-                            </div>
-
-                            <div class="col-md-3 px-md-1">
-
-                                <div class="form-floating">
-                                    <input formControlName="gain" type="number" class="form-control" min="0" (change)="porcentaje('ganancia', ganancia.value)" [value]="gananciaN" placeholder="Ganancia" #ganancia>
-                                    <label for="floatingInput">Ganancia</label>
-                                </div>
-
-                            </div>
-
-                            <div class="col-md-3 px-md-1">
-
-                                <div class="form-floating">
-                                    <input formControlName="price" type="number" class="form-control" min="0" (change)="porcentaje('precio', precio.value)" [value]="precioN" placeholder="Precio" #precio>
-                                    <label for="floatingInput">Precio</label>
-                                </div>
-
-                            </div>
-
-                            <div class="col-md-3 px-md-1">
-
-                                <div class="form-floating">
-                                    <input formControlName="wholesale" type="text" class="form-control" placeholder="Al Mayor">
-                                    <label for="floatingInput">Al Mayor</label>
-                                </div>
-
-                            </div>
-
-                        </div>
-
+                        <!-- IMPUESTO -->
                         <div class="row mb-3">
 
                             <div class="col-md-4 px-md-1">
                                 <div class="form-check mt-2">
-                                    <input formControlName="tax" class="form-check-input" type="checkbox" value="" id="tax">
+                                    <input formControlName="tax" class="form-check-input" type="checkbox" value="" id="tax" #tax>
                                     <label class="form-check-label" for="tax">
                                       Impuesto
                                     </label>
@@ -334,6 +295,62 @@
                             </div>
 
                         </div>
+                        <!-- IMPUESTO -->
+
+                        <div class="row mb-3">
+
+                            <div class="col-md-4 px-md-1">
+
+                                <div class="form-floating">
+                                    <input formControlName="cost" type="number" class="form-control" min="0" (keyup)="porcentaje('costo', costo.value)" [value]="costoN" placeholder="costo" #costo>
+                                    <label for="floatingInput">costo</label>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-4 px-md-1">
+
+                                <div class="form-floating">
+                                    <input formControlName="gain" type="number" class="form-control" min="0" (change)="porcentaje('ganancia', ganancia.value)" [value]="gananciaN" placeholder="Ganancia" #ganancia>
+                                    <label for="floatingInput">Ganancia</label>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-4 px-md-1">
+
+                                <div class="form-floating">
+                                    <input formControlName="price" type="number" class="form-control" min="0" (change)="porcentaje('precio', precio.value)" [value]="precioN" placeholder="Precio" #precio>
+                                    <label for="floatingInput">Precio</label>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="row mb-3">
+
+                            <div class="col-md-4 px-md-1" *ngIf="tax.checked">
+
+
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" (change)="precioIva()" [value]="priceIva" placeholder="Precio con IVA" #pIva>
+                                    <label for="floatingInput">Precio con IVA</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 px-md-1">
+
+                                <div class="form-floating">
+                                    <input formControlName="wholesale" type="text" class="form-control" placeholder="Al Mayor">
+                                    <label for="floatingInput">Al Mayor</label>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
 
                         <!-- KIT -->
 

@@ -89,6 +89,8 @@ export class ProductoComponent implements OnInit {
   public productoID: string;
   public productoImg: string;
 
+  public priceIva: number = 0;
+
   cargarProducto(id: string){
     
     this.productService.cargarProductoId(id)
@@ -120,6 +122,8 @@ export class ProductoComponent implements OnInit {
             
             impuestoT = impuesto[0].name;
             valorT = impuesto[0].valor;
+
+            this.priceIva = Math.round(price * ((valorT/100)+1));
           }
           
 
@@ -129,7 +133,7 @@ export class ProductoComponent implements OnInit {
           }
           
           this.upProductForm.reset({code, name, type, cost, price, visibility, wholesale, gain, department: _id, min, max, expiration: expiracion, pid, comanda, tipo, description, tax, impuestoT, valor: valorT });
-
+          
         });
   }
 
@@ -261,7 +265,9 @@ export class ProductoComponent implements OnInit {
 
   /** ================================================================
    *  PORCENTAJE
-  ==================================================================== */ 
+  ==================================================================== */
+  @ViewChild('pIva') pIva: ElementRef;
+  @ViewChild('tax') tax: ElementRef;
   porcentaje(nombre:string, numero:any){    
     
     let porcentaje: number;
@@ -305,7 +311,24 @@ export class ProductoComponent implements OnInit {
 
     this.gananciaN = Math.round(this.gananciaN*100)/100;
     this.upProductForm.value.price = Math.round(this.precioN*100)/100;
-    
+
+    if(this.tax.nativeElement.checked){
+      this.pIva.nativeElement.value = Math.round( this.upProductForm.value.price * ((this.upProductForm.value.valor / 100) +1 ));
+    }
+        
+
+  }
+
+  /** ================================================================
+   *  PRECIO CON IVA
+  ==================================================================== */
+  precioIva(){
+
+    let precio = 0;
+
+    precio = this.pIva.nativeElement.value / ((this.upProductForm.value.valor / 100)+1);
+
+    this.porcentaje('precio', precio.toFixed(2));    
 
   }
 

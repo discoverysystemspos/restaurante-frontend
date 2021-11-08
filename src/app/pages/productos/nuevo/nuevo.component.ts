@@ -275,6 +275,8 @@ export class NuevoComponent implements OnInit {
   public costoN:number = 0;
   public gananciaN:number = 20;
   public precioN:number = 0;
+  @ViewChild('pIva') pIva: ElementRef;
+  @ViewChild('tax') tax: ElementRef;
   
   porcentaje(nombre:string, numero:any){
     
@@ -319,6 +321,24 @@ export class NuevoComponent implements OnInit {
 
     this.gananciaN = Math.round(this.gananciaN*100)/100;
     this.productoForm.value.price = Math.round(this.precioN*100)/100;
+
+    
+    if(this.tax.nativeElement.checked){
+      this.pIva.nativeElement.value = Math.round( this.productoForm.value.price * ((this.productoForm.value.valor / 100) +1 ));
+    }
+    
+  }
+
+  /** ================================================================
+   *  PRECIO CON IVA
+  ==================================================================== */
+  precioIva(){
+
+    let precio = 0;
+
+    precio = this.pIva.nativeElement.value / ((this.productoForm.value.valor / 100)+1);
+
+    this.porcentaje('precio', precio.toFixed(2));
 
   }
 
