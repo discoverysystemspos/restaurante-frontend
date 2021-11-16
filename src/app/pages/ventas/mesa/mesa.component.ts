@@ -1086,7 +1086,8 @@ export class MesaComponent implements OnInit {
     iva: [''],
     base:[''],
     pago: [0],
-    vueltos: [0]
+    vueltos: [0],
+    nota: ['']
   })
 
   /** ================================================================
@@ -1240,7 +1241,8 @@ export class MesaComponent implements OnInit {
         iva: this.iva,
         base: this.base,
         pago: this.pago,
-        vueltos: this.vueltos
+        vueltos: this.vueltos,
+        nota: this.invoiceForm.value.nota
       });      
       
       this.invoiceService.createInvoice(this.invoiceForm.value, this.user.turno)
@@ -1273,6 +1275,9 @@ export class MesaComponent implements OnInit {
 
             // LIMPIAMOS LA MESA
             this.mesa.carrito = [];
+
+            // LIMPIAMOS LAS NOTAS DE LAS COMANDA
+            this.mesa.nota = [];
             
             this.mesasServices.updateMesa(this.mesa, this.mesaID)
             .subscribe( (resp:{ok: boolean, mesa: Mesa}) => {      

@@ -58,7 +58,8 @@ export class ClientesComponent implements OnInit {
     address: [''],
     city: [''],
     department: [''],
-    zip: ['']
+    zip: [''],
+    credit: false
   });
 
   crearCliente(){
@@ -215,7 +216,8 @@ export class ClientesComponent implements OnInit {
     address: [''],
     city: [''],
     department: [''],
-    zip: ['']
+    zip: [''],
+    credit: false
   });
 
   // OBTENER LA INFORMACION DEL CLIENTE
@@ -231,7 +233,8 @@ export class ClientesComponent implements OnInit {
       address: cliente.address || '',
       city: cliente.city || '',
       department: cliente.department || '',
-      zip: cliente.zip || ''
+      zip: cliente.zip || '',
+      credit : cliente.credit || false
 
     });
     

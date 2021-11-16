@@ -109,11 +109,20 @@
                         <div *ngIf="!cargando">
                             <div>
 
-                                <div class="text-end mb-3">
-                                    <h4 class="mb-0 text-success"> Ganancia total {{ totalPrice - totalCost | currency}} </h4>
-                                    <small class="mb-0 text-muted"> Total de venta {{ totalPrice | currency}} </small>
-                                    <small class="mb-0 text-muted"> Total de inversión {{ totalCost | currency}} </small>
+                                <div class="d-flex flex-wrap">
+
+                                    <div>
+                                        <p class="mb-0">Inventario:</p>
+                                        <h4 class="display-6"> {{ inventario }} </h4>
+                                    </div>
+
+                                    <div class="ms-auto text-end">
+                                        <h4 class="mb-0 text-success"> Ganancia total {{ totalPrice - totalCost | currency}} </h4>
+                                        <small class="mb-0 text-muted"> Total de venta {{ totalPrice | currency}} </small>
+                                        <small class="mb-0 text-muted"> Total de inversión {{ totalCost | currency}} </small>
+                                    </div>
                                 </div>
+
 
                                 <div class="form-floating mb-2">
                                     <span class="position-absolute top-50 start-90 translate-middle"><i class=" bi-search " style="font-size: 1rem "></i></span>
@@ -191,7 +200,7 @@
                             <!-- BTN SIGUIENTE Y ANTERIOR -->
                             <div class="row">
                                 <div class="col col-md-4">
-                                    <small class="text-muted">Total de productos: ({{totalProductos}})</small>
+                                    <small class="text-muted">Total de items: ({{totalProductos}})</small>
                                     <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
                                     <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + productos.length }})</small>
                                 </div>

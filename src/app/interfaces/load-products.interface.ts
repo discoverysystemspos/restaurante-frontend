@@ -8,4 +8,5 @@ export interface LoadProduct{
 export interface LoadCost{
     costo: number;
     precio: number;
+    inventario: number;
 }

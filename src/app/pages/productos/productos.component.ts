@@ -22,6 +22,7 @@ import { Department } from 'src/app/models/department.model';
 export class ProductosComponent implements OnInit {
 
   public totalProductos: number = 0;
+  public inventario: number = 0;
   public productos: Product[] = [];
   public productosTemp: Product[] = [];
 
@@ -129,10 +130,11 @@ export class ProductosComponent implements OnInit {
   cargarCosto(){
 
     this.productService.cargarProductoCost()
-    .subscribe(({costo, precio}) => {
+    .subscribe(({costo, precio, inventario}) => {
 
       this.totalCost = costo;
       this.totalPrice = precio;
+      this.inventario = inventario
 
     });
 
