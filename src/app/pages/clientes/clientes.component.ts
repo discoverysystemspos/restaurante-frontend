@@ -37,7 +37,7 @@ export class ClientesComponent implements OnInit {
   constructor(  private clientService: ClientService,
                 private searchService: SearchService,
                 private fb:FormBuilder,
-                private invoicesService: InvoiceService ) {  }
+                private invoicesService: InvoiceService) {  }
 
   ngOnInit(): void {
     
