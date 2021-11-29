@@ -154,9 +154,6 @@ export class ComandaComponent implements OnInit {
 
     this.comanda = comanda;
 
-    console.log(comanda);
-    
-
   }
 
 }

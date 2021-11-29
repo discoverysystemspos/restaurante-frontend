@@ -12,6 +12,9 @@ import Swal from 'sweetalert2';
 import { DepartmentService } from '../../services/department.service';
 import { Department } from 'src/app/models/department.model';
 
+// EXCEL
+import * as XLSX from 'xlsx';
+
 @Component({
   selector: 'app-productos',
   templateUrl: './productos.component.html',
@@ -48,6 +51,32 @@ export class ProductosComponent implements OnInit {
     this.cargarCosto();
 
     this.cargarDepartamentos();
+
+  }
+
+  /** ================================================================
+   *   EXPORTAR EXCEL
+  ==================================================================== */
+  exportar(){
+
+    this.productService.productExcel()
+        .subscribe( ({products}) => {
+
+          /* generate a worksheet */
+          var ws = XLSX.utils.json_to_sheet(products);
+      
+          /* add to workbook */
+          var wb = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(wb, ws, "Productos");
+      
+          /* title */
+          let title = 'inventario.xls';
+      
+          /* write workbook and force a download */
+          XLSX.writeFile(wb, title);
+
+        });
+
 
   }
 

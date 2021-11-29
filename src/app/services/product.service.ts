@@ -124,5 +124,18 @@ export class ProductService {
     return this.http.delete(`${base_url}/products/${_id}`, this.headers);
   }
 
+  /** ================================================================
+   *   ACTUALIZAR PRODUCTO
+  ==================================================================== */
+  productExcel(){
+    const endPoint = `/products/excel/`;
+    return this.http.get<LoadProduct>(`${base_url}${endPoint}`)
+                    .pipe(
+                      map( resp => {
+                        return resp;
+                      })
+                    );
+  }
+
   // FIN DE LA CLASE
 }
