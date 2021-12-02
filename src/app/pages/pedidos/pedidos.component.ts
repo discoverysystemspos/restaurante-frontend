@@ -46,10 +46,7 @@ export class PedidosComponent implements OnInit {
           this.pedidos = pedidos;
           this.pedidosTemp = pedidos;
           this.resultado = 0;
-          this.cargando = false;
-
-          console.log(this.pedidos);
-          
+          this.cargando = false;          
 
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); }
         )

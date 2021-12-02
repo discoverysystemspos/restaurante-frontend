@@ -92,8 +92,9 @@ export class PedidoComponent implements OnInit {
         .subscribe( ({pedido}) => {
 
           this.pedido = pedido;
+
+          console.log(pedido);
           
-          console.log(pedido)
           
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
 

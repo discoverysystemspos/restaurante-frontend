@@ -189,11 +189,6 @@ export class TotalComponent implements OnInit {
             this.resultado = invoices.length; 
             this.totalAmount = montos;
             this.totalCost = costos;
-
-            console.log(this.facturas);
-            
-
-            console.log(costos);
             
 
           });
