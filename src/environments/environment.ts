@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  base_url: 'https://castitoner.com/api',
+  base_url: 'http://192.168.1.150:3000/api',
   local_url: 'https://castitoner.com/api'
 };
 
