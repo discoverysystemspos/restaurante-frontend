@@ -217,7 +217,8 @@ export class ClientesComponent implements OnInit {
     city: [''],
     department: [''],
     zip: [''],
-    credit: false
+    credit: false,
+    mayoreo: false,
   });
 
   // OBTENER LA INFORMACION DEL CLIENTE
@@ -234,7 +235,8 @@ export class ClientesComponent implements OnInit {
       city: cliente.city || '',
       department: cliente.department || '',
       zip: cliente.zip || '',
-      credit : cliente.credit || false
+      credit : cliente.credit || false,
+      mayoreo : cliente.mayoreo || false
 
     });
     

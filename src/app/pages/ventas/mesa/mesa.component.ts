@@ -1205,8 +1205,11 @@ export class MesaComponent implements OnInit {
    *   CREAR FACTURA
   ==================================================================== */
   public factura: LoadInvoice;
+  public facturando: boolean = false;
   @ViewChild('fechCredito') fechCredito: ElementRef;  
   crearFactura(){
+
+    this.facturando = true;
 
     if(!this.credit){
 

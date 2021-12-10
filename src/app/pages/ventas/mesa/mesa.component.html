@@ -761,7 +761,7 @@
 
                     <!-- BTN CREAR FACTURA -->
                     <div class="my-4 float-end">
-                        <button type="button" (click)="crearFactura()" class="btn btn-outline-primary">
+                        <button type="button" [disabled]="facturando == true" (click)="crearFactura()" class="btn btn-outline-primary">
                             Crear Factura
                         </button>
                     </div>
