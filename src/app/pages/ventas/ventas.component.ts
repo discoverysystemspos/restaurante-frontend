@@ -9,6 +9,7 @@ import { Mesa } from '../../models/mesas.model';
 import { MesasService } from '../../services/mesas.service';
 import { UserService } from '../../services/user.service';
 import { User } from 'src/app/models/user.model';
+import { SearchService } from 'src/app/services/search.service';
 
 @Component({
   selector: 'app-ventas',
@@ -35,7 +36,8 @@ export class VentasComponent implements OnInit {
 
   constructor(  private router: Router,
                 private mesasService: MesasService,
-                private userService:UserService) {
+                private userService:UserService,
+                private searchService: SearchService) {
 
                   const reloadMesa = setInterval( () => {
 
@@ -71,6 +73,41 @@ export class VentasComponent implements OnInit {
 
     // CARGAR MESAS
     this.cargarMesas();
+
+  }
+
+  /** ================================================================
+   *   BUSCAR MESA
+  ==================================================================== */
+  buscar(termino){
+    
+    this.sinResultados = true;
+    if (termino.length === 0) {
+      this.listaMesas = this.listaMesasTemp;
+      this.resultado = 0;
+      return;
+    }else{
+
+      this.sinResultados = true;
+      this.searchService.search('mesa', termino)
+          .subscribe(({total, resultados}) => {
+
+            // COMPROBAR SI EXISTEN RESULTADOS
+            if (resultados.length === 0) {
+              this.sinResultados = false;
+              this.listaMesas = [];
+              this.resultado = 0;
+              return;                
+            }
+            // COMPROBAR SI EXISTEN RESULTADOS
+
+            this.totalMesas = total;
+            this.listaMesas = resultados; 
+            this.resultado = resultados.length; 
+
+          });
+          
+    }
 
   }
 

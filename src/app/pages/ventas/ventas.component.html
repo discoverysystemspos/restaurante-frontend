@@ -17,7 +17,19 @@
     <!-- MESAS -->
     <div class="p-2 border-bottom border-top my-2">
         <h4 class="mb-2 text-muted">Tickets</h4>
+
+        <div class="col-md-8 mx-auto">
+            <div class="form-floating mb-2">
+                <span class="position-absolute top-50 start-90 translate-middle"><i class=" bi-search " style="font-size: 1rem "></i></span>
+                <input type="text" class="form-control" id="floatingInput2" placeholder="Buscar" (keyup)="buscar(search.value)" #search>
+                <label for="floatingInput2 ">Buscar</label>
+            </div>
+        </div>
+
+        <hr>
+
         <div class="d-flex flex-wrap">
+
 
             <ng-container *ngIf="role === 'WAITER'">
 
