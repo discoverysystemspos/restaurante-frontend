@@ -1298,7 +1298,7 @@ export class MesaComponent implements OnInit {
               // IMPRIMIR FACTURA
               setTimeout( () => {
                 this.printDiv2();                      
-              },1000);
+              },2000);
               
             }else{
               window.open(`./dashboard/factura/${ resp.invoice.iid }`, '_blank');

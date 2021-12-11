@@ -35,6 +35,7 @@ import { CalendarioComponent } from './calendario/calendario.component';
 import { PedidosComponent } from './pedidos/pedidos.component';
 import { PedidoComponent } from './pedido/pedido.component';
 import { ComandaComponent } from './comanda/comanda.component';
+import { ProveedoresComponent } from './proveedores/proveedores.component';
 
 const routes: Routes = [
     
@@ -75,6 +76,8 @@ const routes: Routes = [
           { path: 'productos/nuevo', component: NuevoComponent,  canActivate: [AdminGuard], data:{ titulo: 'Crear Producto Nuevo'} },
           { path: 'productos/departamento', component: DepartamentosComponent,  canActivate: [AdminGuard], data:{ titulo: 'Departamentos'} },
           { path: 'productos/categorias', component: CategoriasComponent,  canActivate: [AdminGuard], data:{ titulo: 'Categorias'} },
+          
+          { path: 'proveedores', component: ProveedoresComponent,  canActivate: [AdminGuard], data:{ titulo: 'Proveedores'} },
           
           { path: 'ventas', component: VentasComponent,  canActivate: [WaiterGuard], data:{ titulo: 'Ventas'} },
           { path: 'ventas/mesa/:id', component: MesaComponent,  canActivate: [WaiterGuard], data:{ titulo: 'Mesa'} },
