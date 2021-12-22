@@ -52,7 +52,7 @@ export class VentasComponent implements OnInit {
                       clearInterval(reloadMesa);
                     }
             
-                  }, 5000);
+                  }, 30000);
 
                 }
 
