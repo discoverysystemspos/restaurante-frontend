@@ -36,10 +36,11 @@ export class SearchService {
   ==================================================================== */
   search(
       tipo: 'users'|'clients' |'departments'|'products' |'caja' |'mesa' |'turno'|'log' | 'categorias',
-      termino: string
+      termino: string,
+      status: boolean = false
     ){
 
-    const endPoint = `/search/${tipo}/${termino}`;
+    const endPoint = `/search/${tipo}/${termino}&status=${status}`;
     return this.http.get<any[]>(`${base_url}${endPoint}`, this.headers)
             .pipe(
               map( (resp: any) => {              

@@ -97,15 +97,15 @@ export class ProductosComponent implements OnInit {
   /** ================================================================
    *   CARGAR PRODUCTOS
   ==================================================================== */
-  public endPoint: string = `?desde=${this.desde}`;
+  public endPoint: string = `?desde=${this.desde}&status=false`;
   cargarProductos(tipo: string = '', valor: boolean = false, departamento: string = 'none'){
     
     if (tipo === 'agotados' && valor === true) {
-      this.endPoint = `?desde=${this.desde}&tipo=${tipo}&valor=${valor}&departamento=${departamento}`;      
+      this.endPoint = `?desde=${this.desde}&tipo=${tipo}&valor=${valor}&departamento=${departamento}&status=false`;      
     }else if(tipo === 'vencidos' && valor === true){
-      this.endPoint = `?desde=${this.desde}&tipo=${tipo}&valor=${valor}&departamento=${departamento}`; 
+      this.endPoint = `?desde=${this.desde}&tipo=${tipo}&valor=${valor}&departamento=${departamento}&status=false`; 
     }else{
-      this.endPoint = `?desde=${this.desde}&tipo=none&departamento=${departamento}`;
+      this.endPoint = `?desde=${this.desde}&tipo=none&departamento=${departamento}&status=false`;
     }
     
     this.cargando = true;
@@ -199,7 +199,7 @@ export class ProductosComponent implements OnInit {
     }else{
       this.sinResultados = true;
 
-      this.searchService.search('products', termino)
+      this.searchService.search('products', termino, false)
             .subscribe(({total, resultados}) => {
               
               // COMPROBAR SI EXISTEN RESULTADOS
@@ -233,8 +233,15 @@ export class ProductosComponent implements OnInit {
   borrarProducto(_id: string){
 
     this.productService.deleteProduct(_id)
-        .subscribe(resp =>{
-          Swal.fire('Estupendo', 'Se ha borrado el Producto exitosamente!', 'success');
+        .subscribe((resp:{product, ok}) =>{
+
+          if (resp.product.status) {
+            Swal.fire('Estupendo', 'Se ha habilitado el Producto exitosamente!', 'success');
+          }else{
+            Swal.fire('Estupendo', 'Se ha eliminado el Producto exitosamente!', 'success');
+          }
+          
+
           this.cargarProductos('none', false);
         }, (err) =>{
           Swal.fire('Error', err.error.msg, 'error');

@@ -59,7 +59,7 @@ export class ClientesComponent implements OnInit {
     city: [''],
     department: [''],
     zip: [''],
-    credit: false
+    mayoreo: false
   });
 
   crearCliente(){
@@ -195,8 +195,14 @@ export class ClientesComponent implements OnInit {
   borrarCliente(_id: string){
 
     this.clientService.deleteClient(_id)
-        .subscribe(resp =>{
-          Swal.fire('Estupendo', 'Se ha borrado el cliente exitosamente!', 'success');
+        .subscribe((resp:{client, ok}) =>{
+
+          if (resp.client.status) {
+            Swal.fire('Estupendo', 'Se ha habilitado el cliente exitosamente!', 'success');
+          }else{
+            Swal.fire('Estupendo', 'Se ha eliminado el cliente exitosamente!', 'success');
+          }
+
           this.cargarClientes();
         }, (err) =>{
           Swal.fire('Error', err.error.msg, 'error');

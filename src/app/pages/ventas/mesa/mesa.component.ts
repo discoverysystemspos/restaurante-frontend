@@ -669,7 +669,7 @@ export class MesaComponent implements OnInit {
       return;
     }else{
     
-      this.searchService.search('clients', termino)
+      this.searchService.search('clients', termino, true)
           .subscribe(({total, resultados}) => {   
             
           this.cargandoCliente = false;
@@ -841,7 +841,7 @@ export class MesaComponent implements OnInit {
   /** ================================================================
    *  CARGAR PRODUCTOS
   ==================================================================== */
-  public endPoint: string = `?desde=${this.desde}`;
+  public endPoint: string = `?desde=${this.desde}&status=true`;
   cargarProductos(){
    
     this.cargando = true;
@@ -901,8 +901,8 @@ export class MesaComponent implements OnInit {
       this.listaProductos = this.listaProductosTemp;
       return;
     }else{
-      
-      this.searchService.search('products', termino)
+      const status = true;
+      this.searchService.search('products', termino, status)
           .subscribe(({total, resultados}) => {
               
             // COMPROBAR SI EXISTEN RESULTADOS

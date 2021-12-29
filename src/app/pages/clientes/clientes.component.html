@@ -79,7 +79,10 @@
                                 <tr class="trHover" *ngFor="let cliente of clientes; let i=index ">
                                     <th *ngIf="desde===0 " scope="row ">{{ i + 1}}</th>
                                     <th *ngIf="desde> 0" scope="row">{{ (i + 1) + desde }}</th>
-                                    <td colspan="2">{{ cliente.name }}</td>
+                                    <td colspan="2">
+                                        {{ cliente.name }}
+                                        <span *ngIf="!cliente.status" class="badge rounded-pill bg-danger">Eliminado</span>
+                                    </td>
                                     <td>{{ cliente.cedula }}</td>
                                     <td>{{ cliente.email }}</td>
                                     <td>{{ cliente.phone }}</td>
@@ -236,11 +239,13 @@
                     </div>
 
                     <div class="col-md-1 px-md-1">
-                        <div class="form-check mt-2">
-                            <input formControlName="credit" class="form-check-input" type="checkbox" value="">
-                            <label class="form-check-label" for="credit">
-                                Credito
-                            </label>
+                        <div class="col-md-4 px-md-1">
+                            <div class="form-check mt-2">
+                                <input formControlName="mayoreo" class="form-check-input" type="checkbox" value="" id="mayoreo">
+                                <label class="form-check-label" for="mayoreo">
+                                    Mayoreo
+                                </label>
+                            </div>
                         </div>
                     </div>
 
@@ -376,16 +381,7 @@
                     </div>
 
                     <div class="row mb-3">
-
-                        <div class="col-md-4 px-md-1">
-                            <div class="form-check mt-2">
-                                <input formControlName="credit" class="form-check-input" type="checkbox" value="" id="credit">
-                                <label class="form-check-label" for="credit">
-                                    Credito
-                                </label>
-                            </div>
-                        </div>
-
+                        
                         <div class="col-md-4 px-md-1">
                             <div class="form-check mt-2">
                                 <input formControlName="mayoreo" class="form-check-input" type="checkbox" value="" id="mayoreo">

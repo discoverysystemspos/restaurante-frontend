@@ -172,9 +172,10 @@
 
                                                 <td colspan="2">
                                                     {{ producto.name }}
-                                                    <span *ngIf="producto.low && !producto.out" class="badge rounded-pill bg-warning text-dark">Bajo</span>
-                                                    <span *ngIf="producto.out" class="badge rounded-pill bg-danger">Agotado</span>
-                                                    <span *ngIf="producto.vencido" class="badge rounded-pill bg-danger">Vencido</span>
+                                                    <span *ngIf="producto.status && producto.low && !producto.out" class="badge rounded-pill bg-warning text-dark">Bajo</span>
+                                                    <span *ngIf="producto.status && producto.out" class="badge rounded-pill bg-danger">Agotado</span>
+                                                    <span *ngIf="producto.status && producto.vencido" class="badge rounded-pill bg-danger">Vencido</span>
+                                                    <span *ngIf="!producto.status" class="badge rounded-pill bg-danger">Eliminado</span>
                                                 </td>
 
                                                 <td>{{ producto.department.name }}</td>

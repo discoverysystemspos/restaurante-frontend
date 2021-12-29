@@ -1,6 +1,9 @@
 import { environment } from "../../environments/environment"
+import { _privilegios } from '../interfaces/load-users.interface';
 
 const base_url = environment.base_url;
+
+
 
 export class User {    
 
@@ -14,6 +17,7 @@ export class User {
         public status?: boolean,
         public cerrada?: boolean,
         public turno?: string,
+        public privilegios?: _privilegios[],
     ){}
 
     /** ================================================================
