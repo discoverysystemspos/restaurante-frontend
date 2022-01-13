@@ -46,6 +46,10 @@ export class EmpresaService {
                 .pipe(
                   map( (resp: {ok: boolean, datos: Datos}) => { 
 
+                    if (!resp.datos.comandas) {
+                      resp.datos.comandas = false;
+                    }
+
                     this.myEmpresa = resp.datos;
                     return resp.datos; 
                     

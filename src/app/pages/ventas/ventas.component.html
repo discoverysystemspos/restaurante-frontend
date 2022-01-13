@@ -84,7 +84,7 @@
                             <img src="../../../assets/img/icons/{{ mesa.img || 'ticket.svg' }}" alt="" style="max-height: 100px;">
                             <h6 class="mb-0 text-wrap fw-normal"> {{ mesa.mesero.name }} </h6>
                             <hr *ngIf="!mesa.disponible" class="mb-2">
-                            <small *ngIf="!mesa.disponible" class="mb-0 text-muted lh-1"> {{ mesa.cliente.name }} </small>                    
+                            <small *ngIf="!mesa.disponible" class="mb-0 text-muted lh-1"> {{ mesa.cliente?.name }} </small>                    
                         </button>
                     </div>
 

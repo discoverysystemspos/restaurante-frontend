@@ -38,9 +38,9 @@ export class EmpresaComponent implements OnInit {
 
           this.empresa = datos;
           
-          const { tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula } = datos;
+          const { tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas } = datos;
 
-          this.formUpdate.reset({ tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula });
+          this.formUpdate.reset({ tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas });
 
         });
 
@@ -68,6 +68,7 @@ export class EmpresaComponent implements OnInit {
     commission: [false],
     comision: [0],
     bascula: false,
+    comandas: false,
   })
 
   actualizarDatos(){
@@ -83,7 +84,7 @@ export class EmpresaComponent implements OnInit {
             
             this.cargarDatos();
             
-            Swal.fire('Estupendo', 'La empresa a sido creada', 'success');
+            Swal.fire('Estupendo', 'La empresa a sido actualizada', 'success');
             
             this.formSubmitted = false;
             this.formUpdate.reset();

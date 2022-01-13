@@ -42,8 +42,14 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item p-1">
                         <a class="nav-link btnW waves-effect waves-grey px-3 mx-1" routerLinkActive="activeBtn" aria-current="page" routerLink="./ventas"><i class="bi-cart2" style="font-size: 1rem"></i> Ventas</a>
-                    </li>
+                    </li>                    
                     <li class="nav-item p-1">
+                        <a class="nav-link btnW waves-effect waves-grey px-3 mx-1" routerLinkActive="activeBtn" routerLink="./clientes"><i class="bi-people" style="font-size: 1rem"></i> Clientes</a>
+                    </li>                    
+                    <li class="nav-item p-1">
+                        <a class="nav-link btnW waves-effect waves-grey px-3 mx-1" routerLinkActive="activeBtn" routerLink="./facturas"><i class="bi-receipt" style="font-size: 1rem"></i> Facturas</a>
+                    </li>
+                    <li class="nav-item p-1" *ngIf="empresa?.comandas">
                         <a class="nav-link btnW waves-effect waves-grey px-3 mx-1" routerLinkActive="activeBtn" routerLink="./comandas"><i class="bi-app" style="font-size: 1rem"></i> Comandas</a>
                     </li>
                     <li class="nav-item p-1">

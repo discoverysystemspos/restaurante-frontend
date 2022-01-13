@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 // MODELS
 import { User } from '../../models/user.model';
@@ -14,7 +14,7 @@ import { EmpresaService } from '../../services/empresa.service';
   styles: [
   ]
 })
-export class HeaderComponent  {
+export class HeaderComponent implements OnInit  {
 
   public user: User;
   public empresa: Datos;
@@ -22,14 +22,32 @@ export class HeaderComponent  {
   constructor(  private userService: UserService,
                 private empresaService: EmpresaService) { 
     
-    this.user = userService.user;
-    this.empresa = empresaService.myEmpresa;
+    this.user = userService.user;   
+
+  }
+
+  ngOnInit(): void {
+
+    this.getDatos();
+    
+  }
+
+  getDatos(){
+
+    this.empresaService.getDatos()
+        .subscribe( resp => {
+
+          this.empresa = resp;
+
+        });   
 
   }
 
   logout(){
     this.userService.logout();
   }
+
+  
 
   
 

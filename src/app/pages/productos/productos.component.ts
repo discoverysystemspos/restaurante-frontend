@@ -199,7 +199,7 @@ export class ProductosComponent implements OnInit {
     }else{
       this.sinResultados = true;
 
-      this.searchService.search('products', termino, false)
+      this.searchService.search('products', termino)
             .subscribe(({total, resultados}) => {
               
               // COMPROBAR SI EXISTEN RESULTADOS

@@ -152,6 +152,9 @@ export class UsuariosComponent implements OnInit {
       user.privilegios[0].cierre = true;
     }   
 
+    console.log(user);
+    
+
     this.updateUserForm.setValue({
       usuario: user.usuario,
       name: user.name,

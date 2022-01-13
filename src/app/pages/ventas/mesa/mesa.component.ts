@@ -669,7 +669,7 @@ export class MesaComponent implements OnInit {
       return;
     }else{
     
-      this.searchService.search('clients', termino, true)
+      this.searchService.search('clients', termino)
           .subscribe(({total, resultados}) => {   
             
           this.cargandoCliente = false;
@@ -902,7 +902,7 @@ export class MesaComponent implements OnInit {
       return;
     }else{
       const status = true;
-      this.searchService.search('products', termino, status)
+      this.searchService.search('products', termino)
           .subscribe(({total, resultados}) => {
               
             // COMPROBAR SI EXISTEN RESULTADOS
@@ -1195,9 +1195,6 @@ export class MesaComponent implements OnInit {
     }else{
       this.pago = 0;
     }
-
-    console.log('Pago con: ', this.pago);
-    
 
   }
   
