@@ -94,8 +94,7 @@ export class ComandaComponent implements OnInit {
         .subscribe(({ total, mesas }) => {    
 
           this.totalMesas = total;
-          this.listaMesas = mesas;          
-
+          this.listaMesas = mesas;   
         });    
   }
 

@@ -88,7 +88,7 @@ export class ProductosComponent implements OnInit {
     this.departmentService.loadDepartment()
         .subscribe( ({departments, total}) => {
           
-          this.listaDepartamentos = departments;          
+          this.listaDepartamentos = departments;      
           
         });
 
@@ -99,13 +99,17 @@ export class ProductosComponent implements OnInit {
   ==================================================================== */
   public endPoint: string = `?desde=${this.desde}&status=false`;
   cargarProductos(tipo: string = '', valor: boolean = false, departamento: string = 'none'){
+
+    this.costoB = 0;
+    this.precioB = 0;
+    this.inventarioB = 0;
     
     if (tipo === 'agotados' && valor === true) {
       this.endPoint = `?desde=${this.desde}&tipo=${tipo}&valor=${valor}&departamento=${departamento}&status=false`;      
     }else if(tipo === 'vencidos' && valor === true){
       this.endPoint = `?desde=${this.desde}&tipo=${tipo}&valor=${valor}&departamento=${departamento}&status=false`; 
     }else{
-      this.endPoint = `?desde=${this.desde}&tipo=none&departamento=${departamento}&status=false`;
+      this.endPoint = `?desde=${this.desde}&tipo=none&departamento=${departamento}&status=false`;      
     }
     
     this.cargando = true;
@@ -129,7 +133,28 @@ export class ProductosComponent implements OnInit {
           this.productos = products;
           this.productosTemp = products;
           this.resultado = 0;
-          this.cargando = false;          
+          this.cargando = false;
+          
+          if (departamento === 'none') {      
+            this.costoB = 0;
+            this.precioB = 0;
+            this.inventarioB = 0;
+          }else{
+
+            for (let i = 0; i < this.productos.length; i++) {
+
+              if (this.productos[i].type !== 'Paquete') {
+  
+                  const stockF = ((this.productos[i].stock + this.productos[i].returned + this.productos[i].bought) - (this.productos[i].sold + this.productos[i].damaged));
+  
+                  this.inventarioB += stockF;
+                  this.costoB += (stockF * this.productos[i].cost);
+                  this.precioB += (stockF * this.productos[i].price);
+              }
+  
+            }            
+
+          }
 
           // BOTONOS DE ADELANTE Y ATRAS          
           if (this.desde === 0 && this.totalProductos > 10) {
@@ -188,15 +213,29 @@ export class ProductosComponent implements OnInit {
   /** ================================================================
    *   BUSCAR
   ==================================================================== */
+  public costoB: number = 0;
+  public precioB: number = 0;
+  public inventarioB: number = 0;
+
   buscar( termino:string ){
+
+    this.costoB = 0;
+    this.precioB = 0;
+    this.inventarioB = 0;
 
     this.sinResultados = true;
 
     if (termino.length === 0) {
+
       this.productos = this.productosTemp;
       this.resultado = 0;
+      this.costoB = 0;
+      this.precioB = 0;
+      this.inventarioB = 0;
       return;
+
     }else{
+
       this.sinResultados = true;
 
       this.searchService.search('products', termino)
@@ -213,7 +252,7 @@ export class ProductosComponent implements OnInit {
 
               this.totalProductos = total;
               this.productos = resultados; 
-              this.resultado = resultados.length;          
+              this.resultado = resultados.length;
             });
     }    
 

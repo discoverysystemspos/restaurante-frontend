@@ -133,6 +133,27 @@
                                     <input type="text" class="form-control" id="floatingInput" placeholder="Buscar Producto" (keyup)="buscar(search.value)" #search>
                                     <label for="floatingInput ">Buscar Producto</label>
                                 </div>
+
+                                <div class="alert alert-info" *ngIf="inventarioB > 0">
+
+                                    <p class="mb-0 text-wrap"> Detalles del departamento: <span class="text-capitalize fw-bold"> {{ productos[0].department.name }} </span> </p>
+                                    <hr class="my-1">
+                                    <div class="d-flex flex-wrap" >
+    
+                                        <div class="col-sm-12 col-md-4 text-wrap">
+                                            Inventario: <span class="fw-bold"> {{ inventarioB }} </span> 
+                                        </div>
+                                        <div class="col-sm-12 col-md-4 text-wrap">
+                                            Total Inversion: <span class="fw-bold"> {{ costoB | currency }} </span> 
+                                        </div>
+                                        <div class="col-sm-12 col-md-4 text-wrap">
+                                            Total Venta: <span class="fw-bold"> {{ precioB | currency }} </span> 
+                                        </div>
+    
+                                    </div>
+
+                                </div>
+
                             </div>
                             <div class="table-responsive ">
                                 <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">

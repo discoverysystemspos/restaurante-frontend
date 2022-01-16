@@ -238,7 +238,7 @@ export class NuevoComponent implements OnInit {
               min: 0,
               max: 0,
               expiration: '',
-              tax: [''],
+              tax: false,
               impuestoT: [''],
               valor: [''],
               impuesto: ['']
