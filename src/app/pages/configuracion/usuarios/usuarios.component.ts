@@ -129,8 +129,8 @@ export class UsuariosComponent implements OnInit {
     usuario: ['', [Validators.required, Validators.minLength(4)]],
     name: ['', [Validators.required, Validators.minLength(3)]],
     id: [''],
-    password: ['', [Validators.minLength(6)]],
-    repassword: ['', [Validators.minLength(6)]],
+    password: [''],
+    repassword: [''],
     role: ['STAFF'],
     cierre: [true],
     privilegios: []
@@ -147,13 +147,13 @@ export class UsuariosComponent implements OnInit {
 
   informacionUsuario(user: User){
     
-    
-    if( user.privilegios.length === 0  ){      
-      user.privilegios[0].cierre = true;
-    }   
+    if( user.privilegios.length === 0  ){
 
-    console.log(user);
-    
+      user.privilegios.push({
+        cierre : true
+      });
+
+    }       
 
     this.updateUserForm.setValue({
       usuario: user.usuario,
@@ -163,7 +163,7 @@ export class UsuariosComponent implements OnInit {
       id: user.uid,
       role: user.role,
       cierre: user.privilegios[0].cierre,
-      privilegios: []
+      privilegios: user.privilegios
     });
 
   }
@@ -182,7 +182,7 @@ export class UsuariosComponent implements OnInit {
       this.privilegioUp = [];
 
       this.privilegioUp.push({
-        cierre: this.updateUserForm2.value.cierre
+        cierre: this.updateUserForm.value.cierre
       });
             
       this.updateUserForm2.setValue({
@@ -190,7 +190,8 @@ export class UsuariosComponent implements OnInit {
         name: this.updateUserForm.value.name,
         id: this.updateUserForm.value.id,
         role: this.updateUserForm.value.role,
-        privilegios: this.privilegioUp
+        privilegios: this.privilegioUp,
+        cierre: this.updateUserForm.value.cierre
       });
 
       this.userService.updateUser(this.updateUserForm2.value, this.updateUserForm2.value.id)

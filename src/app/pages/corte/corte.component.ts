@@ -114,7 +114,7 @@ export class CorteComponent implements OnInit {
     .subscribe( (turno) => { 
       this.turno = turno;
       this.movimientos = turno.movements;
-      this.inicial = turno.initial;      
+      this.inicial = turno.initial;
       
       this.procesarInformacion();
       

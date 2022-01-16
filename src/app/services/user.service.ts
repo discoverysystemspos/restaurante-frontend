@@ -82,9 +82,15 @@ export class UserService {
     }).pipe(
       tap( (resp: any) => {
         
-        const { usuario, name, role, img, uid, status, cerrada, turno} = resp.usuario;
+        const { usuario, name, role, img, uid, status, cerrada, turno, privilegios} = resp.usuario;
 
-        this.user = new User( usuario, name, '', role, img || 'no-image', uid, status, cerrada, turno);        
+        if (privilegios.length === 0) {
+          privilegios.push({
+            cierre : true
+          });
+        }
+
+        this.user = new User( usuario, name, '', role, img || 'no-image', uid, status, cerrada, turno, privilegios);        
 
         localStorage.setItem('token', resp.token);
 

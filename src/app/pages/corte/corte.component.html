@@ -119,7 +119,7 @@
 
             </div>
 
-            <div class="card shadow px-2 my-3 bg-dark border-0" style="width: 18rem;">
+            <div *ngIf="user.privilegios[0].cierre !== false" class="card shadow px-2 my-3 bg-dark border-0" style="width: 18rem;">
 
                 <div class="card-body text-white">
                     <h4 class="card-title mb-0 text-center">Ganancia Total</h4>
@@ -313,7 +313,7 @@
 
                     </div>
 
-                    <div class="px-2 border-0 mx-auto" style="width: 18rem;">
+                    <div *ngIf="user.privilegios[0].cierre !== false" class="px-2 border-0 mx-auto" style="width: 18rem;">
 
                         <table class="table text-center">
                             <thead>
