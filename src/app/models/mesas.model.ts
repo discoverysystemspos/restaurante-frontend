@@ -5,6 +5,21 @@ interface _mesero{
     _id: string;
 }
 
+export interface _ingredientes {
+    name: string;
+    qty: number;
+    _id?: string;
+}
+
+export interface _comanda {
+    product: string;
+    ingredientes: _ingredientes[];
+    qty: number;
+    nota: string;
+    estado: string;
+    _id?: string;
+}
+
 export class Mesa {    
 
     constructor(
@@ -18,8 +33,7 @@ export class Mesa {
         public img?: string,
         public cliente?: string,
         public nota?: _notas[],
+        public comanda?: _comanda[]
     ){}
-
-    
 
 };

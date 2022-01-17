@@ -15,7 +15,7 @@ import { Product } from '../../../models/product.model';
 import { Client } from '../../../models/client.model';
 import { Invoice } from '../../../models/invoice.model';
 import { Department } from '../../../models/department.model';
-import { Mesa } from '../../../models/mesas.model';
+import { Mesa, _comanda, _ingredientes } from '../../../models/mesas.model';
 import { Kit } from '../../../models/kits.model';
 import { User } from '../../../models/user.model';
 import { Datos } from '../../../models/empresa.model';
@@ -446,7 +446,10 @@ export class MesaComponent implements OnInit {
    *  ALMACENAR PRODUCTO TEMPORAL EN EL CARRITO
   ==================================================================== */
   public total: number = 0;
-  carritoTemp( product: any, qty: number, precio: number ){ 
+  public comandas: _comanda[] = [];
+  public ingredientes: _ingredientes[] = [];
+
+  carritoTemp( product: any, qty: number, precio: number, nota: string = '' ){ 
 
     const validarItem = this.productUp.findIndex( (resp) =>{      
       if (resp.product === product.pid ) {
@@ -499,7 +502,38 @@ export class MesaComponent implements OnInit {
       
     }
     
-    this.mesa.carrito =  this.productUp;    
+    this.mesa.carrito =  this.productUp;
+
+    // COMANDA NUEVA
+    this.ingredientes = [];
+    
+    if (this.mesa.img === 'mesa.svg') {
+      
+      // AGREGAR LOS INGREDIENTES
+      for (let i = 0; i < product.kit.length; i++) {
+        
+        this.ingredientes.push({
+
+          name: product.kit[i].product.name,
+          qty: product.kit[i].qty
+
+        });
+        
+      }
+
+      this.comandas.push({
+        product: product.pid,
+        ingredientes: this.ingredientes,
+        qty: 1,
+        nota: nota,
+        estado: 'pendiente'
+
+      });
+      
+    }
+
+    // GUARDAR LA INFORMACION DE LA COMANDA
+    this.mesa.comanda = this.comandas;
 
     this.mesasServices.updateMesa(this.mesa, this.mesaID)
         .subscribe( (resp:{ok: boolean, mesa: any}) => { 
@@ -1558,7 +1592,6 @@ export class MesaComponent implements OnInit {
     
     this.mesasServices.updateNotaMesa(nota, this.mesaID)
     .subscribe( resp => {
-      console.log(resp);
       
       this.nota.nativeElement.value = '';
       this.nota.nativeElement.focus = true;
