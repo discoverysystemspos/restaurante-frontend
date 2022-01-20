@@ -100,5 +100,14 @@ export class MesasService {
     return this.http.put(`${base_url}/mesas/notas/${id}`, data, this.headers);
   }
 
+  /** ================================================================
+   *   DELETE INGREDIENTE
+  ==================================================================== */
+  deleteIngrediente(mesa: string, comanda: string, ingrediente: string){
+
+    return this.http.delete(`${base_url}/mesas/${mesa}/comanda/${comanda}/ingrediente/${ingrediente}`, this.headers);
+
+  }
+
 
 }

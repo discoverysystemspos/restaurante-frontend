@@ -156,7 +156,12 @@ export class MesaComponent implements OnInit {
 
           this.mesaID = mesa.mid;
           this.carrito = mesa.carrito;
-          this.mesa = mesa;          
+          this.mesa = mesa;
+          
+          this.comandas = mesa.comanda;
+
+          console.log(this.comandas);
+          
           
          if (!mesa.disponible && mesa.cliente) {
            this.clienteTemp = mesa.cliente;
@@ -527,13 +532,12 @@ export class MesaComponent implements OnInit {
         qty: 1,
         nota: nota,
         estado: 'pendiente'
-
       });
       
     }
 
     // GUARDAR LA INFORMACION DE LA COMANDA
-    this.mesa.comanda = this.comandas;
+    this.mesa.comanda = this.comandas;    
 
     this.mesasServices.updateMesa(this.mesa, this.mesaID)
         .subscribe( (resp:{ok: boolean, mesa: any}) => { 
@@ -541,7 +545,10 @@ export class MesaComponent implements OnInit {
           this.carrito = resp.mesa.carrito;
           this.productUp = [];
           this.comanda = [];
-          
+          this.comandas = [];
+
+          this.comandas = resp.mesa.comanda;
+
           for (let i = 0; i < resp.mesa.carrito.length; i++) {
 
             this.productUp.push({
@@ -560,7 +567,6 @@ export class MesaComponent implements OnInit {
             });
                         
           }
-
           this.comandaTemp = this.comanda;
 
           this.sumarTotales();          
@@ -569,6 +575,21 @@ export class MesaComponent implements OnInit {
 
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
     
+
+  }
+
+  /** ================================================================
+   *  ELIMINAR INGREDIENTES
+  ==================================================================== */
+  eliminarIngredientes(comanda: string, ingrediente: string ){
+
+    this.mesasServices.deleteIngrediente(this.mesaID, comanda, ingrediente)
+        .subscribe( resp => {
+
+          console.log(resp);    
+
+        });
+
 
   }
 
@@ -590,6 +611,10 @@ export class MesaComponent implements OnInit {
 
         this.productUp.splice(i, 1);
         this.comanda.splice(i, 1);
+
+        // OJO ARREGLAR
+        this.mesa.comanda = [];
+        this.comandas = [];
 
         this.mesa.carrito =  this.productUp;
 
@@ -657,7 +682,7 @@ export class MesaComponent implements OnInit {
 
       this.base = this.total;
 
-      if (this.empresa.responsable) {
+      if (this.empresa?.responsable) {
         this.total = this.total + this.iva;
       }
 

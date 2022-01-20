@@ -1037,40 +1037,90 @@ VERIFICADOR DE PRECIOS
 COMANDAS
 ========================================================================= -->
 <div class="modal fade" id="comandas" tabindex="-1" aria-labelledby="comandasModal" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="comandasModal"><i class="bi-upc-scan" style="font-size: 1rem"></i> Notas: </h5>
+                <h5 class="modal-title" id="comandasModal"><i class="bi-upc-scan" style="font-size: 1rem"></i> COMANDAS: </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <div class="modal-body">
 
-                <div class="container border rounded overflow-auto" #content style="max-height: 15rem; min-height: 10rem;">
-                    <ul class="list-group list-group-flush py-2" #messages>
-                        <li class="list-group-item border-0 py-1 px-1" *ngFor="let nota of notas">
-                            <div class="d-flex justify-content-start">
-                                <div>
-                                    <button type="button" disabled class="btn btn-link p-1 text-danger">
-                                        <i class="bi-trash" style="font-size: 0.9rem"></i>
-                                    </button>
-                                </div>
-                                <div class="badge bg-light2 text-muted px-2 py-2 text-wrap text-start" style="width: auto;">
-                                    <h6 class="mb-0">
-                                        {{ nota.nota }}
-                                    </h6>
-                                    <p class="mb-0 text-end" *ngIf="nota.date "><small class="text-muted"> {{ nota?.date  | date: "medium" }} </small></p>
-                                </div>
-                            </div>
-                        </li>
+                <div class="row">
 
-                    </ul>
+                    <!-- COMENTARIO -->
+                    <div class="col-sm-12 col-md-8">                    
+                        <div class="container border rounded overflow-auto" #content style="max-height: 15rem; min-height: 10rem;">
+                            
+                            <p class="mb-1 fw-bold mt-2 text-muted">Notas:</p>
+                            
+                            <ul class="list-group list-group-flush py-2" #messages>
+                                <li class="list-group-item border-0 py-1 px-1" *ngFor="let nota of notas">
+                                    <div class="d-flex justify-content-start">
+                                        <div>
+                                            <button type="button" disabled class="btn btn-link p-1 text-danger">
+                                                <i class="bi-trash" style="font-size: 0.9rem"></i>
+                                            </button>
+                                        </div>
+                                        <div class="badge bg-light2 text-muted px-2 py-2 text-wrap text-start" style="width: auto;">
+                                            <h6 class="mb-0">
+                                                {{ nota.nota }}
+                                            </h6>
+                                            <p class="mb-0 text-end" *ngIf="nota.date "><small class="text-muted"> {{ nota?.date  | date: "medium" }} </small></p>
+                                        </div>
+                                    </div>
+                                </li>
+                                
+                            </ul>
+                        </div>
+
+                        <!-- MENSAJE -->
+                        <!-- <div class="clearfix my-2">
+                            <input type="text" name="" id="" class="form-control float-start col-8" placeholder="Notas" (keyup)="nota.value" (keyup.enter)="enviarNota(nota.value)" #nota>
+                            <button type="button" (click)="enviarNota(nota.value)" class="btn btn-primary  ms-auto float-end col-3"> <i class="bi-arrow-right"></i> </button>
+                        </div> -->
+
+                        <div class="input-group my-2">
+                            <input type="text" class="form-control" placeholder="Notas" aria-label="Notas" aria-describedby="button-addon2" (keyup)="nota.value" (keyup.enter)="enviarNota(nota.value)" #nota>
+                            <button class="btn btn-primary" (click)="enviarNota(nota.value)" type="button" id="button-addon2">Enviar</button>
+                        </div>
+
+                    </div>
+
+                    <!-- COMANDA -->
+                    <div class="col-sm-12 col-md-4">
+
+                        <div class="container border rounded overflow-auto" style="max-height: 15rem; min-height: 10rem;">
+                            
+                            <p class="mb-1 fw-bold mt-2 text-muted">Comanda</p>
+
+                            <!-- PRODUCTOS DE LAS COMANDAS -->
+                            <ul class="py-1 px-0 list-group list-group-flush">
+                                <li class="mb-2 border-bottom border-info py-1 px-0 list-group-item" *ngFor="let comanda of comandas; let i=index">
+                                    <span class=" py-1 px-0 fw-bold text-muted"> {{ comanda.product?.name }} </span>
+
+                                    <!-- INGREDIENTES -->
+                                    <ul class=" py-1 px-0 ps-1 list-group list-group-flush">
+                                        <li class=" py-1 px-0 list-group-item" *ngFor="let ingrediente of comanda.ingredientes">
+                                            <button (click)="eliminarIngredientes(comanda._id, ingrediente._id)" type="button" class="btn btn-link p-1 text-danger">
+                                                <i class="bi-trash" style="font-size: 0.9rem"></i>
+                                            </button>  {{ ingrediente.name }}
+                                        </li>
+                                    </ul>
+                                    <!-- INGREDIENTES -->
+                                </li>
+                            </ul>
+                              
+                            <!-- PRODUCTOS DE LAS COMANDAS -->
+
+                        </div>
+
+                    </div>
+
+
                 </div>
 
-                <div class="clearfix my-2">
-                    <input type="text" name="" id="" class="form-control float-start col-10" placeholder="Notas" (keyup)="nota.value" (keyup.enter)="enviarNota(nota.value)" #nota>
-                    <button type="button" (click)="enviarNota(nota.value)" class="btn btn-primary ms-auto float-end col-auto">Enviar</button>
-                </div>
+                
 
             </div>
         </div>
