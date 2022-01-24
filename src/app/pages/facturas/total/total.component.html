@@ -211,7 +211,7 @@
                                             <span *ngIf="factura.credito && factura.status" class="badge rounded-pill bg-warning">Credito</span>
                                         </td>
                                         <td> {{ factura.client?.cedula }} </td>
-                                        <td colspan="2"> {{ factura.mesa.name }} </td>
+                                        <td colspan="2"> {{ factura.mesa?.name }} </td>
                                         <td> {{ factura.amount | currency }} </td>
                                         <td> {{ factura.type }} </td>
                                         <td> {{ factura.fecha | date:'medium' }} </td>

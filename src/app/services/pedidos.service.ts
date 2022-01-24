@@ -46,6 +46,14 @@ export class PedidosService {
   }
 
   /** ================================================================
+   *  CREATE PEDIDOS
+  ==================================================================== */
+  createPedidos(formData : any, cid: string, mesaID: string){
+
+    return this.http.post(`${base_url}/pedidos?local=true&cid=${cid}&mesa=true&mid=${mesaID}`, formData, this.headers);
+  }
+
+  /** ================================================================
    *  LOAD PEDIDOS
   ==================================================================== */
   loadPedidos(){

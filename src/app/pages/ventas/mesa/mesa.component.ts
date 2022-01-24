@@ -5,6 +5,8 @@ import { Subscription, Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import * as SerialPort from 'serialport';
 
+import {UUID} from 'uuid-generator-ts';
+
 // PRINTER
 import { NgxPrinterService } from 'projects/ngx-printer/src/lib/ngx-printer.service';
 import { PrintItem } from 'projects/ngx-printer/src/lib/print-item';
@@ -31,6 +33,7 @@ import { MesasService } from '../../../services/mesas.service';
 import { EmpresaService } from '../../../services/empresa.service';
 import { UserService } from '../../../services/user.service';
 import { BasculaService } from '../../../services/bascula.service';
+import { PedidosService } from '../../../services/pedidos.service';
 
 // INTERFACES
 import { Carrito, _payments, LoadCarrito, _notas } from '../../../interfaces/carrito.interface';
@@ -83,7 +86,8 @@ export class MesaComponent implements OnInit {
                 private printerService: NgxPrinterService,
                 private empresaService: EmpresaService,
                 private userService: UserService,
-                private basculaService: BasculaService) {
+                private basculaService: BasculaService,
+                private pedidoService: PedidosService) {
 
                   // CARGAR INFORMACION DEL USUARIO
                   this.user = this.userService.user;                  
@@ -159,9 +163,6 @@ export class MesaComponent implements OnInit {
           this.mesa = mesa;
           
           this.comandas = mesa.comanda;
-
-          console.log(this.comandas);
-          
           
          if (!mesa.disponible && mesa.cliente) {
            this.clienteTemp = mesa.cliente;
@@ -584,9 +585,7 @@ export class MesaComponent implements OnInit {
   eliminarIngredientes(comanda: string, ingrediente: string ){
 
     this.mesasServices.deleteIngrediente(this.mesaID, comanda, ingrediente)
-        .subscribe( resp => {
-
-          console.log(resp);    
+        .subscribe( resp => { 
 
         });
 
@@ -1640,6 +1639,120 @@ export class MesaComponent implements OnInit {
       this.content.nativeElement.scrollTop = this.content.nativeElement.scrollHeight;
     } catch (err) {}
   }
+
+  /** ============================================================================================
+   * =============================================================================================
+   * =============================================================================================
+   * =============================================================================================
+   * =============================================================================================
+   * =============================================================================================
+   * PEDIDOS - PEDIDOS - PEDIDOS - PEDIDOS  
+  ==================================================================== */
+  public comentarios!: string;
+  public uuid!: any;
+  public ped: boolean;
+  public btnPedido: boolean = true;
+
+  public pedidoForm = this.fb.group({
+    name: ['', [Validators.required]],
+    telefono: ['', [Validators.required]],
+    email: ['', [Validators.required]],
+    cedula: ['', [Validators.required]],
+    direccion: ['', [Validators.required]],
+    ciudad: ['', [Validators.required]],
+    departamento: ['', [Validators.required]],
+    comentario: [''],
+    products: ['', [Validators.required]],
+    amount: ['', [Validators.required, Validators.min(1)]],
+    paystatus: [''],
+    referencia: [''],
+    transaccion: [''],
+    status: [true]
+  });
+
+  crearPedido(){
+
+    this.btnPedido = false;
+
+    this.uuid = new UUID();
+
+    if( this.mesa.carrito.length === 0 ){
+      Swal.fire('Atencion', 'No has agregado ningun producto', 'info');
+      this.btnPedido = true;
+      return;
+    }
+
+    this.pedidoForm.reset({
+      name: this.clienteTemp?.name || '',
+      telefono: this.clienteTemp?.phone || '',
+      email: this.clienteTemp?.email || '',
+      cedula: this.clienteTemp?.cedula || '',
+      direccion: this.clienteTemp?.address || '',
+      ciudad: this.clienteTemp?.city || '',
+      departamento: this.clienteTemp?.department || '',
+      comentario: '',
+      products: this.mesa.carrito,
+      amount: this.total,
+    });
+
+    this.ped = true;
+    this.uuid = new UUID();
+    this.pedidoForm.value.paystatus = 'PENDENT';
+    this.pedidoForm.value.referencia = this.uuid.getDashFreeUUID();
+    this.pedidoForm.value.transaccion = this.uuid.getDashFreeUUID();
+    this.pedidoForm.value.status = true;
+    this.pedidoForm.value.comentario = this.comentarios;
+    
+    this.pedidoService.createPedidos(this.pedidoForm.value, this.clienteTemp.cid, this.mesaID)
+        .subscribe( resp => {   
+          
+          this.invoiceForm.reset({
+            type: 'efectivo'
+          });
+
+          this.total = 0;
+          this.iva = 0;
+          this.base = 0;
+          this.totalPagos = 0;
+          this.carrito = [];
+          this.payments = [];
+          this.clienteTemp = {
+            name : '',
+            cedula: '',
+            phone: '',
+            email: '',
+            address: '',
+            city: '',
+            cid: ''
+          };
+
+          // BORRAMOS LA FECHA CREDITO
+          this.credit = false;
+
+          // LIMPIAMOS LA MESA
+          this.mesa.carrito = [];
+
+          // LIMPIAMOS LAS NOTAS DE LAS COMANDA
+          this.mesa.nota = [];
+
+          // LIMPIAMOS LAS COMANDAS
+          this.mesa.comanda = [];
+          
+          this.mesasServices.updateMesa(this.mesa, this.mesaID)
+          .subscribe( (resp:{ok: boolean, mesa: Mesa}) => {
+            
+            this.btnPedido = true;
+            this.pedidoForm.reset();
+
+            Swal.fire('Exito!', 'el pedido se ha creado correctamente', 'success');
+
+          });
+          
+
+        });    
+
+  }
+
   
   // FIN DE LA CLASE
 }
