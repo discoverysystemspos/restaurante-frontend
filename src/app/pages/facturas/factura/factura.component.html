@@ -51,6 +51,11 @@
             <button *ngIf="factura.credito" (click)="focusMonto()" type="button" class="btn btn-outline-dark btn-sm mx-1 my-2" data-bs-toggle="modal" data-bs-target="#facturar"> 
                 Cobrar
             </button>
+
+            <button *ngIf="factura.pedido"  type="button" class="btn btn-outline-info btn-sm mx-1 my-2" [routerLink]="['/dashboard/pedido', factura.pedido]"  > 
+                Ver pedido
+            </button>
+
         </div>
 
         <div class="row">
@@ -101,7 +106,7 @@
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <h6 class="text-wrap mb-0"><strong>VENDEDOR: </strong> <br><small *ngIf="factura.client?.address"> {{ factura.mesero.name }} </small></h6>
+                                    <h6 class="text-wrap mb-0"><strong>VENDEDOR: </strong> <br><small *ngIf="factura.client?.address"> {{ factura.mesero?.name }} </small></h6>
 
                                 </div>
                             </div>

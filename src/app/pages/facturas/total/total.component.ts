@@ -147,6 +147,7 @@ export class TotalComponent implements OnInit {
   ==================================================================== */
   public totalAmount: number = 0;
   public totalCost: number = 0;
+
   buscar(inicial:Date, final: Date, cajeros:string, estado:boolean, credito:boolean){
 
     this.totalAmount = 0;    
