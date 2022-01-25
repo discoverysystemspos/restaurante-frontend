@@ -332,7 +332,7 @@
                             <button *ngIf="clienteTemp.cedula === '' || carrito.length === 0 || facturar === false" type="button" class="btn disabled btn-dark btnW waves-effect waves-dark text-white"> <h4 class="display-7">Cobrar</h4></button>
                             <button *ngIf="clienteTemp.cedula !== '' && carrito.length > 0 && facturar === true" (click)="focusMonto()" type="button" class="btn btn-primary btnW waves-effect waves-dark text-white" data-bs-toggle="modal" data-bs-target="#facturar"> <h4 class="display-6">Cobrar</h4></button>
                             <!-- <button type="button" class="btn btn-dark btnW waves-effect waves-dark text-white" data-bs-toggle="modal" data-bs-target="#facturar"> <h4 class="display-6">Facturar</h4></button> -->
-                            <button (click)="crearPedido()" [disabled]="carrito.length === 0 || clienteTemp.cedula === '' || btnPedido === false" type="button" class="btn btn-info mt-2 btnW waves-effect waves-dark text-white"> Crear Pedido </button>
+                            <!-- <button (click)="crearPedido()" [disabled]="carrito.length === 0 || clienteTemp.cedula === '' || btnPedido === false" type="button" class="btn btn-info mt-2 btnW waves-effect waves-dark text-white"> Crear Pedido </button> -->
                         </div>
 
                         <div class="col ms-auto text-end" *ngIf="empresa">
