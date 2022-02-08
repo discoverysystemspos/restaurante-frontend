@@ -41,7 +41,7 @@ export class DashboardComponent implements OnInit {
   public sinResultadosAgotados: boolean = true;
   cargarProductosAgotados(){
 
-    const endPointAgotados = `?desde=${this.desde}&tipo=agotados&valor=true`; 
+    const endPointAgotados = `?desde=${this.desde}&limite=${1000}&tipo=agotados&valor=true`; 
 
     this.cargandoAgotados = true;
     this.sinResultadosAgotados = true;

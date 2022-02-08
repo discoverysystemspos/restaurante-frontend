@@ -210,8 +210,8 @@
                                                 <td>{{ producto.gain }}%</td>
                                                 <td>{{ producto.price | currency }}</td>
                                                 <td>{{ producto.wholesale | currency }}</td>
-                                                <td class="text-center">
-                                                    <button type="button" [routerLink]="['/dashboard/producto', producto.pid]" class="btn btn-link p-1 text-primary"><i class="bi bi-box-arrow-up-right"></i></button>
+                                                <td class="text-center"> 
+                                                    <a [routerLink]="['/dashboard/producto', producto.pid]" class="btn btn-link p-1 text-primary"><i class="bi bi-box-arrow-up-right"></i></a>
                                                     <button type="button" (click)="borrarProducto(producto.pid)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
                                                 </td>
                                             </tr>

@@ -446,7 +446,7 @@ export class ProductoComponent implements OnInit {
 
     }
 
-    this.productService.actualizarProducto(this.producto, this.producto.pid)
+    this.productService.actualizarProducto(this.producto, this.producto.pid, true)
         .subscribe( resp => {
 
           Swal.fire('Estupendo', `Se ha actualizado el inventario del producto, ${this.producto.name} exitosamente!`, 'success')

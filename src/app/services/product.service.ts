@@ -113,8 +113,8 @@ export class ProductService {
   /** ================================================================
    *   ACTUALIZAR PRODUCTO
   ==================================================================== */
-  actualizarProducto(formData:any, _id:string){
-    return this.http.put(`${base_url}/products/${_id}`, formData, this.headers);
+  actualizarProducto(formData:any, _id:string, inventario: boolean = false){
+    return this.http.put(`${base_url}/products/${_id}?inventario=${inventario}`, formData, this.headers);
   }
 
   /** ================================================================

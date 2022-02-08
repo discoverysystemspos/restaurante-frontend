@@ -1102,8 +1102,8 @@ COMANDAS
 
                                     <!-- INGREDIENTES -->
                                     <ul class=" py-1 px-0 ps-1 list-group list-group-flush">
-                                        <li class=" py-1 px-0 list-group-item" *ngFor="let ingrediente of comanda.ingredientes">
-                                            <button (click)="eliminarIngredientes(comanda._id, ingrediente._id)" type="button" class="btn btn-link p-1 text-danger">
+                                        <li class=" py-1 px-0 list-group-item" *ngFor="let ingrediente of comanda.ingredientes; let y = index">
+                                            <button (click)="eliminarIngredientes(comanda._id, ingrediente._id, y)" type="button" class="btn btn-link p-1 text-danger">
                                                 <i class="bi-trash" style="font-size: 0.9rem"></i>
                                             </button>  {{ ingrediente.name }}
                                         </li>

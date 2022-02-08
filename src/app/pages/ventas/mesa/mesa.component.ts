@@ -582,12 +582,26 @@ export class MesaComponent implements OnInit {
   /** ================================================================
    *  ELIMINAR INGREDIENTES
   ==================================================================== */
-  eliminarIngredientes(comanda: string, ingrediente: string ){
+  eliminarIngredientes(comanda: string, ingrediente: string, y: number ){
 
-    this.mesasServices.deleteIngrediente(this.mesaID, comanda, ingrediente)
-        .subscribe( resp => { 
+    console.log(comanda);
+    console.log(ingrediente);
+    
 
-        });
+    let newComand = this.comandas.map( (item) => {
+
+      item._id !== ingrediente;
+
+    });
+
+    console.log(newComand);
+    
+
+
+    // this.mesasServices.deleteIngrediente(this.mesaID, comanda, ingrediente)
+    //     .subscribe( resp => { 
+
+    //     });
 
 
   }
