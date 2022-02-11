@@ -56,6 +56,10 @@
                 Ver pedido
             </button>
 
+            <button type="button" class="btn btn-danger btn-sm mx-1 my-2" (click)="downloadPDF()"  > 
+                PDF
+            </button>
+
         </div>
 
         <div class="row">
@@ -73,14 +77,14 @@
                     <div class="row">
 
                         <!-- Informacion del Cliente -->
-                        <div class="col-md-8 text-left text-muted">
+                        <div class="col-md-8 text-left text-muted" style="color:black">
 
                             <div class="mb-2" *ngIf="empresa">
                                 <!-- Image Product-->
                                 <img *ngIf="empresa.logo" [src]=" empresa.logo | imagen:'logo'" class="mx-auto" width="200px" alt="">
                             </div>
 
-                            <div class="row">
+                            <div class="row" style="color:black">
                                 <div class="col-md-4">
                                     <h6 class="text-wrap mb-0 text-capitalize"><strong>CLIENTE / RAZON SOCIAL:  </strong><br><small>{{ factura.client?.name }}</small></h6>
                                 </div>
@@ -89,7 +93,7 @@
                                 </div>
                             </div>
 
-                            <div class="row">
+                            <div class="row" style="color:black">
                                 <div class="col-md-4">
                                     <h6 class="text-wrap mb-0 text-capitalize"><strong>TELEFONO: </strong> <br><small *ngIf="factura.client?.phone"> {{ factura.client?.phone }}</small> </h6>
                                 </div>
@@ -98,13 +102,13 @@
                                 </div>
                             </div>
 
-                            <div class="row">
+                            <div class="row" style="color:black">
                                 <div class="col">
                                     <h6 class="text-wrap mb-0"><strong>DIRECCIÓN: </strong> <br><small *ngIf="factura.client?.address"> {{ factura.client?.address }} <span *ngIf="factura.client?.city" > {{ factura.client?.city }} </span></small></h6>
 
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row" style="color:black">
                                 <div class="col">
                                     <h6 class="text-wrap mb-0"><strong>VENDEDOR: </strong> <br><small *ngIf="factura.client?.address"> {{ factura.mesero?.name }} </small></h6>
 
@@ -118,9 +122,9 @@
                                 <!-- <div class="mb-2 d-flex justify-content-end">
                                 <img *ngIf="empresa.logo" src="{{empresa.logo | imagen:'logo'}}" class="" width="200px" alt="">
                             </div> -->
-                                <h5 class="text-muted mb-0 d-flex justify-content-end text-wrap text-end fw-bold"> {{ empresa.name }} </h5>
-                                <p class="text-muted mb-0 d-flex justify-content-end text-wrap text-end"> {{ empresa.address }} </p>
-                                <p class="text-muted mb-0 d-flex justify-content-end text-wrap text-end">Nit: {{ empresa.nit }} </p>
+                                <h5 class="mb-0 d-flex justify-content-end text-wrap text-end fw-bold"> {{ empresa.name }} </h5>
+                                <p class="mb-0 d-flex justify-content-end text-wrap text-end"> {{ empresa.address }} </p>
+                                <p class="mb-0 d-flex justify-content-end text-wrap text-end">Nit: {{ empresa.nit }} </p>
 
                                 <small *ngIf="!empresa.responsable" class="mb-0 d-flex justify-content-end"> No responsable de IVA </small>
                                 <small *ngIf="empresa.responsable && !empresa.impuestoconsumo" class="mb-0 d-flex justify-content-end"> Responsable de iva </small>
@@ -147,20 +151,20 @@
 
                     <div class=" table-responsive ">
 
-                        <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
-                            <thead class="border-bottom ">
+                        <table class="table table-borderless table-striped table-sm ">
+                            <thead class="border-bottom">
                                 <tr>
-                                    <th class="text-muted" scope="col">#</th>
-                                    <th class="text-muted" scope="col">Codigo de barras</th>
-                                    <th class="text-muted text-left" scope="col " colspan="2 ">Nombre del Producto</th>
-                                    <th class="text-muted" scope="col">tipo</th>
-                                    <th class="text-muted" scope="col">Precio</th>
-                                    <th class="text-muted" scope="col">Cantidad</th>
-                                    <th class="text-muted" scope="col">Monto</th>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Codigo de barras</th>
+                                    <th class=" text-left" scope="col " colspan="2 ">Nombre del Producto</th>
+                                    <th scope="col">tipo</th>
+                                    <th scope="col">Precio</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Monto</th>
                                     <th></th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="text-dark">
 
                                 <tr *ngFor="let producto of factura.products; let i = index">
                                     <th> {{ i + 1 }} </th>
@@ -168,7 +172,7 @@
                                     <td colspan="2">{{ producto.product.name }}</td>
                                     <td>{{ producto.product.type }}</td>
                                     <td>{{ producto.price | currency}}</td>
-                                    <td>{{ producto.qty }}</td>
+                                    <td class="text-center">{{ producto.qty }}</td>
                                     <td>{{ producto.price * producto.qty | currency}}</td>
                                     <td>
                                         <button type="button" class="btn btn-link p-1 text-warning" (click)="devolverProducto(producto)">
