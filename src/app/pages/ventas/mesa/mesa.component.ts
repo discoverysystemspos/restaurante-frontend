@@ -481,7 +481,8 @@ export class MesaComponent implements OnInit {
         product: product.pid,
         qty,
         price: precio,
-        iva: ivaP
+        iva: ivaP,
+        department: product.department._id
       });
 
       // AGREGAMOS A LA COMANDA
@@ -582,27 +583,64 @@ export class MesaComponent implements OnInit {
   /** ================================================================
    *  ELIMINAR INGREDIENTES
   ==================================================================== */
-  eliminarIngredientes(comanda: string, ingrediente: string, y: number ){
+  eliminarIngredientes(ingrediente: string, y: number ){
 
-    console.log(comanda);
-    console.log(ingrediente);
-    
+    // FOR 
+    for (let i = 0; i < this.comandas.length; i++) {
+      
+      this.comandas[i].ingredientes.findIndex( (resp) =>{ 
+        
+        if (this.comandas[i].ingredientes.length < 2) {
+          Swal.fire('Atencion', 'No se pueden eliminar todos los ingredientes', 'info');
+          return;
+        }
+        
+        if (resp._id === ingrediente ) {
+          
+          this.comandas[i].ingredientes.splice(y, 1);
+          return true;
+        }else {
+          return false;
+        }
+      });
+      
+    };
+    // FOR 
 
-    let newComand = this.comandas.map( (item) => {
+    // ACTUALZAR COMANDA
+    this.mesa.comanda = this.comandas;
+    this.comandas = [];
 
-      item._id !== ingrediente;
+    this.mesasServices.updateMesa(this.mesa, this.mesaID)
+        .subscribe( (resp:{ok: boolean, mesa: any}) => {
 
-    });
+          this.carrito = resp.mesa.carrito;
+          this.comandas = resp.mesa.comanda;
+          this.productUp = [];
+          this.comanda = [];
+          
+          for (let i = 0; i < resp.mesa.carrito.length; i++) {
 
-    console.log(newComand);
-    
+            this.productUp.push({
+              product: resp.mesa.carrito[i].product._id,
+              qty: resp.mesa.carrito[i].qty,
+              price: resp.mesa.carrito[i].price,
+              iva: resp.mesa.carrito[i].iva
+            });
+            
+            this.comanda.push({
+              product: resp.mesa.carrito[i].product.name,
+              comanda: resp.mesa.carrito[i].product.comanda,
+              tipo: resp.mesa.carrito[i].product.tipo,
+              qty: resp.mesa.carrito[i].qty,
+              price: resp.mesa.carrito[i].price
+            });
+                        
+          }
 
+          this.comandaTemp = this.comanda;
 
-    // this.mesasServices.deleteIngrediente(this.mesaID, comanda, ingrediente)
-    //     .subscribe( resp => { 
-
-    //     });
-
+        }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
 
   }
 

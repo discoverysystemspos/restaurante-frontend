@@ -1050,7 +1050,7 @@ COMANDAS
                 <div class="row">
 
                     <!-- COMENTARIO -->
-                    <div class="col-sm-12 col-md-8">                    
+                    <div class="col-sm-12 col-md-6">                    
                         <div class="container border rounded overflow-auto" #content style="max-height: 15rem; min-height: 10rem;">
                             
                             <p class="mb-1 fw-bold mt-2 text-muted">Notas:</p>
@@ -1089,7 +1089,7 @@ COMANDAS
                     </div>
 
                     <!-- COMANDA -->
-                    <div class="col-sm-12 col-md-4">
+                    <div class="col-sm-12 col-md-6">
 
                         <div class="container border rounded overflow-auto" style="max-height: 15rem; min-height: 10rem;">
                             
@@ -1103,7 +1103,7 @@ COMANDAS
                                     <!-- INGREDIENTES -->
                                     <ul class=" py-1 px-0 ps-1 list-group list-group-flush">
                                         <li class=" py-1 px-0 list-group-item" *ngFor="let ingrediente of comanda.ingredientes; let y = index">
-                                            <button (click)="eliminarIngredientes(comanda._id, ingrediente._id, y)" type="button" class="btn btn-link p-1 text-danger">
+                                            <button (click)="eliminarIngredientes(ingrediente._id, y)" type="button" class="btn btn-link p-1 text-danger">
                                                 <i class="bi-trash" style="font-size: 0.9rem"></i>
                                             </button>  {{ ingrediente.name }}
                                         </li>

@@ -21,7 +21,8 @@ export interface Carrito{
     producto?: Product;
     _id?: string;
     iva?: number;
-    estado?:string;
+    estado?: string;
+    department?: string;
 }
 
 interface _interProducto{
