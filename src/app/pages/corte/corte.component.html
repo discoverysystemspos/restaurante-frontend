@@ -212,8 +212,53 @@
 
         </div>
 
+        
+    </div>
+    <!-- DEPARTMENTS -->
+
+    <div class="d-flex justify-content-center">
+
+        <div class="col-auto p-2">
+
+            <div class="card shadow px-2" style="width: 18rem;">
+
+                <div class="card-body">
+                    <h5 class="card-title mb-0">Departamentos</h5>
+                </div>                
+
+                <div class="table-responsive ">
+                    <table class="table table-borderless table-hover table-sm animated fadeIn ">
+
+                        <tbody>
+
+                            <ng-container *ngFor="let deparment of departamento">
+
+                                <tr *ngIf="deparment.qty > 0">
+
+                                    <td colspan="2">  {{ deparment.name }} </td>
+                                    <td>
+                                        {{ deparment.qty }}
+                                    </td>
+                                </tr>
+
+                            </ng-container>
+                            
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+        
+        
     </div>
 
+    
+    <!-- DEPARTMENTS -->
+    
 </div>
 
 <!-- =========================================================================

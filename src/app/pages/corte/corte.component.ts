@@ -76,14 +76,6 @@ export class CorteComponent implements OnInit {
       
       // DEPARTAMENTO
       this.cargarDepartamento();
-      
-      // TURNO
-      this.cargarTurno();
-  
-      // FACTURAS
-      this.cargarFacturasTurno();
-      // CAJA
-      // this.cargarCaja();
 
     }else{
       Swal.fire('Atención!', 'No existe un turno asignado, no puedes hacer cortes ni cierres', 'info');
@@ -145,7 +137,14 @@ export class CorteComponent implements OnInit {
 
             }
             
-          }          
+          };
+          
+          // TURNO
+          this.cargarTurno();
+      
+          // FACTURAS
+          this.cargarFacturasTurno();
+          // CAJA
 
         });
 
