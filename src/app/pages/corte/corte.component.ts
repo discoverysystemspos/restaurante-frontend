@@ -17,10 +17,16 @@ import { InvoiceService } from '../../services/invoice.service';
 // INTERFACES
 import { LoadTurno, _movements } from '../../interfaces/load-turno.interface';
 import { _caja } from '../../interfaces/load-caja.interface';
+interface _departament {
+  _id?: string,
+  name?: string,
+  qty?: number
+}
 
 // MODELS
 import { Caja } from '../../models/caja.model';
 import { User } from '../../models/user.model';
+import { DepartmentService } from '../../services/department.service';
 
 @Component({
   selector: 'app-corte',
@@ -45,7 +51,8 @@ export class CorteComponent implements OnInit {
                 private router: Router,
                 private printerService: NgxPrinterService,
                 private userService: UserService,
-                private invoiceService: InvoiceService) {
+                private invoiceService: InvoiceService,
+                private departmentService: DepartmentService) {
 
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
                     val => {
@@ -66,6 +73,9 @@ export class CorteComponent implements OnInit {
   ngOnInit(): void {    
 
     if (!this.user.cerrada) {
+      
+      // DEPARTAMENTO
+      this.cargarDepartamento();
       
       // TURNO
       this.cargarTurno();
@@ -106,6 +116,42 @@ export class CorteComponent implements OnInit {
   // }
 
   /** ===============================================================
+  * DEPARTAMENTO - DEPARTAMENTO - DEPARTAMENTO - DEPARTAMENTO  
+  ==================================================================== */
+  cargarDepartamento(){
+
+    this.departmentService.loadDepartment()
+        .subscribe( ({departments}) => {
+
+          for (let i = 0; i < departments.length; i++) {
+            
+            const validarItem = this.departamento.findIndex( (resp) =>{             
+  
+              if (resp._id === departments[i].did ) {
+                return true;
+              }else {
+                return false;
+              }
+
+            });
+
+            if ( validarItem === -1 ) {
+              
+              this.departamento.push({
+                _id: departments[i].did,
+                name: departments[i].name,
+                qty: 0
+              });
+
+            }
+            
+          }          
+
+        });
+
+  }
+
+  /** ===============================================================
   * TURNO - TURNO - TURNO - TURNO  
   ==================================================================== */
   public turno: LoadTurno;
@@ -124,6 +170,8 @@ export class CorteComponent implements OnInit {
   /** ===============================================================
   * PROCESAR LA INFORMACION 
   ==================================================================== */
+  
+
   public montos: number = 0;
   public costo: number = 0;
   public efectivo: number = 0;
@@ -131,12 +179,14 @@ export class CorteComponent implements OnInit {
   public transferencia: number = 0;
   public credito: number = 0;
   public vales: number = 0;
+  public facturas: any[] = [];
+  public departamento: _departament[] = [];
   cargarFacturasTurno(){
 
     const endPoint = `?turno=${this.user.turno}`;
 
     this.invoiceService.loadInvoiceCierre(endPoint)
-        .subscribe( ({total, montos, costos, efectivo, tarjeta, transferencia, credit, vales}) => {
+        .subscribe( ({invoices, total, montos, costos, efectivo, tarjeta, transferencia, credit, vales}) => {
 
           this.montos = montos;
           this.costo = costos;
@@ -146,6 +196,45 @@ export class CorteComponent implements OnInit {
           this.credito = credit;
           this.vales = vales;
 
+          this.facturas = invoices;
+
+          for (let i = 0; i < this.facturas.length; i++) {
+
+            for (let y = 0; y < this.facturas[i].products.length; y++) {
+              
+              // const validarItem = this.facturas[i].products.findIndex( (resp) =>{  
+              const validarItem = this.departamento.findIndex( (resp) =>{             
+  
+                if (resp._id === this.facturas[i].products[y].product.department ) {
+                  return true;
+                }else {
+                  return false;
+                }
+  
+              });
+  
+              if ( validarItem === -1 ) {
+                
+                this.departamento.push({
+                  _id: this.facturas[i].products[y].product.department,
+                  qty: this.facturas[i].products[y].qty
+                });
+
+              }else{
+
+                let qtyTemp = this.departamento[validarItem].qty;
+                qtyTemp += Number(this.facturas[i].products[y].qty);
+
+                this.departamento[validarItem].qty = qtyTemp;
+
+              }
+              
+              // FIN FOR 2
+            }
+
+            // FIN FOR 1
+          }
+          
         });
   }
 

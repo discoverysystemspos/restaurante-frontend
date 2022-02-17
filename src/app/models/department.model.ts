@@ -5,12 +5,13 @@ const base_url = environment.base_url;
 export class Department{
 
     constructor(
-        public name:string,
+        public name?:string,
         public status?: boolean,
         public visibility?: boolean,
         public img?: string,
         public did?:string,
-        public _id?:string
+        public _id?:string,
+        public qty?: number
     ){}
 
     /** ================================================================
