@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import Swal from 'sweetalert2';
 
 // SERVICES
@@ -15,6 +15,7 @@ import { LoadInvoice } from '../../../interfaces/invoice.interface';
 import { Mesa } from '../../../models/mesas.model';
 import { User } from '../../../models/user.model';
 import { Datos } from '../../../models/empresa.model';
+import { Client } from 'src/app/models/client.model';
 
 @Component({
   selector: 'app-total',
@@ -63,6 +64,81 @@ export class TotalComponent implements OnInit {
     // CARGAR FACTURAS
     this.cargarFacturas();
 
+
+  }
+
+  /** ================================================================
+   *   BUSCAR CLIENTE
+  ==================================================================== */
+  public sinResultadosClientes: boolean = false;
+  public cargandoCliente: boolean = true;
+  public listaClientes: Client[] = [];
+  public listaClientesTemp: Client[] = [];
+  public totalClientes: number = 0;
+  @ViewChild('searchClient') searchClient: ElementRef;
+  buscarCliente(termino: string){
+
+    this.cargandoCliente = false;
+    this.sinResultadosClientes = false;
+
+    if (termino.length === 0) {
+      this.listaClientes = this.listaClientesTemp;
+      this.sinResultadosClientes = true;
+      this.cargandoCliente = true;
+      return;
+    }else{
+    
+      this.searchService.search('clients', termino)
+          .subscribe(({total, resultados}) => {   
+            
+          this.cargandoCliente = false;
+          
+          // COMPROBAR SI EXISTEN RESULTADOS
+          if (resultados.length === 0) {
+            this.listaClientes = [];
+            this.totalClientes = 0;
+            this.sinResultadosClientes = true;
+            return;                
+          }
+          // COMPROBAR SI EXISTEN RESULTADOS
+          
+          this.listaClientes = resultados;
+          this.totalClientes = total;
+
+        });
+    }
+
+  }
+  /** ================================================================
+   *   BUSCAR FACTURA SEGUN EL CLIENTE
+  ==================================================================== */
+  searchInvoice(client: string){
+
+    this.listaClientes = [];
+    this.listaClientesTemp = [];
+    this.searchClient.nativeElement.value = '';
+
+    this.cargando = true;
+    this.sinResultados = true;
+
+    this.searchService.search('invoice', client)
+        .subscribe( ({resultados}) => {
+
+          // COMPROBAR SI EXISTEN RESULTADOS
+          if (resultados.length === 0) {
+            this.sinResultados = false;
+            this.cargando = false;
+            this.facturas = [];
+            this.resultado = 0;
+            return;                
+          }
+          
+          this.facturas = resultados;
+          this.totalFacturas = resultados.length;
+          this.cargando = false;
+          
+        });
+    
 
   }
 

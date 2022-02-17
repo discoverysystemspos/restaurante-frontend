@@ -481,8 +481,7 @@ export class MesaComponent implements OnInit {
         product: product.pid,
         qty,
         price: precio,
-        iva: ivaP,
-        department: product.department._id
+        iva: ivaP
       });
 
       // AGREGAMOS A LA COMANDA

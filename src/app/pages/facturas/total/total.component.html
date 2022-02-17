@@ -10,10 +10,52 @@
     <div class="row">
 
         <div class="col-md-2">
-            <div class="shadow-lg p-3 mb-5 rounded bg-white">
+            <div class="shadow-lg p-3 mb-5 rounded bg-white text-wrap">
 
+                <!-- BUSCADOR DE CLIENTES  -->
+                <div class="mb-3">                
+                    
+                    <h4 class="text-muted">Buscar Cliente</h4>
+                    <div >
+                        <input type="text" class="form-control" placeholder="buscar cliente" (keyup)="buscarCliente(searchClient.value)" #searchClient>
+                    </div>
 
+                    <div *ngIf="listaClientes.length > 0" class="bg-white py-3 px-2 shadow" style="position: absolute; z-index: 1020;">
 
+                        <div *ngIf="cargandoCliente" class="text-center py-3">
+                            <div class="spinner-grow text-secondary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <div>
+                                <small class="text-muted">Cargando...</small>
+                            </div>
+                        </div>
+
+                        <ul *ngIf="!cargandoCliente" class="list-group list-group-flush overflow-auto" style="max-height: 200px; min-width: 250px;">
+
+                            <li class="list-group-item">
+                                <h6>Resultados: ({{ listaClientes.length }})</h6>
+                            </li>
+
+                            <li class="list-group-item" *ngFor="let item of listaClientes">
+                                <div class="d-flex ">
+                                    <div class="align-self-center">
+                                        <span class="text-capitalize fw-bold"> {{ item.name }} </span><br>
+                                        <small> C.C: {{ item.cedula }} </small>
+                                    </div>
+
+                                    <div class="ms-auto">
+                                        <button class="btn btn-link p-1 text-success float-end" (click)="searchInvoice(item.cid)"> <i class="bi-arrow-90deg-right"></i></button>
+                                    </div>
+                                </div>
+
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+                <!-- BUSCADOR DE CLIENTES  -->
+                
                 <h4 class="text-muted">Filtros</h4>
 
                 <div>
@@ -216,7 +258,7 @@
                                         <td> {{ factura.type }} </td>
                                         <td> {{ factura.fecha | date:'medium' }} </td>
                                         <td class="text-center">
-                                            <button type="button" [routerLink]="['/dashboard/factura', factura.iid]" class="btn btn-link p-1 text-primary"><i class="bi bi-box-arrow-up-right"></i></button>
+                                            <a [routerLink]="['/dashboard/factura', factura.iid]" class="btn btn-link p-1 text-primary"><i class="bi bi-box-arrow-up-right"></i></a>
                                         </td>
                                     </tr>
 
