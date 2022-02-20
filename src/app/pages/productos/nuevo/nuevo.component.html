@@ -36,6 +36,25 @@
 
     <!-- INFO PRODUCT -->
     <div class="col-lg-8 mx-auto">
+
+        <div class="shadow-lg p-3 mb-4 rounded bg-white">
+            
+            <h4 class="text-muted">Importar Productos</h4>
+    
+            <div class="row">
+                <div class="col-10">
+                     <input type="file" class="form-control form-control-sm" (change)="incomingfile($event)" placeholder="Importar" accept=".xlsx">
+                </div>
+                <div class="col-auto">
+                    <button type="button" class="btn btn-sm btnW btn-primary waves-effect waves-light" (click)="Upload()" >Importar</button>
+                </div>
+            </div>
+
+        </div>
+        
+    </div>
+
+    <div class="col-lg-8 mx-auto">
         <div class="card">
             <div class="card-header">
                 Informacion del producto

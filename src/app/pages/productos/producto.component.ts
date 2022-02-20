@@ -99,8 +99,13 @@ export class ProductoComponent implements OnInit {
           this.producto = product;
           this.productoImg = product.img;          
           
-          const { code, name, type, cost, gain, expiration, visibility, price, returned, sold,  wholesale, department:{ _id } , pid, comanda, tipo, description, tax, impuesto } = product;
+          const { code, name, type, cost, gain, expiration, visibility, price, returned, sold,  wholesale, pid, comanda, tipo, description, tax, impuesto } = product;
           
+          let department = '00';
+          if (this.producto.department) {
+              department = product.department._id;
+          }
+
           const stock = product.stock || 0;
           const min = product.min || 0;
           const max = product.max || 0;
@@ -118,6 +123,8 @@ export class ProductoComponent implements OnInit {
           let impuestoT = '';
           let valorT = 0;
 
+          
+
           if (tax) {
             
             impuestoT = impuesto[0].name;
@@ -132,7 +139,7 @@ export class ProductoComponent implements OnInit {
             expiracion = expiration.toString().slice(0,10);          
           }
           
-          this.upProductForm.reset({code, name, type, cost, price, visibility, wholesale, gain, department: _id, min, max, expiration: expiracion, pid, comanda, tipo, description, tax, impuestoT, valor: valorT });
+          this.upProductForm.reset({code, name, type, cost, price, visibility, wholesale, gain, department, min, max, expiration: expiracion, pid, comanda, tipo, description, tax, impuestoT, valor: valorT });
           
         });
   }

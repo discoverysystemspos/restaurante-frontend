@@ -2,6 +2,9 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import Swal from 'sweetalert2';
 
+// EXCEL
+import * as XLSX from 'xlsx';
+
 // MODELS
 import { Kit } from '../../../models/kits.model';
 import { Product } from '../../../models/product.model';
@@ -61,6 +64,83 @@ export class NuevoComponent implements OnInit {
     this.cargarDepartamentos();
 
   }
+
+  /** ================================================================
+   *   IMPORTAR EXCEL
+  ==================================================================== */
+  arrayBuffer:any;
+  file:File;
+
+  public products: any[] = [];
+
+  incomingfile(event: any){
+    this.file= event.target.files[0]; 
+  }
+
+  Upload() {
+
+    if (!this.file) {
+      Swal.fire('Atención', 'No has seleccionado ningun archivo de excel', 'info');
+      return
+    }
+
+    let fileReader = new FileReader();
+      fileReader.onload = (e) => {
+          this.arrayBuffer = fileReader.result;
+          var data = new Uint8Array(this.arrayBuffer);
+          var arr = new Array();
+          for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+          var bstr = arr.join("");
+          var workbook = XLSX.read(bstr, {type:"binary"});
+          var first_sheet_name = workbook.SheetNames[0];
+          var worksheet = workbook.Sheets[first_sheet_name];
+          
+          this.products = XLSX.utils.sheet_to_json(worksheet,{raw:true});
+
+          this.products.forEach( product => {
+
+            // OBTENER GANANCIA
+            let gain = 0;
+            let porcent = 0;
+            
+            porcent = ( product.cost * 100 )/product.price;
+            
+            gain = (porcent - 100) * -1;
+            gain = Math.round(gain*100)/100;
+            
+            product.gain = gain;
+            // OBTENER GANANCIA
+
+            // IMPUESTO
+            product.expiration = null;
+            product.tax = false;
+            product.impuesto = [{
+              name: '',
+              valor: 0
+            }]
+            // IMPUESTO
+
+            // GUARDAR PRODUCTOS
+
+            this.productService.createProduct(product)
+                .subscribe( resp => {
+
+                  console.log(resp);
+                  
+
+                },(err) => { Swal.fire('Error', err.error.msg, 'error'); });
+
+
+            // FIN FOREACH
+          });
+
+          console.log(this.products);
+          
+
+      }
+      
+      fileReader.readAsArrayBuffer(this.file);
+  };
   
   
   /** ================================================================

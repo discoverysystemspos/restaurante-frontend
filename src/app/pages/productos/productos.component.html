@@ -199,7 +199,10 @@
                                                     <span *ngIf="!producto.status" class="badge rounded-pill bg-danger">Eliminado</span>
                                                 </td>
 
-                                                <td>{{ producto.department.name }}</td>
+                                                <td>
+                                                    <span *ngIf="producto.department">{{ producto.department.name }}</span>
+                                                    <span *ngIf="!producto.department"> Sin Departamento </span>
+                                                </td>
                                                 <td>
                                                     <span *ngIf="producto.type === 'Granel'"> {{  producto.stock + ( producto.returned || 0 ) + ( producto.bought || 0 ) - (producto.sold || 0) - ( producto.damaged || 0) | number:'1.3'}} </span>
                                                     <span *ngIf="producto.type !== 'Granel'"> {{  producto.stock + ( producto.returned || 0 ) + ( producto.bought || 0 ) - (producto.sold || 0) - ( producto.damaged || 0) | number }} </span>

@@ -361,10 +361,11 @@
                                 <div class="form-floating">
                                     <select class="form-select" id="floatingSelect" aria-label="Floating label select example" formControlName="department">
                                         <option selected value="0">Seleccionar Departamento</option>
-                                            <ng-container *ngFor="let departmento of departamentos">
-                                                <option *ngIf="departmento.status" value="{{departmento.did}}">{{departmento.name}}</option>
-                                            </ng-container>
-                                        </select>
+                                        <option value="00">Sin Departamento</option>
+                                        <ng-container *ngFor="let departmento of departamentos">
+                                            <option *ngIf="departmento.status" value="{{departmento.did}}">{{departmento.name}}</option>
+                                        </ng-container>
+                                    </select>
                                     <label for="floatingSelect">Seleccionar Departamento</label>
                                 </div>
 
