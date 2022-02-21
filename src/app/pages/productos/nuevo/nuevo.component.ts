@@ -1,6 +1,7 @@
 import { FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 // EXCEL
 import * as XLSX from 'xlsx';
@@ -57,7 +58,8 @@ export class NuevoComponent implements OnInit {
   constructor( private fb: FormBuilder,
                 private searchService: SearchService,
                 private productService: ProductService,
-                private departmentService: DepartmentService ) { }
+                private departmentService: DepartmentService,
+                private router: Router ) { }
 
   ngOnInit(): void {
     
@@ -70,6 +72,7 @@ export class NuevoComponent implements OnInit {
   ==================================================================== */
   arrayBuffer:any;
   file:File;
+  public totalItems: number = 0;
 
   public products: any[] = [];
 
@@ -81,7 +84,7 @@ export class NuevoComponent implements OnInit {
 
     if (!this.file) {
       Swal.fire('Atención', 'No has seleccionado ningun archivo de excel', 'info');
-      return
+      return;
     }
 
     let fileReader = new FileReader();
@@ -98,6 +101,8 @@ export class NuevoComponent implements OnInit {
           this.products = XLSX.utils.sheet_to_json(worksheet,{raw:true});
 
           this.products.forEach( product => {
+
+            this.totalItems ++;
 
             // OBTENER GANANCIA
             let gain = 0;
@@ -125,7 +130,11 @@ export class NuevoComponent implements OnInit {
             this.productService.createProduct(product)
                 .subscribe( resp => {
 
-                  console.log(resp);
+                  if( this.products.length === this.totalItems ){
+
+                    this.router.navigateByUrl('/dashboard/productos');
+
+                  }
                   
 
                 },(err) => { Swal.fire('Error', err.error.msg, 'error'); });
@@ -133,14 +142,43 @@ export class NuevoComponent implements OnInit {
 
             // FIN FOREACH
           });
-
-          console.log(this.products);
           
 
       }
       
       fileReader.readAsArrayBuffer(this.file);
   };
+
+  /** ================================================================
+   *   DESCARGAR PLANTILLA DE EXCEL
+  ==================================================================== */
+  plantilla(){
+
+    let products = [{
+      code: '123456',
+      name: 'Producto 1',
+      type: 'Unidad',
+      cost: 1000,
+      price: 1500,
+      wholesale: 1200,
+      stock: 10
+    }];
+
+    /* generate a worksheet */
+    var ws = XLSX.utils.json_to_sheet(products);
+
+    /* add to workbook */
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Productos");
+
+    /* title */
+    let title = 'productos.xls';
+
+    /* write workbook and force a download */
+    XLSX.writeFile(wb, title);
+
+
+  }
   
   
   /** ================================================================
