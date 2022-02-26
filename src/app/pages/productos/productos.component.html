@@ -113,7 +113,7 @@
 
                                     <div>
                                         <p class="mb-0">Inventario:</p>
-                                        <h4 class="display-6"> {{ inventario }} </h4>
+                                        <h4 class="display-6"> {{ inventario | number }} </h4>
                                     </div>
 
                                     <div class="ms-auto text-end">
@@ -141,7 +141,7 @@
                                     <div class="d-flex flex-wrap" >
     
                                         <div class="col-sm-12 col-md-4 text-wrap">
-                                            Inventario: <span class="fw-bold"> {{ inventarioB }} </span> 
+                                            Inventario: <span class="fw-bold"> {{ inventarioB | number }} </span> 
                                         </div>
                                         <div class="col-sm-12 col-md-4 text-wrap">
                                             Total Inversion: <span class="fw-bold"> {{ costoB | currency }} </span> 
