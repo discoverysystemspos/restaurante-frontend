@@ -7,10 +7,12 @@ import { AuthRoutingModule } from './auth/auth.routing';
 
 // COMPONENTS
 import { NopagefoundComponent } from './nopagefound/nopagefound.component';
+import { MenuComponent } from './menu/menu.component';
 
 const routes: Routes = [
   
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: 'menu/:id', component: MenuComponent },
   { path: '**', component: NopagefoundComponent }  
 
 ];

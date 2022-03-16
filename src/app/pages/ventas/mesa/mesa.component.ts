@@ -526,14 +526,33 @@ export class MesaComponent implements OnInit {
         });
         
       }
+      
+      if (qty > 1) {
 
-      this.comandas.push({
-        product: product.pid,
-        ingredientes: this.ingredientes,
-        qty: 1,
-        nota: nota,
-        estado: 'pendiente'
-      });
+        for (let i = 0; i < qty; i++) {
+          this.comandas.push({
+            product: product.pid,
+            ingredientes: this.ingredientes,
+            qty: 1,
+            nota: nota,
+            estado: 'pendiente'
+          });
+          
+        }
+        
+      }else{
+
+        this.comandas.push({
+          product: product.pid,
+          ingredientes: this.ingredientes,
+          qty: 1,
+          nota: nota,
+          estado: 'pendiente'
+        });
+
+      }
+      
+
       
     }
 
@@ -1797,13 +1816,10 @@ export class MesaComponent implements OnInit {
 
             Swal.fire('Exito!', 'el pedido se ha creado correctamente', 'success');
 
-          });
-          
+          });          
 
-        });    
-
+        });
   }
-
   
   // FIN DE LA CLASE
 }

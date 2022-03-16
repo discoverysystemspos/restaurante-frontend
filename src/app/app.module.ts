@@ -12,12 +12,14 @@ import { NopagefoundComponent } from './nopagefound/nopagefound.component';
 // import { CalendarModule, DateAdapter  } from 'angular-calendar';
 // import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MenuComponent } from './menu/menu.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    NopagefoundComponent
+    NopagefoundComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,

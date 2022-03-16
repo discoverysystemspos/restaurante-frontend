@@ -1,1 +1,29 @@
-<p>nopagefound works!</p>
+<div class="d-flex col-12 align-items-center text-center text-wrap vh-100">
+
+    <div class="mx-auto">
+
+        <img class="w-75 " src="../../assets/img/404.svg" alt="error">
+        <h3 class="text-muted mb-0 display-4 fw-bold"> Ooooops! </h3>
+        <h4 class="text-muted mb-2 display-5 "> Lo sentimos... </h4>
+        <p class="mb-0 text-muted">Pagina Web no encontrada</p>
+        <p class="mb-0 text-muted">Ponte en contacto con nuestro personal</p>
+
+        <hr>
+        <h4><small class="text-muted">O selecciona la mesa donde te encuentras</small></h4>
+
+        <select class="form-select form-select-lg mb-3" (change)="selectMesa(select.value)" aria-label="form-select-lg example" #select>
+          <option selected>Seleccionar mesa</option>
+
+          <ng-container *ngFor="let mesa of mesas">
+              <option [value]="mesa.mid" *ngIf="mesa.img === 'mesa.svg'" > {{ mesa.name }} </option>
+          </ng-container>
+          
+        </select>
+
+
+
+    </div>
+
+
+
+</div>

@@ -57,11 +57,12 @@
                             </thead>
                             <tbody>
 
-                                <ng-container *ngFor="let item of mesa.carrito; let i = index">
+                                <ng-container *ngFor="let item of mesa.comanda; let i = index">
 
                                     <tr [ngClass]=" { 'table-danger': item.estado === 'Pendiente', 'table-warning': item.estado === 'Preparando', 'table-success': item.estado === 'Entregado'}">
                                         <td>
                                             <p class="mb-0 lh-1"> <small class="lh-1"> {{item.product.name}}  </small></p>
+                                            <span *ngFor="let ingrediente of item.ingredientes" class="badge rounded-pill bg-light text-primary me-1"> {{ ingrediente.name }} </span>
                                         </td>
                                         <td> <small> {{ item.qty }} </small> </td>
                                         <td>
@@ -165,11 +166,12 @@
                                     </thead>
                                     <tbody>
 
-                                        <ng-container *ngFor="let item of comanda?.carrito; let i = index">
+                                        <ng-container *ngFor="let item of comanda?.comanda; let i = index">
 
                                             <tr style="color: black;">
                                                 <td>
                                                     <h6 class="mb-0 lh-1 text-capitalize"> <span class="lh-1"> {{item.product.name}}  </span></h6>
+                                                    <span *ngFor="let ingrediente of item.ingredientes" class="badge rounded-pill bg-light text-primary fw-normal"> {{ ingrediente.name }} </span>
                                                 </td>
                                                 <td class="text-center"> <span> {{ item.qty }} </span> </td>
                                                 <td>

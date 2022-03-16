@@ -89,10 +89,13 @@ export class NuevoComponent implements OnInit {
 
     let fileReader = new FileReader();
       fileReader.onload = (e) => {
+
           this.arrayBuffer = fileReader.result;
           var data = new Uint8Array(this.arrayBuffer);
           var arr = new Array();
+
           for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+          
           var bstr = arr.join("");
           var workbook = XLSX.read(bstr, {type:"binary"});
           var first_sheet_name = workbook.SheetNames[0];
@@ -116,8 +119,14 @@ export class NuevoComponent implements OnInit {
             product.gain = gain;
             // OBTENER GANANCIA
 
+            // EXPIRATION
+            if (product.expiration) {
+              product.expiration = new Date(product.expiration);              
+            }else{
+              product.expiration = null;
+            }
+
             // IMPUESTO
-            product.expiration = null;
             product.tax = false;
             product.impuesto = [{
               name: '',
@@ -132,6 +141,7 @@ export class NuevoComponent implements OnInit {
 
                   if( this.products.length === this.totalItems ){
 
+                    Swal.fire('Estupendo', `Se han creado un total de ${this.totalItems} articulos nuevos`, 'success');
                     this.router.navigateByUrl('/dashboard/productos');
 
                   }
