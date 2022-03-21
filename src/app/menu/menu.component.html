@@ -1,11 +1,171 @@
-<section class="container py-2">
+<section class="container pb-5">
 
-    <h1 class="text-muted display-3"> {{ mesa.name }}</h1>
-    <hr>
+    <div class="col-auto">
+        <h1 class="text-muted fw-normal display-4"> {{ mesa?.name }}</h1>
 
-    <div>
-        <h4>Menu</h4>
     </div>
 
+    <!-- DEPARTAMENTOS -->
+    <div class="p-2 border-bottom mb-2 d-flex overflow-auto">
+
+        <ng-container *ngFor="let departamento of departmentos">
+
+            <div class="p-2" *ngIf="departamento.visibility && departamento.status">
+
+                <button type="button" (click)="cargarProductosDepartamento(departamento.did)" class="btn bg-white btnW waves-effect waves-blue text-muted p-2 text-wrap"> 
+                    <img class="avatar avatar-xs" style="max-height: 50px; width: auto;" [src]="departamento.img | imagen:'department'" class="card-img-top" alt="...">
+                    <span class="fw-bolder " >{{ departamento.name }}</span>
+                </button>
+
+            </div>
+
+        </ng-container>
+
+
+    </div>
+    <!-- DEPARTAMENTOS -->
+
+    <button (click)=" cargarProductos()" type="button" class="btn btn-outline-success mb-3"> Recargar </button>
+
+
+    <!-- PRODUCTOS -->
+    <div class="col-12 p-0 align-self-start pb-5">
+
+
+
+        <!-- MENU -->
+        <div class="d-flex justify-content-center flex-wrap gap-2">
+
+            <div *ngIf="listaProductos.length < 1" class="py-4">
+                <h4 class="text-muted">Sin Resultados</h4>
+            </div>
+
+            <ng-container *ngFor="let producto of listaProductos">
+
+                <div class="card" style="width: 12rem;" *ngIf="producto.visibility">
+                    <div class="position-absolute ms-2 mt-2">
+                        <span *ngIf="producto.low && !producto.out" class="badge rounded-pill bg-warning text-dark">Bajo</span>
+                        <span *ngIf="producto.out && producto.type !== 'Paquete'" class="badge rounded-pill bg-danger">Agotado</span>
+                        <span *ngIf="producto.vencido" class="badge rounded-pill bg-warning">Vencido</span>
+                    </div>
+
+                    <img class="avatar-xxl avatar-img avatar-redondo-lg mx-auto" style="height: 180px; width: auto;" [src]="producto.img | imagen:'products'" class="card-img-top" alt="...">
+
+                    <div class="card-body py-2 px-2 d-flex align-items-start flex-column">
+
+
+
+                        <div>
+                            <p class="mb-0">cant. {{ producto.stock + ( producto.returned || 0 ) + ( producto.bought || 0 ) - (producto.sold || 0) - ( producto.damaged || 0) | number }}</p>
+                            <h5 class="card-title mb-1">{{ producto.name }}</h5>
+                        </div>
+
+                        <div class="mt-auto w-100">
+
+                            <p class="mb-0 text-success">{{ producto.price | currency }}</p>
+
+                            <button type="button" [disabled]="producto.out &&  
+                                            producto.type !== 'Paquete' || producto.vencido" (click)="btnAddProducto( producto, 1, producto.price )" class="btn btn-link btn-primary text-white w-100 mx-auto" style="font-size: 1rem;">
+
+                                        <i class="bi bi-cart-plus"></i>
+
+                                    </button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </ng-container>
+
+
+        </div>
+        <!-- MENU -->
+
+    </div>
+    <!-- PRODUCTOS -->
+
+    <!-- CARRITO -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="Carrito" tabindex="-1" aria-labelledby="CarritoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="CarritoLabel"> Pedido </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <button type="button" (click)="confirmarPedido(mesa?.menu)" class="btn mb-3" [ngClass]="{'btn-success': mesa?.menu, 'btn-info': !mesa?.menu}">
+                        <span *ngIf="!mesa?.menu">
+                            <i class="bi bi-check2"></i>
+                            Confirmar pedido
+                        </span>
+
+                        <span *ngIf="mesa?.menu">
+                            <i class="bi bi-check2-all"></i>
+                            Pedido Confirmado
+                        </span>
+
+                    </button>
+
+                    <div class="table-responsive">
+
+                        <table class="table table-sm table-striped align-middle">
+                            <thead>
+                                <tr class="align-middle">
+                                    <th scope="col"></th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Precio</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Monto</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr *ngIf="carrito.length === 0">
+                                    <th scope="row" colspan="5"> No has seleccionado ningun producto</th>
+                                </tr>
+
+                                <tr *ngFor="let producto of carrito">
+                                    <td>
+                                        <button [disabled]="mesa?.menu" (click)="eliminarProductoCarrito(i)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
+                                    </td>
+                                    <th scope="row"> {{ producto.product.name }} </th>
+                                    <td> {{ producto.price | currency }} </td>
+                                    <td> {{ producto.qty | number }} </td>
+                                    <td> {{ (producto.qty * producto.price) | currency }} </td>
+                                </tr>
+
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4" class="text-end"> <span class="fw-bold">TOTAL</span> </td>
+                                    <td> <span class="fw-bold"> {{ this.total | currency }} </span> </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CARRITO -->
+
+
+    <nav class="navbar fixed-bottom navbar-light bg-light ">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bolder" href="#">TOTAL: <span class="fw-bold text-success"> {{ total | currency }} </span> </a>
+
+            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#Carrito"> <i class="bi-list"></i> </button>
+
+        </div>
+    </nav>
 
 </section>

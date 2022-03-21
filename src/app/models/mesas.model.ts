@@ -33,7 +33,8 @@ export class Mesa {
         public img?: string,
         public cliente?: string,
         public nota?: _notas[],
-        public comanda?: _comanda[]
+        public comanda?: _comanda[],
+        public menu?: boolean
     ){}
 
 };

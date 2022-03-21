@@ -7,7 +7,10 @@ import { SplitPipe } from './split.pipe';
 
 @NgModule({
   declarations: [ ImagenPipe, SplitPipe ],
-  exports: [ ImagenPipe, SplitPipe ],
+  exports: [ 
+    ImagenPipe, 
+    SplitPipe 
+  ],
   imports: [
     CommonModule
   ]

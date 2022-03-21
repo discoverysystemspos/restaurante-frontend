@@ -13,6 +13,7 @@ import { NopagefoundComponent } from './nopagefound/nopagefound.component';
 // import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MenuComponent } from './menu/menu.component';
+import { PipesModule } from './pipes/pipes.module';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { MenuComponent } from './menu/menu.component';
     AppRoutingModule,
     PagesModule,
     AuthModule,    
-    NgbModule
+    NgbModule,
+    PipesModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -680,11 +680,9 @@ export class MesaComponent implements OnInit {
 
         this.productUp.splice(i, 1);
         this.comanda.splice(i, 1);
+        this.comandas.splice(i, 1);
 
-        // OJO ARREGLAR
-        this.mesa.comanda = [];
-        this.comandas = [];
-
+        this.mesa.comanda = this.comandas;
         this.mesa.carrito =  this.productUp;
 
         this.mesasServices.updateMesa(this.mesa, this.mesaID)
@@ -1543,6 +1541,24 @@ export class MesaComponent implements OnInit {
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); }
         )
   }
+  /** ================================================================
+   *   ELIMINAR COMENTARIO DE LA COMANDA
+  ==================================================================== */
+  eliminarComentario( i: number ){
+
+    this.mesa.nota.splice(i,1);
+    let data =  { nota: this.mesa.nota, add: false }
+        
+    this.mesasServices.updateNotaMesa(data, this.mesaID)
+    .subscribe( resp => {
+      
+      this.nota.nativeElement.value = '';
+      this.nota.nativeElement.focus = true;
+      
+    });    
+
+  }
+
   /** ================================================================
    *   FILTRAR COMANDA
   ==================================================================== */

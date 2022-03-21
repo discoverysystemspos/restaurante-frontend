@@ -312,7 +312,9 @@
                                         <td>{{ item.price | currency}}</td>
                                         <td class="text-center">{{ item.qty }}</td>
                                         <td>{{ item.price * item.qty | currency}}</td>
-                                        <td><button [disabled]="user.role !== 'ADMIN' && user.role !== 'CASHIER'" type="button" (click)="eliminarProductoCarrito(i)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button></td>
+                                        <td>
+                                            <button [disabled]="user.role !== 'ADMIN' && user.role !== 'CASHIER'" type="button" (click)="eliminarProductoCarrito(i)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
+                                        </td>
                                     </tr>
                                 </ng-container>
 
@@ -1050,16 +1052,16 @@ COMANDAS
                 <div class="row">
 
                     <!-- COMENTARIO -->
-                    <div class="col-sm-12 col-md-6">                    
+                    <div class="col-sm-12 col-md-6">
                         <div class="container border rounded overflow-auto" #content style="max-height: 15rem; min-height: 10rem;">
-                            
+
                             <p class="mb-1 fw-bold mt-2 text-muted">Notas:</p>
-                            
+
                             <ul class="list-group list-group-flush py-2" #messages>
-                                <li class="list-group-item border-0 py-1 px-1" *ngFor="let nota of notas">
+                                <li class="list-group-item border-0 py-1 px-1" *ngFor="let nota of notas; let i = index">
                                     <div class="d-flex justify-content-start">
                                         <div>
-                                            <button type="button" disabled class="btn btn-link p-1 text-danger">
+                                            <button (click)="eliminarComentario(i)" type="button" class="btn btn-link p-1 text-danger">
                                                 <i class="bi-trash" style="font-size: 0.9rem"></i>
                                             </button>
                                         </div>
@@ -1071,7 +1073,7 @@ COMANDAS
                                         </div>
                                     </div>
                                 </li>
-                                
+
                             </ul>
                         </div>
 
@@ -1092,7 +1094,7 @@ COMANDAS
                     <div class="col-sm-12 col-md-6">
 
                         <div class="container border rounded overflow-auto" style="max-height: 15rem; min-height: 10rem;">
-                            
+
                             <p class="mb-1 fw-bold mt-2 text-muted">Comanda</p>
 
                             <!-- PRODUCTOS DE LAS COMANDAS -->
@@ -1105,13 +1107,13 @@ COMANDAS
                                         <li class=" py-1 px-0 list-group-item" *ngFor="let ingrediente of comanda.ingredientes; let y = index">
                                             <button (click)="eliminarIngredientes(ingrediente._id, y)" type="button" class="btn btn-link p-1 text-danger">
                                                 <i class="bi-trash" style="font-size: 0.9rem"></i>
-                                            </button>  {{ ingrediente.name }}
+                                            </button> {{ ingrediente.name }}
                                         </li>
                                     </ul>
                                     <!-- INGREDIENTES -->
                                 </li>
                             </ul>
-                              
+
                             <!-- PRODUCTOS DE LAS COMANDAS -->
 
                         </div>
@@ -1121,7 +1123,7 @@ COMANDAS
 
                 </div>
 
-                
+
 
             </div>
         </div>
