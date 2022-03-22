@@ -140,199 +140,237 @@
             </div>
             <div class="modal-body">
 
-                <div class="row d-flex justify-content-center">
+                <button type="button" class="btn btn-outline-primary" (click)="printDiv()">Imprimir</button>
 
-                    <div class="col-auto p-2">
+                <div class="d-flex justify-content-center">
 
-                        <div class="card shadow px-2 bg-success border-0" style="width: 18rem;">
-                            <div class="card-body text-white">
-                                <h4 class="card-title mb-0 text-center">Ventas Totales</h4>
-                                <h5 class="text-center"> {{ montos | currency }} </h5>
+                    <!-- SECCION DE IMPRESIOM -->
+                    <div id="printDiv">
+
+                        <div class="col-auto p-2">
+
+                            <div class="card shadow px-2 bg-success border-0" style="width: 18rem;">
+                                <div class="card-body text-white">
+                                    <h4 class="card-title mb-0 text-center">Ventas Totales</h4>
+                                    <h5 class="text-center"> {{ montos | currency }} </h5>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-auto p-2">
+                            <div class="card shadow px-2 bg-dark border-0" style="width: 18rem;">
+                                <div class="card-body text-white">
+                                    <h4 class="card-title mb-0 text-center">Ganancia Total</h4>
+                                    <h5 class="text-center"> {{ montos - costo | currency }} </h5>
+                                </div>
                             </div>
                         </div>
 
-                    </div>
+                        <div class="col-auto p-2" *ngIf="montoDiferencia !== 0">
 
-                    <div class="col-auto p-2">
-                        <div class="card shadow px-2 bg-dark border-0" style="width: 18rem;">
-                            <div class="card-body text-white">
-                                <h4 class="card-title mb-0 text-center">Ganancia Total</h4>
-                                <h5 class="text-center"> {{ montos - costo | currency }} </h5>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-auto p-2" *ngIf="montoDiferencia !== 0">
-
-                        <div [ngClass]=" {   'bg-danger': montoDiferencia < 0, 
+                            <div [ngClass]=" {   'bg-danger': montoDiferencia < 0, 
                                             'bg-success': montoDiferencia > 0
                             }" class="card shadow px-2 border-0" style="width: 18rem;">
 
-                            <div class="card-body text-white">
-                                <h5 class="card-title mb-0 text-center">Diferencia</h5>
-                                <p class="text-center mb-0"> {{ montoDiferencia | currency }} </p>
+                                <div class="card-body text-white">
+                                    <h5 class="card-title mb-0 text-center">Diferencia</h5>
+                                    <p class="text-center mb-0"> {{ montoDiferencia | currency }} </p>
+                                </div>
+
                             </div>
 
                         </div>
 
-                    </div>
+                        <div class="col-auto p-2">
+                            <div class="card shadow px-2" style="width: 18rem;">
 
-                    <div class="col-auto p-2">
-                        <div class="card shadow px-2" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-0">Dinero en caja</h5>
+                                </div>
 
-                            <div class="card-body">
-                                <h5 class="card-title mb-0">Dinero en caja</h5>
-                            </div>
+                                <div class="table-responsive ">
+                                    <table class="table table-borderless table-hover table-sm animated fadeIn ">
 
-                            <div class="table-responsive ">
-                                <table class="table table-borderless table-hover table-sm animated fadeIn ">
+                                        <tbody>
 
-                                    <tbody>
-
-                                        <tr>
-                                            <td colspan="2"> <small> Fondo Caja </small> </td>
-                                            <td> {{ inicial | currency }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2"> <small> Ventas en efectivo </small> </td>
-                                            <td> {{ efectivo | currency }} </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2"> <small> Abonos en efectivo </small> </td>
-                                            <td> {{ abEfectivo | currency }} </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2"> <small> Entradas </small> </td>
-                                            <td> {{ entradas | currency }} </td>
-                                        </tr>
-                                        <tr class="text-danger">
-                                            <td colspan="2"> <small> Salidas </small> </td>
-                                            <td> {{ salidas | currency }} </td>
-                                        </tr>
-                                        <tr class="border-top">
-                                            <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                            <td class="fw-bold"> {{ inicial + efectivo + abEfectivo + entradas + salidas | currency }} </td>
-                                        </tr>
-
-                                    </tbody>
-                                </table>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="col-auto p-2">
-
-                        <div class="card shadow px-2" style="width: 18rem;">
-
-                            <div class="card-body">
-                                <h5 class="card-title mb-0">Ventas del dia</h5>
-                            </div>
-
-                            <div class="table-responsive ">
-                                <table class="table table-borderless table-hover table-sm animated fadeIn ">
-
-                                    <tbody>
-
-                                        <tr>
-                                            <td colspan="2"> <small> En Efectivo </small> </td>
-                                            <td> {{ efectivo | currency }} </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2"> <small> Con tarjeta </small> </td>
-                                            <td> {{ tarjeta | currency }} </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2"> <small> Con Transferencia </small> </td>
-                                            <td> {{ transferencia | currency }} </td>
-                                        </tr>
-                                        <tr class="border-top">
-                                            <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                            <td class="fw-bold"> {{ montos | currency }} </td>
-                                        </tr>
-
-
-                                    </tbody>
-                                </table>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div class="col-auto p-2">
-                        <div class="card shadow px-2" style="width: 18rem;">
-
-                            <div class="card-body">
-                                <h5 class="card-title mb-0">Salidas</h5>
-                            </div>
-
-                            <div class="table-responsive ">
-                                <table class="table table-borderless table-hover table-sm animated fadeIn ">
-
-                                    <tbody>
-
-                                        <ng-container *ngFor="let movimiento of movimientos">
-
-                                            <tr *ngIf="movimiento.type === 'salida'">
-
-                                                <td colspan="2"> <small> {{ movimiento.descripcion }} </small> </td>
-                                                <td [ngClass]="{ 'text-danger':  movimiento.type == 'salida'}">
-                                                    {{ movimiento.monto | currency }}
-                                                </td>
+                                            <tr>
+                                                <td colspan="2"> <small> Fondo Caja </small> </td>
+                                                <td> {{ inicial | currency }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"> <small> Ventas en efectivo </small> </td>
+                                                <td> {{ efectivo | currency }} </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"> <small> Abonos en efectivo </small> </td>
+                                                <td> {{ abEfectivo | currency }} </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"> <small> Entradas </small> </td>
+                                                <td> {{ entradas | currency }} </td>
+                                            </tr>
+                                            <tr class="text-danger">
+                                                <td colspan="2"> <small> Salidas </small> </td>
+                                                <td> {{ salidas | currency }} </td>
+                                            </tr>
+                                            <tr class="border-top">
+                                                <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                                <td class="fw-bold"> {{ inicial + efectivo + abEfectivo + entradas + salidas | currency }} </td>
                                             </tr>
 
-                                        </ng-container>
+                                        </tbody>
+                                    </table>
+                                </div>
 
-                                        <tr class="border-top">
-                                            <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                            <td class="fw-bold"> {{ salidas | currency }} </td>
-                                        </tr>
-
-                                    </tbody>
-                                </table>
                             </div>
-
                         </div>
-                    </div>
+                        <div class="col-auto p-2">
 
-                    <div class="col-auto p-2">
-                        <div class="card shadow px-2" style="width: 18rem;">
+                            <div class="card shadow px-2" style="width: 18rem;">
 
-                            <div class="card-body">
-                                <h5 class="card-title mb-0">Entradas</h5>
-                            </div>
+                                <div class="card-body">
+                                    <h5 class="card-title mb-0">Ventas del dia</h5>
+                                </div>
 
-                            <div class="table-responsive ">
-                                <table class="table table-borderless table-hover table-sm animated fadeIn ">
+                                <div class="table-responsive ">
+                                    <table class="table table-borderless table-hover table-sm animated fadeIn ">
 
-                                    <tbody>
+                                        <tbody>
 
-                                        <ng-container *ngFor="let movimiento of movimientos">
-
-                                            <tr *ngIf="movimiento.type === 'entrada'">
-
-                                                <td colspan="2"> <small> {{ movimiento.descripcion }} </small> </td>
-                                                <td [ngClass]="{ 'text-danger':  movimiento.type == 'salida'}">
-                                                    {{ movimiento.monto | currency }}
-                                                </td>
+                                            <tr>
+                                                <td colspan="2"> <small> En Efectivo </small> </td>
+                                                <td> {{ efectivo | currency }} </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"> <small> Con tarjeta </small> </td>
+                                                <td> {{ tarjeta | currency }} </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"> <small> Con Transferencia </small> </td>
+                                                <td> {{ transferencia | currency }} </td>
+                                            </tr>
+                                            <tr class="border-top">
+                                                <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                                <td class="fw-bold"> {{ montos | currency }} </td>
                                             </tr>
 
-                                        </ng-container>
 
-                                        <tr class="border-top">
-                                            <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                            <td class="fw-bold"> {{ entradas | currency }} </td>
-                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
 
-                                    </tbody>
-                                </table>
                             </div>
 
                         </div>
+
+                        <div class="col-auto p-2">
+                            <div class="card shadow px-2" style="width: 18rem;">
+
+                                <div class="card-body">
+                                    <h5 class="card-title mb-0">Salidas</h5>
+                                </div>
+
+                                <div class="table-responsive ">
+                                    <table class="table table-borderless table-hover table-sm animated fadeIn ">
+
+                                        <tbody>
+
+                                            <ng-container *ngFor="let movimiento of movimientos">
+
+                                                <tr *ngIf="movimiento.type === 'salida'">
+
+                                                    <td colspan="2"> <small> {{ movimiento.descripcion }} </small> </td>
+                                                    <td [ngClass]="{ 'text-danger':  movimiento.type == 'salida'}">
+                                                        {{ movimiento.monto | currency }}
+                                                    </td>
+                                                </tr>
+
+                                            </ng-container>
+
+                                            <tr class="border-top">
+                                                <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                                <td class="fw-bold"> {{ salidas | currency }} </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-auto p-2">
+                            <div class="card shadow px-2" style="width: 18rem;">
+
+                                <div class="card-body">
+                                    <h5 class="card-title mb-0">Entradas</h5>
+                                </div>
+
+                                <div class="table-responsive ">
+                                    <table class="table table-borderless table-hover table-sm animated fadeIn ">
+
+                                        <tbody>
+
+                                            <ng-container *ngFor="let movimiento of movimientos">
+
+                                                <tr *ngIf="movimiento.type === 'entrada'">
+
+                                                    <td colspan="2"> <small> {{ movimiento.descripcion }} </small> </td>
+                                                    <td [ngClass]="{ 'text-danger':  movimiento.type == 'salida'}">
+                                                        {{ movimiento.monto | currency }}
+                                                    </td>
+                                                </tr>
+
+                                            </ng-container>
+
+                                            <tr class="border-top">
+                                                <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                                <td class="fw-bold"> {{ entradas | currency }} </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-auto p-2">
+                            <div class="card shadow px-2" style="width: 18rem;">
+
+                                <div class="card-body">
+                                    <h5 class="card-title mb-0">Departamentos</h5>
+                                </div>
+
+                                <div class="table-responsive ">
+                                    <table class="table table-borderless table-hover table-sm animated fadeIn ">
+
+                                        <tbody>
+
+                                            <ng-container *ngFor="let deparment of departamento">
+
+                                                <tr *ngIf="deparment.qty > 0">
+
+                                                    <td colspan="2"> {{ deparment.name }} </td>
+                                                    <td>
+                                                        {{ deparment.qty | number }}
+                                                    </td>
+                                                </tr>
+
+
+                                            </ng-container>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+
                     </div>
 
                 </div>
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

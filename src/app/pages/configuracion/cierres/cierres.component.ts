@@ -1,12 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 
 // SERVICES
 import { TurnoService } from '../../../services/turno.service';
 import { SearchService } from '../../../services/search.service';
 import { InvoiceService } from '../../../services/invoice.service';
 
+// PRINTER
+import { NgxPrinterService } from 'projects/ngx-printer/src/lib/ngx-printer.service';
+import { PrintItem } from 'projects/ngx-printer/src/lib/print-item';
+import { ngxPrintMarkerPosition } from 'projects/ngx-printer/src/public_api';
+
 // INTERFACES
 import { LoadTurno, _movements } from '../../../interfaces/load-turno.interface';
+import { DepartmentService } from 'src/app/services/department.service';
+import { Observable, Subscription } from 'rxjs';
+interface _departament {
+  _id?: string,
+  name?: string,
+  qty?: number
+}
 
 @Component({
   selector: 'app-cierres',
@@ -15,6 +27,14 @@ import { LoadTurno, _movements } from '../../../interfaces/load-turno.interface'
   ]
 })
 export class CierresComponent implements OnInit {
+
+  @ViewChild('PrintTemplate')
+  private PrintTemplateTpl: TemplateRef<any>;
+
+  title = 'ngx-printer-demo';
+
+  printWindowSubscription: Subscription;
+  $printItems: Observable<PrintItem[]>;
 
   public listaTurnos: LoadTurno[] = [];
   public listaTurnosTemp: LoadTurno[] = [];
@@ -30,12 +50,74 @@ export class CierresComponent implements OnInit {
 
   constructor(  private turnoService: TurnoService,
                 private searchService: SearchService,
-                private invoiceService: InvoiceService) { }
+                private invoiceService: InvoiceService,
+                private printerService: NgxPrinterService,
+                private departmentService: DepartmentService) { 
+
+                  this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
+                    val => {                
+
+                      if (val) {
+                        window.location.reload();                        
+                      }
+                      console.log('Print window is open:', val);
+                    }
+                  );
+              
+                  this.$printItems = this.printerService.$printItems;
+
+                }
 
   ngOnInit(): void {
+    
+    // CARGAR DEPARTAMENTOS
+    this.cargarDepartamento();
 
     // CARGAR TURNOS
     this.cargarTurno();
+  }
+
+  /** ================================================================
+   *   IMPRIMIR
+  ==================================================================== */
+  printDiv() {
+    this.printerService.printDiv('printDiv');
+  }
+
+  /** ===============================================================
+  * DEPARTAMENTO - DEPARTAMENTO - DEPARTAMENTO - DEPARTAMENTO  
+  ==================================================================== */
+  cargarDepartamento(){
+
+    this.departmentService.loadDepartment()
+        .subscribe( ({departments}) => {
+
+          for (let i = 0; i < departments.length; i++) {
+            
+            const validarItem = this.departamento.findIndex( (resp) =>{             
+  
+              if (resp._id === departments[i].did ) {
+                return true;
+              }else {
+                return false;
+              }
+
+            });
+
+            if ( validarItem === -1 ) {
+              
+              this.departamento.push({
+                _id: departments[i].did,
+                name: departments[i].name,
+                qty: 0
+              });
+
+            }
+            
+          };
+
+        });
+
   }
 
   /** ===============================================================
@@ -164,7 +246,8 @@ export class CierresComponent implements OnInit {
     this.turnoService.getTurnoId(id)
     .subscribe( (turno) => { 
       this.turnoId = turno;
-      this.movimientos = turno.movements;
+      this.movimientos = turno.movements;     
+
       this.inicial = turno.initial;
       
       this.procesarInformacion(id);
@@ -188,6 +271,9 @@ export class CierresComponent implements OnInit {
   public salidas: number = 0;
   public montoDiferencia: number = 0;
   public movimientos: _movements[] = [];
+
+  public facturas: any[] = [];
+  public departamento: _departament[] = [];
   
   procesarInformacion(id){
 
@@ -203,12 +289,11 @@ export class CierresComponent implements OnInit {
     this.salidas = 0;
     this.abEfectivo = 0;
     this.montoDiferencia = 0;
-    this.movimientos = [];
     
     const endPoint = `?turno=${id}`;
 
     this.invoiceService.loadInvoiceCierre(endPoint)
-        .subscribe(({total, montos, costos, efectivo, tarjeta, transferencia, credit, vales}) => {
+        .subscribe(({invoices, total, montos, costos, efectivo, tarjeta, transferencia, credit, vales}) => {
 
           this.montos = montos;
           this.costo = costos;
@@ -217,6 +302,46 @@ export class CierresComponent implements OnInit {
           this.transferencia = transferencia;
           this.credito = credit;
           this.vales = vales;
+
+          this.facturas = invoices;
+
+          for (let i = 0; i < this.facturas.length; i++) {
+
+            for (let y = 0; y < this.facturas[i].products.length; y++) {
+              
+              // const validarItem = this.facturas[i].products.findIndex( (resp) =>{  
+              const validarItem = this.departamento.findIndex( (resp) =>{             
+  
+                if (resp._id === this.facturas[i].products[y].product.department ) {
+                  return true;
+                }else {
+                  return false;
+                }
+  
+              });
+  
+              if ( validarItem === -1 ) {
+                
+                this.departamento.push({
+                  _id: this.facturas[i].products[y].product.department,
+                  qty: this.facturas[i].products[y].qty
+                });
+
+              }else{
+
+                let qtyTemp = this.departamento[validarItem].qty;
+                qtyTemp += Number(this.facturas[i].products[y].qty);
+
+                this.departamento[validarItem].qty = qtyTemp;
+
+              }
+              
+              // FIN FOR 2
+            }
+
+            // FIN FOR 1
+          }
+
 
         });
 
