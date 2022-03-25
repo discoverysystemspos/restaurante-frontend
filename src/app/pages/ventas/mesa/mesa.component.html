@@ -313,7 +313,7 @@
                                         <td class="text-center">{{ item.qty }}</td>
                                         <td>{{ item.price * item.qty | currency}}</td>
                                         <td>
-                                            <button [disabled]="user.role !== 'ADMIN' && user.role !== 'CASHIER'" type="button" (click)="eliminarProductoCarrito(i)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
+                                            <button [disabled]="user.role !== 'ADMIN' && user.role !== 'CASHIER'" type="button" (click)="eliminarProductoCarrito(i, item.product)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
                                         </td>
                                     </tr>
                                 </ng-container>

@@ -433,7 +433,7 @@ export class MenuComponent implements OnInit {
   /** ================================================================
    *  ELIMINAR PRODUCTO DEL CARRITO CARRITO
   ==================================================================== */
-  eliminarProductoCarrito( i: number ){
+  eliminarProductoCarrito( i: number, product ){
 
     Swal.fire({
       title: 'Estas Seguro?',
@@ -448,7 +448,16 @@ export class MenuComponent implements OnInit {
 
         this.productUp.splice(i, 1);
         this.comanda.splice(i, 1);
-        this.comandas.splice(i,1);
+
+        // MODIFICAR COMANDAS
+        let comandasTemp = [];
+        this.comandas.map( (item:any) => {          
+          if (item.product._id !== product._id) {            
+            comandasTemp.push(item);            
+          }
+        });
+        this.comandas = comandasTemp;
+        // MODIFICAR COMANDAS
 
         this.mesa.carrito =  this.productUp;
         this.mesa.comanda = this.comandas;

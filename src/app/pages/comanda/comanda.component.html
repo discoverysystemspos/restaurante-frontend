@@ -37,7 +37,7 @@
                     <h5 class="mb-0 text-center text-wrap text-capitalize">{{ mesa.name }}</h5>
                     <h6 class="mb-0 text-center text-wrap text-capitalize fw-normal"> {{ mesa.mesero.name }} </h6>
                     <p class="mb-0 text-center"> Fecha: {{ mesa.fecha | date: "medium" }} </p>
-                    <h5 class="mb-0 text-center text-wrap text-capitalize">{{ mesa?.cliente.name }}</h5>
+                    <h5 class="mb-0 text-center text-wrap text-capitalize" *ngIf="mesa.cliente?.name">{{ mesa.cliente?.name }}</h5>
 
                     <div class="d-flex justify-content-end my-2">
                         <button type="button" (click)="comandaModal(mesa)" data-bs-toggle="modal" data-bs-target="#comanda" class="btn btn-sm btn-primary btnW waves-effect waves-ligth">
@@ -144,7 +144,7 @@
                             <h5 class=" mb-0 text-center text-wrap text-capitalize">{{ comanda?.name }}</h5>
                             <h6 class=" mb-0 text-center text-wrap text-capitalize fw-normal"> {{ comanda?.mesero.name }} </h6>
                             <p class=" mb-0 text-center"> Fecha: {{ comanda?.fecha | date: "medium" }} </p>
-                            <h5 class=" mb-0 text-center text-wrap text-capitalize">{{ comanda?.cliente.name }}</h5>
+                            <h5 class=" mb-0 text-center text-wrap text-capitalize">{{ comanda.cliente?.name }}</h5>
 
 
 

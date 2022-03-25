@@ -665,7 +665,7 @@ export class MesaComponent implements OnInit {
   /** ================================================================
    *  ELIMINAR PRODUCTO DEL CARRITO CARRITO
   ==================================================================== */
-  eliminarProductoCarrito( i: number ){
+  eliminarProductoCarrito( i: number, product: any ){
 
     Swal.fire({
       title: 'Estas Seguro?',
@@ -680,8 +680,17 @@ export class MesaComponent implements OnInit {
 
         this.productUp.splice(i, 1);
         this.comanda.splice(i, 1);
-        this.comandas.splice(i, 1);
 
+        // MODIFICAR COMANDAS
+        let comandasTemp = [];
+        this.comandas.map( (item:any) => {          
+          if (item.product._id !== product._id) {            
+            comandasTemp.push(item);            
+          }
+        });
+        this.comandas = comandasTemp;
+        // MODIFICAR COMANDAS
+       
         this.mesa.comanda = this.comandas;
         this.mesa.carrito =  this.productUp;
 
@@ -753,7 +762,11 @@ export class MesaComponent implements OnInit {
         this.total = this.total + this.iva;
       }
 
-    }    
+    }else {
+      this.productUp = [];
+      this.comanda = [];
+      this.comandas = [];
+    }
 
   }
 

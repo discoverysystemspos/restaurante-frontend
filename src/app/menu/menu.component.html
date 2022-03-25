@@ -130,7 +130,7 @@
 
                                 <tr *ngFor="let producto of carrito">
                                     <td>
-                                        <button [disabled]="mesa?.menu" (click)="eliminarProductoCarrito(i)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
+                                        <button [disabled]="mesa?.menu" (click)="eliminarProductoCarrito(i, producto.product)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
                                     </td>
                                     <th scope="row"> {{ producto.product.name }} </th>
                                     <td> {{ producto.price | currency }} </td>
