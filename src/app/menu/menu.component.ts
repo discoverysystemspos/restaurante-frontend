@@ -352,7 +352,8 @@ export class MenuComponent implements OnInit {
         this.ingredientes.push({
 
           name: product.kit[i].product.name,
-          qty: product.kit[i].qty
+          qty: product.kit[i].qty,
+          status: true
 
         });
         

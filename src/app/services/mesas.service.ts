@@ -97,7 +97,7 @@ export class MesasService {
    *   UPDATE MESA ID
   ==================================================================== */
   updateNotaMesa(data: any, id: string, add: boolean = true){
-    return this.http.put(`${base_url}/mesas/notas/${id}`, data, this.headers);
+    return this.http.put(`${base_url}/mesas/notas/${id}?add=${add}`, data, this.headers);
   }
 
   /** ================================================================

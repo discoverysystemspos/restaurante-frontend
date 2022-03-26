@@ -6,6 +6,7 @@ interface _mesero{
 }
 
 export interface _ingredientes {
+    status: boolean;
     name: string;
     qty: number;
     _id?: string;
@@ -34,7 +35,8 @@ export class Mesa {
         public cliente?: string,
         public nota?: _notas[],
         public comanda?: _comanda[],
-        public menu?: boolean
+        public menu?: boolean,
+        public ingredientes?: _ingredientes[]
     ){}
 
 };

@@ -521,7 +521,8 @@ export class MesaComponent implements OnInit {
         this.ingredientes.push({
 
           name: product.kit[i].product.name,
-          qty: product.kit[i].qty
+          qty: product.kit[i].qty,
+          status: true
 
         });
         
@@ -615,7 +616,14 @@ export class MesaComponent implements OnInit {
         
         if (resp._id === ingrediente ) {
           
-          this.comandas[i].ingredientes.splice(y, 1);
+          // this.comandas[i].ingredientes.splice(y, 1);
+          
+          if (this.comandas[i].ingredientes[y].status === true) {            
+            this.comandas[i].ingredientes[y].status = false;
+          }else {
+            this.comandas[i].ingredientes[y].status = true;
+          }
+
           return true;
         }else {
           return false;
@@ -1562,7 +1570,7 @@ export class MesaComponent implements OnInit {
     this.mesa.nota.splice(i,1);
     let data =  { nota: this.mesa.nota, add: false }
         
-    this.mesasServices.updateNotaMesa(data, this.mesaID)
+    this.mesasServices.updateNotaMesa(data, this.mesaID, false)
     .subscribe( resp => {
       
       this.nota.nativeElement.value = '';

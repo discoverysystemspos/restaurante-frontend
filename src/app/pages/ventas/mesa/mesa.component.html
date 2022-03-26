@@ -1100,11 +1100,11 @@ COMANDAS
                             <!-- PRODUCTOS DE LAS COMANDAS -->
                             <ul class="py-1 px-0 list-group list-group-flush">
                                 <li class="mb-2 border-bottom border-info py-1 px-0 list-group-item" *ngFor="let comanda of comandas; let i=index">
-                                    <span class=" py-1 px-0 fw-bold text-muted"> {{ comanda.product?.name }} </span>
+                                    <span class=" py-1 px-2 fw-bold text-uppercase bg-dark text-white ">{{ i + 1 }} - {{ comanda.product?.name }} </span>
 
                                     <!-- INGREDIENTES -->
                                     <ul class=" py-1 px-0 ps-1 list-group list-group-flush">
-                                        <li class=" py-1 px-0 list-group-item" *ngFor="let ingrediente of comanda.ingredientes; let y = index">
+                                        <li class=" py-1 px-0 list-group-item" [ngClass]="{'line-through': ingrediente.status === false }" *ngFor="let ingrediente of comanda.ingredientes; let y = index">
                                             <button (click)="eliminarIngredientes(ingrediente._id, y)" type="button" class="btn btn-link p-1 text-danger">
                                                 <i class="bi-trash" style="font-size: 0.9rem"></i>
                                             </button> {{ ingrediente.name }}

@@ -61,8 +61,13 @@
 
                                     <tr [ngClass]=" { 'table-danger': item.estado === 'Pendiente', 'table-warning': item.estado === 'Preparando', 'table-success': item.estado === 'Entregado'}">
                                         <td>
-                                            <p class="mb-0 lh-1"> <small class="lh-1"> {{item.product.name}}  </small></p>
-                                            <span *ngFor="let ingrediente of item.ingredientes" class="badge rounded-pill bg-light text-primary me-1"> {{ ingrediente.name }} </span>
+                                            <p class="mb-0 lh-1"> <small class="lh-1 fw-bold"> {{item.product.name}}  </small></p>
+
+                                            <ng-container *ngFor="let ingrediente of item.ingredientes">
+                                                <small *ngIf="!ingrediente.status" class="text-danger me-1 line-through"> {{ ingrediente.name }} </small>
+                                            </ng-container>
+
+
                                         </td>
                                         <td> <small> {{ item.qty }} </small> </td>
                                         <td>
@@ -171,7 +176,12 @@
                                             <tr style="color: black;">
                                                 <td>
                                                     <h6 class="mb-0 lh-1 text-capitalize"> <span class="lh-1"> {{item.product.name}}  </span></h6>
-                                                    <span *ngFor="let ingrediente of item.ingredientes" class="badge rounded-pill bg-light text-primary fw-normal"> {{ ingrediente.name }} </span>
+
+                                                    <!-- <span *ngFor="let ingrediente of item.ingredientes" class="badge rounded-pill bg-light text-primary fw-normal"> {{ ingrediente.name }} </span> -->
+                                                    <ng-container *ngFor="let ingrediente of item.ingredientes">
+                                                        <small *ngIf="!ingrediente.status" class="me-1 line-through"> {{ ingrediente.name }} </small>
+                                                    </ng-container>
+
                                                 </td>
                                                 <td class="text-center"> <span> {{ item.qty }} </span> </td>
                                                 <td>
