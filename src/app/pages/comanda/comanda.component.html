@@ -51,7 +51,6 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Item</th>
-                                    <th scope="col">Cantidad</th>
                                     <th scope="col">Estado</th>
                                 </tr>
                             </thead>
@@ -61,7 +60,7 @@
 
                                     <tr [ngClass]=" { 'table-danger': item.estado === 'Pendiente', 'table-warning': item.estado === 'Preparando', 'table-success': item.estado === 'Entregado'}">
                                         <td>
-                                            <p class="mb-0 lh-1"> <small class="lh-1 fw-bold"> {{item.product.name}}  </small></p>
+                                            <p class="mb-0 lh-1"> <small class="lh-1 fw-bold">01 - {{item.product.name}}  </small></p>
 
                                             <ng-container *ngFor="let ingrediente of item.ingredientes">
                                                 <small *ngIf="!ingrediente.status" class="text-danger me-1 line-through"> {{ ingrediente.name }} </small>
@@ -69,7 +68,6 @@
 
 
                                         </td>
-                                        <td> <small> {{ item.qty }} </small> </td>
                                         <td>
                                             <select class="form-select form-select-sm" aria-label=".form-select-sm example" (change)="cambiarEstado(mesa.carrito, item.product, esta.value, mesa)" #esta>
                                                 <option class="text-danger" value="Pendiente" [selected]="item.estado === 'Pendiente'">Pendiente</option>
@@ -83,7 +81,7 @@
                         </table>
 
                         <!-- NOTAS -->
-                        <div *ngIf="mesa?.nota.length > 0" class="container border rounded overflow-auto" #content style="max-height: 15rem; min-height: 5rem;">
+                        <div *ngIf="mesa?.nota.length > 0" class="container border rounded overflow-auto" #content style="max-height: 15rem; min-height: 5rem; overflow-x: hidden!important;">
                             <ul class="list-group list-group-flush py-2" #messages>
                                 <li class="list-group-item border-0 py-1 px-1" *ngFor="let nota of mesa.nota">
                                     <div class="d-flex justify-content-start">
@@ -93,7 +91,7 @@
                                             </button>
                                         </div> -->
                                         <div class="badge bg-light2 text-muted px-2 py-2 text-wrap text-start" style="width: auto;">
-                                            <h6 class="mb-0">
+                                            <h6 class="mb-0 text-break">
                                                 {{ nota.nota }}
                                             </h6>
                                             <p class="mb-0 text-end" *ngIf="nota.date "><small class="text-muted"> {{ nota?.date  | date: "medium" }} </small></p>
@@ -162,9 +160,6 @@
                                                 <h6 class="mb-0">Item</h6>
                                             </th>
                                             <th scope="col">
-                                                <h6 class="mb-0">Cantidad</h6>
-                                            </th>
-                                            <th scope="col">
                                                 <h6 class="mb-0">Estado</h6>
                                             </th>
                                         </tr>
@@ -175,7 +170,7 @@
 
                                             <tr style="color: black;">
                                                 <td>
-                                                    <h6 class="mb-0 lh-1 text-capitalize"> <span class="lh-1"> {{item.product.name}}  </span></h6>
+                                                    <h6 class="mb-0 lh-1 text-capitalize"> <span class="lh-1">01 - {{item.product.name}}  </span></h6>
 
                                                     <!-- <span *ngFor="let ingrediente of item.ingredientes" class="badge rounded-pill bg-light text-primary fw-normal"> {{ ingrediente.name }} </span> -->
                                                     <ng-container *ngFor="let ingrediente of item.ingredientes">
@@ -183,7 +178,6 @@
                                                     </ng-container>
 
                                                 </td>
-                                                <td class="text-center"> <span> {{ item.qty }} </span> </td>
                                                 <td>
                                                     <select class="form-select form-select-sm" aria-label=".form-select-sm example" (change)="cambiarEstado(comanda?.carrito, item.product, esta.value, mesa)" #esta>
                                                     <option class="text-danger" value="Pendiente" [selected]="item.estado === 'Pendiente'">Pendiente</option>
@@ -202,7 +196,7 @@
 
                                     <ul class="list-group list-group-flush" #messages>
                                         <li class="list-group-item py-2" *ngFor="let nota of comanda?.nota">
-                                            <p class="mb-0 text-capitalize">
+                                            <p class="mb-0 text-capitalize text-break">
                                                 - {{ nota.nota }}
                                             </p>
                                         </li>
