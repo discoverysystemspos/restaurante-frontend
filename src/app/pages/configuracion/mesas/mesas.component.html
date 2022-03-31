@@ -202,7 +202,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="actualizarMesaModal"><i class="bi-collection" style="font-size: 1rem"></i> Crear Mesa Nueva</h5>
+                <h5 class="modal-title" id="actualizarMesaModal"><i class="bi-collection" style="font-size: 1rem"></i> Editar Ticket</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -213,7 +213,7 @@
                     <!-- =======================================================================
                         Informacion de la Mesa
                     =========================================================================== -->
-                    <h5 class="text-muted">Información de la mesa</h5>
+                    <h5 class="text-muted">Información del Ticket</h5>
 
                     <div class="row mb-2">
 
@@ -239,7 +239,7 @@
                         </div>
                     </div>
 
-                    <div class="row mb-3">
+                    <div class="row">
 
                         <div class="col-md-12 px-md-1">
 
@@ -256,12 +256,20 @@
 
                     </div>
 
+                    <div class="row mb-3">
+                        <div class="col-md-12 px-md-1">
+                            <div class="form-group">
+                                <label for="ruta">Ruta</label>
+                                <input type="text" name="ruta" class="form-control" id="ruta" readonly formControlName="ruta">
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="text-danger mb-2">
                             <p *ngIf="campoValidoUpdate('name')" class="mb-1 animated fadeIn">- Asigne un nombre a la mesa</p>
                         </div>
                     </div>
-
 
                     <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>
                 </form>

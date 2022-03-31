@@ -11,6 +11,9 @@ import { MesasService } from '../../../services/mesas.service';
 import { UserService } from '../../../services/user.service';
 import { User } from '../../../models/user.model';
 
+import { environment } from '../../../../environments/environment';
+const base_url = environment.base_url;
+
 @Component({
   selector: 'app-mesas',
   templateUrl: './mesas.component.html',
@@ -190,7 +193,8 @@ export class MesasComponent implements OnInit {
     name: ['', [Validators.required, Validators.minLength(1), Validators.min(1)]],
     mesero: ['', [Validators.required, Validators.minLength(1), Validators.min(1)]],
     id: ['', [Validators.required, Validators.minLength(3)]],
-    img: ['']
+    img: [''],
+    ruta: [''],
   });
 
   informacionMesa( mesa: Mesa ){
@@ -199,6 +203,7 @@ export class MesasComponent implements OnInit {
       name: mesa.name,
       mesero: mesa.mesero._id,
       id: mesa.mid,
+      ruta: `${base_url}/menu/${mesa.mid}`,
       img: mesa.img || 'ticket.svg'
     });
 
