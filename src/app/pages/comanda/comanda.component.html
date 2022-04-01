@@ -191,16 +191,12 @@
                                 </table>
 
                                 <!-- NOTAS -->
-                                <div *ngIf="comanda?.nota.length > 0" class="container border rounded" #content>
-                                    <p class="mb-0 fw-bold">Notas:</p>
 
-                                    <ul class="list-group list-group-flush" #messages>
-                                        <li class="list-group-item py-2" *ngFor="let nota of comanda?.nota">
-                                            <p class="mb-0 text-capitalize text-break">
-                                                - {{ nota.nota }}
-                                            </p>
-                                        </li>
-                                    </ul>
+                                <div class="col-10 border rounded py-2">
+                                    <p class="fw-bold mb-1">NOTAS:</p>
+                                    <p class="mb-0 text-break" *ngFor="let nota of comanda?.nota">
+                                        - {{ nota.nota }}
+                                    </p>
                                 </div>
                                 <!-- NOTAS -->
 
@@ -213,8 +209,8 @@
                 <!-- DETALLES DE LA COMANDA -->
 
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <div class="modal-footer ">
+                <button type="button " class="btn btn-secondary " data-bs-dismiss="modal ">Cerrar</button>
             </div>
         </div>
     </div>
