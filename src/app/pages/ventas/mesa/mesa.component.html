@@ -667,6 +667,41 @@
                                                 </div>
                                             </div>
 
+                                            <div class="d-flex justify-content-center flex-row flex-wrap gap-2" *ngIf="invoiceForm.value.type === 'efectivo' || invoiceForm.value.type === 'mixto' || invoiceForm.value.type === 'credito'">
+
+                                                <div>
+                                                    <a type="button" (click)="agregarPagos('efectivo', 100000, '', false)">
+                                                        <img src="../../../../assets/img/billetes/100.svg" alt="" style="max-width: 100px; height: 50px;">
+                                                    </a>
+                                                </div>
+                                                <div>
+                                                    <a type="button" (click)="agregarPagos('efectivo', 50000, '', false)">
+                                                        <img src="../../../../assets/img/billetes/50.svg" alt="" style="max-width: 100px; height: 50px;">
+                                                    </a>
+                                                </div>
+                                                <div>
+                                                    <a type="button" (click)="agregarPagos('efectivo', 20000, '', false)">
+                                                        <img src="../../../../assets/img/billetes/20.svg" alt="" style="max-width: 100px; height: 50px;">
+                                                    </a>
+                                                </div>
+                                                <div>
+                                                    <a type="button" (click)="agregarPagos('efectivo', 10000, '', false)">
+                                                        <img src="../../../../assets/img/billetes/10.svg" alt="" style="max-width: 100px; height: 50px;">
+                                                    </a>
+                                                </div>
+                                                <div>
+                                                    <a type="button" (click)="agregarPagos('efectivo', 5000, '', false)">
+                                                        <img src="../../../../assets/img/billetes/5.svg" alt="" style="max-width: 100px; height: 50px;">
+                                                    </a>
+                                                </div>
+                                                <div>
+                                                    <a type="button" (click)="agregarPagos('efectivo', 2000, '', false)">
+                                                        <img src="../../../../assets/img/billetes/2.svg" alt="" style="max-width: 100px; height: 50px;">
+                                                    </a>
+                                                </div>
+
+                                            </div>
+
                                             <div class="mx-auto">
 
                                                 <!-- TABLA -->

@@ -1251,6 +1251,9 @@ export class MesaComponent implements OnInit {
   }
 
   agregarPagos(type: string, amount:number, description:string = '', credito: boolean){
+    
+    // Setear a number
+    // amount = Number(amount);    
 
     if (credito) {
       this.credit = true;
@@ -1264,19 +1267,21 @@ export class MesaComponent implements OnInit {
       return;      
     }
 
-    if(type === 'efectivo'){
-      this.pago += Number(amount);
+    if(type === 'efectivo'){      
+      this.pago += amount;
     }
 
     let totales = Number( this.total - this.totalPagos );
 
     // COMPROBAR SI EL MONTO ES MAYOR AL RESTANTE
-    if ( Number(this.montoAdd.nativeElement.value) > totales) {
-      amount= ( this.total - this.totalPagos );
-      this.vueltos = (this.montoAdd.nativeElement.value - totales);
+    if ( amount > totales) {
+
+      this.vueltos = (amount - totales);
+      amount = Number( this.total - this.totalPagos );
+      
     }else{
-      amount = this.montoAdd.nativeElement.value;
-      this.vueltos = (this.montoAdd.nativeElement.value - totales);
+      amount = amount;
+      this.vueltos = (amount - totales);
     }
 
     this.payments.push({
