@@ -149,8 +149,6 @@
                             <p class=" mb-0 text-center"> Fecha: {{ comanda?.fecha | date: "medium" }} </p>
                             <h5 class=" mb-0 text-center text-wrap text-capitalize">{{ comanda.cliente?.name }}</h5>
 
-
-
                             <div class="table-responsive">
 
                                 <table class="table table-sm align-middle">
@@ -191,7 +189,6 @@
                                 </table>
 
                                 <!-- NOTAS -->
-
                                 <div class="col-10 border rounded py-2">
                                     <p class="fw-bold mb-1">NOTAS:</p>
                                     <p class="mb-0 text-break" *ngFor="let nota of comanda?.nota">

@@ -123,6 +123,9 @@ export class MesaComponent implements OnInit {
         
       });
 
+      // CARGAR TODAS LAS MESAS
+      this.cargarMesasAll();
+
     if (!this.user.cerrada) {
       this.facturar = true;
     }else{
@@ -131,6 +134,65 @@ export class MesaComponent implements OnInit {
     
   }
 
+  /** ================================================================
+   *   CARGAR TODAS LAS MESAS
+  ==================================================================== */
+  public totalMesas: Mesa[] = [];
+  cargarMesasAll(){
+
+    this.mesasServices.loadMesas(0)
+        .subscribe( ({mesas}) => {
+          this.totalMesas = mesas;
+        });
+  }
+
+  /** ================================================================
+   *   CAMBIAR MESA
+  ==================================================================== */
+  cambiarMesa(mesaNew: Mesa){
+
+    Swal.fire({
+      title: 'Atencion',
+      text: "Estas seguro de cambiar de mesa",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, cambiar mesa',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {  
+      
+      if (result.isConfirmed) {
+    
+        mesaNew.disponible = false;
+        mesaNew.carrito = this.mesa.carrito;
+        mesaNew.comanda = this.mesa.comanda;
+        mesaNew.nota = this.mesa.nota;
+        
+        this.mesasServices.updateMesa(mesaNew, mesaNew.mid)
+            .subscribe( resp => {
+
+              this.mesa.disponible = true;
+              this.mesa.carrito = [];
+              this.mesa.comanda = [];
+              this.mesa.nota = [];
+              
+              this.mesasServices.updateMesa(this.mesa, this.mesaID)
+                  .subscribe( resp => {
+
+                    Swal.fire('Estupendo', `Se ha cambiado ha ${ mesaNew.name } Satisfactoriamente`, 'success');
+
+                    this.cargarMesasAll();
+
+                    this.router.navigateByUrl(`dashboard/ventas/mesa/${mesaNew.mid}`);
+
+              }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
+
+        }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
+      }
+    });
+
+  }
   
 
   /** ================================================================
