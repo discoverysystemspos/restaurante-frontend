@@ -85,6 +85,13 @@
                             </select>
                         </div>
 
+                        <hr>
+
+                        <div>
+                            <h6 class="text-muted">Reparar Inventario</h6>
+                            <button type="button" (click)="repararInventario()" class="btn btn-primary btn-sm btn-block">Reparar</button>
+                        </div>
+
                     </div>
 
                 </div>
@@ -138,18 +145,18 @@
 
                                     <p class="mb-0 text-wrap"> Detalles del departamento: <span class="text-capitalize fw-bold"> {{ productos[0].department.name }} </span> </p>
                                     <hr class="my-1">
-                                    <div class="d-flex flex-wrap" >
-    
+                                    <div class="d-flex flex-wrap">
+
                                         <div class="col-sm-12 col-md-4 text-wrap">
-                                            Inventario: <span class="fw-bold"> {{ inventarioB | number }} </span> 
+                                            Inventario: <span class="fw-bold"> {{ inventarioB | number }} </span>
                                         </div>
                                         <div class="col-sm-12 col-md-4 text-wrap">
-                                            Total Inversion: <span class="fw-bold"> {{ costoB | currency }} </span> 
+                                            Total Inversion: <span class="fw-bold"> {{ costoB | currency }} </span>
                                         </div>
                                         <div class="col-sm-12 col-md-4 text-wrap">
-                                            Total Venta: <span class="fw-bold"> {{ precioB | currency }} </span> 
+                                            Total Venta: <span class="fw-bold"> {{ precioB | currency }} </span>
                                         </div>
-    
+
                                     </div>
 
                                 </div>
@@ -204,8 +211,8 @@
                                                     <span *ngIf="!producto.department"> Sin Departamento </span>
                                                 </td>
                                                 <td>
-                                                    <span *ngIf="producto.type === 'Granel'"> {{  producto.stock + ( producto.returned || 0 ) + ( producto.bought || 0 ) - (producto.sold || 0) - ( producto.damaged || 0) | number:'1.3'}} </span>
-                                                    <span *ngIf="producto.type !== 'Granel'"> {{  producto.stock + ( producto.returned || 0 ) + ( producto.bought || 0 ) - (producto.sold || 0) - ( producto.damaged || 0) | number }} </span>
+                                                    <span *ngIf="producto.type === 'Granel'"> {{  producto.inventario | number:'1.3'}} </span>
+                                                    <span *ngIf="producto.type !== 'Granel'"> {{  producto.inventario | number }} </span>
 
                                                 </td>
                                                 <td>{{ producto.type }}</td>
@@ -213,7 +220,7 @@
                                                 <td>{{ producto.gain }}%</td>
                                                 <td>{{ producto.price | currency }}</td>
                                                 <td>{{ producto.wholesale | currency }}</td>
-                                                <td class="text-center"> 
+                                                <td class="text-center">
                                                     <a [routerLink]="['/dashboard/producto', producto.pid]" class="btn btn-link p-1 text-primary"><i class="bi bi-box-arrow-up-right"></i></a>
                                                     <button type="button" (click)="borrarProducto(producto.pid)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
                                                 </td>

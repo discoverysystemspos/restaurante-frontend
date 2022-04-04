@@ -371,7 +371,7 @@ export class ProductoComponent implements OnInit {
       valor: valorImp
     });    
     
-    this.upProductForm.value.impuesto = this.impuesto;  
+    this.upProductForm.value.impuesto = this.impuesto; 
     
     this.productService.actualizarProducto(this.upProductForm.value, this.upProductForm.value.pid)
         .subscribe( resp => {
@@ -429,6 +429,13 @@ export class ProductoComponent implements OnInit {
   ==================================================================== */
   @ViewChild('cantidadE') cantidadE: ElementRef;
   @ViewChild('cantidadS') cantidadS: ElementRef;
+  public ajustarInventario = {
+    cantidad: 0,
+    bought: 0,
+    damaged: 0,
+    type: ''
+  };
+
   ajustar(tipo: string, cantidad: number){
 
     if (cantidad <= 0 || !cantidad) {
@@ -437,31 +444,27 @@ export class ProductoComponent implements OnInit {
 
     if (tipo === 'entrada') { 
       
-      if (this.producto.bought) {        
-        this.producto.bought += Number(cantidad);        
-      }else {
-        this.producto.bought = Number(cantidad);
-      }
-
+      this.ajustarInventario.cantidad = Number(cantidad);
+      this.ajustarInventario.bought = Number(cantidad);
+      this.ajustarInventario.type = 'Agrego';
+      
     }else {
-
-      if (this.producto.damaged) {        
-        this.producto.damaged += Number(cantidad);        
-      }else{        
-        this.producto.damaged = Number(cantidad);
-      }
-
+      
+      this.ajustarInventario.type = 'Elimino';
+      this.ajustarInventario.cantidad = Number(cantidad);
+      this.ajustarInventario.damaged = Number(cantidad);
+      
     }
 
-    this.productService.actualizarProducto(this.producto, this.producto.pid, true)
-        .subscribe( resp => {
-
-          Swal.fire('Estupendo', `Se ha actualizado el inventario del producto, ${this.producto.name} exitosamente!`, 'success')
-
-          this.cargarProducto(this.producto.pid);
+    this.productService.ajustarInventario(this.productoID, this.ajustarInventario)
+        .subscribe( (resp: {ok: boolean, product: Product}) => {
 
           this.cantidadE.nativeElement.value = '';
           this.cantidadS.nativeElement.value = '';
+
+          this.producto.inventario = resp.product.inventario;
+
+          Swal.fire('Estupendo', 'Se ha actualizado el inventario exitosamente!', 'success');                   
 
         }, (err) =>{ Swal.fire('Error', err.error.msg, 'error'); });
   }

@@ -1924,6 +1924,15 @@ export class MesaComponent implements OnInit {
 
         });
   }
+
+  /** ============================================================================================
+   * PREFACTURA - PREFACTURA - PREFACTURA - PREFACTURA  
+  ==================================================================== */
+  prefactura(){
+
+    this.printerService.printDiv('copiaPre');
+
+  }
   
-  // FIN DE LA CLASE
+  // FIN DE LA CLASE 
 }

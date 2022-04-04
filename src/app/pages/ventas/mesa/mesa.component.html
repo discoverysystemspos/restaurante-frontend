@@ -59,7 +59,7 @@
                         <div class="card-body py-2 d-flex align-items-start flex-column">
 
                             <div>
-                                <p class="mb-0">cant. {{ producto.stock + ( producto.returned || 0 ) + ( producto.bought || 0 ) - (producto.sold || 0) - ( producto.damaged || 0) | number }}</p>
+                                <p class="mb-0">cant. {{ producto.inventario | number }}</p>
                                 <h5 class="card-title mb-1">{{ producto.name }}</h5>
                             </div>
                             <div class="col-12 mt-auto">
@@ -338,6 +338,7 @@
                             <button *ngIf="clienteTemp.cedula !== '' && carrito.length > 0 && facturar === true" (click)="focusMonto()" type="button" class="btn btn-primary btnW waves-effect waves-dark text-white" data-bs-toggle="modal" data-bs-target="#facturar"> <h4 class="display-6">Cobrar</h4></button>
                             <!-- <button type="button" class="btn btn-dark btnW waves-effect waves-dark text-white" data-bs-toggle="modal" data-bs-target="#facturar"> <h4 class="display-6">Facturar</h4></button> -->
                             <!-- <button (click)="crearPedido()" [disabled]="carrito.length === 0 || clienteTemp.cedula === '' || btnPedido === false" type="button" class="btn btn-info mt-2 btnW waves-effect waves-dark text-white"> Crear Pedido </button> -->
+                            <button (click)="prefactura()" type="button" class="btn btn-info mt-2 btnW waves-effect waves-dark text-white" data-bs-toggle="modal" data-bs-target="#prefactura"> Prefactura </button>
                         </div>
 
                         <div class="col ms-auto text-end" *ngIf="empresa">
@@ -1205,5 +1206,98 @@ Cambiar Mesa
 </div>
 
 <!-- =========================================================================
-COMANDAS
+CAMBIAR MESA
+========================================================================= -->
+
+<!-- =========================================================================
+PREFACTURA
+========================================================================= -->
+<div class="modal fade" id="prefactura" tabindex="-1" aria-labelledby="prefactura" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="prefactura">
+                    <i class="bi-reciept" style="font-size: 1rem"></i> Prefactura </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <div id="copiaPre" style="width: 24rem; color:black; background: white;">
+
+                    <!-- EMPRESA -->
+                    <div class="card-body px-1 mb-2" style="border-bottom: 2px solid black;" *ngIf="empresa">
+
+                        <h4 class="card-title mb-0 text-wrap text-center"> {{ empresa.name }} </h4>
+                        <p class="mb-0 text-wrap fw-bolder text-center lh-sm" *ngIf="empresa.nit">{{ empresa.nit }}</p>
+                        <p class="mb-0 text-center text-wrap" style="font-size: 0.7rem;"> </p>
+                        <p class="mb-0 text-wrap text-center" *ngIf="empresa.address">{{ empresa.address }}</p>
+                        <p class="mb-0 text-wrap text-center" *ngIf="empresa.phone">{{ empresa.phone }}</p>
+
+                        <p *ngIf="!empresa.responsable" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">No responsable de IVA</p>
+                        <p *ngIf="empresa.responsable && !empresa.impuestoconsumo" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Responsable de iva</p>
+                        <p *ngIf="empresa.responsable && empresa.impuestoconsumo" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Responsable nacional al consumo</p>
+
+                        <p *ngIf="empresa.responsable" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Resolución: {{ empresa.resolucion }}</p>
+                        <!-- <p *ngIf="empresa.responsable" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;"> 2021/03 /11</p> -->
+                        <p *ngIf="empresa.responsable" class="mb-1 text-wrap text-center" style="font-size: 0.7rem;">Prefijo Pos: {{ empresa.prefijopos }}</p>
+
+                    </div>
+                    <!-- EMPRESA -->
+
+                    <div class="table-responsive">
+
+                        <table class="table table-sm table-striped align-middle">
+                            <thead>
+                                <tr class="align-middle">
+                                    <th scope="col">Item</th>
+                                    <th scope="col">Precio</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Monto</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr *ngIf="carrito.length === 0">
+                                    <th scope="row" colspan="5"> No has seleccionado ningun producto</th>
+                                </tr>
+
+                                <tr *ngFor="let producto of carrito">
+                                    <th scope="row"> {{ producto.product.name }} </th>
+                                    <td> {{ producto.price | currency }} </td>
+                                    <td class="text-center"> {{ producto.qty | number }} </td>
+                                    <td> {{ (producto.qty * producto.price) | currency }} </td>
+                                </tr>
+
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4" class="text-end">
+                                        <div class="col ms-auto text-end" *ngIf="empresa">
+                                            <p class="h6 fw-bold mb-0" *ngIf="!empresa.responsable">Sub-total {{ total / 1 | currency }}</p>
+                                            <p class="h6 fw-bold mb-0" *ngIf="empresa.responsable">Sub-total {{ total - iva | currency }}</p>
+                                            <p class="h6 fw-bold mb-0" *ngIf="empresa.responsable">IVA {{ iva | currency }}</p>
+                                            <h4 class="fw-bold" *ngIf="!empresa.responsable">TOTAL {{ total | currency }}</h4>
+                                            <h4 class="fw-bold" *ngIf="empresa.responsable">TOTAL {{ total | currency }}</h4>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+
+                    </div>
+
+
+
+                </div>
+                <button type="button" class="btn btn-primary btn-lg btn-block" (click)="prefactura()">imprimir</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =========================================================================
+PREFACTURA
 ========================================================================= -->

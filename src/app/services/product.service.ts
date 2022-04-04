@@ -118,6 +118,20 @@ export class ProductService {
   }
 
   /** ================================================================
+   *   REPAIR INVENTARIO
+  ==================================================================== */
+  repararInventario(){
+    return this.http.put(`${base_url}/products/repair/inventario`, '',this.headers);
+  }
+
+  /** ================================================================
+   *   AJUSTAR INVENTARIO
+  ==================================================================== */
+  ajustarInventario(id: string, data: any){
+    return this.http.put(`${base_url}/products/ajustar/inventario/${id}`, data,this.headers);
+  }
+
+  /** ================================================================
    *   DELETE PRODUCTO
   ==================================================================== */
   deleteProduct( _id: string){

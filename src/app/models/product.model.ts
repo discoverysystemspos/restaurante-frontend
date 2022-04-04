@@ -39,7 +39,8 @@ export class Product {
         public comanda?: boolean,
         public tipo?: string,
         public tax?: boolean,
-        public impuesto?: Impuesto[]
+        public impuesto?: Impuesto[],
+        public inventario?: number,
     ){}
 
     /** ================================================================

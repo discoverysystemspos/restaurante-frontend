@@ -314,5 +314,37 @@ export class ProductosComponent implements OnInit {
         });
   }
 
+  /** ================================================================
+   *   REPARAR INVENTARIO
+  ==================================================================== */
+  repararInventario(){
+
+    Swal.fire({
+      title: 'Atencion',
+      text: "Estas seguro de que necesitas reparar el inventario?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, reparar ahora',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {  
+      
+      if (result.isConfirmed) {
+
+        this.productService.repararInventario()
+            .subscribe( ( resp:{products:number}) => {
+              
+              Swal.fire('Estupendo', `Se han corregido ${resp.products} productos`, 'success');
+              this.cargarProductos('none', false);
+              
+            },(err) => { Swal.fire('Error', err.error.msg,'error') });
+
+      }
+
+    });
+
+  }
+
   // FIN DE LA CLASE
 }

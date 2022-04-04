@@ -33,14 +33,12 @@
                     <p class="mb-0">Stock</p>
                     <ng-container *ngIf="producto">
                         <h4 class="display-6" *ngIf="producto.type != 'Granel'">
-                            {{ producto.stock + ( producto.returned || 0 ) + ( producto.bought || 0 ) - (producto.sold || 0) - ( producto.damaged || 0) | number }}
+                            {{ producto.inventario | number }}
                         </h4>
                         <h4 class="display-6" *ngIf="producto.type === 'Granel'">
-                            {{ producto.stock + ( producto.returned || 0 ) + ( producto.bought || 0 ) - (producto.sold || 0) - ( producto.damaged || 0) | number:'1.3' }}
+                            {{ producto.inventario | number:'1.3' }}
                         </h4>
                     </ng-container>
-
-
 
                 </div>
             </div>
