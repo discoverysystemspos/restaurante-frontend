@@ -338,7 +338,7 @@
                             <button *ngIf="clienteTemp.cedula !== '' && carrito.length > 0 && facturar === true" (click)="focusMonto()" type="button" class="btn btn-primary btnW waves-effect waves-dark text-white" data-bs-toggle="modal" data-bs-target="#facturar"> <h4 class="display-6">Cobrar</h4></button>
                             <!-- <button type="button" class="btn btn-dark btnW waves-effect waves-dark text-white" data-bs-toggle="modal" data-bs-target="#facturar"> <h4 class="display-6">Facturar</h4></button> -->
                             <!-- <button (click)="crearPedido()" [disabled]="carrito.length === 0 || clienteTemp.cedula === '' || btnPedido === false" type="button" class="btn btn-info mt-2 btnW waves-effect waves-dark text-white"> Crear Pedido </button> -->
-                            <button (click)="prefactura()" type="button" class="btn btn-info mt-2 btnW waves-effect waves-dark text-white" data-bs-toggle="modal" data-bs-target="#prefactura"> Prefactura </button>
+                            <button (click)="timeCommand()" type="button" class="btn btn-info mt-2 btnW waves-effect waves-dark text-white" data-bs-toggle="modal" data-bs-target="#prefactura"> Prefactura </button>
                         </div>
 
                         <div class="col ms-auto text-end" *ngIf="empresa">
@@ -1241,6 +1241,7 @@ PREFACTURA
                         <p *ngIf="empresa.responsable" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Resolución: {{ empresa.resolucion }}</p>
                         <!-- <p *ngIf="empresa.responsable" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;"> 2021/03 /11</p> -->
                         <p *ngIf="empresa.responsable" class="mb-1 text-wrap text-center" style="font-size: 0.7rem;">Prefijo Pos: {{ empresa.prefijopos }}</p>
+                        <p class="mb-1 text-wrap text-center" style="font-size: 0.7rem;">Fecha: {{ timeComanda | date: 'medium' }}</p>
 
                     </div>
                     <!-- EMPRESA -->
@@ -1274,11 +1275,13 @@ PREFACTURA
                                 <tr>
                                     <td colspan="4" class="text-end">
                                         <div class="col ms-auto text-end" *ngIf="empresa">
-                                            <p class="h6 fw-bold mb-0" *ngIf="!empresa.responsable">Sub-total {{ total / 1 | currency }}</p>
-                                            <p class="h6 fw-bold mb-0" *ngIf="empresa.responsable">Sub-total {{ total - iva | currency }}</p>
-                                            <p class="h6 fw-bold mb-0" *ngIf="empresa.responsable">IVA {{ iva | currency }}</p>
-                                            <h4 class="fw-bold" *ngIf="!empresa.responsable">TOTAL {{ total | currency }}</h4>
-                                            <h4 class="fw-bold" *ngIf="empresa.responsable">TOTAL {{ total | currency }}</h4>
+                                            <p class="h6 fw-bold mb-0" *ngIf="!empresa.responsable">Sub-total: {{ total / 1 | currency }}</p>
+                                            <p class="h6 fw-bold mb-0" *ngIf="empresa.responsable">Sub-total: {{ total - iva | currency }}</p>
+                                            <p class="h6 fw-bold mb-0" *ngIf="empresa.responsable">IVA: {{ iva | currency }}</p>
+                                            <p class="fw-bold mb-0" [ngClass]="{'h4': empresa.tip === false, 'h6': empresa.tip }" *ngIf="!empresa.responsable">Total: {{ total | currency }}</p>
+                                            <p class="fw-bold mb-0" [ngClass]="{'h4': empresa.tip === false, 'h6': empresa.tip }" *ngIf="empresa.responsable">Total: {{ total | currency }}</p>
+                                            <p class="h6 fw-bold mb-0" *ngIf="empresa.tip"> Propina del {{empresa.propina}}%: {{ total * (empresa.propina/100) | currency }}</p>
+                                            <p class="h4 fw-bold mb-0" *ngIf="empresa.tip"> Total + Propina: {{ total * ((empresa.propina/100) + 1) | currency }}</p>
                                         </div>
                                     </td>
                                 </tr>
