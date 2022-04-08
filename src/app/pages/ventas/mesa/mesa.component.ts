@@ -492,16 +492,7 @@ export class MesaComponent implements OnInit {
           // GUARDAR AL CARRITO
 
           return;
-        }else{
-
-          const qty:number = 1;
-
-          // GUARDAR AL CARRITO
-          this.carritoTemp(product, qty, product.price);
-          // GUARDAR AL CARRIT
-
-          return;
-        }                
+        }              
         
       });
 

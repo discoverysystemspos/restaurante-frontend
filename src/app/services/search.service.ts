@@ -35,12 +35,14 @@ export class SearchService {
    *   SEARCH
   ==================================================================== */
   search(
-      tipo: 'users'|'clients' |'departments'|'products' |'caja' |'mesa' |'turno'|'log' | 'categorias' | 'invoice',
-      termino: string
+      tipo: 'users'|'clients' |'departments'|'products' |'caja' |'mesa' |'turno'|'log' | 'categorias' | 'invoice' | 'pedidos',
+      termino: string,
+      parametros: boolean = false,
+      query: string = ''
     ){
+      let endPoint = `/search/${tipo}/${termino}?${query}`;
 
-    const endPoint = `/search/${tipo}/${termino}`;
-    return this.http.get<any[]>(`${base_url}${endPoint}`, this.headers)
+      return this.http.get<any[]>(`${base_url}${endPoint}`, this.headers)
             .pipe(
               map( (resp: any) => {              
                 return resp;

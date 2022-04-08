@@ -56,9 +56,9 @@ export class PedidosService {
   /** ================================================================
    *  LOAD PEDIDOS
   ==================================================================== */
-  loadPedidos(){
+  loadPedidos(query: string = ''){
 
-    return this.http.get<LoadPedido>(`${base_url}/pedidos`, this.headers)
+    return this.http.get<LoadPedido>(`${base_url}/pedidos?${query}`, this.headers)
         .pipe(
           map( resp =>{
             return resp;

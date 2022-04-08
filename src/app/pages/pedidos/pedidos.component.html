@@ -32,19 +32,24 @@
 
         <div *ngIf="!cargando">
 
-            <div>
+            <div class="mb-3">
                 <div class="form-floating mb-2">
                     <span class="position-absolute top-50 start-90 translate-middle"><i class=" bi-search " style="font-size: 1rem "></i></span>
-                    <input type="text" class="form-control" id="floatingInput2" placeholder="Buscar Categoria" (keyup)="buscar(search.value)" #search>
+                    <input type="text" class="form-control" id="floatingInput2" placeholder="Buscar Categoria" (keyup)="buscar(search.value, mostrar.value)" #search>
                     <label for="floatingInput2 ">Buscar Pedido</label>
                 </div>
+                <div class="col-12 text-end">
+                    <label for="mostrar" class="me-2">Mostrar: </label>
+                    <select name="" id="" [value]="hasta" #mostrar (change)="hasta = mostrar.value" (change)="cargarPedidos()">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="250">250</option>
+                        <option value="500">500</option>
+                    </select>
+                </div>
             </div>
-
-            <!-- BTN CREAR Categoria -->
-            <div class="d-flex justify-content-end">
-                <button type="button" class="btn btn-sm btn-primary btnW waves-effect waves-ligth" disabled data-bs-toggle="modal" data-bs-target="#nuevoCategoria">Crear Pedido</button>
-            </div>
-            <!-- BTN CREAR Categoria -->
 
             <div class="table-responsive ">
                 <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
@@ -64,17 +69,18 @@
                             </th>
                         </tr>
                         <tr class="trHover" *ngFor="let pedido of pedidos; let i = index">
-                            <th *ngIf="desde === 0 " scope="row ">{{ pedido.pedido}}</th>
+                            <th scope="row ">{{ pedido.pedido}}</th>
 
                             <td colspan="2">
                                 <a class="btn btn-link p-1 text-primary" [routerLink]="['/dashboard/pedido', pedido.peid]">
-                                    {{ pedido.client.name }}
+                                    {{ pedido.client?.name }}
                                 </a>
                             </td>
                             <td>
                                 <span class="badge rounded-pill" [ngClass]="{   'bg-success': pedido.estado == 'Entregado', 
                                                                                 'bg-warning': pedido.estado == 'Pendiente',
-                                                                                'bg-danger': pedido.estado == 'Cancelado'
+                                                                                'bg-danger': pedido.estado == 'Cancelado',
+                                                                                'bg-info': pedido.estado == 'Procesando'
                                                                             }"> 
                                     {{ pedido.estado}} 
                                 </span>
@@ -94,15 +100,15 @@
             <!-- BTN SIGUIENTE Y ANTERIOR -->
             <div class="row">
                 <div class="col col-md-4">
-                    <small class="text-muted">Pedidos Totales: ({{totalDepartamentos}})</small>
+                    <small class="text-muted">Pedidos Totales: ({{totalPedidos}})</small>
                     <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
-                    <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + departmentos.length }})</small>
+                    <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: <span *ngIf="(pedidos[0].pedido - hasta) <= 0"> 1 </span> <span *ngIf="(pedidos[0].pedido - hasta) > 0" > {{ (pedidos[0].pedido - hasta) + 1 | number }} </span>  Hasta el: {{  pedidos[0].pedido }})</small>
                 </div>
 
-                <!-- <div *ngIf="search.value.length === 0" class="col d-flex justify-content-end">
+                <div *ngIf="search.value.length === 0" class="col d-flex justify-content-end">
                     <button type="button" (click)="cambiarPagina(-10)" class="{{btnAtras}} btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
                     <button type="button" (click)="cambiarPagina(10)" class="{{btnAdelante}} btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
-                </div> -->
+                </div>
             </div>
             <!-- BTN SIGUIENTE Y ANTERIOR -->
 
