@@ -59,7 +59,8 @@ export class ClientesComponent implements OnInit {
     city: [''],
     department: [''],
     zip: [''],
-    mayoreo: false
+    mayoreo: false,
+    contratista: false,
   });
 
   crearCliente(){
@@ -225,6 +226,7 @@ export class ClientesComponent implements OnInit {
     zip: [''],
     credit: false,
     mayoreo: false,
+    contratista: false,
   });
 
   // OBTENER LA INFORMACION DEL CLIENTE
@@ -242,7 +244,8 @@ export class ClientesComponent implements OnInit {
       department: cliente.department || '',
       zip: cliente.zip || '',
       credit : cliente.credit || false,
-      mayoreo : cliente.mayoreo || false
+      mayoreo : cliente.mayoreo || false,
+      contratista : cliente.contratista || false
 
     });
     

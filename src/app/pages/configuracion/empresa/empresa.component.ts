@@ -6,7 +6,7 @@ import { EmpresaService } from '../../../services/empresa.service';
 import { FileUploadService } from '../../../services/file-upload.service';
 
 // MODELS
-import { Datos } from '../../../models/empresa.model';
+import { Datos, comisiones } from '../../../models/empresa.model';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -31,16 +31,19 @@ export class EmpresaComponent implements OnInit {
   /** ================================================================
   *   CARGAR DATOS DE LA EMPRESA
   ==================================================================== */
+  public comisiones: comisiones[] = [];
   cargarDatos(){
 
     this.empresaService.getDatos()
         .subscribe( datos => {
 
           this.empresa = datos;
-          
-          const { tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas } = datos;
 
-          this.formUpdate.reset({ tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas });
+          this.comisiones = datos.comisiones || [];
+          
+          const { tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas, commissions, comisiones } = datos;
+
+          this.formUpdate.reset({ tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas, commissions, comisiones  });
 
         });
 
@@ -69,6 +72,8 @@ export class EmpresaComponent implements OnInit {
     comision: [0],
     bascula: false,
     comandas: false,
+    commissions: false,
+    comisiones: []
   })
 
   actualizarDatos(){
@@ -82,12 +87,12 @@ export class EmpresaComponent implements OnInit {
     this.empresaService.updateDatos(this.formUpdate.value, this.empresa.eid)
           .subscribe( (resp: {ok: boolean, datos: Datos}) =>{
             
+            this.formSubmitted = false;
+            this.formUpdate.reset();
             this.cargarDatos();
             
             Swal.fire('Estupendo', 'La empresa a sido actualizada', 'success');
             
-            this.formSubmitted = false;
-            this.formUpdate.reset();
 
           }, (err) =>{ Swal.fire('Error', err.error.msg, 'error') });
 
@@ -141,6 +146,51 @@ export class EmpresaComponent implements OnInit {
     
   }
 
+  /** ================================================================
+   *  AGREGAR COMISION
+  ==================================================================== */
+  agregarComision(monto: number, comision: number){
+
+    const validarComision = this.comisiones.findIndex( (resp) =>{      
+      if (resp.comision === comision ) {
+
+        Swal.fire('Error', 'Ya agregaste este porcentaje de comisión', 'error');
+        return true;
+      }else {
+
+        if (resp.monto === monto) {          
+          Swal.fire('Error', 'Ya agregaste este monto de comisión', 'error');
+          return true;
+        }
+
+        return false;
+      }
+    });
+
+    if (validarComision === -1) {
+      
+      this.comisiones.push({
+        activo: true,
+        monto,
+        comision
+      });
+      
+      this.formUpdate.value.comisiones = this.comisiones;
+      console.log(this.formUpdate.value);
+
+    }
+
+
+  }
+  
+  /** ================================================================
+   *  BORRAR COMISION
+  ==================================================================== */
+  borrarComision(i: any){
+
+    this.comisiones.splice(i,1);
+    this.formUpdate.value.comisiones = this.comisiones;
+  }
 
 
 

@@ -3,6 +3,13 @@ import { environment } from "../../environments/environment"
 
 const base_url = environment.base_url;
 
+export interface comisiones{
+    activo: boolean,
+    monto: number,
+    comision: number,
+    _id?: string,
+};
+
 export class Datos{
 
     constructor(
@@ -28,6 +35,8 @@ export class Datos{
         public comision?: number,
         public bascula?: boolean,
         public comandas?: boolean,
+        public commissions?: boolean,
+        public comisiones?: comisiones[]
     ){}
 
     /** ================================================================
