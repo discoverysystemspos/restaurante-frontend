@@ -52,11 +52,11 @@
                 Cobrar
             </button>
 
-            <button *ngIf="factura.pedido"  type="button" class="btn btn-outline-info btn-sm mx-1 my-2" [routerLink]="['/dashboard/pedido', factura.pedido]"  > 
+            <button *ngIf="factura.pedido" type="button" class="btn btn-outline-info btn-sm mx-1 my-2" [routerLink]="['/dashboard/pedido', factura.pedido]"> 
                 Ver pedido
             </button>
 
-            <button type="button" class="btn btn-danger btn-sm mx-1 my-2" (click)="downloadPDF()"  > 
+            <button type="button" class="btn btn-danger btn-sm mx-1 my-2" (click)="downloadPDF()"> 
                 PDF
             </button>
 
@@ -171,9 +171,9 @@
                                     <td><small class="text-wrap">{{ producto.product.code }}</small></td>
                                     <td colspan="2">{{ producto.product.name }}</td>
                                     <td>{{ producto.product.type }}</td>
-                                    <td>{{ producto.price | currency}}</td>
+                                    <td>{{ producto.price | currency: 'COP'}}</td>
                                     <td class="text-center">{{ producto.qty }}</td>
-                                    <td>{{ producto.price * producto.qty | currency}}</td>
+                                    <td>{{ producto.price * producto.qty | currency: 'COP'}}</td>
                                     <td>
                                         <button type="button" class="btn btn-link p-1 text-warning" (click)="devolverProducto(producto)">
                                         <i class="bi-arrow-90deg-left"></i>
@@ -202,18 +202,18 @@
                                 <div class="border-start col px-4" *ngIf="empresa">
 
                                     <!-- NO RESPONSABLE -->
-                                    <h6 class="mb-0 text-wrap text-primary text-rigth" *ngIf="!empresa.responsable"> {{ factura.base | currency }} </h6>
-                                    <h6 class="mb-0 text-wrap text-primary text-rigth" *ngIf="empresa.responsable"> {{ factura.base | currency }} </h6>
+                                    <h6 class="mb-0 text-wrap text-primary text-rigth" *ngIf="!empresa.responsable"> {{ factura.base | currency: 'COP' }} </h6>
+                                    <h6 class="mb-0 text-wrap text-primary text-rigth" *ngIf="empresa.responsable"> {{ factura.base | currency: 'COP' }} </h6>
                                     <!-- NO RESPONSABLE -->
 
                                     <h6 *ngIf="!empresa.responsable" class="mb-0 text-wrap text-primary text-left">No responsable de IVA</h6>
-                                    <h6 *ngIf="empresa.responsable && !empresa.impuestoconsumo" class="mb-0 text-wrap text-primary text-left">IVA {{empresa.tax}}% {{ iva | currency }}% </h6>
-                                    <h6 *ngIf="empresa.responsable && empresa.impuestoconsumo" class="mb-0 text-wrap text-primary text-left">Impuesto al consumo {{empresa.tax}}% {{iva | currency }} </h6>
+                                    <h6 *ngIf="empresa.responsable && !empresa.impuestoconsumo" class="mb-0 text-wrap text-primary text-left">IVA {{empresa.tax}}% {{ iva | currency: 'COP' }}% </h6>
+                                    <h6 *ngIf="empresa.responsable && empresa.impuestoconsumo" class="mb-0 text-wrap text-primary text-left">Impuesto al consumo {{empresa.tax}}% {{iva | currency: 'COP' }} </h6>
 
                                     <!-- TOTAL -->
-                                    <h5 *ngIf="empresa.responsable" class="display-6 fw-bold text-primary">{{ factura.amount | currency }}</h5>
+                                    <h5 *ngIf="empresa.responsable" class="display-6 fw-bold text-primary">{{ factura.amount | currency: 'COP' }}</h5>
 
-                                    <h5 *ngIf="!empresa.responsable" class="display-6 fw-bold text-primary">{{ factura.amount | currency }}</h5>
+                                    <h5 *ngIf="!empresa.responsable" class="display-6 fw-bold text-primary">{{ factura.amount | currency: 'COP' }}</h5>
                                     <!-- TOTAL -->
 
                                 </div>
@@ -269,14 +269,14 @@
                                             <span *ngIf="pay.description === ''">Sin descripción</span>
                                         </td>
                                         <td>{{ pay.type }}</td>
-                                        <td>{{ pay.amount | currency }} </td>
+                                        <td>{{ pay.amount | currency: 'COP' }} </td>
                                     </tr>
 
                                 </tbody>
                                 <tfoot>
                                     <tr class="border-top">
                                         <td colspan="2"> <span class="fw-bold"> Total </span></td>
-                                        <td> <span class="fw-bold">{{this.totalPagos | currency }}</span> </td>
+                                        <td> <span class="fw-bold">{{this.totalPagos | currency: 'COP' }}</span> </td>
                                     </tr>
                                 </tfoot>
 
@@ -334,7 +334,7 @@
                                 <!-- TOTAL -->
                                 <div class="text-center my-3">
                                     <ng-container *ngIf="factura">
-                                        <h4 class="display-4 text-primary">{{ factura.amount | currency }}</h4>
+                                        <h4 class="display-4 text-primary">{{ factura.amount | currency: 'COP' }}</h4>
                                     </ng-container>
 
 
@@ -343,7 +343,7 @@
                                     <h4 class="mb-0 fw-normal animated fadeIn" [ngClass]=" {   'text-danger': totalPagos < factura.amount, 
                                                         'text-success': totalPagos >= factura.amount
                                                     }" *ngIf="totalPagos > 0">
-                                        {{ vueltos | currency }}
+                                        {{ vueltos | currency: 'COP' }}
                                     </h4>
 
                                 </div>
@@ -438,7 +438,7 @@
                                                                 <td>
                                                                     <p class="mb-0">{{ control.type }} <span *ngIf="control.description">- {{ control.description }}</span></p>
                                                                 </td>
-                                                                <td> {{ control.amount | currency }} </td>
+                                                                <td> {{ control.amount | currency: 'COP' }} </td>
                                                                 <td>
                                                                     <button type="button" class="btn btn-link p-1 text-danger text-right" (click)="eliminarPagos(control)"> <i class="bi-trash"></i> </button>
                                                                 </td>

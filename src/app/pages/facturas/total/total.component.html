@@ -13,10 +13,10 @@
             <div class="shadow-lg p-3 mb-5 rounded bg-white text-wrap">
 
                 <!-- BUSCADOR DE CLIENTES  -->
-                <div class="mb-3">                
-                    
+                <div class="mb-3">
+
                     <h4 class="text-muted">Buscar Cliente</h4>
-                    <div >
+                    <div>
                         <input type="text" class="form-control" placeholder="buscar cliente" (keyup)="buscarCliente(searchClient.value)" #searchClient>
                     </div>
 
@@ -55,7 +55,7 @@
                     </div>
                 </div>
                 <!-- BUSCADOR DE CLIENTES  -->
-                
+
                 <h4 class="text-muted">Filtros</h4>
 
                 <div>
@@ -117,7 +117,7 @@
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1">
                                         <div class="small font-weight-bold text-primary mb-1">Monto Total Facturas</div>
-                                        <div class="h5">({{totalAmount | currency}})</div>
+                                        <div class="h5">({{totalAmount | currency: 'COP'}})</div>
                                         <div class="text-xs font-weight-bold text-success d-inline-flex align-items-center">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up mr-1"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
                                         </div>
@@ -137,7 +137,7 @@
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1">
                                         <div class="small font-weight-bold text-success mb-1">Ganancia</div>
-                                        <div class="h5"> {{ totalAmount - totalCost | currency }} </div>
+                                        <div class="h5"> {{ totalAmount - totalCost | currency: 'COP' }} </div>
                                         <div class="text-xs font-weight-bold text-success d-inline-flex align-items-center">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up mr-1"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
                                         </div>
@@ -158,7 +158,7 @@
                                     <div class="d-flex align-items-center">
                                         <div class="flex-grow-1">
                                             <div class="small font-weight-bold text-info mb-1">Comision</div>
-                                            <div class="h5"> ({{ (totalAmount * empresa.comision)/100 | currency}}) </div>
+                                            <div class="h5"> ({{ (totalAmount * empresa.comision)/100 | currency: 'COP'}}) </div>
                                             <div class="text-xs font-weight-bold text-info d-inline-flex align-items-center">
                                                 {{ empresa.comision }}%
                                             </div>
@@ -254,7 +254,7 @@
                                         </td>
                                         <td> {{ factura.client?.cedula }} </td>
                                         <td colspan="2"> {{ factura.mesa?.name }} </td>
-                                        <td> {{ factura.amount | currency }} </td>
+                                        <td> {{ factura.amount | currency: 'COP' }} </td>
                                         <td> {{ factura.type }} </td>
                                         <td> {{ factura.fecha | date:'medium' }} </td>
                                         <td class="text-center">

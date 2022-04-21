@@ -43,23 +43,23 @@
 
                             <tr>
                                 <td colspan="2"> <small> Fondo Caja </small> </td>
-                                <td> {{ inicial | currency }}</td>
+                                <td> {{ inicial | currency: 'COP' }}</td>
                             </tr>
                             <tr>
                                 <td colspan="2"> <small> Ventas en efectivo </small> </td>
-                                <td> {{ efectivo | currency }} </td>
+                                <td> {{ efectivo | currency: 'COP' }} </td>
                             </tr>
                             <tr>
                                 <td colspan="2"> <small> Entradas </small> </td>
-                                <td> {{ entradas | currency }} </td>
+                                <td> {{ entradas | currency: 'COP' }} </td>
                             </tr>
                             <tr class="text-danger">
                                 <td colspan="2"> <small> Salidas </small> </td>
-                                <td> {{ salidas | currency }} </td>
+                                <td> {{ salidas | currency: 'COP' }} </td>
                             </tr>
                             <tr class="border-top">
                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                <td class="fw-bold"> {{ inicial + efectivo + abEfectivo + entradas + salidas | currency }} </td>
+                                <td class="fw-bold"> {{ inicial + efectivo + abEfectivo + entradas + salidas | currency: 'COP' }} </td>
                             </tr>
 
                         </tbody>
@@ -84,19 +84,19 @@
 
                             <tr>
                                 <td colspan="2"> <small> En Efectivo </small> </td>
-                                <td> {{ efectivo | currency }} </td>
+                                <td> {{ efectivo | currency: 'COP' }} </td>
                             </tr>
                             <tr>
                                 <td colspan="2"> <small> Con tarjeta </small> </td>
-                                <td> {{ tarjeta | currency }} </td>
+                                <td> {{ tarjeta | currency: 'COP' }} </td>
                             </tr>
                             <tr>
                                 <td colspan="2"> <small> Con Transferencia </small> </td>
-                                <td> {{ transferencia | currency }} </td>
+                                <td> {{ transferencia | currency: 'COP' }} </td>
                             </tr>
                             <tr class="border-top">
                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + credito + vales | currency }} </td>
+                                <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + credito + vales | currency: 'COP' }} </td>
                             </tr>
 
 
@@ -114,7 +114,7 @@
 
                 <div class="card-body text-white">
                     <h4 class="card-title mb-0 text-center">Ventas Totales</h4>
-                    <h5 class="text-center"> {{ montos | currency }} </h5>
+                    <h5 class="text-center"> {{ montos | currency: 'COP' }} </h5>
                 </div>
 
             </div>
@@ -123,7 +123,7 @@
 
                 <div class="card-body text-white">
                     <h4 class="card-title mb-0 text-center">Ganancia Total</h4>
-                    <h5 class="text-center"> {{ montos - costo | currency }} </h5>
+                    <h5 class="text-center"> {{ montos - costo | currency: 'COP' }} </h5>
                 </div>
 
             </div>
@@ -153,7 +153,7 @@
 
                                     <td colspan="2"> <small> {{ movimiento.descripcion }} </small> </td>
                                     <td [ngClass]="{ 'text-danger':  movimiento.type == 'salida'}">
-                                        {{ movimiento.monto | currency }}
+                                        {{ movimiento.monto | currency: 'COP' }}
                                     </td>
                                 </tr>
 
@@ -163,7 +163,7 @@
 
                             <tr class="border-top">
                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                <td class="fw-bold"> {{ salidas | currency }} </td>
+                                <td class="fw-bold"> {{ salidas | currency: 'COP' }} </td>
                             </tr>
 
                         </tbody>
@@ -193,7 +193,7 @@
 
                                     <td colspan="2"> <small> {{ movimiento.descripcion }} </small> </td>
                                     <td [ngClass]="{ 'text-danger':  movimiento.type == 'salida'}">
-                                        {{ movimiento.monto | currency }}
+                                        {{ movimiento.monto | currency: 'COP' }}
                                     </td>
                                 </tr>
 
@@ -201,7 +201,7 @@
 
                             <tr class="border-top">
                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                <td class="fw-bold"> {{ entradas | currency }} </td>
+                                <td class="fw-bold"> {{ entradas | currency: 'COP' }} </td>
                             </tr>
 
                         </tbody>
@@ -284,7 +284,7 @@
                         <tbody>
                             <tr>
                                 <td scope="row">Efectivo esperado en caja:</td>
-                                <td>{{ inicial + efectivo + abEfectivo + entradas + salidas | currency }}</td>
+                                <td>{{ inicial + efectivo + abEfectivo + entradas + salidas | currency: 'COP' }}</td>
                             </tr>
                             <tr>
                                 <td scope="row">Cuanto efectivo hay en caja</td>
@@ -299,7 +299,7 @@
                                 <td [ngClass]=" {   'text-danger': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) !== 0, 
                                 'text-success': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) > 0
                             }">
-                                    {{ cajaA.value - (inicial + efectivo + abEfectivo + entradas + salidas) | currency}}
+                                    {{ cajaA.value - (inicial + efectivo + abEfectivo + entradas + salidas) | currency: 'COP'}}
                                 </td>
                             </tr>
                         </tbody>
@@ -333,7 +333,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th scope="row">{{ montoDiferencia | currency }} </th>
+                                    <th scope="row">{{ montoDiferencia | currency: 'COP' }} </th>
                                 </tr>
                             </tbody>
                         </table>
@@ -350,7 +350,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th scope="row">{{ efectivo + credito + tarjeta + transferencia + vales | currency }} </th>
+                                    <th scope="row">{{ efectivo + credito + tarjeta + transferencia + vales | currency: 'COP' }} </th>
                                 </tr>
                             </tbody>
                         </table>
@@ -367,7 +367,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th scope="row">{{ (efectivo + credito + tarjeta + transferencia + vales) - costo | currency }} </th>
+                                    <th scope="row">{{ (efectivo + credito + tarjeta + transferencia + vales) - costo | currency: 'COP' }} </th>
                                 </tr>
                             </tbody>
                         </table>
@@ -388,27 +388,27 @@
 
                                 <tr>
                                     <td colspan="2"> <small> Fondo Caja </small> </td>
-                                    <td> {{ inicial | currency }}</td>
+                                    <td> {{ inicial | currency: 'COP' }}</td>
                                 </tr>
                                 <tr>
                                     <td colspan="2"> <small> Ventas en efectivo </small> </td>
-                                    <td> {{ efectivo | currency }} </td>
+                                    <td> {{ efectivo | currency: 'COP' }} </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2"> <small> Abonos en efectivo </small> </td>
-                                    <td> {{ abEfectivo | currency }} </td>
+                                    <td> {{ abEfectivo | currency: 'COP' }} </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2"> <small> Entradas </small> </td>
-                                    <td> {{ entradas | currency }} </td>
+                                    <td> {{ entradas | currency: 'COP' }} </td>
                                 </tr>
                                 <tr class="text-danger">
                                     <td colspan="2"> <small> Salidas </small> </td>
-                                    <td> {{ salidas | currency }} </td>
+                                    <td> {{ salidas | currency: 'COP' }} </td>
                                 </tr>
                                 <tr class="border-top">
                                     <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                    <td class="fw-bold"> {{ inicial + efectivo + abEfectivo + entradas + salidas | currency }} </td>
+                                    <td class="fw-bold"> {{ inicial + efectivo + abEfectivo + entradas + salidas | currency: 'COP' }} </td>
                                 </tr>
 
                             </tbody>
@@ -430,19 +430,19 @@
 
                                     <tr>
                                         <td colspan="2"> <small> En Efectivo </small> </td>
-                                        <td> {{ efectivo | currency }} </td>
+                                        <td> {{ efectivo | currency: 'COP' }} </td>
                                     </tr>
                                     <tr>
                                         <td colspan="2"> <small> Con tarjeta </small> </td>
-                                        <td> {{ tarjeta | currency }} </td>
+                                        <td> {{ tarjeta | currency: 'COP' }} </td>
                                     </tr>
                                     <tr>
                                         <td colspan="2"> <small> Con Transferencia </small> </td>
-                                        <td> {{ transferencia | currency }} </td>
+                                        <td> {{ transferencia | currency: 'COP' }} </td>
                                     </tr>
                                     <tr class="border-top">
                                         <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                        <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + credito + vales | currency }} </td>
+                                        <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + credito + vales | currency: 'COP' }} </td>
                                     </tr>
 
 
@@ -470,7 +470,7 @@
 
                                             <td colspan="2"> <small> {{ movimiento.descripcion }} </small> </td>
                                             <td [ngClass]="{ 'text-danger':  movimiento.type == 'salida'}">
-                                                {{ movimiento.monto | currency }}
+                                                {{ movimiento.monto | currency: 'COP' }}
                                             </td>
                                         </tr>
 
@@ -478,7 +478,7 @@
 
                                     <tr class="border-top">
                                         <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                        <td class="fw-bold"> {{ entradas | currency }} </td>
+                                        <td class="fw-bold"> {{ entradas | currency: 'COP' }} </td>
                                     </tr>
 
                                 </tbody>
@@ -506,7 +506,7 @@
 
                                             <td colspan="2"> <small> {{ movimiento.descripcion }} </small> </td>
                                             <td [ngClass]="{ 'text-danger':  movimiento.type == 'salida'}">
-                                                {{ movimiento.monto | currency }}
+                                                {{ movimiento.monto | currency: 'COP' }}
                                             </td>
                                         </tr>
 
@@ -514,7 +514,7 @@
 
                                     <tr class="border-top">
                                         <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                        <td class="fw-bold"> {{ salidas | currency }} </td>
+                                        <td class="fw-bold"> {{ salidas | currency: 'COP' }} </td>
                                     </tr>
 
                                 </tbody>

@@ -92,7 +92,7 @@
                                         </td>
                                         <td> {{ factura.client?.cedula }} </td>
                                         <td colspan="2"> {{ factura.mesa?.name }} </td>
-                                        <td> {{ factura.amount | currency }} </td>
+                                        <td> {{ factura.amount | currency: 'COP' }} </td>
                                         <td> {{ factura.type }} </td>
                                         <td> {{ factura.fecha | date:'medium' }} </td>
                                         <td class="text-center">

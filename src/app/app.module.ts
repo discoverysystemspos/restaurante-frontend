@@ -1,9 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { LOCALE_ID, NgModule } from '@angular/core';
 
-import localEs from '@angular/common/locales/es'
+import localEs from '@angular/common/locales/es-CO'
 import { registerLocaleData } from '@angular/common'
-registerLocaleData(localEs, 'es');
+
+registerLocaleData(localEs, 'es-CO');
 
 // MODULES
 import { AppRoutingModule } from './app-routing.module';
@@ -34,7 +35,7 @@ import { PipesModule } from './pipes/pipes.module';
     NgbModule,
     PipesModule
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'es' }],
+  providers: [{ provide: LOCALE_ID, useValue: 'es-CO' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -124,9 +124,9 @@
                                     </div>
 
                                     <div class="ms-auto text-end">
-                                        <h4 class="mb-0 text-success"> Ganancia total {{ totalPrice - totalCost | currency}} </h4>
-                                        <small class="mb-0 text-muted"> Total de venta {{ totalPrice | currency}} </small>
-                                        <small class="mb-0 text-muted"> Total de inversión {{ totalCost | currency}} </small>
+                                        <h4 class="mb-0 text-success"> Ganancia total {{ totalPrice - totalCost | currency: 'COP'}} </h4>
+                                        <small class="mb-0 text-muted"> Total de venta {{ totalPrice | currency: 'COP'}} </small>
+                                        <small class="mb-0 text-muted"> Total de inversión {{ totalCost | currency: 'COP'}} </small>
                                         <div class="my-2">
 
                                             <button (click)="exportar()" class="btn btn-success btn-sm"> Exportar</button>
@@ -151,10 +151,10 @@
                                             Inventario: <span class="fw-bold"> {{ inventarioB | number }} </span>
                                         </div>
                                         <div class="col-sm-12 col-md-4 text-wrap">
-                                            Total Inversion: <span class="fw-bold"> {{ costoB | currency }} </span>
+                                            Total Inversion: <span class="fw-bold"> {{ costoB | currency: 'COP' }} </span>
                                         </div>
                                         <div class="col-sm-12 col-md-4 text-wrap">
-                                            Total Venta: <span class="fw-bold"> {{ precioB | currency }} </span>
+                                            Total Venta: <span class="fw-bold"> {{ precioB | currency: 'COP' }} </span>
                                         </div>
 
                                     </div>
@@ -216,10 +216,10 @@
 
                                                 </td>
                                                 <td>{{ producto.type }}</td>
-                                                <td>{{ producto.cost | currency }}</td>
+                                                <td>{{ producto.cost | currency: 'COP' }}</td>
                                                 <td>{{ producto.gain }}%</td>
-                                                <td>{{ producto.price | currency }}</td>
-                                                <td>{{ producto.wholesale | currency }}</td>
+                                                <td>{{ producto.price | currency: 'COP' }}</td>
+                                                <td>{{ producto.wholesale | currency: 'COP' }}</td>
                                                 <td class="text-center">
                                                     <a [routerLink]="['/dashboard/producto', producto.pid]" class="btn btn-link p-1 text-primary"><i class="bi bi-box-arrow-up-right"></i></a>
                                                     <button type="button" (click)="borrarProducto(producto.pid)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>

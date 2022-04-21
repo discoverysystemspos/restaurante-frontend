@@ -62,7 +62,7 @@
 
                         <div class="mt-auto w-100">
 
-                            <p class="mb-0 text-success">{{ producto.price | currency }}</p>
+                            <p class="mb-0 text-success">{{ producto.price | currency: 'COP' }}</p>
 
                             <button type="button" [disabled]="producto.out &&  
                                             producto.type !== 'Paquete' || producto.vencido" (click)="btnAddProducto( producto, 1, producto.price )" class="btn btn-link btn-primary text-white w-100 mx-auto" style="font-size: 1rem;">
@@ -133,16 +133,16 @@
                                         <button [disabled]="mesa?.menu" (click)="eliminarProductoCarrito(i, producto.product)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
                                     </td>
                                     <th scope="row"> {{ producto.product.name }} </th>
-                                    <td> {{ producto.price | currency }} </td>
+                                    <td> {{ producto.price | currency: 'COP' }} </td>
                                     <td> {{ producto.qty | number }} </td>
-                                    <td> {{ (producto.qty * producto.price) | currency }} </td>
+                                    <td> {{ (producto.qty * producto.price) | currency: 'COP' }} </td>
                                 </tr>
 
                             </tbody>
                             <tfoot>
                                 <tr>
                                     <td colspan="4" class="text-end"> <span class="fw-bold">TOTAL</span> </td>
-                                    <td> <span class="fw-bold"> {{ this.total | currency }} </span> </td>
+                                    <td> <span class="fw-bold"> {{ this.total | currency: 'COP' }} </span> </td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -161,7 +161,7 @@
 
     <nav class="navbar fixed-bottom navbar-light bg-light ">
         <div class="container-fluid">
-            <a class="navbar-brand fw-bolder" href="#">TOTAL: <span class="fw-bold text-success"> {{ total | currency }} </span> </a>
+            <a class="navbar-brand fw-bolder" href="#">TOTAL: <span class="fw-bold text-success"> {{ total | currency: 'COP' }} </span> </a>
 
             <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#Carrito"> <i class="bi-list"></i> </button>
 

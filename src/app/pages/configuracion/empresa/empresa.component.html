@@ -255,7 +255,7 @@
                                                 <tbody>
                                                     <tr class="align-middle" *ngFor="let item of comisiones; let i = index">
                                                         <th class="align-middle" scope="row"> {{ i + 1 }} </th>
-                                                        <td class="align-middle"> {{ item.monto | currency}} </td>
+                                                        <td class="align-middle"> {{ item.monto | currency: 'COP'}} </td>
                                                         <td class="align-middle"> {{ (item.comision/100) | percent }} </td>
                                                         <td class="align-middle"> <button type="button" (click)="borrarComision(i)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button> </td>
                                                     </tr>
