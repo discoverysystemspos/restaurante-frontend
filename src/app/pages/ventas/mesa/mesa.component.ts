@@ -1287,7 +1287,8 @@ export class MesaComponent implements OnInit {
     base:[''],
     pago: [0],
     vueltos: [0],
-    nota: ['']
+    nota: [''],
+    apartado: false
   })
 
   /** ================================================================
@@ -1415,6 +1416,7 @@ export class MesaComponent implements OnInit {
 
     if(!this.credit){
 
+      this.invoiceForm.value.apartado = false;
       if (this.totalPagos < this.total) {
         Swal.fire('Importante', 'El monto del pago es diferente al del total, porfavor verificar', 'warning');
         return;      
@@ -1426,8 +1428,6 @@ export class MesaComponent implements OnInit {
         return;      
       }   
     }
-
-
 
     try {
 
@@ -1447,7 +1447,8 @@ export class MesaComponent implements OnInit {
         base: this.base,
         pago: this.pago,
         vueltos: this.vueltos,
-        nota: this.invoiceForm.value.nota
+        nota: this.invoiceForm.value.nota,
+        apartado: this.invoiceForm.value.apartado
       });      
       
       this.invoiceService.createInvoice(this.invoiceForm.value, this.user.turno)

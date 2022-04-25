@@ -236,7 +236,7 @@
                                         <td colspan="2">
                                             {{ factura.client?.name }}
                                             <span *ngIf="!factura.status" class="badge rounded-pill bg-danger">Cancelada</span>
-                                            <span *ngIf="factura.credito && factura.status" class="badge rounded-pill bg-warning">Credito</span>
+                                            <span *ngIf="factura.credito && factura.status" class="badge rounded-pill bg-warning">Credito <small *ngIf="factura.apartado">- Apartado</small> </span>
                                         </td>
                                         <td> {{ factura.client?.cedula }} </td>
                                         <td colspan="2"> {{ factura.mesa?.name }} </td>

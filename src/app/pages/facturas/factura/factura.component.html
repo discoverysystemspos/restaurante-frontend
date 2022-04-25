@@ -71,7 +71,7 @@
                 <div id="printDiv">
 
                     <!-- SI ES A CREDITO -->
-                    <span *ngIf="factura.credito" class="badge rounded-pill bg-warning text-dark mb-2">A Credito</span>
+                    <span *ngIf="factura.credito" class="badge rounded-pill bg-warning text-dark mb-2">A Credito <span *ngIf="factura.apartado">- Apartado </span> </span>
 
                     <!-- INFORMACION DEL CLIENTE -->
                     <div class="row">

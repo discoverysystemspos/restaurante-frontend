@@ -446,20 +446,20 @@
 <!-- =========================================================================
     LISTAR FACTURAS A CREDITOS  
 ========================================================================= -->
-<div class="modal fade " id="credito " tabindex="-1 " aria-labelledby="nuevoClienteModal " aria-hidden="true ">
+<div class="modal fade" id="credito" tabindex="-1" aria-labelledby="creditoModal" aria-hidden="true" #mdlCredito>
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg ">
         <div class="modal-content ">
             <div class="modal-header ">
 
                 <div *ngIf="clienteCredito ">
-                    <h5 class="modal-title " id="nuevoClienteModal ">
+                    <h5 class="modal-title " id="creditoModal ">
                         <i class="bi-calendar-event " style="font-size: 2rem "></i> LISTAR FACTURAS A CREDITOS
                     </h5>
-                    <p class="mb-0 text-muted ">{{ clienteCredito.name}} - {{ clienteCredito.cedula}} </p>
-                    <p class="mb-0 text-muted ">{{ clienteCredito.phone}} </p>
+                    <p class="mb-0 text-muted ">{{ clienteCredito?.name}} - {{ clienteCredito?.cedula}} </p>
+                    <p class="mb-0 text-muted ">{{ clienteCredito?.phone}} </p>
                 </div>
 
-                <button type="button " class="btn-close " data-bs-dismiss="modal " aria-label="Close "></button>
+                <button type="button " class="btn-close " data-bs-dismiss="modal "></button>
             </div>
             <div class="modal-body ">
 
@@ -493,7 +493,7 @@
                                     <td colspan="2 ">
                                         {{ factura.client.name }}
                                         <span *ngIf="!factura.status " class="badge rounded-pill bg-danger ">Cancelada</span>
-                                        <span *ngIf="factura.credito && factura.status " class="badge rounded-pill bg-warning ">Credito</span>
+                                        <span *ngIf="factura.credito && factura.status " class="badge rounded-pill bg-warning ">Credito <span *ngIf="factura.apartado" >- Apartado </span> </span>
                                     </td>
                                     <td> {{ factura.client.cedula }} </td>
                                     <td colspan="2 "> {{ factura.mesa.name }} </td>
@@ -515,7 +515,7 @@
 
             </div>
             <div class="modal-footer ">
-                <button type="button " class="btn btn-secondary " data-bs-dismiss="modal ">Cerrar</button>
+                <button type="button " class="btn btn-secondary" data-bs-dismiss="modal ">Cerrar</button>
             </div>
         </div>
     </div>
