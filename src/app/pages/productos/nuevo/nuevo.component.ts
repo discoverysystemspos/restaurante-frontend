@@ -107,6 +107,66 @@ export class NuevoComponent implements OnInit {
 
             this.totalItems ++;
 
+            if( this.totalItems > 500 ){
+              setTimeout(function(){
+                console.log("Pausa de 30seg");
+                Swal.fire('Pausa', 'Espera cargando archivos', 'info');
+              }, 30000);
+            }else if(this.totalItems === 1000){
+              setTimeout(function(){
+                console.log("Pausa de 30seg");
+                Swal.fire('Pausa', 'Espera cargando archivos', 'info');
+              }, 30000);
+
+            }else if(this.totalItems === 1500){
+              setTimeout(function(){
+                console.log("Pausa de 30seg");
+                Swal.fire('Pausa', 'Espera cargando archivos', 'info');
+              }, 30000);
+
+            }else if(this.totalItems === 2000){
+              setTimeout(function(){
+                console.log("Pausa de 30seg");
+                Swal.fire('Pausa', 'Espera cargando archivos', 'info');
+              }, 30000);
+
+            }else if(this.totalItems === 25000){
+              setTimeout(function(){
+                console.log("Pausa de 30seg");
+                Swal.fire('Pausa', 'Espera cargando archivos', 'info');
+              }, 30000);
+
+            }else if(this.totalItems === 3000){
+              setTimeout(function(){
+                console.log("Pausa de 30seg");
+                Swal.fire('Pausa', 'Espera cargando archivos', 'info');
+              }, 30000);
+
+            }else if(this.totalItems === 3500){
+              setTimeout(function(){
+                console.log("Pausa de 30seg");
+                Swal.fire('Pausa', 'Espera cargando archivos', 'info');
+              }, 30000);
+
+            }else if(this.totalItems === 4000){
+              setTimeout(function(){
+                console.log("Pausa de 30seg");
+                Swal.fire('Pausa', 'Espera cargando archivos', 'info');
+              }, 30000);
+
+            }else if(this.totalItems === 4500){
+              setTimeout(function(){
+                console.log("Pausa de 30seg");
+                Swal.fire('Pausa', 'Espera cargando archivos', 'info');
+              }, 30000);
+
+            }else if(this.totalItems === 5000){
+              setTimeout(function(){
+                console.log("Pausa de 30seg");
+                Swal.fire('Pausa', 'Espera cargando archivos', 'info');
+              }, 30000);
+
+            }
             // OBTENER GANANCIA
             let gain = 0;
             let porcent = 0;

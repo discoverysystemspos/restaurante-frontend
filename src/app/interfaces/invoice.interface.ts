@@ -63,6 +63,7 @@ export interface LoadInvoice {
     pago: number;
     vueltos: number;
     nota: string;
+    apartado: boolean;
 
 }
 

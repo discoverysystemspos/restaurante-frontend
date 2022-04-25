@@ -9,12 +9,11 @@
 
     <div class="row">
 
-        <div class="col-md-2">
-            <div class="shadow-lg p-3 mb-5 rounded bg-white text-wrap">
+        <div class="col-md-3">
+            <div class="shadow-lg mb-5 py-3 rounded bg-white text-break container">
 
                 <!-- BUSCADOR DE CLIENTES  -->
                 <div class="mb-3">
-
                     <h4 class="text-muted">Buscar Cliente</h4>
                     <div>
                         <input type="text" class="form-control" placeholder="buscar cliente" (keyup)="buscarCliente(searchClient.value)" #searchClient>
@@ -58,7 +57,7 @@
 
                 <h4 class="text-muted">Filtros</h4>
 
-                <div>
+                <div class="col-12">
                     <h6 class="text-muted">Activa ó Cancelada</h6>
                     <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked #estado>
@@ -68,7 +67,7 @@
 
                 <hr>
 
-                <div>
+                <div class="col-12">
                     <h6 class="text-muted">Al contado ó a credito</h6>
                     <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" #credito>
@@ -79,32 +78,19 @@
 
                 <hr>
 
-                <div>
+                <div class="col-12">
                     <h6 class="text-muted">Vendedores</h6>
                     <select class="form-select" aria-label="Default select example" #cajeros>
                         <option value="none" selected>Todos</option>
                         <option [value]="vendedor.mid" *ngFor="let vendedor of listaMesas">{{vendedor.mesero.name}}</option>
                      </select>
-
-                </div>
-
-                <hr>
-
-                <div>
-                    <div class="form-check" *ngFor="let mesa of listaMesas; let i = index">
-                        <input class="form-check-input" (click)="filtroRuta(mesa.name)" type="radio" name="exampleRadios" id="exampleRadios{{i}}" value="{{mesa.name}}">
-                        <label class="form-check-label" for="exampleRadios{{i}}">
-                          {{ mesa.name }}
-                        </label>
-                    </div>
-
                 </div>
 
             </div>
 
         </div>
 
-        <div class="col-md-10">
+        <div class="col-md-9">
 
             <div class="col-12">
 
@@ -114,7 +100,7 @@
                         <!-- Dashboard info widget 1-->
                         <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-primary h-100 bg-white">
                             <div class="card-body">
-                                <div class="d-flex align-items-center">
+                                <div class="d-flex align-items-center flex-wrap">
                                     <div class="flex-grow-1">
                                         <div class="small font-weight-bold text-primary mb-1">Monto Total Facturas</div>
                                         <div class="h5">({{totalAmount | currency: 'COP'}})</div>
@@ -122,8 +108,8 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up mr-1"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
                                         </div>
                                     </div>
-                                    <div class="ml-2">
-                                        <i class="bi bi-receipt text-muted" style="font-size: 2rem;"></i>
+                                    <div class="ms-2">
+                                        <i class="bi bi-receipt text-muted" style="font-size: 1.5rem;"></i>
                                     </div>
                                 </div>
                             </div>
@@ -134,7 +120,7 @@
                         <!-- Dashboard info widget 1-->
                         <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-success h-100 bg-white">
                             <div class="card-body">
-                                <div class="d-flex align-items-center">
+                                <div class="d-flex align-items-center flex-wrap">
                                     <div class="flex-grow-1">
                                         <div class="small font-weight-bold text-success mb-1">Ganancia</div>
                                         <div class="h5"> {{ totalAmount - totalCost | currency: 'COP' }} </div>
@@ -142,8 +128,8 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up mr-1"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
                                         </div>
                                     </div>
-                                    <div class="ml-2">
-                                        <i class="bi bi-cash text-muted" style="font-size: 2rem;"></i>
+                                    <div class="ms-2">
+                                        <i class="bi bi-cash text-muted" style="font-size: 1.5rem;"></i>
                                     </div>
                                 </div>
                             </div>
@@ -151,20 +137,20 @@
                     </div>
 
                     <ng-container *ngIf="empresa">
-                        <div class="col-xl-3 col-md-3 mb-4" *ngIf="empresa.commission">
+                        <div class="col-xl-3 col-md-3 mb-4" *ngIf="empresa.commission || empresa.commissions">
                             <!-- Dashboard info widget 1-->
                             <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-info h-100 bg-white">
                                 <div class="card-body">
-                                    <div class="d-flex align-items-center">
+                                    <div class="d-flex align-items-center flex-wrap">
                                         <div class="flex-grow-1">
                                             <div class="small font-weight-bold text-info mb-1">Comision</div>
-                                            <div class="h5"> ({{ (totalAmount * empresa.comision)/100 | currency: 'COP'}}) </div>
+                                            <div class="h5"> ({{ comision | currency: 'COP'}}) </div>
                                             <div class="text-xs font-weight-bold text-info d-inline-flex align-items-center">
-                                                {{ empresa.comision }}%
+                                                {{ porcentaje }}%
                                             </div>
                                         </div>
-                                        <div class="ml-2">
-                                            <i class="bi bi-percent text-muted" style="font-size: 2rem;"></i>
+                                        <div class="ms-2">
+                                            <i class="bi bi-percent text-muted" style="font-size: 1.5rem;"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -229,7 +215,7 @@
                                     <th class="text-muted" scope="col ">#</th>
                                     <th class="text-muted" scope="col " colspan="2">Cliente</th>
                                     <th class="text-muted" scope="col ">Cedula</th>
-                                    <th class="text-muted" scope="col " colspan="2">Ruta</th>
+                                    <th class="text-muted" scope="col " colspan="2">Ticket</th>
                                     <th class="text-muted" scope="col ">Monto</th>
                                     <th class="text-muted" scope="col ">Metodo</th>
                                     <th class="text-muted" scope="col ">fecha</th>

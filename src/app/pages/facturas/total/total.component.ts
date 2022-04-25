@@ -14,7 +14,7 @@ import { LoadInvoice } from '../../../interfaces/invoice.interface';
 // MODELS
 import { Mesa } from '../../../models/mesas.model';
 import { User } from '../../../models/user.model';
-import { Datos } from '../../../models/empresa.model';
+import { Datos, comisiones } from '../../../models/empresa.model';
 import { Client } from 'src/app/models/client.model';
 
 @Component({
@@ -266,6 +266,8 @@ export class TotalComponent implements OnInit {
             this.resultado = invoices.length; 
             this.totalAmount = montos;
             this.totalCost = costos;
+
+            this.comisionCalcular(this.totalAmount);
             
 
           });
@@ -344,6 +346,33 @@ export class TotalComponent implements OnInit {
     }
 
         
+  }
+
+  /** ================================================================
+   *   CALCULAR COMISIONES
+  ==================================================================== */
+  public comision: number = 0;
+  public porcentaje: number = 0;
+  comisionCalcular(monto: number){
+
+    console.log("Monto: ", monto);
+    console.log("Porcentajes: ", this.empresa.comisiones );
+    this.comision = 0;
+    this.porcentaje = 0;
+
+    for (const com of this.empresa.comisiones) {
+
+      if (monto >= com.monto) {
+        this.porcentaje = com.comision;
+      }
+
+    }
+
+    this.comision = (monto * this.porcentaje)/100;
+
+    console.log("Porcentaje: ", this.porcentaje );
+    
+
   }
 
 

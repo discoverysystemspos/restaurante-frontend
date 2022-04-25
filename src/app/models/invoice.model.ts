@@ -16,7 +16,8 @@ export class Invoice {
         public iid?: string,
         public pago?: number,
         public vueltos?: number,
-        public nota?: string
+        public nota?: string,
+        public apartado?: boolean
     ){}
 
 }

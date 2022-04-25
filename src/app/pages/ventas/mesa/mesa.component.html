@@ -50,7 +50,7 @@
                     <div class="card m-1 animated fadeIn" style="width: 12rem;" *ngIf="producto.visibility">
                         <div class="position-absolute ms-2 mt-2">
                             <span *ngIf="producto.low && !producto.out" class="badge rounded-pill bg-warning text-dark">Bajo</span>
-                            <span *ngIf="producto.out && producto.type !== 'Paquete'" class="badge rounded-pill bg-danger">Agotado</span>
+                            <span *ngIf="producto.out && producto.type !== 'Paquete' || producto.inventario === 0" class="badge rounded-pill bg-danger">Agotado</span>
                             <span *ngIf="producto.vencido" class="badge rounded-pill bg-warning">Vencido</span>
                         </div>
 
@@ -66,7 +66,7 @@
                                 <div class="d-flex align-items-center">
 
                                     <p class="mb-0 text-success">{{ producto.price | currency:'COP' }}</p>
-                                    <button type="button" [disabled]="producto.out &&  producto.type !== 'Paquete' || producto.vencido" (click)="btnAddProducto( producto, 1, producto.price )" class="btn btn-link btn-primary text-white ms-auto" style="font-size: 1rem;">
+                                    <button type="button" [disabled]="producto.out &&  producto.type !== 'Paquete' || producto.vencido || producto.inventario === 0 " (click)="btnAddProducto( producto, 1, producto.price )" class="btn btn-link btn-primary text-white ms-auto" style="font-size: 1rem;">
                                         <i class="bi bi-cart-plus"></i>
                                     </button>
 
