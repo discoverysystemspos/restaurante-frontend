@@ -316,13 +316,12 @@
                 <!-- ============================================================================
                     IMPRIMIR 
                 ================================================================================= -->
-                <div class="d-flex justify-content-center">
+                <div>
                     <div id="printDiv" style="color: black!important; background: #fff;">
                         <!-- VENTAS TOTALES Y GANANCIAS -->
-                        <div class="col-auto p-2">
-                            <div class="card-body" *ngIf="fechaCierre">
-                                <h5 class="card-title mb-0 text-center">Fecha: {{ fechaCierre | date: "medium" }}</h5>
-                            </div>
+
+                        <div class="col-auto p-2" *ngIf="fechaCierre">
+                            <h5 class="h5 fw-bold mb-0 text-break">Fecha: {{ fechaCierre | date: "medium" }}</h5>
                         </div>
 
 
