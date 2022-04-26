@@ -1,0 +1,174 @@
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<header>
+    <div class="bg-header-yellow py-2 px-3 mb-2">
+        <h5 class="text-white m-0">PRODUCTOS</h5>
+    </div>
+    <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-dark" id="administracion-tab" [routerLink]="['/dashboard', 'productos']">
+                <i class="bi-files" style="font-size: 1rem"></i> Administracion de Productos
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-primary" id="nuevo-tab" [routerLink]="['/dashboard/productos', 'nuevo']"><i class="bi-pencil-square" style="font-size: 1rem"></i> Crear Producto</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark " id="departamentos-tab" [routerLink]="['/dashboard/productos', 'departamento']"><i class="bi-collection" style="font-size: 1rem"></i> Departamentos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" id="departamentos-tab" [routerLink]="['/dashboard/productos', 'categorias']" aria-selected="false"><i class="bi-collection" style="font-size: 1rem"></i> Categorias</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" id="departamentos-tab" [routerLink]="['/dashboard/productos', 'movimientos']" aria-selected="false"><i class="bi-collection" style="font-size: 1rem"></i> Movimientos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark active" id="departamentos-tab" [routerLink]="['/dashboard/productos', 'kardex']" aria-selected="false"><i class="bi-collection" style="font-size: 1rem"></i> kardex</a>
+        </li>
+    </ul>
+</header>
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<!-- =========================================================================
+    BODY 
+========================================================================= -->
+<div class="container-fluid">
+
+    <div class="row py-4">
+
+        <diV class="col-md-4">
+
+            <div class="shadow-lg py-3 mb-5 rounded bg-white sticky-md-top">
+
+                <div class="container">
+
+                    <h4 class="mb-0"> Filtros </h4>
+
+                    <hr>
+
+                    <label for="">Departamentos</label>
+
+                    <select class="form-select" aria-label="Departamentos" (change)="buscar(selectDepart.value)" #selectDepart>
+                        <option selected>Todos</option>
+                        <option [value]="departamento.did" *ngFor="let departamento of departamentos" > {{ departamento.name }} </option>
+                      </select>
+                </div>
+
+            </div>
+
+        </diV>
+
+        <!-- KARDEX -->
+        <div class="col-md-8">
+
+            <div class="shadow-lg py-3 mb-5 rounded bg-white">
+
+                <h4 class="ms-2 mb-0">Listado de productos</h4>
+
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li>
+                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li>
+                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li>
+                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li>
+                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li>
+                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li>
+                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li>
+                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li>
+                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li>
+                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li>
+                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li>
+                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li>
+                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li>
+                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li>
+                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li>
+                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li>
+                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li>
+                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li>
+                </ul>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+</div>
+
+<!-- =========================================================================
+    BODY 
+========================================================================= -->

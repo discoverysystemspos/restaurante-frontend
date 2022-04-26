@@ -23,6 +23,9 @@
         <li class="nav-item">
             <a class="nav-link text-dark" id="departamentos-tab" [routerLink]="['/dashboard/productos', 'movimientos']" aria-selected="false"><i class="bi-collection" style="font-size: 1rem"></i> Movimientos</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" id="departamentos-tab" [routerLink]="['/dashboard/productos', 'kardex']" aria-selected="false"><i class="bi-collection" style="font-size: 1rem"></i> kardex</a>
+        </li>
     </ul>
 </header>
 <!-- =========================================================================
@@ -38,20 +41,20 @@
     <div class="col-lg-8 mx-auto">
 
         <div class="shadow-lg p-3 mb-4 rounded bg-white">
-            
+
             <h4 class="text-muted">Importar Productos <span> <a class="btn btn-sm text-primary" type="button" (click)="plantilla()" >Descargar Plantilla</a> </span></h4>
-    
+
             <div class="row">
                 <div class="col-10">
-                     <input type="file" class="form-control form-control-sm" (change)="incomingfile($event)" placeholder="Importar" accept=".xlsx">
+                    <input type="file" class="form-control form-control-sm" (change)="incomingfile($event)" placeholder="Importar" accept=".xlsx">
                 </div>
                 <div class="col-auto">
-                    <button type="button" class="btn btn-sm btnW btn-primary waves-effect waves-light" (click)="Upload()" >Importar</button>
+                    <button type="button" class="btn btn-sm btnW btn-primary waves-effect waves-light" (click)="Upload()">Importar</button>
                 </div>
             </div>
 
         </div>
-        
+
     </div>
 
     <div class="col-lg-8 mx-auto">
