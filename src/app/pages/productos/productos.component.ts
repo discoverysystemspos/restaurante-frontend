@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -14,6 +14,8 @@ import { Department } from 'src/app/models/department.model';
 
 // EXCEL
 import * as XLSX from 'xlsx';
+import { User } from '../../models/user.model';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-productos',
@@ -39,12 +41,17 @@ export class ProductosComponent implements OnInit {
   public btnAtras: string = '';
   public btnAdelante: string = '';
 
+  public user: User;
+
   constructor(  private productService: ProductService,
                 private searchService: SearchService,
                 private fb:FormBuilder,
-                private departmentService: DepartmentService) { }
+                private departmentService: DepartmentService,
+                private userService: UserService) { }
 
   ngOnInit(): void {
+
+    this.user = this.userService.user;
     
     this.cargarProductos('none', false);
 
@@ -344,6 +351,48 @@ export class ProductosComponent implements OnInit {
 
     });
 
+  }
+
+  /** ================================================================
+   *   AGREGAR INVENTARIO
+  ==================================================================== */
+  public btnAddInv: boolean = false;
+  public product: Product;
+
+  @ViewChild('cantidad') cantidadE: ElementRef;
+
+  public ajustarInventario = {
+    cantidad: 0,
+    bought: 0,
+    damaged: 0,
+    type: ''
+  };
+
+  ajustar(tipo: string, cantidad: number){
+
+    if (cantidad <= 0 || !cantidad) {
+      return Swal.fire('Atención', 'Debes de asignar una canitidad', 'info');
+    }
+
+    if (tipo === 'entrada') { 
+      
+      this.ajustarInventario.cantidad = Number(cantidad);
+      this.ajustarInventario.bought = Number(cantidad);
+      this.ajustarInventario.type = 'Agrego';
+      
+    }
+
+    this.productService.ajustarInventario(this.product.pid, this.ajustarInventario)
+        .subscribe( (resp: {ok: boolean, product: Product}) => {
+
+          this.cantidadE.nativeElement.value = '';
+
+          this.product = resp.product;
+
+
+          Swal.fire('Estupendo', 'Se ha actualizado el inventario exitosamente!', 'success');                   
+
+        }, (err) =>{ Swal.fire('Error', err.error.msg, 'error'); });
   }
 
   // FIN DE LA CLASE

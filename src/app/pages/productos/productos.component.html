@@ -169,6 +169,7 @@
                                 <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
                                     <thead class="border-bottom ">
                                         <tr>
+                                            <th></th>
                                             <th class="text-muted " scope="col ">#</th>
                                             <th class="text-muted " scope="col "></th>
                                             <th class="text-muted " scope="col ">Codigo</th>
@@ -186,16 +187,25 @@
                                     </thead>
                                     <tbody>
                                         <tr *ngIf="!sinResultados" class="text-center ">
-                                            <th colspan="13" class="py-4">
+                                            <th colspan="14" class="py-4">
                                                 <h4 class="text-muted">Sin Resultados</h4>
                                             </th>
                                         </tr>
 
                                         <ng-container *ngFor="let producto of productos; let i=index ">
 
-                                            <tr class="trHover" [ngClass]=" { 'table-danger': producto.vencido}">
-                                                <th *ngIf=" desde===0 " scope="row ">{{ i + 1}}</th>
-                                                <th *ngIf="desde> 0" scope="row">{{ (i + 1) + desde }}</th>
+                                            <tr class="trHover" [ngClass]=" { 'table-danger': producto.vencido}" (mouseover)="btnAddInv= true" (mouseout)="btnAddInv= false">
+
+                                                <!-- BTN ADD -->
+                                                <td>
+                                                    <button [disabled]="user.role !== 'ADMIN'" type="button" class="btn btn-link text-success fw-bold fs-5 p-0" data-bs-toggle="modal" data-bs-target="#ajustarInventario" (click)="product = producto">
+                                                        <i class="bi-plus"></i>
+                                                    </button>
+                                                </td>
+                                                <!-- BTN ADD -->
+
+                                                <th class="align-items-center" *ngIf=" desde===0 " scope="row ">{{ i + 1}}</th>
+                                                <th class="align-items-center" *ngIf="desde> 0" scope="row">{{ (i + 1) + desde }}</th>
                                                 <td>
                                                     <img [src]="producto.img | imagen:'products'" class="avatar avatar-img" alt="">
                                                 </td>
@@ -213,10 +223,9 @@
                                                     <span *ngIf="producto.department">{{ producto.department.name }}</span>
                                                     <span *ngIf="!producto.department"> Sin Departamento </span>
                                                 </td>
-                                                <td>
+                                                <td class="text-center">
                                                     <span *ngIf="producto.type === 'Granel'"> {{  producto.inventario | number:'1.3'}} </span>
                                                     <span *ngIf="producto.type !== 'Granel'"> {{  producto.inventario | number }} </span>
-
                                                 </td>
                                                 <td>{{ producto.type }}</td>
                                                 <td>{{ producto.cost | currency: 'COP' }}</td>
@@ -266,21 +275,55 @@
     </div>
     <!-- TAB 1 -->
 
-    <!-- TAB 2 -->
-    <div class="tab-pane fade show" id="nuevo" role="tabpanel" aria-labelledby="nuevo-tab">
+    <!-- =========================================================================
+    MODAL AJUSTAR INVENTARIO
+========================================================================= -->
 
-        <app-nuevo></app-nuevo>
+    <div class="modal fade" id="ajustarInventario" tabindex="-1" aria-labelledby="ajustarInventarioModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-break" id="ajustarInventarioModal">
 
+                        <small class="badge rounded-pill bg-danger text-white h6" *ngIf="product?.out">Agotado</small>
+                        <span class="badge rounded-pill bg-warning text-white" *ngIf="product?.low">Bajo</span>
+
+                        <p class="mb-0">
+                            {{ product?.name }}
+                        </p>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="">
+                        <p class="text-center mb-0">Stock</p>
+                        <h4 class="text-center display-1"> {{ product?.inventario }} </h4>
+                    </div>
+
+                    <div class="d-flex justify-content-center flex-wrap">
+
+                        <div class="col-auto">
+                            <label for="cantidad" class="visually-hidden">Cantidad</label>
+                            <input type="number" class="form-control" min="0" id="cantidad" placeholder="cantidad" #cantidad>
+                        </div>
+
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary mb-3" (click)="ajustar('entrada', cantidad.value)"> Agregar </button>
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- TAB 2 -->
-
-    <!-- TAB 2 -->
-    <div class="tab-pane fade show" id="departamentos" role="tabpanel" aria-labelledby="departamentos-tab">
-
-        <app-departamentos></app-departamentos>
-
-    </div>
-    <!-- TAB 2 -->
+    <!-- =========================================================================
+    MODAL AJUSTAR INVENTARIO
+========================================================================= -->
 
 
 </div>

@@ -85,10 +85,14 @@ export class KardexComponent implements OnInit {
 
     this.cargando = true;
 
-    if (termino === 'Todos') {
+    if (termino === 'Ninguno') {
       return;
+    }
+
+    if (termino === 'Todos') {
+      this.endPoint = `?desde=${this.desde}&limite=10000&tipo=none&status=false&departamento=none`;
     }else{
-      this.endPoint = `?desde=${this.desde}&tipo=none&status=false&departamento=${termino}`;
+      this.endPoint = `?desde=${this.desde}&limite=10000&tipo=none&status=false&departamento=${termino}`;
     }
 
 

@@ -51,7 +51,8 @@
                     <label for="">Departamentos</label>
 
                     <select class="form-select" aria-label="Departamentos" (change)="buscar(selectDepart.value)" #selectDepart>
-                        <option value="Todos" selected>Seleccionar Departamento</option>
+                        <option value="Ninguno" selected>Seleccionar Departamento</option>
+                        <option value="Todos" > Todos </option>
                         <option [value]="departamento.did" *ngFor="let departamento of departamentos" > {{ departamento.name }} </option>
                     </select>
 
