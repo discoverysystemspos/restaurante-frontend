@@ -136,6 +136,7 @@ export class PedidosComponent implements OnInit {
    *   CAMBIAR PAGINA
   ==================================================================== */
   cambiarPagina (valor: number){
+    
     this.hasta = Number(this.mostrar.nativeElement.value);
     
     if (this.hasta > 10) {

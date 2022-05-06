@@ -1463,7 +1463,7 @@ export class MesaComponent implements OnInit {
             this.total = 0;
             this.iva = 0;
             this.base = 0;
-            this.totalPagos = 0;
+            
             this.carrito = [];
             this.payments = [];
             this.clienteTemp = {

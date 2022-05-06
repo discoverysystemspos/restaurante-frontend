@@ -76,12 +76,20 @@ export class PrintComponent implements OnInit {
   /** ================================================================
    *   CARGAR FACTURA
   ==================================================================== */
+  public totalPagos: number = 0;
   cargarFactura(id: string){
     
     this.invoiceService.loadInvoiceId(id)
         .subscribe( invoice => {
 
           this.factura = invoice;
+
+          for (const pay of invoice.payments) {
+            this.totalPagos = this.totalPagos + pay.amount;
+          }
+
+          console.log('pagos',this.totalPagos);
+          
 
           // IMPRIMIR FACTURA
           setTimeout( () => {

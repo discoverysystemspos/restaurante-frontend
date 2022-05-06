@@ -945,12 +945,42 @@
                         </table>
 
                         <hr class="my-1">
-                        <p class="mb-0 mx-auto"><small class="text-wrap text-center mb-0">Pago con: {{factura.pago | currency:'COP'}} </small></p>
-                        <p class="mb-0 mx-auto"><small class="text-wrap text-center mb-0">Vueltos: {{factura.vueltos | currency:'COP'}} </small></p>
+                        <div *ngIf="!factura.apartado">
+                            <p class="mb-0 mx-auto"><small class="text-wrap text-center mb-0">Pago con: {{factura.pago | currency:'COP'}} </small></p>
+                            <p class="mb-0 mx-auto"><small class="text-wrap text-center mb-0">Vueltos: {{factura.vueltos | currency:'COP'}} </small></p>
+                        </div>
+
+                        <div *ngIf="factura.apartado">
+                            <h6 class="mb-2 fw-bold">Historial de pagos</h6>
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Desc</th>
+                                        <th scope="col">Pago</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let pay of factura.payments">
+                                        <td> {{ pay.type }} </td>
+                                        <td> {{ pay.amount | currency:'COP' }} </td>
+                                    </tr>
+
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Restante</th>
+                                        <th> {{ factura.amount - totalPagos | currency:'COP' }} </th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+                        </div>
 
                         <hr class="my-1">
                         <h6 *ngIf="factura.nota" class="mb-0">Nota:</h6>
                         <p *ngIf="factura.nota" class="">- {{ factura.nota }} </p>
+
+
                         <hr *ngIf="factura.nota" class="my-1">
 
                         <h5 class="text-center"> GRACIAS POR SU COMPRA </h5>

@@ -16,7 +16,7 @@
             <div class="card-body px-1 mb-2" style="border-bottom: 2px solid black;">
 
                 <div class="col-10 mx-auto">
-                    <img *ngIf="empresa.logo" [src]="empresa.logo | imagen:'logo'" class="mx-auto" width="200px" alt="">
+                    <img *ngIf="empresa!.logo" [src]="empresa.logo | imagen:'logo'" class="mx-auto" width="200px" alt="">
                 </div>
 
                 <h4 class="card-title mb-0 text-wrap text-center"> {{ empresa.name }} </h4>
@@ -129,8 +129,36 @@
             </table>
 
             <hr class="my-1">
-            <p class="mb-0 mx-auto "><small class="text-wrap text-center mb-0">Pago con: {{factura.pago | currency: 'COP'}} </small></p>
-            <p class="mb-0 mx-auto "><small class="text-wrap text-center mb-0">Vueltos: {{factura.vueltos | currency: 'COP'}} </small></p>
+            <div *ngIf="!factura.apartado">
+
+                <p class="mb-0 mx-auto "><small class="text-wrap text-center mb-0">Pago con: {{factura.pago | currency: 'COP'}} </small></p>
+                <p class="mb-0 mx-auto "><small class="text-wrap text-center mb-0">Vueltos: {{factura.vueltos | currency: 'COP'}} </small></p>
+            </div>
+            <div *ngIf="factura.apartado">
+                <h6 class="mb-2 fw-bold">Historial de pagos</h6>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col">Desc</th>
+                            <th scope="col">Pago</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let pay of factura.payments">
+                            <td> {{ pay.type }} </td>
+                            <td> {{ pay.amount | currency:'COP' }} </td>
+                        </tr>
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Restante</th>
+                            <th> {{ factura.amount - totalPagos | currency:'COP' }} </th>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </div>
             <hr class="my-1">
 
             <h5 class="text-center"> GRACIAS POR SU COMPRA </h5>
