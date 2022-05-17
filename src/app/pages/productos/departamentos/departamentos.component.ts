@@ -150,8 +150,11 @@ export class DepartamentosComponent implements OnInit {
   })
 
   public imgDepartamento: string = 'no-image';
+  public idDepart: string = '';
 
   informacionDepartamento(departamento: Department){
+
+    this.idDepart = departamento.did;
 
     this.imgDepartamento = departamento.img || 'no-image';
 
