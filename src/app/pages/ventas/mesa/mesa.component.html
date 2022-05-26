@@ -5,7 +5,7 @@
 
     <div class="row">
 
-        <div class="col-md-8 align-self-start">
+        <div class="col-md-8 align-self-start animated fadeIn" *ngIf="menu">
 
             <!-- DEPARTAMENTOS -->
             <div class="p-2 border-bottom my-2 d-flex flex-wrap justify-content-start">
@@ -84,7 +84,72 @@
 
         </div>
 
+        <div class="col-md-8 align-self-start animated fadeIn" *ngIf="!menu">
+
+            <div class="card py-4 mt-3">
+
+                <!-- SEARCH PRODUCT CODE -->
+                <div>
+                    <div class="d-flex flex-wrap mx-auto">
+                        <div class="col-12 d-flex align-justify-start">
+                            <input type="text" class="form-control" placeholder="Ingrese o busca un codigo de barras" (keyup.enter)="buscarCodigo(searchCode.value)" #searchCode>
+                        </div>
+                    </div>
+                </div>
+                <!-- SEARCH PRODUCT CODE -->
+
+                <hr class="my-2">
+
+                <div class="table-responsive">
+                    <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                        <thead class="border-bottom ">
+                            <tr>
+                                <th class="text-muted text-left" scope="col " colspan="2 ">Descripción</th>
+                                <th class="text-muted " scope="col ">Precio</th>
+                                <th class="text-muted " scope="col ">Cantidad</th>
+                                <th class="text-muted " scope="col ">Monto</th>
+                                <th class="text-muted " scope="col "></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="carrito.length === 0" class="text-center ">
+                                <th colspan="10" class="py-4">
+                                    <h4 class="text-muted">No has seleccionado ningun producto</h4>
+                                </th>
+                            </tr>
+
+                            <ng-container *ngIf="carrito.length > 0 ">
+
+                                <ng-container *ngFor="let item of carrito; let i = index">
+                                    <tr class="trHover" *ngIf="item.product">
+                                        <td colspan="2">{{ item.product.name }}</td>
+                                        <td>{{ item.price | currency:'COP'}}</td>
+                                        <td class="text-center">{{ item.qty }}</td>
+                                        <td>{{ item.price * item.qty | currency:'COP'}}</td>
+                                        <td>
+                                            <button [disabled]="user.role !== 'ADMIN' && user.role !== 'CASHIER'" type="button" (click)="eliminarProductoCarrito(i, item.product)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+
+                            </ng-container>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
         <div class="col-md-4 bg-white py-4 px-2 border-start" style="min-height: 100vh;">
+
+            <div>
+                <button (click)="changeMenu(menu)" type="button" class="btn btn-outline-primary">
+                    <i *ngIf="!menu" class="bi bi-grid"></i>
+                    <i *ngIf="menu" class="bi bi-justify"></i>
+                </button>
+            </div>
 
             <h4 class="mb-2 text-dark text-center text-capitalize"> {{ mesa?.name }} </h4>
 
@@ -106,6 +171,8 @@
                 <button type="button" (click)="scrollToBottom()" (click)="timeCommand()" class="btn btn-outline-info btn-sm m-2" data-bs-toggle="modal" data-bs-target="#comandas"><i class="bi-receipt"></i> Comandas </button>
                 <button type="button" *ngIf="mesa?.img === 'mesa.svg'" (click)="cargarMesasAll()" class="btn btn-outline-dark btn-sm m-2" data-bs-toggle="modal" data-bs-target="#cambiarMesa"><i class="bi-arrow-repeat"></i> Cambiar Mesa </button>
             </div>
+
+            <hr>
 
             <div class="d-grid">
 
@@ -241,93 +308,94 @@
 
             <div>
 
+
+
                 <!-- INFORMACION DEL CLIENTE -->
-                <div class="row mt-2">
+                <div class="d-flex flex-column mt-2">
 
-                    <div class="col-md-8 text-left text-muted">
+                    <div>
+                        <h6 class="fw-bold mb-0">CLIENTE / RAZON SOCIAL:</h6>
+                        <p class="mb-0" *ngIf="clienteTemp.name">{{ clienteTemp.name }}</p>
+                    </div>
 
-                        <div class="">
-                            <h6 class="mb-0 text-capitalize"><strong>CLIENTE / RAZON SOCIAL:  </strong><small *ngIf="clienteTemp.name">{{ clienteTemp.name }}</small></h6>
-                        </div>
-                        <div class="col">
-                            <h6 class="text-wrap mb-0 text-capitalize"><strong>CC / Nit: </strong> <small *ngIf="clienteTemp.cedula"> {{ clienteTemp.cedula }}</small></h6>
-                        </div>
-
-                        <div class="">
-                            <h6 class="text-wrap mb-0 text-capitalize"><strong>TELEFONO: </strong> <small *ngIf="clienteTemp.phone"> {{ clienteTemp.phone }}</small> </h6>
-                        </div>
-                        <div class="col">
-                            <h6 class="text-wrap mb-0"><strong>CORREO: </strong> <small *ngIf="clienteTemp.email"> {{ clienteTemp.email }} </small></h6>
-                        </div>
-
-                        <div class="col">
-                            <h6 class="text-wrap mb-0">
-                                <ng-container *ngIf="mesa">
-                                    <span class="text-primary text-wrap"> 
-                                        {{ mesa.name }} - 
-                                        {{ mesa.mesero.name }} 
-                                    </span>
-                                </ng-container>
-                            </h6>
-                        </div>
-
+                    <div>
+                        <h6 class="fw-bold mb-0">CC / Nit: <span *ngIf="clienteTemp.cedula"> <p class="mb-0 fw-normal">{{ clienteTemp.cedula }}</p> </span> </h6>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold mb-0">Telefono: <span *ngIf="clienteTemp.phone"> <p class="mb-0 fw-normal">{{ clienteTemp.phone }}</p> </span> </h6>
+                    </div>
+                    <div *ngIf="clienteTemp.phone">
+                        <h6 class="fw-bold mb-0">correo: <span> <p class="mb-0 fw-normal">{{ clienteTemp.phone }}</p> </span> </h6>
+                    </div>
+                    <div *ngIf="mesa">
+                        <h6 class="fw-bold mb-0">
+                            <span class="text-primary text-wrap">
+                                {{ mesa.name }} - {{ mesa.mesero.name }} 
+                            </span>
+                        </h6>
                     </div>
                 </div>
                 <!-- INFORMACION DEL CLIENTE -->
 
-                <hr class="my-2">
+                <div *ngIf="menu" class="animated fadeIn">
 
-                <!-- SEARCH PRODUCT CODE -->
-                <div>
-                    <div class="d-flex flex-wrap mx-auto">
-                        <div class="col-12 d-flex align-justify-start">
-                            <input type="text" class="form-control" placeholder="Ingrese o busca un codigo de barras" (keyup.enter)="buscarCodigo(searchCode.value)" #searchCode>
+                    <hr class="my-2">
+
+                    <!-- SEARCH PRODUCT CODE -->
+                    <div>
+                        <div class="d-flex flex-wrap mx-auto">
+                            <div class="col-12 d-flex align-justify-start">
+                                <input type="text" class="form-control" placeholder="Ingrese o busca un codigo de barras" (keyup.enter)="buscarCodigo(searchCode.value)" #searchCode>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- SEARCH PRODUCT CODE -->
+                    <!-- SEARCH PRODUCT CODE -->
 
-                <hr class="my-2">
+                    <hr class="my-2">
 
-                <div class="table-responsive">
-                    <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
-                        <thead class="border-bottom ">
-                            <tr>
-                                <th class="text-muted text-left" scope="col " colspan="2 ">Descripción</th>
-                                <th class="text-muted " scope="col ">Precio</th>
-                                <th class="text-muted " scope="col ">Cantidad</th>
-                                <th class="text-muted " scope="col ">Monto</th>
-                                <th class="text-muted " scope="col "></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngIf="carrito.length === 0" class="text-center ">
-                                <th colspan="10" class="py-4">
-                                    <h4 class="text-muted">No has seleccionado ningun producto</h4>
-                                </th>
-                            </tr>
+                    <div class="table-responsive">
+                        <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                            <thead class="border-bottom ">
+                                <tr>
+                                    <th class="text-muted text-left" scope="col " colspan="2 ">Descripción</th>
+                                    <th class="text-muted " scope="col ">Precio</th>
+                                    <th class="text-muted " scope="col ">Cantidad</th>
+                                    <th class="text-muted " scope="col ">Monto</th>
+                                    <th class="text-muted " scope="col "></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngIf="carrito.length === 0" class="text-center ">
+                                    <th colspan="10" class="py-4">
+                                        <h4 class="text-muted">No has seleccionado ningun producto</h4>
+                                    </th>
+                                </tr>
 
-                            <ng-container *ngIf="carrito.length > 0 ">
+                                <ng-container *ngIf="carrito.length > 0 ">
 
-                                <ng-container *ngFor="let item of carrito; let i = index">
-                                    <tr class="trHover" *ngIf="item.product">
-                                        <td colspan="2">{{ item.product.name }}</td>
-                                        <td>{{ item.price | currency:'COP'}}</td>
-                                        <td class="text-center">{{ item.qty }}</td>
-                                        <td>{{ item.price * item.qty | currency:'COP'}}</td>
-                                        <td>
-                                            <button [disabled]="user.role !== 'ADMIN' && user.role !== 'CASHIER'" type="button" (click)="eliminarProductoCarrito(i, item.product)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
-                                        </td>
-                                    </tr>
+                                    <ng-container *ngFor="let item of carrito; let i = index">
+                                        <tr class="trHover" *ngIf="item.product">
+                                            <td colspan="2">{{ item.product.name }}</td>
+                                            <td>{{ item.price | currency:'COP'}}</td>
+                                            <td class="text-center">{{ item.qty }}</td>
+                                            <td>{{ item.price * item.qty | currency:'COP'}}</td>
+                                            <td>
+                                                <button [disabled]="user.role !== 'ADMIN' && user.role !== 'CASHIER'" type="button" (click)="eliminarProductoCarrito(i, item.product)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+
                                 </ng-container>
 
-                            </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
 
-                        </tbody>
-                    </table>
                 </div>
 
                 <!-- TOTALES -->
+
+                <hr>
 
                 <div class="py-2" style="bottom: 0;">
 

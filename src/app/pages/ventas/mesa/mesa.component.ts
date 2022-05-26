@@ -62,6 +62,8 @@ export class MesaComponent implements OnInit {
 
   public user: User;
 
+  public menu: boolean = true;
+
   serialPort: typeof SerialPort;
 
   // PRINT
@@ -101,6 +103,13 @@ export class MesaComponent implements OnInit {
                 }
 
   ngOnInit(): void {
+
+    if (!localStorage.getItem('menu')) {
+      this.menu = true
+    }else{
+      this.menu = JSON.parse(localStorage.getItem('menu'));
+    }
+      
       
       // TURNOS
       this.cargarTurno();
@@ -132,6 +141,23 @@ export class MesaComponent implements OnInit {
       this.facturar = false;
     }
     
+  }
+
+  /** ================================================================
+   *   CAMBIAR MENU
+  ==================================================================== */
+  changeMenu(menu : boolean){
+
+    if (menu) {
+      menu = false;
+    }else{
+      menu = true;
+    }
+
+    this.menu = menu;
+    localStorage.setItem('menu', JSON.stringify(menu));
+    
+
   }
 
   /** ================================================================
