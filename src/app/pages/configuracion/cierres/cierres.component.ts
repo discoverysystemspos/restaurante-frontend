@@ -290,6 +290,11 @@ export class CierresComponent implements OnInit {
     this.salidas = 0;
     this.abEfectivo = 0;
     this.montoDiferencia = 0;
+
+    this.departamento.forEach(depart => {
+      depart.qty = 0;
+      depart.monto = 0;      
+    });
     
     const endPoint = `?turno=${id}`;
 
