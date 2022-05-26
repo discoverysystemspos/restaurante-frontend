@@ -17,7 +17,8 @@ import { Observable, Subscription } from 'rxjs';
 interface _departament {
   _id?: string,
   name?: string,
-  qty?: number
+  qty?: number,
+  monto?: number
 }
 
 @Component({
@@ -324,15 +325,20 @@ export class CierresComponent implements OnInit {
                 
                 this.departamento.push({
                   _id: this.facturas[i].products[y].product.department,
-                  qty: this.facturas[i].products[y].qty
+                  qty: this.facturas[i].products[y].qty,
+                  monto: this.facturas[i].products[y].qty * this.facturas[i].products[y].price
                 });
 
               }else{
 
                 let qtyTemp = this.departamento[validarItem].qty;
+                let montoTemp = this.departamento[validarItem].monto | 0;
+                                
                 qtyTemp += Number(this.facturas[i].products[y].qty);
-
+                montoTemp += this.facturas[i].products[y].qty * this.facturas[i].products[y].price;
+                
                 this.departamento[validarItem].qty = qtyTemp;
+                this.departamento[validarItem].monto = montoTemp;
 
               }
               

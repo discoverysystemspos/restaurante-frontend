@@ -20,7 +20,8 @@ import { _caja } from '../../interfaces/load-caja.interface';
 interface _departament {
   _id?: string,
   name?: string,
-  qty?: number
+  qty?: number,
+  monto?: number
 }
 
 // MODELS
@@ -211,20 +212,28 @@ export class CorteComponent implements OnInit {
                 }
   
               });
+              
   
               if ( validarItem === -1 ) {
                 
                 this.departamento.push({
                   _id: this.facturas[i].products[y].product.department,
-                  qty: this.facturas[i].products[y].qty
+                  qty: this.facturas[i].products[y].qty,
+                  monto: this.facturas[i].products[y].qty * this.facturas[i].products[y].price 
                 });
+                
 
               }else{
 
                 let qtyTemp = this.departamento[validarItem].qty;
+                let montoTemp = this.departamento[validarItem].monto | 0;
+                
                 qtyTemp += Number(this.facturas[i].products[y].qty);
 
+                montoTemp += Number(this.facturas[i].products[y].qty * this.facturas[i].products[y].price);
+
                 this.departamento[validarItem].qty = qtyTemp;
+                this.departamento[validarItem].monto = montoTemp;
 
               }
               
@@ -233,6 +242,7 @@ export class CorteComponent implements OnInit {
 
             // FIN FOR 1
           }
+          
           
         });
   }

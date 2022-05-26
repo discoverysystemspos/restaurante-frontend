@@ -346,15 +346,24 @@
                                 <div class="table-responsive ">
                                     <table class="table table-borderless table-hover table-sm animated fadeIn ">
 
+                                        <thead>
+                                            <th>Departamento</th>
+                                            <th>cant.</th>
+                                            <th>Monto</th>
+                                        </thead>
+
                                         <tbody>
 
                                             <ng-container *ngFor="let deparment of departamento">
 
                                                 <tr *ngIf="deparment.qty > 0">
 
-                                                    <td colspan="2"> {{ deparment.name }} </td>
+                                                    <td class="text-break"> {{ deparment.name }} </td>
                                                     <td>
                                                         {{ deparment.qty | number }}
+                                                    </td>
+                                                    <td>
+                                                        {{ deparment.monto | currency:'COP' }}
                                                     </td>
                                                 </tr>
 

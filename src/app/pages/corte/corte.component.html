@@ -228,6 +228,11 @@
 
                 <div class="table-responsive ">
                     <table class="table table-borderless table-hover table-sm animated fadeIn ">
+                        <thead>
+                            <th colspan="2">Departamento</th>
+                            <th class="text-center">Cant</th>
+                            <th class="text-end">Monto</th>
+                        </thead>
 
                         <tbody>
 
@@ -236,8 +241,13 @@
                                 <tr *ngIf="deparment.qty > 0">
 
                                     <td colspan="2"> {{ deparment.name }} </td>
-                                    <td>
+                                    <td class="text-center">
                                         {{ deparment.qty | number }}
+                                    </td>
+                                    <td class="text-end">
+                                        <span class="fw-bolder">
+                                            {{ deparment.monto | currency: 'COP' }}
+                                        </span>
                                     </td>
                                 </tr>
 
@@ -526,6 +536,49 @@
                         </div>
                         <!-- TOTAL SALIDAS -->
 
+                        <!-- TOTAL DEPARTAMENTOS -->
+                        <div class="col-auto p-2" style="width: 18rem;">
+
+                            <div class="card-body">
+                                <h5 class="card-title mb-0">Departamentos</h5>
+                            </div>
+
+                            <div class=" ">
+                                <table class="table table-borderless table-hover table-sm animated fadeIn ">
+
+                                    <thead>
+                                        <th class="text-start">Departamento</th>
+                                        <th class="text-center">Cant.</th>
+                                        <th class="text-end">Monto</th>
+                                    </thead>
+
+                                    <tbody>
+
+                                        <ng-container *ngFor="let deparment of departamento">
+
+                                            <tr *ngIf="deparment.qty > 0">
+
+                                                <td class="text-start text-break"> {{ deparment.name }} </td>
+                                                <td class="text-center">
+                                                    {{ deparment.qty | number }}
+                                                </td>
+                                                <td class="text-end">
+                                                    <span class="fw-bolder">
+                                                            {{ deparment.monto | currency: 'COP' }}
+                                                        </span>
+                                                </td>
+                                            </tr>
+
+
+                                        </ng-container>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                        <!-- TOTAL DEPARTAMENTOS -->
+
                     </div>
                 </div>
 
@@ -533,7 +586,7 @@
                 <div class="d-flex justify-content-center">
 
                     <!-- SECCION DE IMPRESIOM -->
-                    <div id="printDiv">
+                    <!-- <div id="printDiv">
 
                         <div class="col-auto p-2">
                             <div class="card-body" *ngIf="fechaCierre">
@@ -771,15 +824,26 @@
                                 <div class="table-responsive ">
                                     <table class="table table-borderless table-hover table-sm animated fadeIn ">
 
+                                        <thead>
+                                            <th class="text-start">Departamento</th>
+                                            <th class="text-center">Cant.</th>
+                                            <th class="text-end">Monto</th>
+                                        </thead>
+
                                         <tbody>
 
                                             <ng-container *ngFor="let deparment of departamento">
 
                                                 <tr *ngIf="deparment.qty > 0">
 
-                                                    <td colspan="2"> {{ deparment.name }} </td>
-                                                    <td>
+                                                    <td class="text-start" colspan="2"> {{ deparment.name }} </td>
+                                                    <td class="text-center">
                                                         {{ deparment.qty | number }}
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <span class="fw-bolder">
+                                                            {{ deparment.monto | currency: 'COP' }}
+                                                        </span>
                                                     </td>
                                                 </tr>
 
@@ -793,7 +857,7 @@
                             </div>
                         </div>
 
-                    </div>
+                    </div> -->
 
                 </div>
                 <!-- ============================================================================
