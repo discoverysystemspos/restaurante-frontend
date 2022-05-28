@@ -14,7 +14,8 @@ export class LogProductsModel{
         public cajero?: _cajero,
         public fecha?: Date,
         public lpid?: string,
-        public invoice?: Invoice
+        public invoice?: Invoice,
+        public monto?: number
     ){}
 
 }

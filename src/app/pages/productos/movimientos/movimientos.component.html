@@ -36,121 +36,200 @@
 ========================================================================= -->
 <div class="container-fluid my-4">
 
-    <!-- TABLE CLIENTS -->
-    <div class="shadow-lg p-3 mb-5 rounded bg-white">
+    <div class="col-12">
 
-        <!-- CARGANDO -->
-        <div *ngIf="cargando">
-            <div class="text-center p-4">
-                <div class="spinner-grow text-secondary" role="status">
-                    <span class="visually-hidden">Loading...</span>
+        <div class="d-flex flex-wrap gap-2">
+
+            <div class="col-xl-3 col-md-3 mb-4">
+                <!-- Dashboard info widget 1-->
+                <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-primary h-100 bg-white">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center flex-wrap">
+                            <div class="flex-grow-1">
+                                <div class="small font-weight-bold text-primary mb-1">Ingresos</div>
+                                <div class="h5">({{monto | currency: 'COP'}})</div>
+                                <div class="text-xs font-weight-bold text-success d-inline-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up mr-1"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                                </div>
+                            </div>
+                            <div class="ms-2">
+                                <i class="bi bi-receipt text-muted" style="font-size: 1.5rem;"></i>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <small class="text-muted">cargando...</small>
+
         </div>
-        <!-- CARGANDO -->
+    </div>
 
 
+    <div class="row mb-5">
 
-        <div *ngIf="!cargando">
-            <div>
-                <div class="form-floating mb-2">
-                    <span class="position-absolute top-50 start-90 translate-middle"><i class=" bi-search " style="font-size: 1rem "></i></span>
-                    <input type="text" class="form-control" id="floatingInput2" placeholder="Buscar Producto" (keyup)="buscar(search.value)" #search>
-                    <label for="floatingInput2 ">Buscar Producto</label>
+        <!-- FILTRO -->
+        <div class="col-12 col-md-3 col-xl-3 mt-2">
+            <div class="p-3 rounded bg-white">
+
+                <h4 class="mb-0 text-muted">Filtros</h4>
+
+                <hr>
+
+                <!-- DEPARTAMENTOS -->
+                <div>
+                    <h6 class="text-muted">Departamentos</h6>
+                    <select class="form-select" aria-label="Default select example" #departament>
+                        <option value="none" selected>Seleccionar departamento</option>
+                        <ng-container *ngFor="let departmento of departamentos">
+                            <option *ngIf="departmento.status" value="{{departmento.name}}">{{departmento.name}}</option>
+                        </ng-container>
+                    </select>
                 </div>
+                <!-- DEPARTAMENTOS -->
+
+                <!-- DESDE -->
+                <div class="mt-4">
+                    <label class="" for="">Desde</label>
+                    <input type="datetime-local" class="form-control" (change)="initial.value" #initial>
+                </div>
+                <!-- DESDE -->
+
+                <!-- HASTA -->
+                <div class="mt-2">
+                    <label class="" for="">Hasta</label>
+                    <input type="datetime-local" class="form-control" (change)="end.value" #end>
+                </div>
+                <!-- HASTA -->
+
+                <button type="button" class="btn btn-outline-primary btn-sm btn-block mt-4" (click)="buscarPor(initial.value, end.value, departament.value)"> 
+                    <i class="bi-search"></i> Buscar 
+                </button>
+
             </div>
+        </div>
+        <!-- FILTRO -->
 
-            <!-- BTN CREAR CAJA -->
-            <div class="d-flex justify-content-end">
+        <!-- TABLE CLIENTS -->
+        <div class="shadow p-3 rounded bg-white col-12 col-md-9 col-xl-9 mt-2">
 
-                <div class="row">
-                    <div class="col pe-0">Mostrar:</div>
-                    <div class="col">
-                        <select class="form-select form-select-sm" (change)="cambiarLimite(limit.value)" [value]="limite" aria-label=".form-select-sm example" #limit>
+            <!-- CARGANDO -->
+            <div *ngIf="cargando">
+                <div class="text-center p-4">
+                    <div class="spinner-grow text-secondary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <small class="text-muted">cargando...</small>
+            </div>
+            <!-- CARGANDO -->
+
+
+
+            <div *ngIf="!cargando">
+                <div>
+                    <div class="form-floating mb-2">
+                        <span class="position-absolute top-50 start-90 translate-middle"><i class=" bi-search " style="font-size: 1rem "></i></span>
+                        <input type="text" class="form-control" id="floatingInput2" placeholder="Buscar Producto" (keyup)="buscar(search.value)" #search>
+                        <label for="floatingInput2 ">Buscar Producto</label>
+                    </div>
+                </div>
+
+                <!-- BTN CREAR CAJA -->
+                <div class="d-flex justify-content-end">
+
+                    <div class="row">
+                        <div class="col pe-0">Mostrar:</div>
+                        <div class="col">
+                            <select class="form-select form-select-sm" (change)="cambiarLimite(limit.value)" [value]="limite" aria-label=".form-select-sm example" #limit>
                         <option value="10">10</option>
                         <option value="25">25</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
                     </select>
+                        </div>
+
                     </div>
 
+
                 </div>
+                <!-- BTN CREAR CAJA -->
 
-
-            </div>
-            <!-- BTN CREAR CAJA -->
-
-            <div class="table-responsive ">
-                <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
-                    <thead class="border-bottom ">
-                        <tr>
-                            <th class="text-muted " scope="col ">#</th>
-                            <th class="text-muted " scope="col " colspan="2">Codigo</th>
-                            <th class="text-muted " scope="col " colspan="2">Nombre</th>
-                            <th class="text-muted " scope="col ">Descripción</th>
-                            <th class="text-muted " scope="col ">Tipo</th>
-                            <th class="text-muted " scope="col ">Antes</th>
-                            <th class="text-muted " scope="col ">Cantidad</th>
-                            <th class="text-muted " scope="col ">Stock</th>
-                            <th class="text-muted " scope="col ">Usuario</th>
-                            <th class="text-muted " scope="col ">fecha</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngIf="!sinResultados" class="text-center ">
-                            <th colspan="10" class="py-4">
-                                <h4 class="text-muted">Sin Resultados</h4>
-                            </th>
-                        </tr>
-                        <tr class="trHover" *ngFor="let item of productosLog; let i = index">
-                            <th scope="row ">{{ i + 1}}</th>
-                            <td colspan="2">{{ item.code }}</td>
-                            <td colspan="2">{{ item.name }}</td>
-                            <td>
-                                <a *ngIf="item.invoice" [routerLink]="['/dashboard/factura', item.invoice._id]">                            
+                <div class="table-responsive ">
+                    <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                        <thead class="border-bottom ">
+                            <tr>
+                                <th class="text-muted " scope="col ">#</th>
+                                <th class="text-muted " scope="col " colspan="2">Codigo</th>
+                                <th class="text-muted " scope="col " colspan="2">Nombre</th>
+                                <th class="text-muted text-center" scope="col">Departamento</th>
+                                <th class="text-muted " scope="col ">Descripción</th>
+                                <th class="text-muted " scope="col ">Tipo</th>
+                                <th class="text-muted text-center" scope="col">Antes</th>
+                                <th class="text-muted text-center" scope="col">Cantidad</th>
+                                <th class="text-muted text-center" scope="col">Stock</th>
+                                <th class="text-muted " scope="col ">Usuario</th>
+                                <th class="text-muted " scope="col ">fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="!sinResultados" class="text-center ">
+                                <th colspan="13" class="py-4">
+                                    <h4 class="text-muted">Sin Resultados</h4>
+                                </th>
+                            </tr>
+                            <tr class="trHover" *ngFor="let item of productosLog; let i = index">
+                                <th scope="row ">{{ i + 1}}</th>
+                                <td colspan="2">{{ item.code }}</td>
+                                <td colspan="2">{{ item.name }}</td>
+                                <td class="text-center">{{ item.departamento }}</td>
+                                <td>
+                                    <a *ngIf="item.invoice" [routerLink]="['/dashboard/factura', item.invoice._id]">                            
                                 {{ item.description }}
                             </a>
-                                <span *ngIf="!item.invoice">
+                                    <span *ngIf="!item.invoice">
                                 {{ item.description }}                                
                             </span>
-                            </td>
-                            <td>
-                                <span *ngIf="item.type === 'Salida'" class="badge rounded-pill bg-danger text-white-75">{{ item.type }}</span>
-                                <span *ngIf="item.type === 'Agrego'" class="badge rounded-pill bg-success text-white-75">{{ item.type }}</span>
-                                <span *ngIf="item.type === 'Elimino'" class="badge rounded-pill bg-warning text-white-75">{{ item.type }}</span>
-                                <span *ngIf="item.type === 'Devolución'" class="badge rounded-pill bg-info text-white-75">{{ item.type }}</span>
-                            </td>
+                                </td>
+                                <td>
+                                    <span *ngIf="item.type === 'Salida'" class="badge rounded-pill bg-danger text-white-75">{{ item.type }}</span>
+                                    <span *ngIf="item.type === 'Agrego'" class="badge rounded-pill bg-success text-white-75">{{ item.type }}</span>
+                                    <span *ngIf="item.type === 'Elimino'" class="badge rounded-pill bg-warning text-white-75">{{ item.type }}</span>
+                                    <span *ngIf="item.type === 'Devolución'" class="badge rounded-pill bg-info text-white-75">{{ item.type }}</span>
+                                </td>
 
-                            <td>{{ item.befored }}</td>
-                            <td>{{ item.qty }}</td>
-                            <td>{{ item.stock }}</td>
-                            <td>{{ item.cajero.name }}</td>
-                            <td> <small class="text-wrapp"> {{ item.fecha | date:'medium'}}</small></td>
-                        </tr>
-                    </tbody>
+                                <td class="text-center">{{ item.befored }}</td>
+                                <td class="text-center">{{ item.qty }}</td>
+                                <td class="text-center">{{ item.stock }}</td>
+                                <td>{{ item.cajero.name }}</td>
+                                <td> <small class="text-wrapp"> {{ item.fecha | date:'medium'}}</small></td>
+                            </tr>
+                        </tbody>
 
-                </table>
+                    </table>
 
-            </div>
-
-            <!-- BTN SIGUIENTE Y ANTERIOR -->
-            <div class="row">
-                <div class="col col-md-4">
-                    <small class="text-muted">Total de movimientos: ({{total}})</small>
-                    <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
-                    <!-- <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + productosLog.length }})</small> -->
                 </div>
 
-                <div *ngIf="search.value.length === 0" class="col d-flex justify-content-end">
-                    <button type="button" (click)="cambiarPagina('back')" class="{{btnAtras}} btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
-                    <button type="button" (click)="cambiarPagina('next')" class="{{btnAdelante}} btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
-                </div>
-            </div>
-            <!-- BTN SIGUIENTE Y ANTERIOR -->
+                <!-- BTN SIGUIENTE Y ANTERIOR -->
+                <div class="row">
+                    <div class="col col-md-4">
+                        <small class="text-muted">Total de movimientos: ({{total}})</small>
+                        <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
+                        <!-- <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + productosLog.length }})</small> -->
+                    </div>
 
+                    <div *ngIf="search.value.length === 0" class="col d-flex justify-content-end">
+                        <button type="button" (click)="cambiarPagina('back')" class="{{btnAtras}} btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
+                        <button type="button" (click)="cambiarPagina('next')" class="{{btnAdelante}} btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
+                    </div>
+                </div>
+                <!-- BTN SIGUIENTE Y ANTERIOR -->
+
+            </div>
         </div>
+        <!-- TABLE CLIENTS -->
+
     </div>
+
+
 
 </div>
 

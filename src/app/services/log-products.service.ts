@@ -8,6 +8,7 @@ import { delay, map, tap } from 'rxjs/operators';
 import { LoadLogProducts } from '../interfaces/load-log-products.interface';
 
 import { environment } from '../../environments/environment';
+import { LogProductsModel } from '../models/log-products';
 const base_url = environment.base_url;
 
 @Injectable({
@@ -47,6 +48,13 @@ export class LogProductsService {
                     })
                 )
 
+  }
+
+  /** ================================================================
+   *  LOAD LOGS PRODUCTS DATE
+  ==================================================================== */
+  loadDateLogs(initial: Date, end: Date, query: string){
+    return this.http.get<{ products: LogProductsModel[], ok: boolean }>(`${base_url}/log/products/query/date?initial=${initial}&end=${end}&query=${query}`, this.headers);
   }
 
 }

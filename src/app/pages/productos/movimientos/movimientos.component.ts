@@ -6,6 +6,8 @@ import { LogProductsModel } from '../../../models/log-products';
 // SERVICES
 import { LogProductsService } from '../../../services/log-products.service';
 import { SearchService } from '../../../services/search.service';
+import { DepartmentService } from '../../../services/department.service';
+import { Department } from '../../../models/department.model';
 
 @Component({
   selector: 'app-movimientos',
@@ -29,11 +31,31 @@ export class MovimientosComponent implements OnInit {
   public btnAdelante: string = '';
 
   constructor(  private logProductsServices: LogProductsService,
-                private searchService: SearchService ) { }
+                private searchService: SearchService,
+                private departmentService: DepartmentService ) { }
 
   ngOnInit(): void {
 
+    // CARGAR LOG DE PRODUCTOS
     this.cargarLogProductos();
+
+    // CARGAR DEPARTAMENTOS
+    this.cargarDepartamento();
+
+  }
+
+  /** ================================================================
+   *   CARGAR DEPARTAMENTOS
+  ==================================================================== */
+  public departamentos: Department[] = [];
+  cargarDepartamento(){
+
+    this.departmentService.loadDepartment()
+        .subscribe( ({departments}) => {
+
+          this.departamentos = departments;          
+
+        });
 
   }
 
@@ -59,9 +81,6 @@ export class MovimientosComponent implements OnInit {
             return;                
           }
           // COMPROBAR SI EXISTEN RESULTADOS
-
-          console.log(products);
-          
 
           this.total = total;
           this.productosLog = products;
@@ -129,9 +148,11 @@ export class MovimientosComponent implements OnInit {
   /** ================================================================
    *   BUSCAR
   ==================================================================== */
+  public monto: number = 0;
   buscar( termino:string ){
 
     this.sinResultados = true;
+    this.monto = 0;
 
     if (termino.length === 0) {
       this.productosLog = this.productosLogTemp;
@@ -152,12 +173,61 @@ export class MovimientosComponent implements OnInit {
               }
               // COMPROBAR SI EXISTEN RESULTADOS
 
+              for (const log of resultados) {
+                this.monto += log.monto || 0;
+              }              
+
               this.total = total;
               this.productosLog = resultados; 
-              this.resultado = resultados.length;          
+              this.resultado = resultados.length;
+
             });
     }    
 
   }
 
+
+  buscarPor(inicial:Date, final: Date, departamento: string){
+
+    this.monto = 0;
+    this.sinResultados = true;
+
+    if(departamento === 'none' && inicial === null && final === null){
+      this.productosLog = this.productosLogTemp;
+      this.resultado = 0;
+      return;
+    }
+
+    // SET HOURS      
+    inicial = new Date(inicial);      
+    const initial = new Date(inicial.getTime());
+
+    final = new Date(final);
+    const end = new Date(final.getTime());      
+    // SET HOURS 
+
+    this.logProductsServices.loadDateLogs(initial, end, departamento)
+        .subscribe( ({products}) => {
+
+          // COMPROBAR SI EXISTEN RESULTADOS
+          if (products.length === 0) {
+            this.sinResultados = false;
+            this.productosLog = [];
+            this.resultado = 0;
+            return;                
+          }
+          // COMPROBAR SI EXISTEN RESULTADOS
+
+          for (const log of products) {
+            this.monto += log.monto || 0;
+          }   
+
+          this.productosLog = products; 
+          this.resultado = products.length;
+          
+        });
+
+  }
+
+  // FIN DE LA CLASE
 }
