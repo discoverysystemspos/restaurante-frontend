@@ -5,6 +5,8 @@ import { Subscription, Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import * as SerialPort from 'serialport';
 
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 import {UUID} from 'uuid-generator-ts';
 
 // PRINTER
@@ -89,7 +91,8 @@ export class MesaComponent implements OnInit {
                 private empresaService: EmpresaService,
                 private userService: UserService,
                 private basculaService: BasculaService,
-                private pedidoService: PedidosService) {
+                private pedidoService: PedidosService,
+                private modal: NgbModal ) {
 
                   // CARGAR INFORMACION DEL USUARIO
                   this.user = this.userService.user;                  
@@ -293,13 +296,88 @@ export class MesaComponent implements OnInit {
 
 
   }
+  /** ================================================================
+   *  CAMBIAR VALOR
+  ==================================================================== */
+  cambiarValor( valor: number ) {
+
+    if (this.qtySelect < 0) {
+      this.qtySelect = 0;
+    }
+
+    if ( this.qtySelect >= this.productSelected.inventario && valor >= 0 && this.productSelected.type !== 'Paquete') {
+      return this.qtySelect = this.productSelected.inventario;
+    }
+
+    if ( this.qtySelect <= 0 && valor < 0 ) {
+      return this.qtySelect = 0;
+    }
+
+    this.qtySelect = this.qtySelect + valor;
+  }
+
+  onChange( nuevoValor: number ){
+
+    if (this.qtySelect < 0) {
+      this.qtySelect = 0;
+    }
+    
+    if( nuevoValor > this.productSelected.inventario && this.productSelected.type !== 'Paquete' ) {
+      this.qtySelect = this.productSelected.inventario;
+    } else if ( nuevoValor <= 0 && this.productSelected.type !== 'Paquete') {
+      this.qtySelect = 0;
+    } else {
+      this.qtySelect = nuevoValor;
+    }
+
+  }
+
+  /** ================================================================
+   *  MODAL PRODUCTO CODE
+  ==================================================================== */
+  @ViewChild('modalProductSeleted', { static: true }) modalProductSeleted: TemplateRef<any>;
+  public productSelected: Product;
+  public qtySelect : number = 1;
+  modalProducto ( product : Product ) {
+    
+    if (product.inventario === 0 && product.type !== 'Paquete') {
+      Swal.fire('Error', 'El producto esta agotado. Porfavor, verifica el stock de este prodcuto.', 'error');             
+      return;
+    }
+    
+    this.productSelected = product;
+    this.qtySelect = 1;
+
+    // SI ES GRANEL
+    if (product.type === 'Granel') {
+      // SI ESTA USANDO BASCULA
+      if (this.empresa.bascula) {
+
+        this.basculaService.loadPeso()
+            .subscribe( resp => {
+              this.qtySelect = resp;
+            });
+      }
+    }
+
+    this.modal.open(this.modalProductSeleted);
+
+    // LIMPIAR INPUT
+    this.searchCode.nativeElement.value = '';
+    this.searchCode.nativeElement.onFocus = true;
+
+  }
 
   /** ================================================================
    *  BUSCAR CODIGO
-  ==================================================================== */
+  ==================================================================== */  
   @ViewChild('searchCode') searchCode: ElementRef;
   // public peso: number;
   buscarCodigo(code: string){
+
+    if (code.length === 0) {
+      return;      
+    }
 
     this.productService.cargarProductoCodigo(code)
     .subscribe( (product) => {
@@ -310,127 +388,15 @@ export class MesaComponent implements OnInit {
               this.searchCode.nativeElement.onFocus = true;
               return;              
             }
+
+            this.modalProducto(product);
             
-            if (product.type !== 'Paquete') {
-              if (product.out) {
-                Swal.fire('Error', 'El producto esta agotado. Porfavor, verifica el stock de este prodcuto.', 'error');             
-                return;
-              }else{
-                if (product.low) {
-                  Swal.fire({
-                    icon: 'warning',
-                    title: 'Pocas unidades de este productos, verificar inventario',
-                    showConfirmButton: true,
-                    timer: 1500
-                  });
-                }
-              }             
+          }, (err) =>         
+            { 
+              console.log(err);
+              Swal.fire('Error', err.error.msg, 'error'); 
             }
-            
-            // PEDIMOS LA CANTIDAD
-            if (product.type === 'Granel') {
-
-              if (this.empresa.bascula) {
-
-                this.basculaService.loadPeso()
-                    .subscribe( resp => {
-
-                      const qty:number = resp;
-    
-                      // GUARDAR AL CARRITO
-                      this.carritoTemp(product, qty, product.price);
-                      // GUARDAR AL CARRITO
-      
-                      return;                    
-
-                    });                
-                
-              }else{             
-
-                Swal.fire({
-                  title: 'Cantidad',
-                  input: 'text',
-                  inputAttributes: {
-                    autocapitalize: 'off'
-                  },
-                  showCancelButton: true,
-                  confirmButtonText: 'Confirmar',
-                  showLoaderOnConfirm: true,
-                  preConfirm: (resp) => {
-                    
-                    return resp;
-                  }
-                }).then((result) => {
-
-                  if (result.value > 0) {
-                    
-                    const qty:number = result.value;
-    
-                    // GUARDAR AL CARRITO
-                    this.carritoTemp(product, qty, product.price);
-                    // GUARDAR AL CARRITO
-    
-                    return;
-                  }else{
-                    return;
-                  }                
-                  
-                });
-              }
-              
-            }else{
-
-              // const qty:number = 1;
-
-              // // GUARDAR AL CARRITO
-              // this.carritoTemp(product, qty, product.price);
-              // // GUARDAR AL CARRITO
-
-              Swal.fire({
-                title: 'Cantidad',
-                input: 'text',
-                inputAttributes: {
-                  autocapitalize: 'off'
-                },
-                showCancelButton: true,
-                confirmButtonText: 'Confirmar',
-                showLoaderOnConfirm: true,
-                preConfirm: (resp) => {
-                  
-                  return resp;
-                }
-              }).then((result) => {
-
-                if (result.value > 0) {
-                  
-                  const qty:number = result.value;
-  
-                  // GUARDAR AL CARRITO
-                  this.carritoTemp(product, qty, product.price);
-                  // GUARDAR AL CARRITO
-  
-                  return;
-                }else{
-
-                  const qty:number = 1;
-
-                  // GUARDAR AL CARRITO
-                  this.carritoTemp(product, qty, product.price);
-                  // GUARDAR AL CARRIT
-
-                  return;
-                }                
-                
-              });
-
-
-            }            
-            
-            // LIMPIAR INPUT
-            this.searchCode.nativeElement.value = '';
-            this.searchCode.nativeElement.onFocus = true;
-            
-          }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
+          );
   }
 
   /** ================================================================
@@ -535,7 +501,7 @@ export class MesaComponent implements OnInit {
   public ingredientes: _ingredientes[] = [];
 
   carritoTemp( product: any, qty: number, precio: number, nota: string = '' ){ 
-
+    
     const validarItem = this.productUp.findIndex( (resp) =>{      
       if (resp.product === product.pid ) {
         return true;

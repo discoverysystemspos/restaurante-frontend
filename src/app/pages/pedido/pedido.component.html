@@ -288,6 +288,24 @@
                 </div>
                 <!-- TABLE CLIENTS -->
 
+                <!-- CONFIRMACION DE PEDIDOS -->
+                <div *ngIf="pedido.confirmado" class="shadow-lg p-3 mb-5 rounded bg-white" style="max-height: 400px; height: auto;">
+                    <h5 class="">
+                        Feedback del cliente
+                    </h5>
+
+                    <div>
+                        <h4 *ngIf="pedido.feedback.recibido" class="bi bi-check2-all text-center text-success fs-1 mb-0"></h4>
+                        <p *ngIf="pedido.feedback.recibido" class="mb-2 text-success text-center">Entrega Confirmada</p>
+                        <h4 *ngIf="!pedido.feedback.recibido" class="bi bi-exclamation-triangle text-center text-warning fs-1 mb-0"></h4>
+                        <p *ngIf="!pedido.feedback.recibido" class="mb-2 text-warning text-center">No se a confirmado la entrega</p>
+                        <p class="mb-1 text-break"><span class="fw-bold">Nota: </span>{{ pedido.feedback.nota }} </p>
+                        <p class="mb-1"><span class="fw-bold">Fecha: </span> {{ pedido.feedback.date | date:'medium' }} </p>
+                    </div>
+                </div>
+                <!-- CONFIRMACION DE PEDIDOS -->
+
+
             </div>
             <!-- PAGOS -->
 

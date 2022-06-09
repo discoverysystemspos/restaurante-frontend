@@ -49,8 +49,8 @@
 
                     <div class="card m-1 animated fadeIn" style="width: 12rem;" *ngIf="producto.visibility">
                         <div class="position-absolute ms-2 mt-2">
-                            <span *ngIf="producto.low && !producto.out" class="badge rounded-pill bg-warning text-dark">Bajo</span>
-                            <span *ngIf="producto.out && producto.type !== 'Paquete' || producto.inventario === 0" class="badge rounded-pill bg-danger">Agotado</span>
+                            <span *ngIf="producto.inventario <= producto.min && producto.type !== 'Paquete' && producto.inventario > 0" class="badge rounded-pill bg-warning text-dark">Bajo</span>
+                            <span *ngIf="producto.inventario <= 0 && producto.type !== 'Paquete'" class="badge rounded-pill bg-danger">Agotado</span>
                             <span *ngIf="producto.vencido" class="badge rounded-pill bg-warning">Vencido</span>
                         </div>
 
@@ -66,7 +66,7 @@
                                 <div class="d-flex align-items-center">
 
                                     <p class="mb-0 text-success">{{ producto.price | currency:'COP' }}</p>
-                                    <button type="button" [disabled]="producto.out &&  producto.type !== 'Paquete' || producto.vencido || producto.inventario === 0 " (click)="btnAddProducto( producto, 1, producto.price )" class="btn btn-link btn-primary text-white ms-auto" style="font-size: 1rem;">
+                                    <button type="button" [disabled]=" producto.vencido || producto.inventario <= 0 && producto.type !== 'Paquete'" (click)="buscarCodigo( producto.code )" class="btn btn-link btn-primary text-white ms-auto" style="font-size: 1rem;">
                                         <i class="bi bi-cart-plus"></i>
                                     </button>
 
@@ -1269,10 +1269,7 @@ COMANDAS
 
                     </div>
 
-
                 </div>
-
-
 
             </div>
         </div>
@@ -1413,4 +1410,47 @@ PREFACTURA
 
 <!-- =========================================================================
 PREFACTURA
+========================================================================= -->
+<!-- =========================================================================
+PRODUCT SELECT
+========================================================================= -->
+
+<ng-template #modalProductSeleted let-close="close">
+
+    <div class="modal-header">
+        <h5 class="modal-title">Producto</h5>
+        <button type="button" class="close" (click)="close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <p class="mb-0">Codigo: <small> {{productSelected.code}} </small></p>
+        <h4 class="mb-0 text-break"> {{ productSelected.name }} </h4>
+        <p class="mb-0" *ngIf="productSelected.inventario <= productSelected.min &&  productSelected.type !== 'Paquete'"><span class="badge bg-warning text-dark">Inventario Bajo</span></p>
+        <p class="mb-3">stock: {{ productSelected.inventario }} </p>
+
+        <label for="canttt">Cantidad:</label>
+        <div class="input-group">
+
+            <button class="btn btn-primary" type="button" id="button-addon1" (click)="cambiarValor(-1)"> - </button>
+
+            <input #canttt type="number" [max]="productSelected.inventario" min="0" class="form-control" placeholder="" (ngModelChange)="onChange($event)" [(ngModel)]="qtySelect" (keyup.enter)="carritoTemp(productSelected, qtySelect, productSelected.price); close()">
+
+            <button class="btn btn-primary" type="button" id="button-addon2" (click)="cambiarValor(1)"> + </button>
+        </div>
+        <p class="mb-3 text-danger" *ngIf="qtySelect <= 0"> <small> Debes de agregar cantidad </small> </p>
+        <p class="mb-3 text-danger text-break" *ngIf="qtySelect > productSelected.inventario && productSelected.type !== 'Paquete'"> <small> La cantidad es mayor de la que tenemos en stock. Stock actual {{ productSelected.inventario | number }} </small> </p>
+
+    </div>
+
+    <div class="modal-footer">
+        <button [disabled]="qtySelect <= 0 || qtySelect > productSelected.inventario && productSelected.type !== 'Paquete'" type="button" class="btn btn-outline-success" (click)="carritoTemp(productSelected, qtySelect, productSelected.price)" (click)="close()">
+            Agregar
+        </button>
+    </div>
+
+</ng-template>
+<!-- =========================================================================
+PRODUCT SELECT
 ========================================================================= -->
