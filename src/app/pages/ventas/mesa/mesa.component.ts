@@ -379,7 +379,21 @@ export class MesaComponent implements OnInit {
       return;      
     }
 
-    this.productService.cargarProductoCodigo(code)
+    let codigo = '';
+    let cantidad = 1;
+
+    if (code.includes('+')) {
+      
+      let newCode = code.split('+');
+
+      codigo = newCode[1];
+      cantidad = Number(newCode[0]);
+
+    }else{
+      codigo = code;
+    }
+
+    this.productService.cargarProductoCodigo(codigo)
     .subscribe( (product) => {
                   
             if (product === null || product.status === false) {
@@ -389,7 +403,23 @@ export class MesaComponent implements OnInit {
               return;              
             }
 
-            this.modalProducto(product);
+            // SI ES GRANEL
+            if (product.type === 'Granel') {
+              // SI ESTA USANDO BASCULA
+              if (this.empresa.bascula) {
+
+                this.basculaService.loadPeso()
+                    .subscribe( resp => {
+                      cantidad = resp;
+                    });
+              }
+            }
+
+            this.searchCode.nativeElement.value = '';
+            this.searchCode.nativeElement.onFocus = true;
+            this.carritoTemp(product, cantidad, product.price)
+
+            // this.modalProducto(product);
             
           }, (err) =>         
             { 

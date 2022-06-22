@@ -69,8 +69,8 @@
 
                                         </td>
                                         <td>
-                                            <select class="form-select form-select-sm" aria-label=".form-select-sm example" (change)="cambiarEstado(mesa.carrito, item.product, esta.value, mesa)" #esta>
-                                                <option class="text-danger" value="Pendiente" [selected]="item.estado === 'Pendiente'">Pendiente</option>
+                                            <select class="form-select form-select-sm" aria-label=".form-select-sm example" (change)="cambiarEstado(mesa.comanda, item.product, esta.value, mesa)" #esta>
+                                                <option class="text-danger" value="pendiente" [selected]="item.estado === 'pendiente'">Pendiente</option>
                                                 <option class="text-warning" value="Preparando" [selected]="item.estado === 'Preparando'">Preparando</option>
                                                 <option class="text-success" value="Entregado" [selected]="item.estado === 'Entregado'">Entregado</option>
                                             </select>
@@ -166,7 +166,7 @@
 
                                         <ng-container *ngFor="let item of comanda?.comanda; let i = index">
 
-                                            <tr style="color: black;">
+                                            <tr style="color: black;" *ngIf="item.estado === 'pendiente'">
                                                 <td>
                                                     <h6 class="mb-0 lh-1 text-capitalize"> <span class="lh-1">01 - {{item.product.name}}  </span></h6>
 
@@ -177,7 +177,7 @@
 
                                                 </td>
                                                 <td>
-                                                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" (change)="cambiarEstado(comanda?.carrito, item.product, esta.value, mesa)" #esta>
+                                                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" #estadoitem>
                                                     <option class="text-danger" value="Pendiente" [selected]="item.estado === 'Pendiente'">Pendiente</option>
                                                     <option class="text-warning" value="Preparando" [selected]="item.estado === 'Preparando'">Preparando</option>
                                                     <option class="text-success" value="Entregado" [selected]="item.estado === 'Entregado'">Entregado</option>

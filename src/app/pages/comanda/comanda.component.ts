@@ -80,6 +80,20 @@ export class ComandaComponent implements OnInit {
   ==================================================================== */
   printDiv() {
     this.printerService.printDiv('printDiv');
+
+    let coman = this.comanda.comanda;
+
+    for (let i = 0; i < coman.length; i++) {
+      
+      if ( coman[i].estado === 'pendiente' ) {
+        
+        this.cambiarEstado(coman, coman[i].product, 'Preparando', this.comanda);
+
+      }
+      
+    }
+
+
   }
 
   /** ================================================================
@@ -104,6 +118,7 @@ export class ComandaComponent implements OnInit {
   public carrito: LoadCarrito[]= [];
   public mesa: Mesa;
   cambiarEstado(carrito:any, id: any, estado:any, mesa:Mesa){
+    
 
     this.carrito = [];
     this.carrito = carrito;
