@@ -1495,22 +1495,43 @@ PRODUCT SELECT
         <p class="mb-0" *ngIf="productSelected.inventario <= productSelected.min &&  productSelected.type !== 'Paquete'"><span class="badge bg-warning text-dark">Inventario Bajo</span></p>
         <p class="mb-3">stock: {{ productSelected.inventario }} </p>
 
+        <div class="container">
+            <div class="form-check form-switch my-2">
+                <input [disabled]="user.role !== 'ADMIN' && user.role !== 'CASHIER' " (change)="mayoreoApp()" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Mayoreo</label>
+            </div>
+        </div>
+
+        <!-- PRICES -->
+        <div>
+            <h4 class="display-4 mb-2 text-center text-success fw-bold"> {{ priceProductSelected * qtySelect | currency: 'COP' }} </h4>
+
+        </div>
+        <!-- PRICES -->
+
         <label for="canttt">Cantidad:</label>
-        <div class="input-group">
+
+        <div class="input-group mb-2">
 
             <button class="btn btn-primary" type="button" id="button-addon1" (click)="cambiarValor(-1)"> - </button>
 
-            <input #canttt type="number" [max]="productSelected.inventario" min="0" class="form-control" placeholder="" (ngModelChange)="onChange($event)" [(ngModel)]="qtySelect" (keyup.enter)="carritoTemp(productSelected, qtySelect, productSelected.price); close()">
+            <input #canttt type="number" [max]="productSelected.inventario" min="0" class="form-control" placeholder="" (ngModelChange)="onChange($event)" [(ngModel)]="qtySelect" (keyup.enter)="carritoTemp(productSelected, qtySelect, pricePr.value); close()">
 
             <button class="btn btn-primary" type="button" id="button-addon2" (click)="cambiarValor(1)"> + </button>
         </div>
+
+        <label for="pricePr">Precio:</label>
+        <div class="input-group">
+            <input #pricePr type="number" min="0" class="form-control" placeholder="" [(ngModel)]="priceProductSelected">
+        </div>
+
         <p class="mb-3 text-danger" *ngIf="qtySelect <= 0"> <small> Debes de agregar cantidad </small> </p>
         <p class="mb-3 text-danger text-break" *ngIf="qtySelect > productSelected.inventario && productSelected.type !== 'Paquete'"> <small> La cantidad es mayor de la que tenemos en stock. Stock actual {{ productSelected.inventario | number }} </small> </p>
 
     </div>
 
     <div class="modal-footer">
-        <button [disabled]="qtySelect <= 0 || qtySelect > productSelected.inventario && productSelected.type !== 'Paquete'" type="button" class="btn btn-outline-success" (click)="carritoTemp(productSelected, qtySelect, productSelected.price)" (click)="close()">
+        <button [disabled]="qtySelect <= 0 || qtySelect > productSelected.inventario && productSelected.type !== 'Paquete'" type="button" class="btn btn-outline-success" (click)="carritoTemp(productSelected, qtySelect, pricePr.value)" (click)="close()">
             Agregar
         </button>
     </div>

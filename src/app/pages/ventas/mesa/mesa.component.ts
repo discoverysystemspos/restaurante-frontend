@@ -314,8 +314,17 @@ export class MesaComponent implements OnInit {
     }
 
     this.qtySelect = this.qtySelect + valor;
+
+    if (this.mayor) {  
+      this.priceProductSelected = this.productSelected.wholesale;
+    }else{
+      this.priceProductSelected = this.productSelected.price;
+    }
+
   }
 
+
+  // CAMBIAR CANTIDADES DE LOS PRODUCTOS
   onChange( nuevoValor: number ){
 
     if (this.qtySelect < 0) {
@@ -330,6 +339,26 @@ export class MesaComponent implements OnInit {
       this.qtySelect = nuevoValor;
     }
 
+    if (this.mayor) {   
+      this.priceProductSelected = this.productSelected.wholesale;
+    }else{
+      this.priceProductSelected = this.productSelected.price;
+    }
+
+  }
+
+  // ACTIVAR MAYOREO
+  public mayor: boolean = false;
+  mayoreoApp(){
+
+    if (!this.mayor) {    
+      this.mayor = true;  
+      this.priceProductSelected = this.productSelected.wholesale;
+    }else{
+      this.mayor = false;
+      this.priceProductSelected = this.productSelected.price;
+    }
+
   }
 
   /** ================================================================
@@ -338,7 +367,11 @@ export class MesaComponent implements OnInit {
   @ViewChild('modalProductSeleted', { static: true }) modalProductSeleted: TemplateRef<any>;
   public productSelected: Product;
   public qtySelect : number = 1;
+  public priceProductSelected: number = 0;
   modalProducto ( product : Product ) {
+
+    this.priceProductSelected = 0;
+    this.mayor = false;
     
     if (product.inventario === 0 && product.type !== 'Paquete') {
       Swal.fire('Error', 'El producto esta agotado. Porfavor, verifica el stock de este prodcuto.', 'error');             
@@ -347,6 +380,7 @@ export class MesaComponent implements OnInit {
     
     this.productSelected = product;
     this.qtySelect = 1;
+    this.priceProductSelected = product.price;
 
     // SI ES GRANEL
     if (product.type === 'Granel') {
