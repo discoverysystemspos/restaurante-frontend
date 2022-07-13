@@ -336,19 +336,21 @@
                 <hr *ngIf="!menu" class="my-2">
 
                 <div *ngIf="!menu" class="animated fadeIn">
-                    <label for="precioM">Buscar Productos:</label>
-                    <input type="text" class="form-control" placeholder="buscar producto" (keyup.enter)="buscarProducto(searchProduct.value)" #searchProduct>
-                </div>
-                <div class="animated fadeIn" *ngIf="!menu && listaProductos.length > 0 && searchProduct.value.length !== 0" class="bg-white px-2 shadow col-auto" style="position: absolute; z-index: 1020;">
 
-                    <ul class="list-group list-group-flush overflow-auto" style="max-height: 150px;">
+                    <div>
+                        <label for="precioM">Buscar Productos:</label>
+                        <input type="text" class="form-control" placeholder="buscar producto" (keyup.enter)="buscarProducto(searchProduct.value)" #searchProduct>
+                    </div>
+                    <div *ngIf="listaProductos.length > 0 && searchProduct.value.length !== 0" class="bg-white px-2 shadow col-auto" style="position: absolute; z-index: 1020;">
 
-                        <li class="list-group-item py-1">
-                            <h6>Resultados: ({{ listaProductos.length }})</h6>
-                        </li>
+                        <ul class="list-group list-group-flush overflow-auto" style="max-height: 150px;">
 
-                        <li class="list-group-item py-1" *ngFor="let item of listaProductos">
-                            <button [disabled]="item.inventario <= 0 && item.type !== 'Paquete'" class="border-0 bg-white w-100 text-start" (click)="modalProducto(item); searchProduct.value = '' " type="button">
+                            <li class="list-group-item py-1">
+                                <h6>Resultados: ({{ listaProductos.length }})</h6>
+                            </li>
+
+                            <li class="list-group-item py-1" *ngFor="let item of listaProductos">
+                                <button [disabled]="item.inventario <= 0 && item.type !== 'Paquete'" class="border-0 bg-white w-100 text-start" (click)="modalProducto(item); searchProduct.value = '' " type="button">
                                     <div class="d-flex">
                                         <div class="align-self-center">
                                             <span> {{ item.name }} </span>
@@ -363,9 +365,51 @@
                                         </div>
                                     </div>
                                 </button>
-                        </li>
+                            </li>
 
-                    </ul>
+                        </ul>
+
+                    </div>
+
+                    <hr class="my-2">
+
+                    <div class="table-responsive">
+                        <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                            <thead class="border-bottom ">
+                                <tr>
+                                    <th class="text-muted text-left" scope="col " colspan="2 ">Descripción</th>
+                                    <th class="text-muted " scope="col ">Precio</th>
+                                    <th class="text-muted " scope="col ">Cantidad</th>
+                                    <th class="text-muted " scope="col ">Monto</th>
+                                    <th class="text-muted " scope="col "></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngIf="carrito.length === 0" class="text-center ">
+                                    <th colspan="10" class="py-4">
+                                        <h4 class="text-muted">No has seleccionado ningun producto</h4>
+                                    </th>
+                                </tr>
+
+                                <ng-container *ngIf="carrito.length > 0 ">
+
+                                    <ng-container *ngFor="let item of carrito; let i = index">
+                                        <tr class="trHover" *ngIf="item.product">
+                                            <td colspan="2">{{ item.product.name }}</td>
+                                            <td>{{ item.price | currency:'COP'}}</td>
+                                            <td class="text-center">{{ item.qty }}</td>
+                                            <td>{{ item.price * item.qty | currency:'COP'}}</td>
+                                            <td>
+                                                <button [disabled]="user.role !== 'ADMIN' && user.role !== 'CASHIER'" type="button" (click)="eliminarProductoCarrito(i, item.product)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+
+                                </ng-container>
+
+                            </tbody>
+                        </table>
+                    </div>
 
                 </div>
 
