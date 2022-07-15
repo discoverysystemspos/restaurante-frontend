@@ -661,9 +661,7 @@ export class MesaComponent implements OnInit {
         });
 
       }
-      
 
-      
     }
 
     // GUARDAR LA INFORMACION DE LA COMANDA
@@ -1979,6 +1977,65 @@ export class MesaComponent implements OnInit {
   prefactura(){
 
     this.printerService.printDiv('copiaPre');
+
+  }
+
+  /** ============================================================================================
+   * CAMBIAR CANTIDADES
+  ==================================================================== */
+  changeCant(cant: any, item: any){
+    
+    this.mesa.carrito.map((it) => {
+
+      if(it._id == item._id){
+
+        if (cant <= 0) {
+          it.qty = 1;          
+        }else{
+          it.qty = cant;
+        }
+
+      }      
+      return it;
+    });
+
+    
+    
+    this.mesasServices.updateMesa(this.mesa, this.mesaID)
+        .subscribe( (resp:{ok: boolean, mesa: any}) => { 
+          
+          this.carrito = resp.mesa.carrito;
+          this.productUp = [];
+          this.comanda = [];
+          this.comandas = [];
+
+          this.comandas = resp.mesa.comanda;
+
+          for (let i = 0; i < resp.mesa.carrito.length; i++) {
+
+            this.productUp.push({
+              product: resp.mesa.carrito[i].product._id,
+              qty: resp.mesa.carrito[i].qty,
+              price: resp.mesa.carrito[i].price,
+              iva: resp.mesa.carrito[i].iva
+            });
+            
+            this.comanda.push({
+              product:  resp.mesa.carrito[i].product.name,
+              comanda:  resp.mesa.carrito[i].product.comanda,
+              tipo:     resp.mesa.carrito[i].product.tipo,
+              qty:      resp.mesa.carrito[i].qty,
+              price:    resp.mesa.carrito[i].price
+            });
+                        
+          }
+          this.comandaTemp = this.comanda;
+
+          this.sumarTotales();          
+
+          // this.cargarMesa(this.mesaID);
+
+        }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
 
   }
   

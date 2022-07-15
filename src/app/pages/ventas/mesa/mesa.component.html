@@ -124,7 +124,9 @@
                                     <tr class="trHover" *ngIf="item.product">
                                         <td colspan="2">{{ item.product.name }}</td>
                                         <td>{{ item.price | currency:'COP'}}</td>
-                                        <td class="text-center">{{ item.qty }}</td>
+                                        <td class="text-center">
+                                            <input class="w-75" min="1" type="number" [value]="item.qty" (change)="changeCant(cantt.value, item)" #cantt>
+                                        </td>
                                         <td>{{ item.price * item.qty | currency:'COP'}}</td>
                                         <td>
                                             <button [disabled]="user.role !== 'ADMIN' && user.role !== 'CASHIER'" type="button" (click)="eliminarProductoCarrito(i, item.product)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
@@ -373,7 +375,7 @@
 
                     <hr class="my-2">
 
-                    <div class="table-responsive">
+                    <!-- <div class="table-responsive">
                         <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
                             <thead class="border-bottom ">
                                 <tr>
@@ -397,7 +399,9 @@
                                         <tr class="trHover" *ngIf="item.product">
                                             <td colspan="2">{{ item.product.name }}</td>
                                             <td>{{ item.price | currency:'COP'}}</td>
-                                            <td class="text-center">{{ item.qty }}</td>
+                                            <td class="text-center">
+                                                <input type="number" [value]="item.qty">
+                                            </td>
                                             <td>{{ item.price * item.qty | currency:'COP'}}</td>
                                             <td>
                                                 <button [disabled]="user.role !== 'ADMIN' && user.role !== 'CASHIER'" type="button" (click)="eliminarProductoCarrito(i, item.product)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
@@ -409,7 +413,7 @@
 
                             </tbody>
                         </table>
-                    </div>
+                    </div> -->
 
                 </div>
 
@@ -486,7 +490,9 @@
                                         <tr class="trHover" *ngIf="item.product">
                                             <td colspan="2">{{ item.product.name }}</td>
                                             <td>{{ item.price | currency:'COP'}}</td>
-                                            <td class="text-center">{{ item.qty }}</td>
+                                            <td class="text-center">
+                                                <input class="w-75" min="1" type="number" [value]="item.qty" (change)="changeCant(cant.value, item)" #cant>
+                                            </td>
                                             <td>{{ item.price * item.qty | currency:'COP'}}</td>
                                             <td>
                                                 <button [disabled]="user.role !== 'ADMIN' && user.role !== 'CASHIER'" type="button" (click)="eliminarProductoCarrito(i, item.product)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
