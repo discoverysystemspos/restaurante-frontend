@@ -440,19 +440,34 @@ export class MesaComponent implements OnInit {
             // SI ES GRANEL
             if (product.type === 'Granel') {
               // SI ESTA USANDO BASCULA
-              if (this.empresa.bascula) {
-
+              
+              if (this.empresa.bascula) {                
+                
                 this.basculaService.loadPeso()
-                    .subscribe( resp => {
-                      cantidad = resp;
-                    });
+                .subscribe( resp => {
+                  cantidad = resp;
+
+                  this.searchCode.nativeElement.value = '';
+                  this.searchCode.nativeElement.onFocus = true;
+                  this.carritoTemp(product, cantidad, product.price)
+
+                  return;
+
+                });
+
+              }else {
+                this.searchCode.nativeElement.value = '';
+                this.searchCode.nativeElement.onFocus = true;
+                this.carritoTemp(product, cantidad, product.price);
+                return;
               }
+              
+            }else{
+              this.searchCode.nativeElement.value = '';
+              this.searchCode.nativeElement.onFocus = true;
+              this.carritoTemp(product, cantidad, product.price);
             }
-
-            this.searchCode.nativeElement.value = '';
-            this.searchCode.nativeElement.onFocus = true;
-            this.carritoTemp(product, cantidad, product.price)
-
+                        
             // this.modalProducto(product);
             
           }, (err) =>         
@@ -1222,11 +1237,16 @@ export class MesaComponent implements OnInit {
 
       if (this.empresa.bascula) {
 
+        
+
         this.basculaService.loadPeso()
             .subscribe( resp => {
 
               qty = resp;
               this.cantidad.nativeElement.value = qty;
+              
+              console.log(resp);
+              
               return;                    
 
             });        
