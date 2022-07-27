@@ -450,7 +450,7 @@
                                             <td colspan="2">{{ item.product.name }}</td>
                                             <td>{{ item.price | currency:'COP'}}</td>
                                             <td class="text-center">
-                                                <input class="w-75" min="1" type="number" [value]="item.qty" (change)="changeCant(cant.value, item)" #cant>
+                                                <input [readonly]="inputChange" class="w-75" min="1" type="number" [value]="item.qty" [max]="item.product.inventario" (change)="changeCant(cant.value, item)" #cant>
                                             </td>
                                             <td>{{ item.price * item.qty | currency:'COP'}}</td>
                                             <td>

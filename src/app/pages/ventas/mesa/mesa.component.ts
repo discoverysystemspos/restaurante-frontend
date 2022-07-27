@@ -2003,7 +2003,11 @@ export class MesaComponent implements OnInit {
   /** ============================================================================================
    * CAMBIAR CANTIDADES
   ==================================================================== */
+  public inputChange: boolean = false;
+
   changeCant(cant: any, item: any){
+    
+    this.inputChange = true;
     
     this.mesa.carrito.map((it) => {
 
@@ -2011,6 +2015,9 @@ export class MesaComponent implements OnInit {
 
         if (cant <= 0) {
           it.qty = 1;          
+        } else if(cant > item.product.inventario){
+          it.qty = item.product.inventario;
+          Swal.fire('Error', `No puedes agregar mas de ${item.product.inventario}`, 'warning');
         }else{
           it.qty = cant;
         }
@@ -2018,13 +2025,13 @@ export class MesaComponent implements OnInit {
       }      
       return it;
     });
-
-    
     
     this.mesasServices.updateMesa(this.mesa, this.mesaID)
         .subscribe( (resp:{ok: boolean, mesa: any}) => { 
           
           this.carrito = resp.mesa.carrito;
+          this.mesa.carrito = resp.mesa.carrito;
+
           this.productUp = [];
           this.comanda = [];
           this.comandas = [];
@@ -2049,7 +2056,9 @@ export class MesaComponent implements OnInit {
             });
                         
           }
-          this.comandaTemp = this.comanda;
+          this.comandaTemp = this.comanda;          
+
+          this.inputChange = false;
 
           this.sumarTotales();          
 
