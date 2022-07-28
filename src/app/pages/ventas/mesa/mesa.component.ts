@@ -456,10 +456,50 @@ export class MesaComponent implements OnInit {
                 });
 
               }else {
-                this.searchCode.nativeElement.value = '';
-                this.searchCode.nativeElement.onFocus = true;
-                this.carritoTemp(product, cantidad, product.price);
-                return;
+
+                if (this.empresa.fruver) {
+
+                  Swal.fire({
+                    title: 'Cantidad',
+                    input: 'text',
+                    inputAttributes: {
+                      autocapitalize: 'off'
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: 'Confirmar',
+                    showLoaderOnConfirm: true,
+                    preConfirm: (resp) => {
+                      
+                      return resp;
+                    }
+                  }).then((result) => {
+          
+                    if (result.value > 0) {
+                      
+                      cantidad = result.value;
+                      this.searchCode.nativeElement.value = '';
+                      this.searchCode.nativeElement.onFocus = true;
+          
+                      // GUARDAR AL CARRITO
+                      this.carritoTemp(product, cantidad, product.price);
+                      // GUARDAR AL CARRITO
+          
+                      return;
+                    }else{
+                      return;
+                    }                
+                    
+                  });
+
+                  
+                }else{
+                  this.searchCode.nativeElement.value = '';
+                  this.searchCode.nativeElement.onFocus = true;
+                  this.carritoTemp(product, cantidad, product.price);
+                  return;
+
+                }
+
               }
               
             }else{

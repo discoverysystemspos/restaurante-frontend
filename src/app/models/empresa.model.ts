@@ -34,6 +34,7 @@ export class Datos{
         public commission?: boolean,
         public comision?: number,
         public bascula?: boolean,
+        public fruver?: boolean,
         public comandas?: boolean,
         public commissions?: boolean,
         public comisiones?: comisiones[]
