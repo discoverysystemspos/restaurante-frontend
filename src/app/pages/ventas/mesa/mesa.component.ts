@@ -2045,24 +2045,29 @@ export class MesaComponent implements OnInit {
   ==================================================================== */
   public inputChange: boolean = false;
 
-  changeCant(cant: any, item: any){
+  changeCant(cant: any, item: any){    
     
     this.inputChange = true;
     
     this.mesa.carrito.map((it) => {
 
-      if(it._id == item._id){
-
+      if(it._id === item._id){
+        
         if (cant <= 0) {
           it.qty = 1;          
         } else if(cant > item.product.inventario){
           it.qty = item.product.inventario;
           Swal.fire('Error', `No puedes agregar mas de ${item.product.inventario}`, 'warning');
         }else{
-          it.qty = cant;
+          it.qty = cant;          
+        }
+        
+        if (item.product.tax) {
+          it.iva = ((item.price * item.product.impuesto[0].valor)/100) * item.qty ;
         }
 
-      }      
+      }
+
       return it;
     });
     

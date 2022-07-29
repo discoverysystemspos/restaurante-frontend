@@ -106,10 +106,6 @@ export class FacturaComponent implements OnInit {
         .subscribe( invoice => {
 
           this.factura = invoice;
-
-          console.log(invoice);
-          
-
           this.payments = this.factura.payments;
           this.iva = invoice.iva;
           this.sumarPagos();          

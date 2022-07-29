@@ -43,23 +43,23 @@
 
                             <tr>
                                 <td colspan="2"> <small> Fondo Caja </small> </td>
-                                <td> {{ inicial | currency: 'COP' }}</td>
+                                <td> {{ inicial | currency: 'COP' : 'symbol' : '1.0-0' }}</td>
                             </tr>
                             <tr>
                                 <td colspan="2"> <small> Ventas en efectivo </small> </td>
-                                <td> {{ efectivo | currency: 'COP' }} </td>
+                                <td> {{ efectivo | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                             </tr>
                             <tr>
                                 <td colspan="2"> <small> Entradas </small> </td>
-                                <td> {{ entradas | currency: 'COP' }} </td>
+                                <td> {{ entradas | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                             </tr>
                             <tr class="text-danger">
                                 <td colspan="2"> <small> Salidas </small> </td>
-                                <td> {{ salidas | currency: 'COP' }} </td>
+                                <td> {{ salidas | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                             </tr>
                             <tr class="border-top">
                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                <td class="fw-bold"> {{ inicial + efectivo + abEfectivo + entradas + salidas | currency: 'COP' }} </td>
+                                <td class="fw-bold"> {{ inicial + efectivo + abEfectivo + entradas + salidas | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                             </tr>
 
                         </tbody>
@@ -84,19 +84,19 @@
 
                             <tr>
                                 <td colspan="2"> <small> En Efectivo </small> </td>
-                                <td> {{ efectivo | currency: 'COP' }} </td>
+                                <td> {{ efectivo | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                             </tr>
                             <tr>
                                 <td colspan="2"> <small> Con tarjeta </small> </td>
-                                <td> {{ tarjeta | currency: 'COP' }} </td>
+                                <td> {{ tarjeta | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                             </tr>
                             <tr>
                                 <td colspan="2"> <small> Con Transferencia </small> </td>
-                                <td> {{ transferencia | currency: 'COP' }} </td>
+                                <td> {{ transferencia | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                             </tr>
                             <tr class="border-top">
                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + credito + vales | currency: 'COP' }} </td>
+                                <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + credito + vales | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                             </tr>
 
 
@@ -114,7 +114,7 @@
 
                 <div class="card-body text-white">
                     <h4 class="card-title mb-0 text-center">Ventas Totales</h4>
-                    <h5 class="text-center"> {{ montos | currency: 'COP' }} </h5>
+                    <h5 class="text-center"> {{ montos | currency: 'COP' : 'symbol' : '1.0-0' }} </h5>
                 </div>
 
             </div>
@@ -123,7 +123,7 @@
 
                 <div class="card-body text-white">
                     <h4 class="card-title mb-0 text-center">Ganancia Total</h4>
-                    <h5 class="text-center"> {{ montos - costo | currency: 'COP' }} </h5>
+                    <h5 class="text-center"> {{ montos - costo | currency: 'COP' : 'symbol' : '1.0-0' }} </h5>
                 </div>
 
             </div>
@@ -153,7 +153,7 @@
 
                                     <td colspan="2"> <small> {{ movimiento.descripcion }} </small> </td>
                                     <td [ngClass]="{ 'text-danger':  movimiento.type == 'salida'}">
-                                        {{ movimiento.monto | currency: 'COP' }}
+                                        {{ movimiento.monto | currency: 'COP' : 'symbol' : '1.0-0' }}
                                     </td>
                                 </tr>
 
@@ -163,7 +163,7 @@
 
                             <tr class="border-top">
                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                <td class="fw-bold"> {{ salidas | currency: 'COP' }} </td>
+                                <td class="fw-bold"> {{ salidas | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                             </tr>
 
                         </tbody>
@@ -193,7 +193,7 @@
 
                                     <td colspan="2"> <small> {{ movimiento.descripcion }} </small> </td>
                                     <td [ngClass]="{ 'text-danger':  movimiento.type == 'salida'}">
-                                        {{ movimiento.monto | currency: 'COP' }}
+                                        {{ movimiento.monto | currency: 'COP' : 'symbol' : '1.0-0' }}
                                     </td>
                                 </tr>
 
@@ -201,7 +201,7 @@
 
                             <tr class="border-top">
                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                <td class="fw-bold"> {{ entradas | currency: 'COP' }} </td>
+                                <td class="fw-bold"> {{ entradas | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                             </tr>
 
                         </tbody>
@@ -246,7 +246,7 @@
                                     </td>
                                     <td class="text-end">
                                         <span class="fw-bolder">
-                                            {{ deparment.monto | currency: 'COP' }}
+                                            {{ deparment.monto | currency: 'COP' : 'symbol' : '1.0-0' }}
                                         </span>
                                     </td>
                                 </tr>
@@ -294,7 +294,7 @@
                         <tbody>
                             <tr>
                                 <td scope="row">Efectivo esperado en caja:</td>
-                                <td>{{ inicial + efectivo + abEfectivo + entradas + salidas | currency: 'COP' }}</td>
+                                <td>{{ inicial + efectivo + abEfectivo + entradas + salidas | currency: 'COP' : 'symbol' : '1.0-0' }}</td>
                             </tr>
                             <tr>
                                 <td scope="row">Cuanto efectivo hay en caja</td>
@@ -309,7 +309,7 @@
                                 <td [ngClass]=" {   'text-danger': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) !== 0, 
                                 'text-success': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) > 0
                             }">
-                                    {{ cajaA.value - (inicial + efectivo + abEfectivo + entradas + salidas) | currency: 'COP'}}
+                                    {{ cajaA.value - (inicial + efectivo + abEfectivo + entradas + salidas) | currency: 'COP' : 'symbol' : '1.0-0'}}
                                 </td>
                             </tr>
                         </tbody>
@@ -345,7 +345,7 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th scope="row">{{ montoDiferencia | currency: 'COP' }} </th>
+                                        <th scope="row">{{ montoDiferencia | currency: 'COP' : 'symbol' : '1.0-0' }} </th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -362,7 +362,7 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th scope="row">{{ efectivo + credito + tarjeta + transferencia + vales | currency: 'COP' }} </th>
+                                        <th scope="row">{{ efectivo + credito + tarjeta + transferencia + vales | currency: 'COP' : 'symbol' : '1.0-0' }} </th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -379,7 +379,7 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th scope="row">{{ (efectivo + credito + tarjeta + transferencia + vales) - costo | currency: 'COP' }} </th>
+                                        <th scope="row">{{ (efectivo + credito + tarjeta + transferencia + vales) - costo | currency: 'COP' : 'symbol' : '1.0-0' }} </th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -400,27 +400,27 @@
 
                                     <tr>
                                         <td colspan="2"> <small> Fondo Caja </small> </td>
-                                        <td> {{ inicial | currency: 'COP' }}</td>
+                                        <td> {{ inicial | currency: 'COP' : 'symbol' : '1.0-0' }}</td>
                                     </tr>
                                     <tr>
                                         <td colspan="2"> <small> Ventas en efectivo </small> </td>
-                                        <td> {{ efectivo | currency: 'COP' }} </td>
+                                        <td> {{ efectivo | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                                     </tr>
                                     <tr>
                                         <td colspan="2"> <small> Abonos en efectivo </small> </td>
-                                        <td> {{ abEfectivo | currency: 'COP' }} </td>
+                                        <td> {{ abEfectivo | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                                     </tr>
                                     <tr>
                                         <td colspan="2"> <small> Entradas </small> </td>
-                                        <td> {{ entradas | currency: 'COP' }} </td>
+                                        <td> {{ entradas | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                                     </tr>
                                     <tr class="text-danger">
                                         <td colspan="2"> <small> Salidas </small> </td>
-                                        <td> {{ salidas | currency: 'COP' }} </td>
+                                        <td> {{ salidas | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                                     </tr>
                                     <tr class="border-top">
                                         <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                        <td class="fw-bold"> {{ inicial + efectivo + abEfectivo + entradas + salidas | currency: 'COP' }} </td>
+                                        <td class="fw-bold"> {{ inicial + efectivo + abEfectivo + entradas + salidas | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                                     </tr>
 
                                 </tbody>
@@ -442,19 +442,19 @@
 
                                         <tr>
                                             <td colspan="2"> <small> En Efectivo </small> </td>
-                                            <td> {{ efectivo | currency: 'COP' }} </td>
+                                            <td> {{ efectivo | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                                         </tr>
                                         <tr>
                                             <td colspan="2"> <small> Con tarjeta </small> </td>
-                                            <td> {{ tarjeta | currency: 'COP' }} </td>
+                                            <td> {{ tarjeta | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                                         </tr>
                                         <tr>
                                             <td colspan="2"> <small> Con Transferencia </small> </td>
-                                            <td> {{ transferencia | currency: 'COP' }} </td>
+                                            <td> {{ transferencia | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                                         </tr>
                                         <tr class="border-top">
                                             <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                            <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + credito + vales | currency: 'COP' }} </td>
+                                            <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + credito + vales | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                                         </tr>
 
 
@@ -482,7 +482,7 @@
 
                                                 <td colspan="2"> <small> {{ movimiento.descripcion }} </small> </td>
                                                 <td [ngClass]="{ 'text-danger':  movimiento.type == 'salida'}">
-                                                    {{ movimiento.monto | currency: 'COP' }}
+                                                    {{ movimiento.monto | currency: 'COP' : 'symbol' : '1.0-0' }}
                                                 </td>
                                             </tr>
 
@@ -490,7 +490,7 @@
 
                                         <tr class="border-top">
                                             <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                            <td class="fw-bold"> {{ entradas | currency: 'COP' }} </td>
+                                            <td class="fw-bold"> {{ entradas | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                                         </tr>
 
                                     </tbody>
@@ -518,7 +518,7 @@
 
                                                 <td colspan="2"> <small> {{ movimiento.descripcion }} </small> </td>
                                                 <td [ngClass]="{ 'text-danger':  movimiento.type == 'salida'}">
-                                                    {{ movimiento.monto | currency: 'COP' }}
+                                                    {{ movimiento.monto | currency: 'COP' : 'symbol' : '1.0-0' }}
                                                 </td>
                                             </tr>
 
@@ -526,7 +526,7 @@
 
                                         <tr class="border-top">
                                             <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                            <td class="fw-bold"> {{ salidas | currency: 'COP' }} </td>
+                                            <td class="fw-bold"> {{ salidas | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                                         </tr>
 
                                     </tbody>
@@ -564,7 +564,7 @@
                                                 </td>
                                                 <td class="text-end">
                                                     <span class="fw-bolder">
-                                                            {{ deparment.monto | currency: 'COP' }}
+                                                            {{ deparment.monto | currency: 'COP' : 'symbol' : '1.0-0' }}
                                                         </span>
                                                 </td>
                                             </tr>
@@ -605,7 +605,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <th scope="row">{{ montoDiferencia | currency: 'COP' }} </th>
+                                            <th scope="row">{{ montoDiferencia | currency: 'COP' : 'symbol' : '1.0-0' }} </th>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -623,7 +623,7 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th scope="row">{{ efectivo + credito + tarjeta + transferencia + vales | currency: 'COP' }} </th>
+                                        <th scope="row">{{ efectivo + credito + tarjeta + transferencia + vales | currency: 'COP' : 'symbol' : '1.0-0' }} </th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -639,7 +639,7 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th scope="row">{{ (efectivo + credito + tarjeta + transferencia + vales) - costo | currency: 'COP' }} </th>
+                                        <th scope="row">{{ (efectivo + credito + tarjeta + transferencia + vales) - costo | currency: 'COP' : 'symbol' : '1.0-0' }} </th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -842,7 +842,7 @@
                                                     </td>
                                                     <td class="text-end">
                                                         <span class="fw-bolder">
-                                                            {{ deparment.monto | currency: 'COP' }}
+                                                            {{ deparment.monto | currency: 'COP' : 'symbol' : '1.0-0' }}
                                                         </span>
                                                     </td>
                                                 </tr>

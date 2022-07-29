@@ -22,6 +22,7 @@ export interface Carrito{
     _id?: string;
     iva?: number;
     estado?: string;
+    tax?: boolean; 
     inventario?: number;
 }
 
@@ -61,5 +62,6 @@ export interface LoadCarrito{
     tipo?: string;
     iva?: number;
     estado?:string;
+    tax?: boolean; 
     inventario?:number;
 }
