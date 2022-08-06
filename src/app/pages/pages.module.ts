@@ -46,6 +46,7 @@ import { PedidoComponent } from './pedido/pedido.component';
 import { ComandaComponent } from './comanda/comanda.component';
 import { ProveedoresComponent } from './proveedores/proveedores.component';
 import { KardexComponent } from './productos/kardex/kardex.component';
+import { EntradasSalidasComponent } from './configuracion/entradas-salidas/entradas-salidas.component';
 
 
 
@@ -83,7 +84,8 @@ import { KardexComponent } from './productos/kardex/kardex.component';
     PedidoComponent,
     ComandaComponent,
     ProveedoresComponent,
-    KardexComponent
+    KardexComponent,
+    EntradasSalidasComponent
   ],
   exports: [
     PagesComponent,

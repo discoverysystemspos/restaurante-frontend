@@ -37,6 +37,7 @@ import { PedidoComponent } from './pedido/pedido.component';
 import { ComandaComponent } from './comanda/comanda.component';
 import { ProveedoresComponent } from './proveedores/proveedores.component';
 import { KardexComponent } from './productos/kardex/kardex.component';
+import { EntradasSalidasComponent } from './configuracion/entradas-salidas/entradas-salidas.component';
 
 const routes: Routes = [
     
@@ -67,6 +68,8 @@ const routes: Routes = [
 
           { path: 'inventario', component: InventarioComponent,  canActivate: [AdminGuard], data:{ titulo: 'Inventario'} },
           { path: 'perfil', component: PerfilComponent, data:{ titulo: 'Perfil'} },
+
+          { path: 'entradas-salidas', component: EntradasSalidasComponent, data:{ titulo: 'Entradas y Salidas'} },
 
           { path: 'pedido/:id', component: PedidoComponent, data:{ titulo: 'Pedido'} },
           { path: 'pedidos', component: PedidosComponent, data:{ titulo: 'Pedidos'} },

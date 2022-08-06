@@ -1,0 +1,230 @@
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<header>
+    <div class="bg-header-yellow py-2 px-3 mb-2">
+        <h5 class="text-white m-0">PRODUCTOS</h5>
+    </div>
+    <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-dark" id="administracion-tab" [routerLink]="['/dashboard', 'productos']">
+                <i class="bi-files" style="font-size: 1rem"></i> Administracion de Productos
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-primary" id="nuevo-tab" [routerLink]="['/dashboard/productos', 'nuevo']"><i class="bi-pencil-square" style="font-size: 1rem"></i> Crear Producto</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark " id="departamentos-tab" [routerLink]="['/dashboard/productos', 'departamento']"><i class="bi-collection" style="font-size: 1rem"></i> Departamentos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" id="departamentos-tab" [routerLink]="['/dashboard/productos', 'categorias']" aria-selected="false"><i class="bi-collection" style="font-size: 1rem"></i> Categorias</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark active" id="departamentos-tab" [routerLink]="['/dashboard/productos', 'movimientos']" aria-selected="false"><i class="bi-collection" style="font-size: 1rem"></i> Movimientos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" id="departamentos-tab" [routerLink]="['/dashboard/productos', 'kardex']" aria-selected="false"><i class="bi-collection" style="font-size: 1rem"></i> kardex</a>
+        </li>
+    </ul>
+</header>
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<!-- =========================================================================
+    BODY 
+========================================================================= -->
+<div class="container-fluid my-4">
+
+    <div class="col-12">
+
+        <div class="d-flex flex-wrap gap-2">
+
+            <div class="col-xl-3 col-md-3 mb-4">
+                <!-- Dashboard info widget 1-->
+                <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-primary h-100 bg-white">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center flex-wrap">
+                            <div class="flex-grow-1">
+                                <div class="small font-weight-bold text-primary mb-1">Entradas</div>
+                                <div class="h5"> {{ totalEntrada }} </div>
+                                <div class="text-xs font-weight-bold text-success d-inline-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up mr-1"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                                </div>
+                            </div>
+                            <div class="ms-2">
+                                <i class="bi bi-receipt text-muted" style="font-size: 1.5rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-3 mb-4">
+                <!-- Dashboard info widget 1-->
+                <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-success h-100 bg-white">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center flex-wrap">
+                            <div class="flex-grow-1">
+                                <div class="small font-weight-bold text-primary mb-1">Salidas</div>
+                                <div class="h5"> {{ totalSalida }} </div>
+                                <div class="text-xs font-weight-bold text-success d-inline-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up mr-1"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                                </div>
+                            </div>
+                            <div class="ms-2">
+                                <i class="bi bi-receipt text-muted" style="font-size: 1.5rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="row mb-5">
+
+        <!-- FILTRO -->
+        <div class="col-12 col-md-3 col-xl-3 mt-2">
+            <div class="p-3 rounded bg-white">
+
+                <h4 class="mb-0 text-muted">Filtros</h4>
+
+
+                <!-- DESDE -->
+                <div class="mt-4">
+                    <label class="" for="">Desde</label>
+                    <input type="datetime-local" class="form-control" (change)="initial.value" #initial>
+                </div>
+                <!-- DESDE -->
+
+                <!-- HASTA -->
+                <div class="mt-2">
+                    <label class="" for="">Hasta</label>
+                    <input type="datetime-local" class="form-control" (change)="end.value" #end>
+                </div>
+                <!-- HASTA -->
+
+                <button type="button" class="btn btn-outline-primary btn-sm btn-block mt-4" (click)="buscarPor(initial.value, end.value)"> 
+                    <i class="bi-search"></i> Buscar 
+                </button>
+
+            </div>
+        </div>
+        <!-- FILTRO -->
+
+        <!-- TABLE CLIENTS -->
+        <div class="shadow p-3 rounded bg-white col-12 col-md-9 col-xl-9 mt-2">
+
+            <!-- CARGANDO -->
+            <div *ngIf="cargando">
+                <div class="text-center p-4">
+                    <div class="spinner-grow text-secondary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <small class="text-muted">cargando...</small>
+            </div>
+            <!-- CARGANDO -->
+
+
+
+            <div *ngIf="!cargando">
+
+                <!-- <div>
+                    <div class="form-floating mb-2">
+                        <span class="position-absolute top-50 start-90 translate-middle"><i class=" bi-search " style="font-size: 1rem "></i></span>
+                        <input type="text" class="form-control" id="floatingInput2" placeholder="Buscar Entrada o Salida" (keyup)="buscar(search.value)" #search>
+                        <label for="floatingInput2 ">Buscar Entrada o Salida</label>
+                    </div>
+                </div> -->
+
+                <!-- BTN CREAR CAJA -->
+                <!-- <div class="d-flex justify-content-end">
+
+                    <div class="row">
+                        <div class="col pe-0">Mostrar:</div>
+                        <div class="col">
+                            <select class="form-select form-select-sm" (change)="cambiarLimite(limit.value)" [value]="limite" aria-label=".form-select-sm example" #limit>
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                        </div>
+
+                    </div>
+
+
+                </div> -->
+                <!-- BTN CREAR CAJA -->
+
+                <div class="table-responsive ">
+                    <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                        <thead class="border-bottom ">
+                            <tr>
+                                <th class="text-muted " scope="col ">#</th>
+                                <th class="text-muted " scope="col " colspan="2">Descripción</th>
+                                <th class="text-muted " scope="col ">Monto</th>
+                                <th class="text-muted " scope="col ">Tipo</th>
+                                <th class="text-muted " scope="col ">Usuario</th>
+                                <th class="text-muted " scope="col ">fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="!sinResultados" class="text-center ">
+                                <th colspan="13" class="py-4">
+                                    <h4 class="text-muted">Sin Resultados</h4>
+                                </th>
+                            </tr>
+                            <tr class="trHover" *ngFor="let movimiento of movimientos; let i = index">
+                                <th scope="row ">{{ i + 1}}</th>
+                                <td colspan="2">{{ movimiento.descripcion }}</td>
+                                <td>{{ movimiento.monto }}</td>
+                                <td>
+                                    <span *ngIf="movimiento.type === 'salida'" class="badge rounded-pill bg-warning text-white-75">{{ movimiento.type }}</span>
+                                    <span *ngIf="movimiento.type === 'entrada'" class="badge rounded-pill bg-success text-white-75">{{ movimiento.type }}</span>
+
+                                </td>
+
+                                <td>{{ movimiento.user.name }}</td>
+                                <td>{{ movimiento.fecha | date:'medium' }}</td>
+
+
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <!-- BTN SIGUIENTE Y ANTERIOR -->
+                <div class="row">
+                    <div class="col col-md-4">
+                        <small class="text-muted">Total de movimientos: ({{total}})</small>
+                        <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
+                        <!-- <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + productosLog.length }})</small> -->
+                    </div>
+
+                    <div *ngIf="search.value.length === 0" class="col d-flex justify-content-end">
+                        <button type="button" (click)="cambiarPagina('back')" class="{{btnAtras}} btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
+                        <button type="button" (click)="cambiarPagina('next')" class="{{btnAdelante}} btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
+                    </div>
+                </div>
+                <!-- BTN SIGUIENTE Y ANTERIOR -->
+
+            </div>
+        </div>
+        <!-- TABLE CLIENTS -->
+
+    </div>
+
+
+
+</div>
+
+<!-- =========================================================================
+BODY 
+========================================================================= -->

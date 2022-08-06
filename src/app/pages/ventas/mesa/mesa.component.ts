@@ -42,6 +42,7 @@ import { Carrito, _payments, LoadCarrito, _notas } from '../../../interfaces/car
 import { LoadInvoice } from '../../../interfaces/invoice.interface';
 import { LoadTurno, _movements } from '../../../interfaces/load-turno.interface';
 import { LoadMesaId } from '../../../interfaces/load-mesas.interface';
+import { EntradasService } from 'src/app/services/entradas.service';
 
 @Component({
   selector: 'app-mesa',
@@ -92,6 +93,7 @@ export class MesaComponent implements OnInit {
                 private userService: UserService,
                 private basculaService: BasculaService,
                 private pedidoService: PedidosService,
+                private entradasService: EntradasService,
                 private modal: NgbModal ) {
 
                   // CARGAR INFORMACION DEL USUARIO
@@ -1699,6 +1701,23 @@ export class MesaComponent implements OnInit {
       
       this.montoS.nativeElement.value = '';
       this.descriptionS.nativeElement.value = '';
+
+      let movi = {
+        monto,
+        descripcion,
+        type,
+        turno: this.turno.tid,
+      }
+
+      this.entradasService.createMovimiento(movi)
+          .subscribe( ({movimiento}) => {
+
+            Swal.fire('Estupendo!', 'Se ha guardado exitosament', 'success')            
+
+          }, (err) => {
+            console.log(err);
+            Swal.fire('Error', err.error.msg, 'error');            
+          });
 
     }, (err) =>{
       Swal.fire('Error', err.error.msg, 'error');
