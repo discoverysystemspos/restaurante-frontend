@@ -201,6 +201,12 @@ export class CorteComponent implements OnInit {
           for (let i = 0; i < this.facturas.length; i++) {
 
             for (let y = 0; y < this.facturas[i].products.length; y++) {
+
+              let desc = 1;
+
+              if (this.facturas[i].descuento) {
+                desc = this.facturas[i].porcentaje / 100;
+              }
               
               // const validarItem = this.facturas[i].products.findIndex( (resp) =>{  
               const validarItem = this.departamento.findIndex( (resp) =>{             
@@ -219,7 +225,7 @@ export class CorteComponent implements OnInit {
                 this.departamento.push({
                   _id: this.facturas[i].products[y].product.department,
                   qty: this.facturas[i].products[y].qty,
-                  monto: this.facturas[i].products[y].qty * this.facturas[i].products[y].price 
+                  monto: this.facturas[i].products[y].qty * this.facturas[i].products[y].price - ( this.facturas[i].products[y].qty * this.facturas[i].products[y].price * desc)
                 });
                 
 
@@ -230,7 +236,7 @@ export class CorteComponent implements OnInit {
                 
                 qtyTemp += Number(this.facturas[i].products[y].qty);
 
-                montoTemp += Number(this.facturas[i].products[y].qty * this.facturas[i].products[y].price);
+                montoTemp += Number(this.facturas[i].products[y].qty * this.facturas[i].products[y].price) - (Number(this.facturas[i].products[y].qty * this.facturas[i].products[y].price) * desc);
 
                 this.departamento[validarItem].qty = qtyTemp;
                 this.departamento[validarItem].monto = montoTemp;
