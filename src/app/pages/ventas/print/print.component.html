@@ -16,86 +16,97 @@
             <div class="card-body px-1 mb-2" style="border-bottom: 2px solid black;">
 
                 <div class="col-10 mx-auto">
-                    <img *ngIf="empresa!.logo" [src]="empresa.logo | imagen:'logo'" class="mx-auto" width="200px" alt="">
+                    <img *ngIf="empresa?.logo" [src]="empresa?.logo | imagen:'logo'" class="mx-auto" width="200px" alt="">
                 </div>
 
-                <h4 class="card-title mb-0 text-wrap text-center"> {{ empresa.name }} </h4>
-                <p class="mb-0 text-wrap fw-bolder text-center lh-sm" *ngIf="empresa.nit">{{ empresa.nit }}</p>
+                <h4 class="card-title mb-0 text-wrap text-center"> {{ empresa?.name }} </h4>
+                <p class="mb-0 text-wrap fw-bolder text-center lh-sm" *ngIf="empresa?.nit">{{ empresa?.nit }}</p>
                 <p class="mb-0 text-center text-wrap" style="font-size: 0.7rem;"> </p>
-                <p class="mb-0 text-wrap text-center" *ngIf="empresa.address">{{ empresa.address }}</p>
-                <p class="mb-0 text-wrap text-center" *ngIf="empresa.phone">{{ empresa.phone }}</p>
+                <p class="mb-0 text-wrap text-center" *ngIf="empresa?.address">{{ empresa?.address }}</p>
+                <p class="mb-0 text-wrap text-center" *ngIf="empresa?.phone">{{ empresa?.phone }}</p>
 
-                <p *ngIf="!empresa.responsable" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">No responsable de IVA</p>
-                <p *ngIf="empresa.responsable && !empresa.impuestoconsumo" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Responsable de iva</p>
-                <p *ngIf="empresa.responsable && empresa.impuestoconsumo" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Responsable nacional al consumo</p>
+                <p *ngIf="!empresa?.responsable" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">No responsable de IVA</p>
+                <p *ngIf="empresa?.responsable && !empresa?.impuestoconsumo" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Responsable de iva</p>
+                <p *ngIf="empresa?.responsable && empresa?.impuestoconsumo" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Responsable nacional al consumo</p>
 
-                <p *ngIf="empresa.responsable" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Resolución: {{ empresa.resolucion }}</p>
-                <!-- <p *ngIf="empresa.responsable" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;"> 2021/03 /11</p> -->
-                <p *ngIf="empresa.responsable" class="mb-1 text-wrap text-center" style="font-size: 0.7rem;">Prefijo Pos: {{ empresa.prefijopos }}</p>
+                <p *ngIf="empresa?.responsable" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Resolución: {{ empresa?.resolucion }}</p>
+                <!-- <p *ngIf="empresa?.responsable" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;"> 2021/03 /11</p> -->
+                <p *ngIf="empresa?.responsable" class="mb-1 text-wrap text-center" style="font-size: 0.7rem;">Prefijo Pos: {{ empresa?.prefijopos }}</p>
             </div>
             <!-- EMPRESA -->
 
             <!-- CLIENTE -->
-            <div class="pb-2" style="border-bottom: 2px solid black;">
+            <div class="pb-2" style="border-bottom: 2px solid black;" *ngIf="factura">
                 <h6 class="mb-0 text-wrap text-left">
                     CLIENTE / RAZON SOCIAL <br>
-                    <small class="text-wrap fw-normal"> {{ factura.client.name }} </small>
+                    <small class="text-wrap fw-normal"> {{ factura?.client.name }} </small>
                 </h6>
 
                 <h6 class="mb-0 text-wrap text-left">
                     CC / NIT <br>
-                    <small class="text-wrap fw-normal"> {{ factura.client.cedula }} </small>
+                    <small class="text-wrap fw-normal"> {{ factura?.client.cedula }} </small>
                 </h6>
                 <h6 class="mb-0 text-wrap text-left">
                     TELEFONO <br>
-                    <small class="text-wrap fw-normal"> {{ factura.client.phone }} </small>
+                    <small class="text-wrap fw-normal"> {{ factura?.client.phone }} </small>
                 </h6>
-                <h6 class="mb-0 text-wrap text-left" *ngIf="factura.client.address">
+                <h6 class="mb-0 text-wrap text-left" *ngIf="factura?.client.address">
                     DIRECCIÓN <br>
-                    <small class="text-wrap fw-normal"> {{ factura.client.address }} </small>
+                    <small class="text-wrap fw-normal"> {{ factura?.client.address }} </small>
                 </h6>
 
                 <h6 class="mb-0 text-wrap text-left">
-                    <p class="text-wrap fw-normal mb-0"> {{ factura.mesa.name }} - {{ factura.mesero.name }} </p>
+                    <p class="text-wrap fw-normal mb-0"> {{ factura?.mesa.name }} - {{ factura?.mesero.name }} </p>
                 </h6>
             </div>
             <!-- CLIENTE -->
 
             <!-- FACTURA -->
             <div class="py-2" style="border-bottom: 2px solid black;">
-                <h6 class="mb-0 text-wrap text-left">Factura de venta pos: {{ factura.invoice }}</h6>
-                <small class="mb-0 text-wrap text-left">Fecha: {{ factura.fecha | date:'short' }}</small>
+                <h6 class="mb-0 text-wrap text-left">Factura de venta pos: {{ factura?.invoice }}</h6>
+                <small class="mb-0 text-wrap text-left">Fecha: {{ factura?.fecha | date:'short' }}</small>
             </div>
             <!-- FACTURA -->
 
             <table class="table table-borderless table-hover table-sm">
                 <tbody style="color: black;">
-                    <tr *ngFor="let item of factura.products" class="trHover">
+                    <tr *ngFor="let item of factura?.products" class="trHover">
                         <td>
                             <small class="text-wrap"> {{ item.qty }} x {{item.price | currency: 'COP' : 'symbol' : '1.0-0'}} </small> <br>
                             <small class="text-wrap"> {{ item.product.name }} </small>
                         </td>
                         <td> <small class="text-wrap"> {{ item.qty * item.price | currency: 'COP' : 'symbol' : '1.0-0' }} </small> </td>
                     </tr>
+
                     <tr class="" style="border-top: 2px solid black;">
                         <td>
                             <h6 class="mb-0 text-wrap text-left">Sub-total</h6>
                         </td>
                         <td class="fw-bold">
-                            <h6 class="mb-0 text-wrap text-rigth" *ngIf="!empresa.responsable"> {{ factura.base | currency: 'COP' : 'symbol' : '1.0-0' }} </h6>
-                            <h6 class="mb-0 text-wrap text-rigth" *ngIf="empresa.responsable"> {{ factura.base | currency: 'COP' : 'symbol' : '1.0-0' }} </h6>
+                            <h6 class="mb-0 text-wrap text-rigth" *ngIf="!empresa?.responsable"> {{ factura?.base | currency: 'COP' : 'symbol' : '1.0-0' }} </h6>
+                            <h6 class="mb-0 text-wrap text-rigth" *ngIf="empresa?.responsable"> {{ factura?.base | currency: 'COP' : 'symbol' : '1.0-0' }} </h6>
                         </td>
                     </tr>
+
                     <tr class="" style="border-top: 2px solid black;">
                         <td>
-                            <h6 *ngIf="!empresa.responsable" class="mb-0 text-wrap text-left">No responsable de IVA</h6>
-                            <h6 *ngIf="empresa.responsable && !empresa.impuestoconsumo" class="mb-0 text-wrap text-left">IVA {{empresa.tax}}% </h6>
-                            <h6 *ngIf="empresa.responsable && empresa.impuestoconsumo" class="mb-0 text-wrap text-left">Impuesto al consumo {{empresa.tax}}% </h6>
+                            <h6 class="mb-0 text-wrap text-left">Descuento</h6>
+                        </td>
+                        <td class="fw-bold">
+                            <h6 class="mb-0 text-wrap text-rigth" *ngIf="factura?.descuento"> {{ (factura?.base * factura?.porcentaje)/100 | currency: 'COP' : 'symbol' : '1.0-0' }} </h6>
+                        </td>
+                    </tr>
+
+                    <tr class="" style="border-top: 2px solid black;">
+                        <td>
+                            <h6 *ngIf="!empresa?.responsable" class="mb-0 text-wrap text-left">No responsable de IVA</h6>
+                            <h6 *ngIf="empresa?.responsable && !empresa?.impuestoconsumo" class="mb-0 text-wrap text-left">IVA {{empresa?.tax}}% </h6>
+                            <h6 *ngIf="empresa?.responsable && empresa?.impuestoconsumo" class="mb-0 text-wrap text-left">Impuesto al consumo {{empresa?.tax}}% </h6>
 
                         </td>
                         <td class="fw-bold">
-                            <h6 *ngIf="empresa.responsable" class="mb-0 text-wrap text-rigth"> {{ factura.iva | currency: 'COP' : 'symbol' : '1.0-0' }} </h6>
-                            <h6 *ngIf="!empresa.responsable" class="mb-0 text-wrap text-rigth"> {{ 0 | currency: 'COP' : 'symbol' : '1.0-0' }} </h6>
+                            <h6 *ngIf="empresa?.responsable" class="mb-0 text-wrap text-rigth"> {{ factura?.iva | currency: 'COP' : 'symbol' : '1.0-0' }} </h6>
+                            <h6 *ngIf="!empresa?.responsable" class="mb-0 text-wrap text-rigth"> {{ 0 | currency: 'COP' : 'symbol' : '1.0-0' }} </h6>
                         </td>
                     </tr>
                     <tr class="" style="border-top: 2px solid black;">
@@ -103,25 +114,25 @@
                             <h6 class="mb-0 text-wrap text-left">Total</h6>
                         </td>
                         <td class="fw-bold">
-                            <h6 *ngIf="empresa.responsable" class="mb-0 text-wrap text-rigth"> {{ factura.amount | currency: 'COP' : 'symbol' : '1.0-0'}} </h6>
-                            <h6 *ngIf="!empresa.responsable" class="mb-0 text-wrap text-rigth"> {{ factura.amount | currency: 'COP' : 'symbol' : '1.0-0' }} </h6>
+                            <h6 *ngIf="empresa?.responsable" class="mb-0 text-wrap text-rigth"> {{ factura?.amount | currency: 'COP' : 'symbol' : '1.0-0'}} </h6>
+                            <h6 *ngIf="!empresa?.responsable" class="mb-0 text-wrap text-rigth"> {{ factura?.amount | currency: 'COP' : 'symbol' : '1.0-0' }} </h6>
                         </td>
                     </tr>
-                    <tr class="" style="border-top: 2px solid black;" *ngIf="empresa.tip">
+                    <tr class="" style="border-top: 2px solid black;" *ngIf="empresa?.tip">
                         <td>
-                            <h6 class="mb-0 text-wrap text-left">Propina Sugerida del {{empresa.propina}}%</h6>
+                            <h6 class="mb-0 text-wrap text-left">Propina Sugerida del {{empresa?.propina}}%</h6>
                         </td>
                         <td class="fw-bold">
-                            <h6 class="mb-0 text-wrap text-rigth"> {{ (factura.amount * empresa.propina)/100 | currency: 'COP' : 'symbol' : '1.0-0' }} </h6>
+                            <h6 class="mb-0 text-wrap text-rigth"> {{ (factura?.amount * empresa?.propina)/100 | currency: 'COP' : 'symbol' : '1.0-0' }} </h6>
                         </td>
                     </tr>
-                    <tr class="" style="border-top: 2px solid black;" *ngIf="empresa.tip">
+                    <tr class="" style="border-top: 2px solid black;" *ngIf="empresa?.tip">
                         <td>
                             <h6 class="mb-0 text-wrap text-left">Total + Propina</h6>
                         </td>
                         <td class="fw-bold">
-                            <h6 *ngIf="empresa.responsable" class="mb-0 text-wrap text-rigth"> {{ factura.amount+ (factura.amount * empresa.propina)/100 + (factura.amount * empresa.tax)/100 | currency: 'COP' : 'symbol' : '1.0-0'}} </h6>
-                            <h6 *ngIf="!empresa.responsable" class="mb-0 text-wrap text-rigth"> {{ factura.amount + (factura.amount * empresa.propina)/100 | currency: 'COP' : 'symbol' : '1.0-0' }} </h6>
+                            <h6 *ngIf="empresa?.responsable" class="mb-0 text-wrap text-rigth"> {{ factura?.amount+ (factura?.amount * empresa?.propina)/100 + (factura?.amount * empresa?.tax)/100 | currency: 'COP' : 'symbol' : '1.0-0'}} </h6>
+                            <h6 *ngIf="!empresa?.responsable" class="mb-0 text-wrap text-rigth"> {{ factura?.amount + (factura?.amount * empresa?.propina)/100 | currency: 'COP' : 'symbol' : '1.0-0' }} </h6>
                         </td>
                     </tr>
 
@@ -129,12 +140,12 @@
             </table>
 
             <hr class="my-1">
-            <div *ngIf="!factura.apartado">
+            <div *ngIf="!factura?.apartado">
 
-                <p class="mb-0 mx-auto "><small class="text-wrap text-center mb-0">Pago con: {{factura.pago | currency: 'COP' : 'symbol' : '1.0-0'}} </small></p>
-                <p class="mb-0 mx-auto "><small class="text-wrap text-center mb-0">Vueltos: {{factura.vueltos | currency: 'COP' : 'symbol' : '1.0-0'}} </small></p>
+                <p class="mb-0 mx-auto "><small class="text-wrap text-center mb-0">Pago con: {{factura?.pago | currency: 'COP' : 'symbol' : '1.0-0'}} </small></p>
+                <p class="mb-0 mx-auto "><small class="text-wrap text-center mb-0">Vueltos: {{factura?.vueltos | currency: 'COP' : 'symbol' : '1.0-0'}} </small></p>
             </div>
-            <div *ngIf="factura.apartado">
+            <div *ngIf="factura?.apartado">
                 <h6 class="mb-2 fw-bold">Historial de pagos</h6>
                 <table class="table table-sm">
                     <thead>
@@ -144,7 +155,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let pay of factura.payments">
+                        <tr *ngFor="let pay of factura?.payments">
                             <td>Abono {{ pay.type }} </td>
                             <td> {{ pay.amount | currency:'COP' : 'symbol' : '1.0-0' }} </td>
                         </tr>
@@ -153,7 +164,7 @@
                     <tfoot>
                         <tr>
                             <th>Restante</th>
-                            <th> {{ factura.amount - totalPagos | currency:'COP' : 'symbol' : '1.0-0' }} </th>
+                            <th> {{ factura?.amount - totalPagos | currency:'COP' : 'symbol' : '1.0-0' }} </th>
                         </tr>
                     </tfoot>
                 </table>

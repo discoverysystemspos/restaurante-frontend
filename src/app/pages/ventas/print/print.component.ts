@@ -87,10 +87,7 @@ export class PrintComponent implements OnInit {
           for (const pay of invoice.payments) {
             this.totalPagos = this.totalPagos + pay.amount;
           }
-
-          console.log('pagos',this.totalPagos);
           
-
           // IMPRIMIR FACTURA
           setTimeout( () => {
 

@@ -254,6 +254,13 @@ export class MesaComponent implements OnInit {
           this.mesaID = mesa.mid;
           this.carrito = mesa.carrito;
           this.mesa = mesa;
+
+          // DESCUENTOS          
+          this.formDescuento.setValue({
+            descuento: mesa.descuento || false,
+            porcentaje: mesa.porcentaje || 0
+          });
+          // DESCUENTOS
           
           this.comandas = mesa.comanda;
           
@@ -620,8 +627,13 @@ export class MesaComponent implements OnInit {
   public total: number = 0;
   public comandas: _comanda[] = [];
   public ingredientes: _ingredientes[] = [];
+  public inventarioNew: number = 0;
+  public inventarioNewB: boolean = false;
 
-  carritoTemp( product: any, qty: number, precio: number, nota: string = '' ){ 
+  carritoTemp( product: any, qty: number, precio: number, nota: string = '' ){
+
+    this.inventarioNew = 0;
+    this.inventarioNewB = false;
     
     const validarItem = this.productUp.findIndex( (resp) =>{      
       if (resp.product === product.pid ) {
@@ -658,6 +670,15 @@ export class MesaComponent implements OnInit {
         qty,  
         price: precio
       });
+
+      
+      this.inventarioNew = product.inventario - qty;
+      this.inventarioNewB = true;
+      
+      setTimeout( () => {
+        this.inventarioNewB = false;        
+      }, 2500);
+
       
 
     }else{
@@ -671,6 +692,13 @@ export class MesaComponent implements OnInit {
       this.productUp[validarItem].iva = ivaTemp;
       this.productUp[validarItem].qty = qtyTemp;
       this.comanda[validarItem].qty = qtyTemp;
+
+      this.inventarioNew = product.inventario - qtyTemp;
+      this.inventarioNewB = true;
+      
+      setTimeout( () => {
+        this.inventarioNewB = false;        
+      }, 2500);
       
     }
     
@@ -930,9 +958,15 @@ export class MesaComponent implements OnInit {
 
       this.base = this.total;
 
+      if (this.mesa.descuento) {
+        this.total = this.total - (this.total * this.mesa.porcentaje)/100;
+      }
+
       if (this.empresa?.responsable) {
         this.total = this.total + this.iva;
       }
+
+      
 
     }else {
       this.productUp = [];
@@ -1404,7 +1438,9 @@ export class MesaComponent implements OnInit {
     pago: [0],
     vueltos: [0],
     nota: [''],
-    apartado: false
+    apartado: false,
+    porcentaje: 0,
+    descuento: false
   })
 
   /** ================================================================
@@ -1519,12 +1555,44 @@ export class MesaComponent implements OnInit {
     }
 
   }
+
+  /** ================================================================
+   *   AGREGAR DESCUENTO
+  ==================================================================== */
+  public formDescuento = this.fb.group({
+    descuento: [false],
+    porcentaje: [0, [Validators.min(0), Validators.required]]
+  });
+
+  descuentos(){
+
+    if (this.formDescuento.value.porcentaje <= 0) {
+      this.formDescuento.value.descuento = false;
+      this.formDescuento.value.porcentaje = 0;
+    }else{
+      this.formDescuento.value.descuento = true;
+    }    
+    
+    this.mesasServices.updateMesa(this.formDescuento.value, this.mesaID)
+    .subscribe( (resp:{mesa:Mesa, ok:boolean}) => {
+      
+        this.mesa.descuento = resp.mesa.descuento;
+        this.mesa.porcentaje = resp.mesa.porcentaje;
+        this.sumarTotales();
+               
+        Swal.fire('Estupendo', 'Se a actualizado correctamente', 'success');
+      
+      });
+
+
+  }
   
   /** ================================================================
    *   CREAR FACTURA
   ==================================================================== */
   public factura: LoadInvoice;
   public facturando: boolean = false;
+  
   @ViewChild('fechCredito') fechCredito: ElementRef;  
   crearFactura(){
 
@@ -1564,7 +1632,9 @@ export class MesaComponent implements OnInit {
         pago: this.pago,
         vueltos: this.vueltos,
         nota: this.invoiceForm.value.nota,
-        apartado: this.invoiceForm.value.apartado
+        apartado: this.invoiceForm.value.apartado,
+        descuento: this.formDescuento.value.descuento,
+        porcentaje: this.formDescuento.value.porcentaje
       });      
       
       this.invoiceService.createInvoice(this.invoiceForm.value, this.user.turno)
@@ -1573,7 +1643,9 @@ export class MesaComponent implements OnInit {
             this.factura = resp.invoice;
 
             this.invoiceForm.reset({
-              type: 'efectivo'
+              type: 'efectivo',
+              descuento: false,
+              porcentaje: 0
             });
 
             this.total = 0;
@@ -1589,7 +1661,8 @@ export class MesaComponent implements OnInit {
               email: '',
               address: '',
               city: '',
-              cid: ''
+              cid: '',
+              
             };
 
             // BORRAMOS LA FECHA CREDITO
@@ -1600,6 +1673,8 @@ export class MesaComponent implements OnInit {
 
             // LIMPIAMOS LAS NOTAS DE LAS COMANDA
             this.mesa.nota = [];
+            this.mesa.descuento = false;
+            this.mesa.porcentaje = 0;
             
             this.mesasServices.updateMesa(this.mesa, this.mesaID)
             .subscribe( (resp:{ok: boolean, mesa: Mesa}) => {      

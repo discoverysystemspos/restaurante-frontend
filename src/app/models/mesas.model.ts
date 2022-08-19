@@ -36,7 +36,9 @@ export class Mesa {
         public nota?: _notas[],
         public comanda?: _comanda[],
         public menu?: boolean,
-        public ingredientes?: _ingredientes[]
+        public ingredientes?: _ingredientes[],
+        public descuento?: boolean,
+        public porcentaje?: number
     ){}
 
 };

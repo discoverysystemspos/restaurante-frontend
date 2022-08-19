@@ -64,6 +64,8 @@ export interface LoadInvoice {
     vueltos: number;
     nota: string;
     apartado: boolean;
+    descuento: boolean;
+    porcentaje: number;
 
 }
 

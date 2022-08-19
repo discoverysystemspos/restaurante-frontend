@@ -95,6 +95,7 @@
                             <div class="col-6">
 
                                 <input type="text" class="form-control" placeholder="Ingrese o busca un codigo de barras" (keyup.enter)="buscarCodigo(searchCode.value)" #searchCode>
+                                <p class="mb-0 text-info fadeIn" *ngIf="inventarioNewB"> Stock: {{ inventarioNew }} </p>
                             </div>
 
                             <div class="col-6">
@@ -211,6 +212,7 @@
                 <button type="button" class="btn btn-outline-primary btn-sm m-2" data-bs-toggle="modal" data-bs-target="#entradaSalidas"><i class="bi-arrow-left-right"></i> Entradas y Salidas </button>
                 <button type="button" (click)="scrollToBottom()" (click)="timeCommand()" class="btn btn-outline-info btn-sm m-2" data-bs-toggle="modal" data-bs-target="#comandas"><i class="bi-receipt"></i> Comandas </button>
                 <button type="button" *ngIf="mesa?.img === 'mesa.svg'" (click)="cargarMesasAll()" class="btn btn-outline-dark btn-sm m-2" data-bs-toggle="modal" data-bs-target="#cambiarMesa"><i class="bi-arrow-repeat"></i> Cambiar Mesa </button>
+                <button type="button" class="btn btn-outline-warning btn-sm m-2" data-bs-toggle="modal" data-bs-target="#descuentoModal"><i class="bi-percent"></i> Descuento </button>
             </div>
 
             <hr>
@@ -383,6 +385,7 @@
                     <div>
                         <label for="precioM">Codigo:</label>
                         <input type="text" class="form-control" placeholder="Ingrese o busca un codigo de barras" (keyup.enter)="buscarCodigo(searchCode.value)" #searchCode>
+                        <p class="mb-0 text-info fadeIn" *ngIf="inventarioNewB"> Stock: {{ inventarioNew }} </p>
                     </div>
                     <!-- SEARCH PRODUCT CODE -->
 
@@ -484,8 +487,9 @@
                         </div>
 
                         <div class="col ms-auto text-end" *ngIf="empresa">
-                            <p class="h6 fw-normal text-primary mb-0" *ngIf="!empresa.responsable">Sub-total {{ total / 1 | currency:'COP' : 'symbol' : '1.0-0' }}</p>
-                            <p class="h6 fw-normal text-primary mb-0" *ngIf="empresa.responsable">Sub-total {{ total - iva | currency:'COP' : 'symbol' : '1.0-0' }}</p>
+                            <p class="h6 fw-normal text-primary mb-0" *ngIf="!empresa.responsable">Sub-total {{ base / 1 | currency:'COP' : 'symbol' : '1.0-0' }}</p>
+                            <p class="h6 fw-normal text-primary mb-0" *ngIf="empresa.responsable">Sub-total {{ base - iva | currency:'COP' : 'symbol' : '1.0-0' }}</p>
+                            <p class="h6 fw-normal text-danger mb-0" *ngIf="mesa?.descuento">Descuento {{ (base * mesa?.porcentaje) / 100 | currency:'COP' : 'symbol' : '1.0-0' }}</p>
                             <p class="h6 fw-normal text-primary mb-0" *ngIf="empresa.responsable">IVA {{ iva | currency:'COP' : 'symbol' : '1.0-0' }}</p>
                             <h4 class="fw-normal text-primary" *ngIf="!empresa.responsable">{{ total | currency:'COP' : 'symbol' : '1.0-0' }}</h4>
                             <h4 class="fw-normal text-primary" *ngIf="empresa.responsable">{{ total | currency:'COP' : 'symbol' : '1.0-0' }}</h4>
@@ -1044,6 +1048,17 @@
                                         <h6 class="mb-0 text-wrap text-rigth" *ngIf="empresa.responsable"> {{ factura.base | currency:'COP' : 'symbol' : '1.0-0' }} </h6>
                                     </td>
                                 </tr>
+
+                                <!-- DESCUENTO -->
+                                <tr class="" style="border-top: 2px solid black;">
+                                    <td>
+                                        <h6 class="mb-0 text-wrap text-left">Descuento</h6>
+                                    </td>
+                                    <td class="fw-bold">
+                                        <h6 class="mb-0 text-wrap text-rigth" *ngIf="factura.descuento"> {{ (factura.base * factura.porcentaje )/100 | currency:'COP' : 'symbol' : '1.0-0' }} </h6>
+                                    </td>
+                                </tr>
+
                                 <tr class="" style="border-top: 2px solid black;">
                                     <td>
                                         <h6 *ngIf="!empresa.responsable" class="mb-0 text-wrap text-left">No responsable de IVA</h6>
@@ -1391,6 +1406,42 @@ CAMBIAR MESA
 ========================================================================= -->
 
 <!-- =========================================================================
+APLICAR DESCUENTO
+========================================================================= -->
+<div class="modal fade" id="descuentoModal" tabindex="-1" aria-labelledby="descuentoM" aria-hidden="true">
+    <div class="modal-dialog molda-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="descuentoM">Aplicar descuento </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <p class="mb-2 fs-4 text-muted"> Agrega el porcentaje de descuento</p>
+
+                <form [formGroup]="formDescuento" (ngSubmit)="descuentos()">
+
+                    <div class="form-group">
+                        <label for="descc"></label>
+                        <input formControlName="porcentaje" min="0" type="number" class="form-control" name="descc" id="" aria-describedby="helpId" placeholder="Porcentaje">
+
+                    </div>
+
+                    <button type="submit" name="" id="" class="btn btn-primary btn-lg btn-block"> Guardar </button>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =========================================================================
+APLICAR DESCUENTO
+========================================================================= -->
+
+<!-- =========================================================================
 PREFACTURA
 ========================================================================= -->
 <div class="modal fade" id="prefactura" tabindex="-1" aria-labelledby="prefactura" aria-hidden="true">
@@ -1456,8 +1507,9 @@ PREFACTURA
                                 <tr>
                                     <td colspan="4" class="text-end">
                                         <div class="col ms-auto text-end" *ngIf="empresa">
-                                            <p class="h6 fw-bold mb-0" *ngIf="!empresa.responsable">Sub-total: {{ total / 1 | currency:'COP' : 'symbol' : '1.0-0' }}</p>
-                                            <p class="h6 fw-bold mb-0" *ngIf="empresa.responsable">Sub-total: {{ total - iva | currency:'COP' : 'symbol' : '1.0-0' }}</p>
+                                            <p class="h6 fw-bold mb-0" *ngIf="!empresa.responsable">Sub-total: {{ base / 1 | currency:'COP' : 'symbol' : '1.0-0' }}</p>
+                                            <p class="h6 fw-bold mb-0" *ngIf="empresa.responsable">Sub-total: {{ base - iva | currency:'COP' : 'symbol' : '1.0-0' }}</p>
+                                            <p class="h6 fw-bold mb-0" *ngIf="mesa?.descuento">Descuento: {{ (base * mesa?.porcentaje) /100 | currency:'COP' : 'symbol' : '1.0-0' }}</p>
                                             <p class="h6 fw-bold mb-0" *ngIf="empresa.responsable">IVA: {{ iva | currency:'COP' : 'symbol' : '1.0-0' }}</p>
                                             <p class="fw-bold mb-0" [ngClass]="{'h4': empresa.tip === false, 'h6': empresa.tip }" *ngIf="!empresa.responsable">Total: {{ total | currency:'COP' : 'symbol' : '1.0-0' }}</p>
                                             <p class="fw-bold mb-0" [ngClass]="{'h4': empresa.tip === false, 'h6': empresa.tip }" *ngIf="empresa.responsable">Total: {{ total | currency:'COP' : 'symbol' : '1.0-0' }}</p>
