@@ -674,12 +674,7 @@ export class MesaComponent implements OnInit {
       
       this.inventarioNew = product.inventario - qty;
       this.inventarioNewB = true;
-      
-      setTimeout( () => {
-        this.inventarioNewB = false;        
-      }, 2500);
-
-      
+            
 
     }else{
       
