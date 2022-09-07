@@ -311,46 +311,21 @@ export class CierresComponent implements OnInit {
 
           this.facturas = invoices;
 
-          for (let i = 0; i < this.facturas.length; i++) {
+          for (const factura of this.facturas) {
+            
+            for (const product of factura.products) {
 
-            for (let y = 0; y < this.facturas[i].products.length; y++) {
-              
-              // const validarItem = this.facturas[i].products.findIndex( (resp) =>{  
-              const validarItem = this.departamento.findIndex( (resp) =>{             
-  
-                if (resp._id === this.facturas[i].products[y].product.department ) {
-                  return true;
-                }else {
-                  return false;
+              this.departamento.map( (depart) => {
+
+                if (product.product.department === depart._id) {
+                  depart.qty += product.qty,
+                  depart.monto += product.qty * product.price;
                 }
-  
+
               });
-  
-              if ( validarItem === -1 ) {
-                
-                this.departamento.push({
-                  _id: this.facturas[i].products[y].product.department,
-                  qty: this.facturas[i].products[y].qty,
-                  monto: this.facturas[i].products[y].qty * this.facturas[i].products[y].price
-                });
-
-              }else{
-
-                let qtyTemp = this.departamento[validarItem].qty;
-                let montoTemp = this.departamento[validarItem].monto | 0;
-                                
-                qtyTemp += Number(this.facturas[i].products[y].qty);
-                montoTemp += this.facturas[i].products[y].qty * this.facturas[i].products[y].price;
-                
-                this.departamento[validarItem].qty = qtyTemp;
-                this.departamento[validarItem].monto = montoTemp;
-
-              }
               
-              // FIN FOR 2
             }
-
-            // FIN FOR 1
+            
           }
 
 

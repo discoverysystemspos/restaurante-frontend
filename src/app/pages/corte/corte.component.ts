@@ -133,12 +133,14 @@ export class CorteComponent implements OnInit {
               this.departamento.push({
                 _id: departments[i].did,
                 name: departments[i].name,
-                qty: 0
+                qty: 0,
+                monto: 0
               });
 
             }
             
           };
+         
           
           // TURNO
           this.cargarTurno();
@@ -181,6 +183,7 @@ export class CorteComponent implements OnInit {
   public vales: number = 0;
   public facturas: any[] = [];
   public departamento: _departament[] = [];
+
   cargarFacturasTurno(){
 
     const endPoint = `?turno=${this.user.turno}`;
@@ -197,56 +200,22 @@ export class CorteComponent implements OnInit {
           this.vales = vales;
 
           this.facturas = invoices;
+          
+          for (const factura of this.facturas) {
+            
+            for (const product of factura.products) {
 
-          for (let i = 0; i < this.facturas.length; i++) {
+              this.departamento.map( (depart) => {
 
-            for (let y = 0; y < this.facturas[i].products.length; y++) {
-
-              let desc = 1;
-
-              if (this.facturas[i].descuento) {
-                desc = this.facturas[i].porcentaje / 100;
-              }
-              
-              // const validarItem = this.facturas[i].products.findIndex( (resp) =>{  
-              const validarItem = this.departamento.findIndex( (resp) =>{             
-  
-                if (resp._id === this.facturas[i].products[y].product.department ) {
-                  return true;
-                }else {
-                  return false;
+                if (product.product.department === depart._id) {
+                  depart.qty += product.qty,
+                  depart.monto += product.qty * product.price;
                 }
-  
+
               });
               
-  
-              if ( validarItem === -1 ) {
-                
-                this.departamento.push({
-                  _id: this.facturas[i].products[y].product.department,
-                  qty: this.facturas[i].products[y].qty,
-                  monto: this.facturas[i].products[y].qty * this.facturas[i].products[y].price - ( this.facturas[i].products[y].qty * this.facturas[i].products[y].price * desc)
-                });
-                
-
-              }else{
-
-                let qtyTemp = this.departamento[validarItem].qty;
-                let montoTemp = this.departamento[validarItem].monto | 0;
-                
-                qtyTemp += Number(this.facturas[i].products[y].qty);
-
-                montoTemp += Number(this.facturas[i].products[y].qty * this.facturas[i].products[y].price) - (Number(this.facturas[i].products[y].qty * this.facturas[i].products[y].price) * desc);
-
-                this.departamento[validarItem].qty = qtyTemp;
-                this.departamento[validarItem].monto = montoTemp;
-
-              }
-              
-              // FIN FOR 2
             }
-
-            // FIN FOR 1
+            
           }
           
           
