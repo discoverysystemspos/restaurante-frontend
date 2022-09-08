@@ -251,7 +251,7 @@ export class CalendarioComponent implements OnInit {
     this.events = [
       ...this.events,
       {
-        title: this.evento.title,
+        title: `${this.evento.title} - ${ initial.getHours()}:${initial.getMinutes()}`,
         start: initial,
         end: end,
         color: colors.blue,
