@@ -80,7 +80,7 @@ const routes: Routes = [
           { path: 'productos/nuevo', component: NuevoComponent,  canActivate: [AdminGuard], data:{ titulo: 'Crear Producto Nuevo'} },
           { path: 'productos/departamento', component: DepartamentosComponent,  canActivate: [AdminGuard], data:{ titulo: 'Departamentos'} },
           { path: 'productos/categorias', component: CategoriasComponent,  canActivate: [AdminGuard], data:{ titulo: 'Categorias'} },
-          { path: 'productos/kardex', component: KardexComponent,  canActivate: [AdminGuard], data:{ titulo: 'Categorias'} },
+          { path: 'productos/kardex', component: KardexComponent,  data:{ titulo: 'Kardex'} },
           
           { path: 'proveedores', component: ProveedoresComponent,  canActivate: [AdminGuard], data:{ titulo: 'Kardex'} },
           
