@@ -395,5 +395,56 @@ export class ProductosComponent implements OnInit {
         }, (err) =>{ Swal.fire('Error', err.error.msg, 'error'); });
   }
 
+  /** ================================================================
+   *   AGREGAR IVA A TODOS LOS PRODUCTOS
+  ==================================================================== */
+  public ivaFormSubmitted: boolean = false;
+  public ivaForm = this.fb.group({
+    name: ['', [Validators.required]],
+    valor: ['', [Validators.required, Validators.min(1)]],
+    tax: ['', [Validators.required]]
+  });
+
+  ivaAll(){
+
+    this.ivaFormSubmitted = true;
+
+    if (this.ivaForm.invalid) {
+      return;
+    }
+
+    if (this.ivaForm.value.name === '') {
+      Swal.fire('Error', 'Debe de seleccionar el tipo de impuesto', 'info');
+      return;
+    }
+    if (this.ivaForm.value.valor <= 0) {
+      Swal.fire('Error', 'Debe de agregar un porcentaje', 'info');
+      return;
+    }
+
+    this.productService.ivaAllProducts(this.ivaForm.value)
+        .subscribe( (resp: { ok: boolean, total: any }) => {
+
+          this.ivaFormSubmitted = true;
+          Swal.fire('Estupendo', `hemos actualizado ${resp.total} productos`, 'success');
+                    
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');
+        });
+
+  }
+
+  // VALIDAR CAMPOS
+  campoValido(campo: string): boolean{
+
+    if ( this.ivaForm.get(campo).invalid &&  this.ivaFormSubmitted) {      
+      return true;      
+    } else{            
+      return false;
+    }
+  
+  }
+
   // FIN DE LA CLASE
 }

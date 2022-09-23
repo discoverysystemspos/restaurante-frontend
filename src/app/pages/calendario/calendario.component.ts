@@ -217,6 +217,7 @@ export class CalendarioComponent implements OnInit {
     this.newCalendarioForm.value.start = initial;
     this.newCalendarioForm.value.end = end;
     
+    this.newCalendarioForm.value.title = `${this.newCalendarioForm.value.title} - ${ inicial.getHours()}:${inicial.getMinutes()}`
 
     this.calendarioService.createCalendario(this.newCalendarioForm.value)
         .subscribe((resp:{ok:boolean, calendario: Calendario}) => {
@@ -251,7 +252,7 @@ export class CalendarioComponent implements OnInit {
     this.events = [
       ...this.events,
       {
-        title: `${this.evento.title} - ${ initial.getHours()}:${initial.getMinutes()}`,
+        title: `${this.evento.title}`,
         start: initial,
         end: end,
         color: colors.blue,

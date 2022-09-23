@@ -125,6 +125,13 @@ export class ProductService {
   }
 
   /** ================================================================
+   *   IVA A TODOS
+  ==================================================================== */
+  ivaAllProducts(formData:any){
+    return this.http.put(`${base_url}/products/iva/all`, formData,this.headers);
+  }
+
+  /** ================================================================
    *   AJUSTAR INVENTARIO
   ==================================================================== */
   ajustarInventario(id: string, data: any){

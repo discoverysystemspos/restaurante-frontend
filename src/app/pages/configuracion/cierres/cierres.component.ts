@@ -285,7 +285,6 @@ export class CierresComponent implements OnInit {
     this.transferencia = 0;
     this.credito = 0;
     this.vales = 0;
-    this.inicial = 0;
     this.entradas = 0;
     this.salidas = 0;
     this.abEfectivo = 0;

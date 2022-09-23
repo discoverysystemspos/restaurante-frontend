@@ -99,16 +99,15 @@
 
                     <ul *ngIf="productos.length > 0" class="list-group list-group-flush pt-3">
 
-                        <li class="list-group-item d-flex justify-content-between align-items-start" style=" border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 4px;">
+                        <li class="list-group-item d-flex align-items-start" style=" border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 4px;">
+                            <span class="fw-bold "> INV. - </span>
                             <span class="fw-bold ">PRODUCTO</span>
-                            <span class="fw-bold "> INV. </span>
                         </li>
 
                         <ng-container *ngFor=" let producto of productos ">
 
-                            <li *ngIf="producto.inventario > 0" class="list-group-item d-flex justify-content-between align-items-start py-0 " style=" border-bottom: 1px solid #000;">
-                                {{ producto.name }}
-                                <span class="fw-bold "> {{ producto.inventario }} </span>
+                            <li *ngIf="producto.inventario > 0" class="list-group-item d-flex align-items-start py-0 " style=" border-bottom: 1px solid #000;">
+                                <span class="fw-bold "> {{ producto.inventario }} </span> <span class="text-break"> - {{ producto.name }}</span>
                             </li>
 
                         </ng-container>
