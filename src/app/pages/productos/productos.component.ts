@@ -446,5 +446,124 @@ export class ProductosComponent implements OnInit {
   
   }
 
+  /** ================================================================
+   *   ACTUALIZAR CON EXCEL TODOS
+  ==================================================================== */
+
+   public arrayExceltUpdate:any;
+   public excelUpdate:File;
+   public totalItems: number = 0;
+ 
+   public products: any[] = [];
+ 
+   selectFileExcel(event: any){
+     this.excelUpdate= event.target.files[0]; 
+   }
+
+   UploadExcel() {
+
+    if (!this.excelUpdate) {
+      Swal.fire('Atención', 'No has seleccionado ningun archivo de excel', 'info');
+      return;
+    }
+
+    let fileReader = new FileReader();
+      fileReader.onload = (e) => {
+
+          this.arrayExceltUpdate = fileReader.result;
+          var data = new Uint8Array(this.arrayExceltUpdate);
+          var arr = new Array();
+
+          for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+          
+          var bstr = arr.join("");
+          var workbook = XLSX.read(bstr, {type:"binary"});
+          var first_sheet_name = workbook.SheetNames[0];
+          var worksheet = workbook.Sheets[first_sheet_name];
+          
+          this.products = XLSX.utils.sheet_to_json(worksheet,{raw:true});
+
+          this.products.forEach( product => {
+
+            this.totalItems ++;
+
+            // OBTENER GANANCIA
+            let gain = 0;
+            let porcent = 0;
+            
+            porcent = ( product.cost * 100 )/product.price;
+            
+            gain = (porcent - 100) * -1;
+            gain = Math.round(gain*100)/100;
+            
+            product.gain = gain;
+            // OBTENER GANANCIA
+
+            // EXPIRATION
+            if (product.expiration) {
+              product.expiration = new Date(product.expiration);              
+            }else{
+              product.expiration = null;
+            }
+
+            // GUARDAR PRODUCTOS
+
+            this.productService.actualizarProductoExcel(product)
+                .subscribe( resp => {
+
+                  if( this.products.length === this.totalItems ){
+
+                    Swal.fire('Estupendo', `Se han creado un total de ${this.totalItems} articulos nuevos`, 'success');
+
+                  }
+
+                  
+                  
+
+                },(err) => { 
+                  console.log(err);                  
+                  Swal.fire('Error', err.error.msg, 'error'); 
+                });
+
+
+            // FIN FOREACH
+          });
+        
+          window.location.reload();
+
+      }
+      
+      fileReader.readAsArrayBuffer(this.excelUpdate);
+  };
+
+  /** ================================================================
+   *   DESCARGAR PLANTILLA DE EXCEL
+  ==================================================================== */
+  plantilla(){
+
+    let products = [{
+      code: '123456',
+      cost: 1000,
+      price: 1500,
+      wholesale: 1200,
+      agregar: 10
+    }];
+
+    /* generate a worksheet */
+    var ws = XLSX.utils.json_to_sheet(products);
+
+    /* add to workbook */
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "actualizar");
+
+    /* title */
+    let title = 'actualizarProductos.xls';
+
+    /* write workbook and force a download */
+    XLSX.writeFile(wb, title);
+
+
+  }
+
   // FIN DE LA CLASE
 }

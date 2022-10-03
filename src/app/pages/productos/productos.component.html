@@ -132,6 +132,7 @@
                                         <small class="mb-0 text-muted"> Total de inversión {{ totalCost | currency: 'COP' : 'symbol' : '1.0-0'}} </small>
 
                                         <div class="my-2">
+                                            <button class="btn btn-info btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#updateExcel"> Actualizar Lote</button>
                                             <button class="btn btn-primary btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#ivaAll"> Cambiar Impuestos</button>
                                             <button (click)="exportar()" class="btn btn-success btn-sm"> Exportar</button>
                                         </div>
@@ -394,4 +395,38 @@
 </div>
 <!-- =========================================================================
     IVA A TODOS LOS PRODUCTOS 
+========================================================================= -->
+
+<!-- =========================================================================
+    ACTUALIZAR TODOS LOS PRODUCTOS DESDE EL EXCEL
+========================================================================= -->
+<div class="modal fade" id="updateExcel" tabindex="-1" aria-labelledby="updateExcelModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateExcelModal"> Actualizar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <h4 class="text-muted">Importar Productos <span> <a class="btn btn-sm text-primary" type="button" (click)="plantilla()" >Descargar Plantilla</a> </span></h4>
+
+                <div class="row">
+                    <div class="col-10">
+                        <input type="file" class="form-control form-control-sm" (change)="selectFileExcel($event)" placeholder="Importar" accept=".xlsx">
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-sm btnW btn-primary waves-effect waves-light mt-2" (click)="UploadExcel()">Importar</button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =========================================================================
+    ACTUALIZAR TODOS LOS PRODUCTOS DESDE EL EXCEL 
 ========================================================================= -->

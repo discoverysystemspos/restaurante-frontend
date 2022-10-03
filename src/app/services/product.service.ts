@@ -118,6 +118,13 @@ export class ProductService {
   }
 
   /** ================================================================
+   *   ACTUALIZAR PRODUCTO EXCEL
+  ==================================================================== */
+  actualizarProductoExcel(formData:any){
+    return this.http.put(`${base_url}/products/excel/update`, formData, this.headers);
+  }
+
+  /** ================================================================
    *   REPAIR INVENTARIO
   ==================================================================== */
   repararInventario(){
