@@ -270,26 +270,17 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-4 px-md-1">
+                            <div class="col-md-8 px-md-1">
 
                                 <div class="form-floating">
-                                    <select class="form-select" id="floatingSelectIva" aria-label="Floating label select example" value="0" formControlName="impuestoT">
-                                        <option selected value="">Seleccionar</option>
-                                        <option selected value="IVA">IVA</option>
-                                        <option selected value="impuesto al consumo">impuesto al consumo</option>                                        
+                                    <select class="form-select" id="floatingSelectIva" aria-label="Floating label select example" value="0" formControlName="taxid" (change)="selectTax = taxS.value" #taxS>
+    
+                                        <option value=""> Seleccionar el impuesto</option>                                      
+                                        <option [value]="impuesto.taxid" *ngFor="let impuesto of impuestos"> {{ impuesto.name }} - {{ impuesto.valor }} </option>                                      
+                                    
                                     </select>
                                     <label for="floatingSelectIva">Tipo de impuesto</label>
                                 </div>
-
-                            </div>
-
-                            <div class="col-md-4 px-md-1">
-
-                                <div class="form-floating">
-                                    <input formControlName="valor" type="text" class="form-control" placeholder="Valor">
-                                    <label for="floatingInput">Valor</label>
-                                </div>
-
                             </div>
 
                         </div>

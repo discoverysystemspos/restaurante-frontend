@@ -354,17 +354,11 @@
                     <h5 class="text-muted">Actualizar impuesto a todos los productos</h5>
 
                     <div class="form-floating">
-                        <select formControlName="name" id="taxIva" type="text" class="form-control text-capitalize">
+                        <select formControlName="taxid" id="taxIva" type="text" class="form-control text-capitalize">
                             <option value="" selected>Seleccionar tipo de impuesto</option>
-                            <option value="IVA">IVA</option>
-                            <option value="impuesto al consumo">impuesto al consumo</option>
+                            <option [value]="impuesto.taxid" *ngFor="let impuesto of impuestos"> {{ impuesto.name }} - {{ impuesto.valor }}% </option>
                         </select>
                         <label for="taxIva">Tipo de impuesto</label>
-                    </div>
-
-                    <div class="form-floating">
-                        <input formControlName="valor" min="0" type="number" class="form-control text-capitalize" placeholder="Porcentaje del impuesto">
-                        <label for="floatingInput">Porcentaje del impuesto</label>
                     </div>
 
                     <div class="form-check mt-2">
@@ -372,14 +366,6 @@
                         <label class="form-check-label" for="tax">
                             Impuesto
                         </label>
-                    </div>
-
-                    <div class="row">
-                        <div class="text-danger mb-2">
-                            <p *ngIf="campoValido('name')" class="mb-1 animated fadeIn">- Debes de seleccionar un tipo de impuesto</p>
-                            <p *ngIf="campoValido('valor')" class="mb-1 animated fadeIn">- Debes de agregar el porcentaje del impuesto</p>
-
-                        </div>
                     </div>
 
 

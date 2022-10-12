@@ -26,6 +26,8 @@ import { Datos } from '../../../models/empresa.model';
 import { LoadInvoice, _products } from '../../../interfaces/invoice.interface';
 import { _payments, Carrito } from '../../../interfaces/carrito.interface';
 import { LoadTurno, _movements } from '../../../interfaces/load-turno.interface';
+import { ImpuestosService } from 'src/app/services/impuestos.service';
+import { Impuestos } from '../../../models/impuestos.model';
 
 @Component({
   selector: 'app-factura',
@@ -50,7 +52,8 @@ export class FacturaComponent implements OnInit {
                 private fb: FormBuilder,
                 private turnoService: TurnoService,
                 private empresaService: EmpresaService,
-                private printerService: NgxPrinterService,) {
+                private printerService: NgxPrinterService,
+                private impuestosService: ImpuestosService) {
 
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
                     val => {
@@ -64,15 +67,34 @@ export class FacturaComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.activatedRoute.params.subscribe( ({id}) => {
-
-      this.idFactura = id;
-      
-      this.cargarFactura(id);
-      
-    });
-
     this.cargarDatos();
+    
+  }
+  /** ================================================================
+   *   CARGAR IMPUESTOS
+  ==================================================================== */
+  public impuestos: Impuestos[] = [];
+  cargarImpuestos(){
+
+    this.impuestosService.loadImpuestos()
+        .subscribe( ({taxes}) => {
+
+          this.impuestos = taxes;
+
+          this.impuestos.map( impuesto => {
+            impuesto.total = 0;
+          })
+
+
+          this.activatedRoute.params.subscribe( ({id}) => {
+
+            this.idFactura = id;
+            
+            this.cargarFactura(id);
+            
+          });
+
+        });
 
   }
 
@@ -91,7 +113,10 @@ export class FacturaComponent implements OnInit {
 
     this.empresaService.getDatos()
         .subscribe( datos => {
-          this.empresa = datos;   
+          this.empresa = datos;
+
+          this.cargarImpuestos();
+
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
   }
 
@@ -110,8 +135,25 @@ export class FacturaComponent implements OnInit {
           this.iva = invoice.iva;
           this.sumarPagos();          
 
-          this.vueltos = Number( this.factura.amount - this.totalPagos);
+          this.vueltos = Number( this.factura.amount - this.totalPagos);    
           
+          if( this.empresa.impuesto ){
+
+            for (const product of invoice.products) {
+
+              this.impuestos.map( (impuesto) => {
+  
+                if (impuesto.taxid === product.product.taxid) {
+                  
+                  impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
+
+                }
+  
+              });
+
+            }
+
+          }          
           
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
 

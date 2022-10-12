@@ -1,0 +1,164 @@
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<header>
+    <div class="bg-header-blue py-2 px-3 mb-2">
+        <h5 class="text-white m-0">Configuraciones / Impuestos</h5>
+    </div>
+    <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
+
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-dark active" id="ticket1-tab"><i class="bi-gear" style="font-size: 1rem"></i> Tablero Principal</a>
+        </li>
+
+    </ul>
+</header>
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+
+<div class="container-fluid my-4">
+
+    <!-- TABLE CLIENTS -->
+    <div class="shadow-lg p-3 mb-5 rounded bg-white">
+
+        <!-- CARGANDO -->
+        <div *ngIf="cargando">
+            <div class="text-center p-4">
+                <div class="spinner-grow text-secondary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <small class="text-muted">cargando...</small>
+        </div>
+        <!-- CARGANDO -->
+
+        <div *ngIf="!cargando">
+
+            <!-- BTN CREAR IMPUESTO -->
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-sm btn-primary btnW waves-effect waves-ligth" data-bs-toggle="modal" data-bs-target="#nuevoImpuesto">Crear</button>
+            </div>
+            <!-- BTN CREAR IMPUESTO -->
+
+            <div class="table-responsive ">
+                <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                    <thead class="border-bottom ">
+                        <tr>
+                            <th class="text-muted " scope="col ">Nombre</th>
+                            <th class="text-muted " scope="col ">Valor</th>
+                            <th class="text-muted " scope="col ">Estado</th>
+                            <th class="text-muted w100 " scope="col ">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="!sinResultados" class="text-center ">
+                            <th colspan="10" class="py-4">
+                                <h4 class="text-muted">Sin Resultados</h4>
+                            </th>
+                        </tr>
+
+                        <tr class="trHover" *ngFor="let impuesto of listaImpuesto; let i = index">
+                            <td>{{ impuesto.name }}</td>
+                            <td>{{ impuesto.valor }}%</td>
+                            <td>
+                                <span *ngIf="impuesto.status" class="badge rounded-pill bg-success text-white-75">Activo</span>
+                                <span *ngIf="!impuesto.status" class="badge rounded-pill bg-danger text-white-75">Desactivo</span>
+                            </td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-link p-1 text-primary" data-bs-toggle="modal" data-bs-target="#actualizarMesa">
+                                    <i class="bi bi-box-arrow-up-right"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- BTN SIGUIENTE Y ANTERIOR -->
+            <div class="row">
+                <div class="col col-md-4">
+                    <small class="text-muted">Total de Impuestos: ({{totalImpuesto}})</small>
+                    <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
+                    <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + listaImpuesto.length }})</small>
+                </div>
+            </div>
+            <!-- BTN SIGUIENTE Y ANTERIOR -->
+
+        </div>
+    </div>
+    <!-- TABLE CLIENTS -->
+
+
+</div>
+
+<!-- =========================================================================
+    NUEVA MESA 
+========================================================================= -->
+<div class="modal fade" id="nuevoImpuesto" tabindex="-1" aria-labelledby="nuevoImpuestoModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="nuevoImpuestoModal"><i class="bi-collection" style="font-size: 1rem"></i> Crear Impuesto Nuevo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <form id="newMesaForm" autocomplete="off" [formGroup]="newImpuestoForm" (ngSubmit)="crearImpuesto()">
+
+                    <!-- =======================================================================
+                        Informacion del Caja
+                    =========================================================================== -->
+                    <h5 class="text-muted">Informaciòn</h5>
+
+
+                    <div class="row mb-2">
+
+                        <div class="col-md-12 px-md-1">
+                            <label for="">Nombre</label>
+                            <div class="form-floating">
+                                <input formControlName="name" type="text" class="form-control text-capitalize" placeholder="Numero de mesa">
+                                <label for="floatingInput">Nombre</label>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row mb-2">
+
+                        <div class="col-md-12 px-md-1">
+                            <label for="">Valor</label>
+                            <div class="form-floating">
+                                <input formControlName="valor" min="0" type="number" class="form-control text-capitalize" placeholder="Numero de mesa">
+                                <label for="floatingInput">Valor</label>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="text-danger mb-2">
+                            <p *ngIf="campoValido('name')" class="mb-1 animated fadeIn">- El nombre del impuesto es obligatorio</p>
+                            <p *ngIf="campoValido('valor')" class="mb-1 animated fadeIn">- El valor es obligatorio</p>
+                        </div>
+                    </div>
+
+
+                    <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary">crear</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =========================================================================
+    NUEVA MESA 
+========================================================================= -->

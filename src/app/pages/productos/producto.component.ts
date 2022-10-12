@@ -15,6 +15,8 @@ import { Product } from '../../models/product.model';
 import { Kit } from 'src/app/models/kits.model';
 import { Department } from '../../models/department.model';
 import { Impuesto } from '../../models/impuesto.model';
+import { ImpuestosService } from 'src/app/services/impuestos.service';
+import { Impuestos } from '../../models/impuestos.model';
 
 
 @Component({
@@ -54,6 +56,7 @@ export class ProductoComponent implements OnInit {
     tipo: [''],
     description: [''],
     tax: [],
+    taxid: [],
     impuestoT:[],
     valor: []
   });
@@ -64,7 +67,8 @@ export class ProductoComponent implements OnInit {
                 private activatedRoute: ActivatedRoute,
                 private searchService: SearchService,
                 private departmentService: DepartmentService,
-                private fileUploadService: FileUploadService ) { }
+                private fileUploadService: FileUploadService,
+                private impuestosService: ImpuestosService ) { }
 
   ngOnInit(): void {
 
@@ -74,9 +78,26 @@ export class ProductoComponent implements OnInit {
 
       this.productoID = id; 
       
+      this.cargarImpuestos();
+
       this.cargarProducto(id);
       
     });
+
+  }
+
+  /** ================================================================
+   *   CARGAR IMPUESTOS
+  ==================================================================== */
+  public impuestos: Impuestos[] = [];
+  cargarImpuestos(){
+
+    this.impuestosService.loadImpuestos()
+        .subscribe( ({taxes}) => {
+
+          this.impuestos = taxes;
+
+        });
 
   }
 
@@ -99,12 +120,12 @@ export class ProductoComponent implements OnInit {
           this.producto = product;
           this.productoImg = product.img;          
           
-          const { code, name, type, cost, gain, expiration, visibility, price, returned, sold,  wholesale, pid, comanda, tipo, description, tax, impuesto } = product;
+          const { code, name, department, type, cost, gain, expiration, visibility, price, returned, sold,  wholesale, pid, comanda, tipo, description, tax, impuesto, taxid } = product;
           
-          let department = '00';
-          if (this.producto.department) {
-              department = product.department._id;
-          }
+          // let department = '00';
+          // if (this.producto.department) {
+          //     department = product.department._id;
+          // }
 
           const stock = product.stock || 0;
           const min = product.min || 0;
@@ -126,11 +147,13 @@ export class ProductoComponent implements OnInit {
           
 
           if (tax) {
-            
-            impuestoT = impuesto[0].name;
-            valorT = impuesto[0].valor;
 
-            this.priceIva = Math.round(price * ((valorT/100)+1));
+            console.log(product);
+            
+            
+            impuestoT = taxid.name;
+
+            this.priceIva = Math.round(price * ((taxid.valor/100)+1));
           }
           
 
@@ -139,7 +162,7 @@ export class ProductoComponent implements OnInit {
             expiracion = expiration.toString().slice(0,10);          
           }
           
-          this.upProductForm.reset({code, name, type, cost, price, visibility, wholesale, gain, department, min, max, expiration: expiracion, pid, comanda, tipo, description, tax, impuestoT, valor: valorT });
+          this.upProductForm.reset({code, name, type, cost, price, visibility, wholesale, gain, department, min, max, expiration: expiracion, pid, comanda, tipo, description, tax, impuestoT, valor: valorT, taxid: taxid._id });
           
         });
   }
@@ -320,7 +343,16 @@ export class ProductoComponent implements OnInit {
     this.upProductForm.value.price = Math.round(this.precioN*100)/100;
 
     if(this.tax.nativeElement.checked){
-      this.pIva.nativeElement.value = Math.round( this.upProductForm.value.price * ((this.upProductForm.value.valor / 100) +1 ));
+
+      let tax = this.impuestos.find( taxS =>  {
+
+        if (taxS._id === this.selectTax || taxS.taxid === this.selectTax) {
+          return taxS;
+        }
+
+      });
+
+      this.pIva.nativeElement.value = Math.round( this.upProductForm.value.price * ((tax.valor / 100) +1 ));
     }
         
 
@@ -329,11 +361,20 @@ export class ProductoComponent implements OnInit {
   /** ================================================================
    *  PRECIO CON IVA
   ==================================================================== */
+  public selectTax: string;
   precioIva(){
+
+    let tax = this.impuestos.find( taxS =>  {
+
+      if (taxS._id === this.selectTax || taxS.taxid === this.selectTax) {
+        return taxS;
+      }
+
+    });
 
     let precio = 0;
 
-    precio = this.pIva.nativeElement.value / ((this.upProductForm.value.valor / 100)+1);
+    precio = this.pIva.nativeElement.value / ((tax.valor / 100)+1);
 
     this.porcentaje('precio', precio.toFixed(2));    
 

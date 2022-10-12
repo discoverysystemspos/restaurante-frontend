@@ -43,7 +43,15 @@ export class EmpresaComponent implements OnInit {
           
           const { tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas, commissions, comisiones, fruver } = datos;
 
-          this.formUpdate.reset({ tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas, commissions, comisiones, fruver  });
+          let tipoImpuesto = '';
+
+          if(responsable === true && impuestoconsumo === false && impuesto === true){
+            tipoImpuesto = 'responsable';
+          }else if(responsable === false && impuestoconsumo === true && impuesto === true) {
+            tipoImpuesto = 'consumo';
+          }
+
+          this.formUpdate.reset({ tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas, commissions, comisiones, fruver, tipoImpuesto  });
 
         });
 
@@ -64,7 +72,7 @@ export class EmpresaComponent implements OnInit {
     printpos: [true],
     responsable: [false],
     impuestoconsumo: [false],
-    resolucion: [''],
+    resolucion: [false],
     prefijopos: [''],
     tip: [false],
     propina: [0],
@@ -74,7 +82,8 @@ export class EmpresaComponent implements OnInit {
     fruver: false,
     comandas: false,
     commissions: false,
-    comisiones: []
+    comisiones: [],
+    tipoImpuesto: ['']
   })
 
   actualizarDatos(){
@@ -83,6 +92,22 @@ export class EmpresaComponent implements OnInit {
 
     if (this.formUpdate.invalid) {
       return;
+    }
+
+    if(this.formUpdate.value.tipoImpuesto === 'responsable'){
+      this.formUpdate.value.responsable = true;
+      this.formUpdate.value.impuestoconsumo = false;
+    }else if(this.formUpdate.value.tipoImpuesto === 'consumo'){
+      this.formUpdate.value.responsable = false;
+      this.formUpdate.value.impuestoconsumo = true;
+    }else {
+      this.formUpdate.value.responsable = false;
+      this.formUpdate.value.impuestoconsumo = false;
+    }
+
+    if (!this.formUpdate.value.impuesto) {
+      this.formUpdate.value.responsable = false;
+      this.formUpdate.value.impuestoconsumo = false;
     }
 
     this.empresaService.updateDatos(this.formUpdate.value, this.empresa.eid)
@@ -177,7 +202,6 @@ export class EmpresaComponent implements OnInit {
       });
       
       this.formUpdate.value.comisiones = this.comisiones;
-      console.log(this.formUpdate.value);
 
     }
 

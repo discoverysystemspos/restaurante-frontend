@@ -50,6 +50,7 @@ interface _interProducto{
     visibility?: boolean;
     comanda?: boolean;
     tipo?: string;
+    taxid?: any;
 }
 
 export interface LoadCarrito{

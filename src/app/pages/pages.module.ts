@@ -47,6 +47,7 @@ import { ComandaComponent } from './comanda/comanda.component';
 import { ProveedoresComponent } from './proveedores/proveedores.component';
 import { KardexComponent } from './productos/kardex/kardex.component';
 import { EntradasSalidasComponent } from './configuracion/entradas-salidas/entradas-salidas.component';
+import { ImpuestosComponent } from './configuracion/impuestos/impuestos.component';
 
 
 
@@ -85,13 +86,15 @@ import { EntradasSalidasComponent } from './configuracion/entradas-salidas/entra
     ComandaComponent,
     ProveedoresComponent,
     KardexComponent,
-    EntradasSalidasComponent
+    EntradasSalidasComponent,
+    ImpuestosComponent
   ],
   exports: [
     PagesComponent,
     DashboardComponent,
     VentasComponent,
-    ClientesComponent
+    ClientesComponent,
+    ImpuestosComponent
   ],
   imports: [
     CommonModule,

@@ -126,12 +126,16 @@
                                 <p class="mb-0 d-flex justify-content-end text-wrap text-end"> {{ empresa.address }} </p>
                                 <p class="mb-0 d-flex justify-content-end text-wrap text-end">Nit: {{ empresa.nit }} </p>
 
-                                <small *ngIf="!empresa.responsable" class="mb-0 d-flex justify-content-end"> No responsable de IVA </small>
-                                <small *ngIf="empresa.responsable && !empresa.impuestoconsumo" class="mb-0 d-flex justify-content-end"> Responsable de iva </small>
-                                <small *ngIf="empresa.responsable && empresa.impuestoconsumo" class="mb-0 d-flex justify-content-end"> Responsable nacional al consumo </small>
+                                <small *ngIf="!empresa.impuesto" class="mb-0 d-flex justify-content-end"> No responsable de IVA </small>
 
-                                <small *ngIf="empresa.responsable" class="mb-0 d-flex justify-content-end"> Resolución: {{ empresa.resolucion }} </small>
-                                <small *ngIf="empresa.responsable" class="mb-0 d-flex justify-content-end"> Prefijo Pos: {{ empresa.prefijopos }} </small>
+                                <!-- RESPONSABLE DE IVA O IMPUESTO AL CONSUMO -->
+                                <small *ngIf="empresa.impuesto && empresa.responsable" class="mb-0 d-flex justify-content-end"> Responsable de iva </small>
+                                <small *ngIf="empresa.impuesto && empresa.impuestoconsumo" class="mb-0 d-flex justify-content-end text-right"> Responsable nacional al consumo </small>
+
+                                <small *ngIf="empresa.impuesto" class="mb-0 d-flex justify-content-end"> Resolución: {{ empresa.resolucion }} </small>
+                                <small *ngIf="empresa.impuesto" class="mb-0 d-flex justify-content-end"> Prefijo Pos: {{ empresa.prefijopos }} </small>
+                                <!-- RESPONSABLE DE IVA O IMPUESTO AL CONSUMO -->
+
                                 <h3 class="display-5 mb-0 d-flex justify-content-end text-primary"> {{ factura.invoice }} </h3>
                                 <small class="mb-0 d-flex justify-content-end"> {{ factura.fecha | date:'medium' }} </small>
                             </div>
@@ -210,14 +214,18 @@
                                     <h6 *ngIf="factura?.descuento" class="mb-0 text-wrap text-primary text-left">Descuento {{ (factura.base * factura.porcentaje) /100 | currency: 'COP' : 'symbol' : '1.0-0' }} </h6>
                                     <!-- DESCUENTO -->
 
-                                    <h6 *ngIf="!empresa.responsable" class="mb-0 text-wrap text-primary text-left">No responsable de IVA</h6>
-                                    <h6 *ngIf="empresa.responsable && !empresa.impuestoconsumo" class="mb-0 text-wrap text-primary text-left">IVA {{empresa.tax}}% {{ iva | currency: 'COP' : 'symbol' : '1.0-0' }}</h6>
-                                    <h6 *ngIf="empresa.responsable && empresa.impuestoconsumo" class="mb-0 text-wrap text-primary text-left">Impuesto al consumo {{empresa.tax}}% {{iva | currency: 'COP' : 'symbol' : '1.0-0' }} </h6>
+                                    <h6 *ngIf="!empresa.impuesto" class="mb-0 text-wrap text-primary text-left">No responsable de IVA</h6>
+
+                                    <!-- IMPUESTO -->
+                                    <ng-container *ngIf="empresa.impuesto">
+                                        <ng-container *ngFor="let impuesto of impuestos">
+                                            <h6 class="mb-0 text-wrap text-primary text-left" *ngIf="impuesto.total > 0">{{impuesto.name}} {{ impuesto.total | currency: 'COP' : 'symbol' : '1.0-0' }}</h6>
+                                        </ng-container>
+                                    </ng-container>
+                                    <!-- IMPUESTO -->
 
                                     <!-- TOTAL -->
-                                    <h5 *ngIf="empresa.responsable" class="display-6 fw-bold text-primary">{{ factura.amount | currency: 'COP' : 'symbol' : '1.0-0' }}</h5>
-
-                                    <h5 *ngIf="!empresa.responsable" class="display-6 fw-bold text-primary">{{ factura.amount | currency: 'COP' : 'symbol' : '1.0-0' }}</h5>
+                                    <h5 class="display-6 fw-bold text-primary">{{ factura.amount | currency: 'COP' : 'symbol' : '1.0-0' }}</h5>
                                     <!-- TOTAL -->
 
                                 </div>

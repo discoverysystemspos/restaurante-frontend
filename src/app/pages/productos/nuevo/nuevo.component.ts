@@ -16,6 +16,8 @@ import { DepartmentService } from '../../../services/department.service';
 import { SearchService } from '../../../services/search.service';
 import { ProductService } from '../../../services/product.service';
 import { Department } from '../../../models/department.model';
+import { ImpuestosService } from '../../../services/impuestos.service';
+import { Impuestos } from '../../../models/impuestos.model';
 
 
 @Component({
@@ -27,43 +29,35 @@ import { Department } from '../../../models/department.model';
 export class NuevoComponent implements OnInit {
   
   public producto: Product;
-  public kits: Kit[] = [];
-
-  // FORMULARIO
-  public formSubmitted = false;
-  public productoForm = this.fb.group({
-    code: ['', [Validators.required, Validators.minLength(2)]],
-    name: ['', [Validators.required, Validators.minLength(3)]],
-    type: ['' || '0', [Validators.required, Validators.minLength(3)]],
-    cost: ['' || 0, [Validators.required]],
-    gain: ['' || 20],
-    price: ['' || 0, [Validators.required]],
-    kit: [''],
-    wholesale: ['' || 0],
-    department: ['' || 0],
-    stock: ['' || 0],
-    min: ['' || 0],
-    max: ['' || 0],
-    expiration: [''],
-    visibility: [true],
-    comanda: [false],
-    tipo: [''],
-    description: [''],
-    tax: [false],
-    impuestoT: [''],
-    valor: [''],
-    impuesto: []
-  });
+  public kits: Kit[] = []; 
 
   constructor( private fb: FormBuilder,
                 private searchService: SearchService,
                 private productService: ProductService,
                 private departmentService: DepartmentService,
-                private router: Router ) { }
+                private router: Router,
+                private impuestosService: ImpuestosService ) { }
 
   ngOnInit(): void {
+
+    // CARGAR IMPUESTOS
+    this.cargarImpuestos();
     
+    // CARGAR DEPARTAMENTOS
     this.cargarDepartamentos();
+
+  }
+
+  /** ================================================================
+   *   CARGAR IMPUESTOS
+  ==================================================================== */
+  public impuestos: Impuestos[] = [];
+  cargarImpuestos(){
+
+    this.impuestosService.loadImpuestos()
+        .subscribe( ({ taxes }) =>  {
+          this.impuestos = taxes;
+        });
 
   }
 
@@ -363,6 +357,29 @@ export class NuevoComponent implements OnInit {
    *   CREAR PRODUCTO
   ==================================================================== */
   public impuesto: Impuesto[] = [];
+  public formSubmitted = false;
+  public productoForm = this.fb.group({
+    code: ['', [Validators.required, Validators.minLength(2)]],
+    name: ['', [Validators.required, Validators.minLength(3)]],
+    type: ['' || '0', [Validators.required, Validators.minLength(3)]],
+    cost: ['' || 0, [Validators.required]],
+    gain: ['' || 20],
+    price: ['' || 0, [Validators.required]],
+    kit: [''],
+    wholesale: ['' || 0],
+    department: ['' || 0],
+    stock: ['' || 0],
+    min: ['' || 0],
+    max: ['' || 0],
+    expiration: [''],
+    visibility: [true],
+    comanda: [false],
+    tipo: [''],
+    description: [''],
+    tax: [false],
+    taxid: '',
+  });
+  
   crearProducto(){
 
     this.impuesto = [];
@@ -376,26 +393,6 @@ export class NuevoComponent implements OnInit {
     // CARGAMOS EL PRECIO
     this.productoForm.value.price = this.precioN;
     this.productoForm.value.gain = this.gananciaN;
-
-    let impuestoN = '';
-    let valorImp = 0;
-
-    if (this.productoForm.value.tax === true) {
-
-      impuestoN = this.productoForm.value.impuestoT;
-      valorImp = this.productoForm.value.valor;
-      
-    }else{
-
-      impuestoN = '';
-      valorImp = 0;
-
-    }
-
-    this.impuesto.push({
-      name: impuestoN,
-      valor: valorImp
-    });
     
     this.productoForm.value.impuesto = this.impuesto;
     
@@ -427,9 +424,9 @@ export class NuevoComponent implements OnInit {
               max: 0,
               expiration: '',
               tax: false,
-              impuestoT: [''],
-              valor: [''],
-              impuesto: ['']
+              taxid: '',
+              visibility: true,
+              comanda: false,
             });
 
           }, (err) => {            
@@ -462,9 +459,7 @@ export class NuevoComponent implements OnInit {
   ==================================================================== */
   public costoN:number = 0;
   public gananciaN:number = 20;
-  public precioN:number = 0;
-  @ViewChild('pIva') pIva: ElementRef;
-  @ViewChild('tax') tax: ElementRef;
+  public precioN:number = 0;  
   
   porcentaje(nombre:string, numero:any){
     
@@ -509,22 +504,50 @@ export class NuevoComponent implements OnInit {
 
     this.gananciaN = Math.round(this.gananciaN*100)/100;
     this.productoForm.value.price = Math.round(this.precioN*100)/100;
-
-    
+        
     if(this.tax.nativeElement.checked){
-      this.pIva.nativeElement.value = Math.round( this.productoForm.value.price * ((this.productoForm.value.valor / 100) +1 ));
+
+      let tax = this.impuestos.find( taxS =>  {
+
+        if (taxS._id === this.selectTax || taxS.taxid === this.selectTax) {
+          return taxS;
+        }
+
+      });
+      
+      
+
+      this.pIva.nativeElement.value = Math.round( this.productoForm.value.price * ((tax.valor / 100) +1 ));
     }
     
   }
 
   /** ================================================================
-   *  PRECIO CON IVA
+   *  SELECCIONAR IMPUESTO
   ==================================================================== */
+  selectImpuesto( impuesto: Impuesto ){}
+  
+  /** ================================================================
+   *  PRECIO CON IVA
+   ==================================================================== */
+  public selectTax: string;
+
+  @ViewChild('pIva') pIva: ElementRef;
+  @ViewChild('tax') tax: ElementRef;
   precioIva(){
+
+    let tax = this.impuestos.find( taxS =>  {
+
+      if (taxS._id === this.selectTax || taxS.taxid === this.selectTax) {
+        return taxS;
+      }
+
+    });
+    
 
     let precio = 0;
 
-    precio = this.pIva.nativeElement.value / ((this.productoForm.value.valor / 100)+1);
+    precio = this.pIva.nativeElement.value / ((tax.valor / 100)+1);
 
     this.porcentaje('precio', precio.toFixed(2));
 

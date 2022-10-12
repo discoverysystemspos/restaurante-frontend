@@ -36,13 +36,15 @@ import { EmpresaService } from '../../../services/empresa.service';
 import { UserService } from '../../../services/user.service';
 import { BasculaService } from '../../../services/bascula.service';
 import { PedidosService } from '../../../services/pedidos.service';
+import { EntradasService } from 'src/app/services/entradas.service';
+import { ImpuestosService } from 'src/app/services/impuestos.service';
 
 // INTERFACES
 import { Carrito, _payments, LoadCarrito, _notas } from '../../../interfaces/carrito.interface';
 import { LoadInvoice } from '../../../interfaces/invoice.interface';
 import { LoadTurno, _movements } from '../../../interfaces/load-turno.interface';
 import { LoadMesaId } from '../../../interfaces/load-mesas.interface';
-import { EntradasService } from 'src/app/services/entradas.service';
+import { Impuestos } from 'src/app/models/impuestos.model';
 
 @Component({
   selector: 'app-mesa',
@@ -94,7 +96,8 @@ export class MesaComponent implements OnInit {
                 private basculaService: BasculaService,
                 private pedidoService: PedidosService,
                 private entradasService: EntradasService,
-                private modal: NgbModal ) {
+                private modal: NgbModal,
+                private impuestosService: ImpuestosService ) {
 
                   // CARGAR INFORMACION DEL USUARIO
                   this.user = this.userService.user;                  
@@ -127,6 +130,9 @@ export class MesaComponent implements OnInit {
 
       // DEPARTAMENTOS
       this.cargarDepartamentos();
+      
+      // DEPARTAMENTOS
+      this.cargarImpuestos();
 
       // CARGAR MESA
       this.activatedRoute.params.subscribe( ({id}) => {
@@ -146,6 +152,21 @@ export class MesaComponent implements OnInit {
       this.facturar = false;
     }
     
+  }
+
+  /** ================================================================
+   *   CARGAR IMPUESTOS
+  ==================================================================== */
+  public impuestos: Impuestos[] = [];
+  cargarImpuestos(){
+
+    this.impuestosService.loadImpuestos()
+        .subscribe( ({taxes}) => {
+
+          this.impuestos = taxes;
+
+        });
+
   }
 
   /** ================================================================
@@ -276,7 +297,8 @@ export class MesaComponent implements OnInit {
             this.productUp.push({
               product: mesa.carrito[i].product._id,
               qty: mesa.carrito[i].qty,
-              price: mesa.carrito[i].price
+              price: mesa.carrito[i].price,
+              iva: mesa.carrito[i].iva
             });
             
             this.comanda.push({
@@ -633,7 +655,7 @@ export class MesaComponent implements OnInit {
   carritoTemp( product: any, qty: number, precio: number, nota: string = '' ){
 
     this.inventarioNew = 0;
-    this.inventarioNewB = false;
+    this.inventarioNewB = false;   
     
     const validarItem = this.productUp.findIndex( (resp) =>{      
       if (resp.product === product.pid ) {
@@ -647,7 +669,7 @@ export class MesaComponent implements OnInit {
 
     if (product.tax) {
 
-      ivaP = Number(product.price * qty) * Number(product.impuesto[0].valor / 100);      
+      ivaP = Number(product.price * qty) * Number(product.taxid.valor / 100);      
       
     }
 
@@ -939,34 +961,56 @@ export class MesaComponent implements OnInit {
   sumarTotales(){
     
     this.total = 0;
+    this.base = 0;
     this.iva = 0;
     this.totalCosto = 0;
+
+    this.impuestos.map( (impuesto) => {
+      impuesto.total = 0;
+    });
+
     if (this.carrito.length > 0) {
       
       for (let i = 0; i < this.carrito.length; i++) {
         
-        this.total += (this.carrito[i].price * this.carrito[i].qty);
-        this.totalCosto += (this.carrito[i].product.cost * this.carrito[i].qty);
-        this.iva += this.carrito[i].iva;
+        this.total += Math.round(this.carrito[i].price * this.carrito[i].qty);
+        this.base += Math.round(this.carrito[i].price * this.carrito[i].qty);
+        this.totalCosto += Math.round(this.carrito[i].product.cost * this.carrito[i].qty);
 
+        // SUMAR IMPUESTOS
+        if (this.empresa.impuesto!) {          
+          this.impuestos.map( (impuesto) => {            
+            
+            if (impuesto.taxid === this.carrito[i].product.taxid) {
+              impuesto.total += this.carrito[i].iva;
+            }
+
+          })
+
+          this.iva += Math.round(this.carrito[i].iva);         
+          
+        }
+        // SUMAR IMPUESTOS
+        
       }
-
-      this.base = this.total;
 
       if (this.mesa.descuento) {
-        this.total = this.total - (this.total * this.mesa.porcentaje)/100;
+        this.total = this.total - Math.round((this.total * this.mesa.porcentaje)/100);
       }
 
-      if (this.empresa?.responsable) {
-        this.total = this.total + this.iva;
+      if (this.empresa.impuesto) {
+        this.total += this.iva;
       }
-
-      
 
     }else {
       this.productUp = [];
       this.comanda = [];
       this.comandas = [];
+
+      this.impuestos.map( (impuesto) => {
+        impuesto.total = 0;
+      });
+
     }
 
   }

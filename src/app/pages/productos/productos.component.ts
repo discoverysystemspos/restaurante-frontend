@@ -16,6 +16,8 @@ import { Department } from 'src/app/models/department.model';
 import * as XLSX from 'xlsx';
 import { User } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
+import { ImpuestosService } from 'src/app/services/impuestos.service';
+import { Impuestos } from 'src/app/models/impuestos.model';
 
 @Component({
   selector: 'app-productos',
@@ -47,7 +49,8 @@ export class ProductosComponent implements OnInit {
                 private searchService: SearchService,
                 private fb:FormBuilder,
                 private departmentService: DepartmentService,
-                private userService: UserService) { }
+                private userService: UserService,
+                private impuestosService: ImpuestosService) { }
 
   ngOnInit(): void {
 
@@ -58,6 +61,23 @@ export class ProductosComponent implements OnInit {
     this.cargarCosto();
 
     this.cargarDepartamentos();
+
+    this.cargarImpuestos();
+
+  }
+
+  /** ================================================================
+   *   CARGAR IMPUESTOS
+  ==================================================================== */
+  public impuestos: Impuestos[] = [];
+  cargarImpuestos(){
+
+    this.impuestosService.loadImpuestos()
+        .subscribe( ({taxes}) => {
+
+          this.impuestos = taxes;
+
+        });
 
   }
 
@@ -400,8 +420,7 @@ export class ProductosComponent implements OnInit {
   ==================================================================== */
   public ivaFormSubmitted: boolean = false;
   public ivaForm = this.fb.group({
-    name: ['', [Validators.required]],
-    valor: ['', [Validators.required, Validators.min(1)]],
+    taxid: ['', [Validators.required]],
     tax: ['', [Validators.required]]
   });
 
@@ -413,12 +432,8 @@ export class ProductosComponent implements OnInit {
       return;
     }
 
-    if (this.ivaForm.value.name === '') {
+    if (this.ivaForm.value.taxid === '') {
       Swal.fire('Error', 'Debe de seleccionar el tipo de impuesto', 'info');
-      return;
-    }
-    if (this.ivaForm.value.valor <= 0) {
-      Swal.fire('Error', 'Debe de agregar un porcentaje', 'info');
       return;
     }
 
@@ -433,17 +448,6 @@ export class ProductosComponent implements OnInit {
           Swal.fire('Error', err.error.msg, 'error');
         });
 
-  }
-
-  // VALIDAR CAMPOS
-  campoValido(campo: string): boolean{
-
-    if ( this.ivaForm.get(campo).invalid &&  this.ivaFormSubmitted) {      
-      return true;      
-    } else{            
-      return false;
-    }
-  
   }
 
   /** ================================================================

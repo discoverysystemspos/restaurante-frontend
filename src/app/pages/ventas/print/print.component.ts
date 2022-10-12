@@ -17,6 +17,8 @@ import { LoadInvoice } from '../../../interfaces/invoice.interface';
 
 // MODELS
 import { Datos } from '../../../models/empresa.model';
+import { ImpuestosService } from 'src/app/services/impuestos.service';
+import { Impuestos } from '../../../models/impuestos.model';
 
 @Component({
   selector: 'app-print',
@@ -39,7 +41,8 @@ export class PrintComponent implements OnInit {
   constructor(  private activatedRoute: ActivatedRoute,
                 private invoiceService: InvoiceService,
                 private printerService: NgxPrinterService,
-                private empresaService: EmpresaService
+                private empresaService: EmpresaService,
+                private impuestosService: ImpuestosService
                 ) {
 
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
@@ -57,12 +60,34 @@ export class PrintComponent implements OnInit {
     // CARGAR DATOS
     this.cargarDatos();
 
-    // CARGAR FACTURA
-    this.activatedRoute.params.subscribe( ({id}) => {
       
-      this.cargarFactura(id);
-      
-    });    
+
+  }
+
+  /** ================================================================
+   *   CARGAR IMPUESTOS
+  ==================================================================== */
+  public impuestos: Impuestos[] = [];
+  cargarImpuestos(){
+
+    this.impuestosService.loadImpuestos()
+        .subscribe( ({taxes}) => {
+
+          this.impuestos = taxes;
+
+          this.impuestos.map( impuesto => {
+            impuesto.total = 0;
+          })
+
+
+          // CARGAR FACTURA
+          this.activatedRoute.params.subscribe( ({id}) => {
+            
+            this.cargarFactura(id);
+            
+          });  
+
+        });
 
   }
 
@@ -87,6 +112,24 @@ export class PrintComponent implements OnInit {
           for (const pay of invoice.payments) {
             this.totalPagos = this.totalPagos + pay.amount;
           }
+
+          if( this.empresa.impuesto ){
+
+            for (const product of invoice.products) {
+
+              this.impuestos.map( (impuesto) => {
+  
+                if (impuesto.taxid === product.product.taxid) {
+                  
+                  impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
+
+                }
+  
+              });
+
+            }
+
+          }
           
           // IMPRIMIR FACTURA
           setTimeout( () => {
@@ -107,7 +150,10 @@ export class PrintComponent implements OnInit {
 
     this.empresaService.getDatos()
         .subscribe( datos => {
-          this.empresa = datos;   
+          this.empresa = datos;  
+
+          this.cargarImpuestos();
+          
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
   }
   
