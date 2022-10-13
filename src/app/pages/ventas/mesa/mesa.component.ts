@@ -1281,10 +1281,11 @@ export class MesaComponent implements OnInit {
   ==================================================================== */
   buscarProducto( termino: string ){
     
-    if (termino.length === 0) {
+    if (termino.length < 3) {
       this.listaProductos = this.listaProductosTemp;
       return;
     }else{
+      
       const status = true;
       this.searchService.search('products', termino)
           .subscribe(({total, resultados}) => {

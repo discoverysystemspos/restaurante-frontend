@@ -92,15 +92,15 @@
                 <div>
                     <div class="col-12 d-flex justify-content-between">
                         <div class="form-row w-100">
-                            <div class="col-6">
+                            <div class="col-md-6 mt-2">
 
                                 <input type="text" class="form-control" placeholder="Ingrese o busca un codigo de barras" (keyup.enter)="buscarCodigo(searchCode.value)" #searchCode>
                                 <p class="mb-0 text-info fadeIn" *ngIf="inventarioNewB"> Stock: {{ inventarioNew }} </p>
                             </div>
 
-                            <div class="col-6">
+                            <div class="col-md-6 mt-2">
 
-                                <input type="text" class="form-control" placeholder="buscar producto" (keyup.enter)="buscarProducto(searchProduct.value)" #searchProduct>
+                                <input type="text" class="form-control" placeholder="buscar producto" (keyup)="buscarProducto(searchProduct.value)" #searchProduct>
 
                                 <div *ngIf="listaProductos.length > 0 && searchProduct.value.length !== 0" class="bg-white px-2 shadow col-auto" style="position: absolute; z-index: 1020;">
 
@@ -394,7 +394,7 @@
 
                     <div>
                         <label for="precioM">Buscar Productos:</label>
-                        <input type="text" class="form-control" placeholder="buscar producto" (keyup.enter)="buscarProducto(searchProduct.value)" #searchProduct>
+                        <input type="text" class="form-control" placeholder="buscar producto" (keyup)="buscarProducto(searchProduct.value)" #searchProduct>
                     </div>
 
                     <div *ngIf="listaProductos.length > 0 && searchProduct.value.length !== 0" class="bg-white px-2 shadow col-auto" style="position: absolute; z-index: 1020;">
