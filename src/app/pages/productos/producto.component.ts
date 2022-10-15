@@ -143,27 +143,22 @@ export class ProductoComponent implements OnInit {
           
           let impuestoT = '';
           let valorT = 0;
-
           
+          if (expiration !==  null || expiration ) {            
+            expiracion = expiration.toString().slice(0,10);          
+          }
 
           if (tax) {
-
-            console.log(product);
-            
-            
             impuestoT = taxid.name;
-
             this.priceIva = Math.round(price * ((taxid.valor/100)+1));
           }
           
-
-          if (expiration !==  null || expiration ) {
-            
-            expiracion = expiration.toString().slice(0,10);          
+          if (taxid) {
+            this.upProductForm.reset({code, name, type, cost, price, visibility, wholesale, gain, department, min, max, expiration: expiracion, pid, comanda, tipo, description, tax, impuestoT, valor: valorT, taxid: taxid._id });
+          }else{
+            this.upProductForm.reset({code, name, type, cost, price, visibility, wholesale, gain, department, min, max, expiration: expiracion, pid, comanda, tipo, description, tax, impuestoT, valor: valorT, taxid: '' });
           }
-          
-          this.upProductForm.reset({code, name, type, cost, price, visibility, wholesale, gain, department, min, max, expiration: expiracion, pid, comanda, tipo, description, tax, impuestoT, valor: valorT, taxid: taxid._id });
-          
+
         });
   }
 
