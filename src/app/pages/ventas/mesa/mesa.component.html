@@ -47,7 +47,7 @@
 
                 <ng-container *ngFor="let producto of listaProductos">
 
-                    <div class="card m-1 animated fadeIn" style="width: 12rem;" *ngIf="producto.visibility">
+                    <div class="card m-1 animated fadeIn" style="width: 12rem;" *ngIf="producto.visibility && producto.status">
                         <div class="position-absolute ms-2 mt-2">
                             <span *ngIf="producto.inventario <= producto.min && producto.type !== 'Paquete' && producto.inventario > 0" class="badge rounded-pill bg-warning text-dark">Bajo</span>
                             <span *ngIf="producto.inventario <= 0 && producto.type !== 'Paquete'" class="badge rounded-pill bg-danger">Agotado</span>
@@ -111,10 +111,11 @@
                                         </li>
 
                                         <li class="list-group-item py-1" *ngFor="let item of listaProductos">
-                                            <button [disabled]="item.inventario <= 0 && item.type !== 'Paquete'" class="border-0 bg-white w-100 text-start" (click)="modalProducto(item); searchProduct.value = '' " type="button">
+                                            <button [disabled]="item.inventario <= 0 && item.type !== 'Paquete' || !item.status" class="border-0 bg-white w-100 text-start" (click)="modalProducto(item); searchProduct.value = '' " type="button">
                                                     <div class="d-flex">
                                                         <div class="align-self-center">
                                                             <span> {{ item.name }} </span>
+                                                            <span *ngIf="!item.status" class="badge rounded-pill bg-danger">Eliminado</span>
                                                             <span *ngIf="item.inventario <= 0 && item.type !== 'Paquete'" class="badge rounded-pill bg-danger">Agotado</span>
                                                             <span *ngIf="item.inventario > 0 && item.inventario <= item.min &&  item.type !== 'Paquete'" class="badge rounded-pill bg-warning text-dark">Bajo</span>
                                                         </div>
@@ -406,12 +407,13 @@
                             </li>
 
                             <li class="list-group-item py-1" *ngFor="let item of listaProductos">
-                                <button [disabled]="item.inventario <= 0 && item.type !== 'Paquete'" class="border-0 bg-white w-100 text-start" (click)="modalProducto(item); searchProduct.value = '' " type="button">
+                                <button [disabled]="item.status === false || item.inventario <= 0 && item.type !== 'Paquete' " class="border-0 bg-white w-100 text-start" (click)="modalProducto(item); searchProduct.value = '' " type="button">
                                     <div class="d-flex">
                                         <div class="align-self-center">
                                             <span> {{ item.name }} </span>
-                                            <span *ngIf="item.inventario <= 0 && item.type !== 'Paquete'" class="badge rounded-pill bg-danger">Agotado</span>
-                                            <span *ngIf="item.inventario > 0 && item.inventario <= item.min &&  item.type !== 'Paquete'" class="badge rounded-pill bg-warning text-dark">Bajo</span>
+                                            <span *ngIf="!item.status" class="badge rounded-pill bg-danger">Eliminado</span>
+                                            <span *ngIf="item.status && item.inventario <= 0 && item.type !== 'Paquete'" class="badge rounded-pill bg-danger">Agotado</span>
+                                            <span *ngIf="item.status && item.inventario > 0 && item.inventario <= item.min &&  item.type !== 'Paquete'" class="badge rounded-pill bg-warning text-dark">Bajo</span>
                                         </div>
                                         
                                         <div class="ms-auto">
