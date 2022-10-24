@@ -57,4 +57,11 @@ export class LogProductsService {
     return this.http.get<{ products: LogProductsModel[], ok: boolean }>(`${base_url}/log/products/query/date?initial=${initial}&end=${end}&query=${query}`, this.headers);
   }
 
+  /** ================================================================
+   *  LOAD LOGS PRODUCTS DATE
+  ==================================================================== */
+  loadOneProductLogs(initial: Date = new Date , end: Date = new Date, code: string, fecha: string, desde : number = 0, limite: number = 10){
+    return this.http.get<{ products: LogProductsModel[], ok: boolean, total: number }>(`${base_url}/log/products/product/${code}/date?initial=${initial}&end=${end}&fecha=${fecha}&desde=${desde}&limite=${limite}`, this.headers);
+  }
+
 }

@@ -452,8 +452,214 @@
 
 
     </div>
-</div>
 
+
+    <!-- LOG DE PRODUCTOS -->
+    <!-- LOG DE PRODUCTOS -->
+    <!-- LOG DE PRODUCTOS -->
+
+    <div class="card mt-5 mb-4">
+        <div class="card-body text-center">
+
+            <h4>Historial del Producto</h4>
+        </div>
+    </div>
+
+    <div class="col-12">
+
+        <div class="d-flex flex-wrap gap-2">
+
+            <div *ngIf="producto" class="col-xl-3 col-md-3 mb-4">
+                <!-- Dashboard info widget 1-->
+                <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-primary h-100 bg-white">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center flex-wrap">
+                            <div class="flex-grow-1">
+                                <div class="small font-weight-bold text-primary mb-1">Vendidos</div>
+                                <div class="h5">({{ vendidos }})</div>
+                            </div>
+                            <div class="ms-2">
+                                <i class="bi bi-arrow-up text-muted" style="font-size: 1.5rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="producto" class="col-xl-3 col-md-3 mb-4">
+                <!-- Dashboard info widget 1-->
+                <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-success h-100 bg-white">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center flex-wrap">
+                            <div class="flex-grow-1">
+                                <div class="small font-weight-bold text-success mb-1">Comprados</div>
+                                <div class="h5">({{ comprados }})</div>
+                            </div>
+                            <div class="ms-2">
+                                <i class="bi bi-truck text-muted" style="font-size: 1.5rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="producto" class="col-xl-3 col-md-3 mb-4">
+                <!-- Dashboard info widget 1-->
+                <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-warning h-100 bg-white">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center flex-wrap">
+                            <div class="flex-grow-1">
+                                <div class="small font-weight-bold text-warning mb-1">Devueltos</div>
+                                <div class="h5">({{ devueltos }})</div>
+                            </div>
+                            <div class="ms-2">
+                                <i class="bi bi-arrow-down text-muted" style="font-size: 1.5rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row mb-5">
+
+            <!-- FILTRO -->
+            <div class="col-12 col-md-3 col-xl-3 mt-2">
+                <div class="p-3 rounded bg-white">
+
+                    <h4 class="mb-0 text-muted">Filtros</h4>
+
+                    <hr>
+
+                    <!-- DESDE -->
+                    <div class="mt-4">
+                        <label class="" for="">Desde</label>
+                        <input type="datetime-local" class="form-control" (change)="initial.value" #initial>
+                    </div>
+                    <!-- DESDE -->
+
+                    <!-- HASTA -->
+                    <div class="mt-2">
+                        <label class="" for="">Hasta</label>
+                        <input type="datetime-local" class="form-control" (change)="end.value" #end>
+                    </div>
+                    <!-- HASTA -->
+
+                    <button (click)="buscarPor(initial.value, end.value)" type="button" class="btn btn-outline-primary btn-sm btn-block mt-4"> 
+                                <i class="bi-search"></i> Buscar 
+                            </button>
+
+                </div>
+            </div>
+            <!-- FILTRO -->
+
+            <!-- TABLE CLIENTS -->
+            <div class="shadow p-3 rounded bg-white col-12 col-md-9 col-xl-9 mt-2">
+
+                <div *ngIf="!cargando">
+
+                    <!-- BTN CREAR CAJA -->
+                    <div class="d-flex justify-content-end">
+
+                        <div class="row">
+                            <div class="col pe-0">Mostrar:</div>
+                            <div class="col">
+                                <select class="form-select form-select-sm" (change)="cambiarLimite(limit.value)" [value]="limite" aria-label=".form-select-sm example" #limit>
+                                            <option value="10">10</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                    <!-- BTN CREAR CAJA -->
+
+                    <div class="table-responsive ">
+                        <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                            <thead class="border-bottom ">
+                                <tr>
+                                    <th class="text-muted " scope="col ">#</th>
+                                    <th class="text-muted " scope="col " colspan="2">Codigo</th>
+                                    <th class="text-muted " scope="col " colspan="2">Nombre</th>
+                                    <th class="text-muted text-center" scope="col">Departamento</th>
+                                    <th class="text-muted " scope="col ">Descripción</th>
+                                    <th class="text-muted " scope="col ">Tipo</th>
+                                    <th class="text-muted text-center" scope="col">Antes</th>
+                                    <th class="text-muted text-center" scope="col">Cantidad</th>
+                                    <th class="text-muted text-center" scope="col">Stock</th>
+                                    <th class="text-muted " scope="col ">Usuario</th>
+                                    <th class="text-muted " scope="col ">fecha</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tr *ngIf="logs.length === 0" class="text-center ">
+                                    <th colspan="13" class="py-4">
+                                        <h4 class="text-muted">Sin Resultados</h4>
+                                    </th>
+                                </tr>
+
+                                <tr class="trHover" *ngFor="let item of logs; let i = index">
+                                    <th scope="row ">{{ i + 1}}</th>
+                                    <td colspan="2">{{ item.code }}</td>
+                                    <td colspan="2">{{ item.name }}</td>
+                                    <td class="text-center">{{ item.departamento }}</td>
+                                    <td>
+                                        <a *ngIf="item.invoice" [routerLink]="['/dashboard/factura', item.invoice._id]">                            
+                                            {{ item.description }}
+                                        </a>
+                                        <span *ngIf="!item.invoice">
+                                            {{ item.description }}                                
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="item.type === 'Salida'" class="badge rounded-pill bg-danger text-white-75">{{ item.type }}</span>
+                                        <span *ngIf="item.type === 'Agrego'" class="badge rounded-pill bg-success text-white-75">{{ item.type }}</span>
+                                        <span *ngIf="item.type === 'Elimino'" class="badge rounded-pill bg-warning text-white-75">{{ item.type }}</span>
+                                        <span *ngIf="item.type === 'Devolución'" class="badge rounded-pill bg-info text-white-75">{{ item.type }}</span>
+                                    </td>
+
+                                    <td class="text-center">{{ item.befored }}</td>
+                                    <td class="text-center">{{ item.qty }}</td>
+                                    <td class="text-center">{{ item.stock }}</td>
+                                    <td>{{ item.cajero.name }}</td>
+                                    <td> <small class="text-wrapp"> {{ item.fecha | date:'medium'}}</small></td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <!-- BTN SIGUIENTE Y ANTERIOR -->
+                    <div class="row">
+                        <div class="col col-md-4">
+                            <small class="text-muted">Total de movimientos: ({{total}})</small>
+                        </div>
+
+                        <div class="col d-flex justify-content-end">
+                            <button type="button" (click)="cambiarPagina('back')" class="{{btnAtras}} btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
+                            <button type="button" (click)="cambiarPagina('next')" class="{{btnAdelante}} btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
+                        </div>
+                    </div>
+                    <!-- BTN SIGUIENTE Y ANTERIOR -->
+
+                </div>
+            </div>
+            <!-- TABLE CLIENTS -->
+
+        </div>
+
+    </div>
+
+
+</div>
 <!-- =========================================================================
     BODY 
 ========================================================================= -->

@@ -9,13 +9,14 @@ import { ProductService } from '../../services/product.service';
 import { SearchService } from '../../services/search.service';
 import { DepartmentService } from '../../services/department.service';
 import { FileUploadService } from '../../services/file-upload.service';
+import { ImpuestosService } from 'src/app/services/impuestos.service';
+import { LogProductsService } from '../../services/log-products.service';
 
 // MODELS
 import { Product } from '../../models/product.model';
 import { Kit } from 'src/app/models/kits.model';
 import { Department } from '../../models/department.model';
 import { Impuesto } from '../../models/impuesto.model';
-import { ImpuestosService } from 'src/app/services/impuestos.service';
 import { Impuestos } from '../../models/impuestos.model';
 
 
@@ -68,7 +69,8 @@ export class ProductoComponent implements OnInit {
                 private searchService: SearchService,
                 private departmentService: DepartmentService,
                 private fileUploadService: FileUploadService,
-                private impuestosService: ImpuestosService ) { }
+                private impuestosService: ImpuestosService,
+                private logProdcutsService: LogProductsService ) { }
 
   ngOnInit(): void {
 
@@ -112,13 +114,21 @@ export class ProductoComponent implements OnInit {
 
   public priceIva: number = 0;
 
+  public vendidos: number = 0;
+  public comprados: number = 0;
+  public devueltos: number = 0;
+
   cargarProducto(id: string){
     
     this.productService.cargarProductoId(id)
         .subscribe( product => {   
 
           this.producto = product;
-          this.productoImg = product.img;          
+          this.productoImg = product.img;
+          
+          this.vendidos = this.producto.sold;
+          this.comprados = this.producto.bought;
+          this.devueltos = this.producto.returned;
           
           const { code, name, department, type, cost, gain, expiration, visibility, price, returned, sold,  wholesale, pid, comanda, tipo, description, tax, impuesto, taxid } = product;
           
@@ -158,6 +168,9 @@ export class ProductoComponent implements OnInit {
           }else{
             this.upProductForm.reset({code, name, type, cost, price, visibility, wholesale, gain, department, min, max, expiration: expiracion, pid, comanda, tipo, description, tax, impuestoT, valor: valorT, taxid: '' });
           }
+
+          // CARGAR LOGS
+          this.loadLogs();
 
         });
   }
@@ -505,6 +518,148 @@ export class ProductoComponent implements OnInit {
         }, (err) =>{ Swal.fire('Error', err.error.msg, 'error'); });
   }
 
+  /** ================================================================
+   *  CARGAR LOG DE PRODUCTOS
+  ==================================================================== */
+  public desde: number = 0;
+  public limite: number = 0;
+  public btnAtras: string = '';
+  public btnAdelante: string = '';
+  public logs: any[] = [];
+
+  public total: number = 0;
+  
+  public resultado: number = 0;
+
+  loadLogs(){
+
+    this.logProdcutsService.loadOneProductLogs(new Date, new Date, this.producto.code, 'false', this.desde, this.limite)
+        .subscribe( ({ products, total }) => {
+
+          // COMPROBAR SI EXISTEN RESULTADOS
+          if (products.length === 0) {
+            this.logs = [];
+            this.resultado = 0;
+            this.btnAtras = 'disabled';
+            this.btnAdelante = 'disabled';
+            return;                
+          }
+          // COMPROBAR SI EXISTEN RESULTADOS
+
+          this.total = total;
+          this.logs = products;
+          this.resultado = 0;
+          this.cargando = false;
+
+          // BOTONOS DE ADELANTE Y ATRAS          
+          if (this.desde === 0 && this.total > this.limite) {
+            this.btnAtras = 'disabled';
+            this.btnAdelante = '';
+          }else if(this.desde === 0 && this.total < (this.limite + 1)){
+            this.btnAtras = 'disabled';
+            this.btnAdelante = 'disabled';
+          }else if( this.desde >= this.total){
+            this.btnAtras = '';
+            this.btnAdelante = 'disabled';
+          }else{
+            this.btnAtras = '';
+            this.btnAdelante = '';
+          }   
+          // BOTONOS DE ADELANTE Y ATRAS
+          
+        })
+
+  }
+
+  /** ================================================================
+   *   CAMBIAR PAGINA
+  ==================================================================== */
+  cambiarPagina (direccion:string){
+
+    let valor:number = 10;
+    if (direccion === 'next') {
+      valor = this.limite;
+    }else if(direccion === 'back'){
+      valor = this.limite * -1;
+    }
+
+    this.desde += valor;
+
+    if (this.desde < 0) {
+      this.desde = 0;
+    }else if( this.desde > this.total ){
+      this.desde -= valor;
+    }
+
+    this.loadLogs();
+
+  }
+
+  /** ================================================================
+   *   CAMBIAR LIMITE
+  ==================================================================== */
+  // @ViewChild('limit') limit: ElementRef;
+  cambiarLimite(limite:number){
+    
+    this.limite = limite;
+    // this.limit.nativeElement.value = this.limit;
+    this.loadLogs();    
+    
+  }
+
+  /** ================================================================
+   *   BUSCAR POR
+  ==================================================================== */
+  buscarPor(inicial:Date, final: Date){
+
+    this.sinResultados = true;
+
+    if(inicial === null && final === null){
+      Swal.fire('Atención', 'No has seleccionado una fecha valida', 'info');
+      return;
+    }
+
+    // SET HOURS      
+    inicial = new Date(inicial);      
+    const initial = new Date(inicial.getTime());
+
+    final = new Date(final);
+    const end = new Date(final.getTime());      
+    // SET HOURS 
+
+    this.logProdcutsService.loadOneProductLogs(initial, end, this.producto.code, 'true', 0, 1000)
+    .subscribe( ({products}) => {
+      
+          this.vendidos = 0;
+          this.comprados = 0;
+          this.devueltos = 0;
+          // COMPROBAR SI EXISTEN RESULTADOS
+          if (products.length === 0) {
+            this.sinResultados = false;
+            this.logs = [];
+            this.resultado = 0;
+            return;                
+          }
+          // COMPROBAR SI EXISTEN RESULTADOS      
+
+          for (const product of products) {
+
+            if( product.type === 'Agrego' ){
+              this.comprados += product.qty;
+            }else if( product.type === 'Salida' ){
+              this.vendidos += product.qty;
+            }else if( product.type === 'Devolución' ){
+              this.devueltos += product.qty;              
+            }
+            
+          }
+
+          this.logs = products; 
+          this.resultado = products.length;
+          
+        });
+
+  }
 
   // FIN DE LA CLASE
 }
