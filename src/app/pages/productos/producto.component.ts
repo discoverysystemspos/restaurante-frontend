@@ -610,6 +610,7 @@ export class ProductoComponent implements OnInit {
   /** ================================================================
    *   BUSCAR POR
   ==================================================================== */
+  public utilidad: number = 0;
   buscarPor(inicial:Date, final: Date){
 
     this.sinResultados = true;
@@ -633,6 +634,7 @@ export class ProductoComponent implements OnInit {
           this.vendidos = 0;
           this.comprados = 0;
           this.devueltos = 0;
+          this.utilidad = 0;
           // COMPROBAR SI EXISTEN RESULTADOS
           if (products.length === 0) {
             this.sinResultados = false;
@@ -640,7 +642,7 @@ export class ProductoComponent implements OnInit {
             this.resultado = 0;
             return;                
           }
-          // COMPROBAR SI EXISTEN RESULTADOS      
+          // COMPROBAR SI EXISTEN RESULTADOS
 
           for (const product of products) {
 
@@ -648,6 +650,16 @@ export class ProductoComponent implements OnInit {
               this.comprados += product.qty;
             }else if( product.type === 'Salida' ){
               this.vendidos += product.qty;
+
+              product.invoice.products.map( (item) => {
+
+                if (item.product === this.producto.pid) {
+                  this.utilidad += (item.price - this.producto.cost) * item.qty;
+                }
+
+              })
+              
+
             }else if( product.type === 'Devolución' ){
               this.devueltos += product.qty;              
             }
