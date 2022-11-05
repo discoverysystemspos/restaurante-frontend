@@ -97,70 +97,10 @@ export class NuevoComponent implements OnInit {
           
           this.products = XLSX.utils.sheet_to_json(worksheet,{raw:true});
 
-          this.products.forEach( product => {
+          this.products.forEach( async product => {
 
-            this.totalItems ++;
+            this.totalItems += 1 ;
 
-            if( this.totalItems > 500 ){
-              setTimeout(function(){
-                console.log("Pausa de 30seg");
-                Swal.fire('Pausa', 'Espera cargando archivos', 'info');
-              }, 30000);
-            }else if(this.totalItems === 1000){
-              setTimeout(function(){
-                console.log("Pausa de 30seg");
-                Swal.fire('Pausa', 'Espera cargando archivos', 'info');
-              }, 30000);
-
-            }else if(this.totalItems === 1500){
-              setTimeout(function(){
-                console.log("Pausa de 30seg");
-                Swal.fire('Pausa', 'Espera cargando archivos', 'info');
-              }, 30000);
-
-            }else if(this.totalItems === 2000){
-              setTimeout(function(){
-                console.log("Pausa de 30seg");
-                Swal.fire('Pausa', 'Espera cargando archivos', 'info');
-              }, 30000);
-
-            }else if(this.totalItems === 25000){
-              setTimeout(function(){
-                console.log("Pausa de 30seg");
-                Swal.fire('Pausa', 'Espera cargando archivos', 'info');
-              }, 30000);
-
-            }else if(this.totalItems === 3000){
-              setTimeout(function(){
-                console.log("Pausa de 30seg");
-                Swal.fire('Pausa', 'Espera cargando archivos', 'info');
-              }, 30000);
-
-            }else if(this.totalItems === 3500){
-              setTimeout(function(){
-                console.log("Pausa de 30seg");
-                Swal.fire('Pausa', 'Espera cargando archivos', 'info');
-              }, 30000);
-
-            }else if(this.totalItems === 4000){
-              setTimeout(function(){
-                console.log("Pausa de 30seg");
-                Swal.fire('Pausa', 'Espera cargando archivos', 'info');
-              }, 30000);
-
-            }else if(this.totalItems === 4500){
-              setTimeout(function(){
-                console.log("Pausa de 30seg");
-                Swal.fire('Pausa', 'Espera cargando archivos', 'info');
-              }, 30000);
-
-            }else if(this.totalItems === 5000){
-              setTimeout(function(){
-                console.log("Pausa de 30seg");
-                Swal.fire('Pausa', 'Espera cargando archivos', 'info');
-              }, 30000);
-
-            }
             // OBTENER GANANCIA
             let gain = 0;
             let porcent = 0;
@@ -190,18 +130,56 @@ export class NuevoComponent implements OnInit {
 
             // GUARDAR PRODUCTOS
 
-            this.productService.createProduct(product)
+            if( this.totalItems === 200 || 
+              this.totalItems === 500 || 
+              this.totalItems === 800 ||
+              this.totalItems === 1000 ||
+              this.totalItems === 1500 ||
+              this.totalItems === 2000 ||
+              this.totalItems === 2500 ||
+              this.totalItems === 3000 ||
+              this.totalItems === 3500 ||
+              this.totalItems === 4000 ||
+              this.totalItems === 4500 ||
+              this.totalItems === 5000 
+            ){
+            setTimeout( async() => {
+
+                console.log(`Pausa de 30seg items ${this.totalItems}`);
+                Swal.fire('Pausa', `Espera cargando archivos, total cargados ${this.totalItems}`, 'info');
+
+                await this.productService.createProduct(product)
                 .subscribe( resp => {
 
                   if( this.products.length === this.totalItems ){
 
                     Swal.fire('Estupendo', `Se han creado un total de ${this.totalItems} articulos nuevos`, 'success');
-                    this.router.navigateByUrl('/dashboard/productos');
+                    // this.router.navigateByUrl('/dashboard/productos');
 
                   }
                   
 
                 },(err) => { Swal.fire('Error', err.error.msg, 'error'); });
+              
+              }, 30000);
+          }else{
+
+            await this.productService.createProduct(product)
+                .subscribe( resp => {
+
+                  if( this.products.length === this.totalItems ){
+
+                    Swal.fire('Estupendo', `Se han creado un total de ${this.totalItems} articulos nuevos`, 'success');
+                    // this.router.navigateByUrl('/dashboard/productos');
+
+                  }
+                  
+
+                },(err) => { Swal.fire('Error', err.error.msg, 'error'); });
+
+          }
+
+            
 
 
             // FIN FOREACH

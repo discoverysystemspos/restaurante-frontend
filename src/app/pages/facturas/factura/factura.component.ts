@@ -461,6 +461,23 @@ export class FacturaComponent implements OnInit {
   }
 
   /** ================================================================
+   *   ACTUALIZAR FECHA DE VENCIMIENTO
+  ==================================================================== */
+  actualizarVencimiento(fechaCredito: Date){
+
+    console.log(fechaCredito);
+    
+
+    this.invoiceService.updateInvoice({fechaCredito}, this.factura.iid)
+        .subscribe( (resp: {invoice}) => {
+
+          this.factura.fechaCredito = resp.invoice.fechaCredito;
+
+        });
+
+  }
+
+  /** ================================================================
    *   PDF
   ==================================================================== */
   downloadPDF() {

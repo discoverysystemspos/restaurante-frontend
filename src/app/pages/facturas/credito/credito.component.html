@@ -7,24 +7,121 @@
     </div>
     <!-- TITLE - SUBTITLE -->
 
+    <div class="col-12">
+
+        <div class="d-flex flex-wrap gap-2">
+
+            <div class="col-xl-3 col-md-3 mb-4">
+                <!-- Dashboard info widget 1-->
+                <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-primary h-100 bg-white">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center flex-wrap">
+                            <div class="flex-grow-1">
+                                <div class="small font-weight-bold text-primary mb-1">Monto Total Facturas</div>
+                                <div class="h5">({{totalAmount | currency: 'COP' : 'symbol' : '1.0-0'}})</div>
+                                <div class="text-xs font-weight-bold text-success d-inline-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up mr-1"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                                </div>
+                            </div>
+                            <div class="ms-2">
+                                <i class="bi bi-receipt text-muted" style="font-size: 1.5rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-3 mb-4">
+                <!-- Dashboard info widget 1-->
+                <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-success h-100 bg-white">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center flex-wrap">
+                            <div class="flex-grow-1">
+                                <div class="small font-weight-bold text-success mb-1">Abonado</div>
+                                <div class="h5"> {{ totalAbonado | currency: 'COP' : 'symbol' : '1.0-0' }} </div>
+                                <div class="text-xs font-weight-bold text-success d-inline-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up mr-1"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                                </div>
+                            </div>
+                            <div class="ms-2">
+                                <i class="bi bi-cash text-muted" style="font-size: 1.5rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-3 mb-4">
+                <!-- Dashboard info widget 1-->
+                <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-warning h-100 bg-white">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center flex-wrap">
+                            <div class="flex-grow-1">
+                                <div class="small font-weight-bold text-warning mb-1">Pendiente por cobrar</div>
+                                <div class="h5"> {{ totalAmount - totalAbonado | currency: 'COP' : 'symbol' : '1.0-0' }} </div>
+                                <div class="text-xs font-weight-bold text-warning d-inline-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up mr-1"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                                </div>
+                            </div>
+                            <div class="ms-2">
+                                <i class="bi bi-cash text-muted" style="font-size: 1.5rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
     <div class="row">
 
         <div class="col-md-2">
             <div class="shadow-lg p-3 mb-5 rounded bg-white">
 
-                <h4 class="text-muted">Filtros</h4>
-
-                <h6 class="text-muted">Rutas</h6>
-
-                <div>
-                    <div class="form-check" *ngFor="let mesa of listaMesas; let i = index">
-                        <input class="form-check-input" (click)="filtroRuta(mesa.name)" type="radio" name="exampleRadios" id="exampleRadios{{i}}" value="{{mesa.name}}">
-                        <label class="form-check-label" for="exampleRadios{{i}}">
-                          {{ mesa.name }}
-                        </label>
+                <!-- BUSCADOR DE CLIENTES  -->
+                <div class="mb-3">
+                    <h4 class="text-muted">Buscar Cliente</h4>
+                    <div>
+                        <input type="text" class="form-control" placeholder="buscar cliente" (keyup)="buscarCliente(searchClient.value)" #searchClient>
                     </div>
 
+                    <div *ngIf="listaClientes.length > 0" class="bg-white py-3 px-2 shadow" style="position: absolute; z-index: 1020;">
+
+                        <div *ngIf="cargandoCliente" class="text-center py-3">
+                            <div class="spinner-grow text-secondary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <div>
+                                <small class="text-muted">Cargando...</small>
+                            </div>
+                        </div>
+
+                        <ul *ngIf="!cargandoCliente" class="list-group list-group-flush overflow-auto" style="max-height: 200px; min-width: 250px;">
+
+                            <li class="list-group-item">
+                                <h6>Resultados: ({{ listaClientes.length }})</h6>
+                            </li>
+
+                            <li class="list-group-item" *ngFor="let item of listaClientes">
+                                <div class="d-flex ">
+                                    <div class="align-self-center">
+                                        <span class="text-capitalize fw-bold"> {{ item.name }} </span><br>
+                                        <small> C.C: {{ item.cedula }} </small>
+                                    </div>
+
+                                    <div class="ms-auto">
+                                        <button class="btn btn-link p-1 text-success float-end" (click)="searchInvoice(item.cid)"> <i class="bi-arrow-90deg-right"></i></button>
+                                    </div>
+                                </div>
+
+                            </li>
+                        </ul>
+
+                    </div>
                 </div>
+                <!-- BUSCADOR DE CLIENTES  -->
 
             </div>
 
@@ -54,8 +151,8 @@
                             <button type="button" class="btn btn-outline-primary btn-sm" (click)="cargarFacturas()"> <i class="bi-arrow-clockwise"></i> Recargar </button>
                         </div>
 
-                        <div class="col-4 col-md-2 ms-auto">
-                            <input type="date" class="form-control" #search>
+                        <div class="ms-2">
+                            <button type="button" class="btn btn-outline-danger btn-sm" (click)="facturasVencidas()"> <i class="bi-arrow-clockwise"></i> Vencidas </button>
                         </div>
 
                     </div>
@@ -89,6 +186,7 @@
                                         <td colspan="2">
                                             {{ factura.client?.name }}
                                             <span *ngIf="!factura.status" class="badge rounded-pill bg-danger">Cancelada</span>
+                                            <span *ngIf="factura.vencida && factura.status" class="badge rounded-pill bg-danger">Vencida</span>
                                         </td>
                                         <td> {{ factura.client?.cedula }} </td>
                                         <td colspan="2"> {{ factura.mesa?.name }} </td>
@@ -96,7 +194,7 @@
                                         <td> {{ factura.type }} </td>
                                         <td> {{ factura.fecha | date:'medium' }} </td>
                                         <td class="text-center">
-                                            <button type="button" [routerLink]="['/dashboard/factura', factura.iid]" class="btn btn-link p-1 text-primary"><i class="bi bi-box-arrow-up-right"></i></button>
+                                            <a [routerLink]="['/dashboard/factura', factura.iid]" class="btn btn-link p-1 text-primary"><i class="bi bi-box-arrow-up-right"></i></a>
                                         </td>
                                     </tr>
 
@@ -116,7 +214,7 @@
 
                         </div>
 
-                        <div *ngIf="search.value.length === 0" class="col d-flex justify-content-end">
+                        <div class="col d-flex justify-content-end">
                             <button type="button" (click)="cambiarPagina(-10)" class="{{btnAtras}} btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
                             <button type="button" (click)="cambiarPagina(10)" class="{{btnAdelante}} btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
                         </div>

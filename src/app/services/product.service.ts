@@ -45,7 +45,13 @@ export class ProductService {
   ==================================================================== */
   createProduct(formData:any){
     
-    return this.http.post(`${base_url}/products`, formData, this.headers);
+    return this.http.post(`${base_url}/products`, formData, this.headers)
+        .pipe(
+          delay(200),
+          map( resp => {
+            return resp;
+          })
+        );
 
   }
 

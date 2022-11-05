@@ -70,6 +70,19 @@ export class InvoiceService {
   }
 
   /** ================================================================
+   *   LOAD INVOICE DATE
+  ==================================================================== */
+  loadInvoicesVencidas(fecha: any){
+    const endpoint = `${base_url}/invoice/vencidas/${fecha}`
+    return this.http.get<ListInvoice>(`${endpoint}`, this.headers)
+                .pipe(
+                  map( resp => {
+                    return resp;
+                  })
+                );
+  }
+
+  /** ================================================================
    *   LOAD INVOICE
   ==================================================================== */
   loadInvoices( desde: number = 0 ){

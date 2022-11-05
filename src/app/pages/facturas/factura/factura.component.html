@@ -60,6 +60,10 @@
                 PDF
             </button>
 
+            <button type="button" class="btn btn-info btn-sm mx-1 my-2" data-bs-toggle="modal" data-bs-target="#editVencimiento"> 
+                Editar Fecha
+            </button>
+
         </div>
 
         <div class="row">
@@ -138,6 +142,8 @@
 
                                 <h3 class="display-5 mb-0 d-flex justify-content-end text-primary"> {{ factura.invoice }} </h3>
                                 <small class="mb-0 d-flex justify-content-end"> {{ factura.fecha | date:'medium' }} </small>
+                                <small *ngIf="factura.credito" class="mb-0 d-flex justify-content-end">Vence: {{ factura.fechaCredito | date:'shortDate' }} </small>
+
                             </div>
                         </div>
 
@@ -547,4 +553,36 @@
 </div>
 <!-- =========================================================================
     MODAL FACTURAR 
+========================================================================= -->
+
+<!-- =========================================================================
+    MODAL EDITAR VENCIMIENTO
+========================================================================= -->
+<div class="modal fade" id="editVencimiento" tabindex="-1" aria-labelledby="editVencimientoModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cambiar fecha de vencimiento</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+
+                <div class="container-fluid">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Seleccionar fecha nueva</label>
+                        <input type="datetime-local" class="form-control" id="exampleFormControlInput1" #newVencimiento>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button (click)="actualizarVencimiento(newVencimiento.value)" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Actualizar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =========================================================================
+    MODAL EDITAR VENCIMIENTO 
 ========================================================================= -->
