@@ -97,6 +97,20 @@ export class InvoiceService {
   }
 
   /** ================================================================
+   *   LOAD INVOICE CREDITO
+  ==================================================================== */
+  loadInvoicesCredito( desde: number = 0 ){
+    return this.http.get<ListInvoice>(`${ base_url }/invoice/credito?desde=${ desde }`, this.headers)
+                    .pipe(
+                      delay(500),
+                      map( resp => {
+                        return resp;
+                      })
+                    );
+
+  }
+
+  /** ================================================================
    *   LOAD INVOICE ID
   ==================================================================== */
   loadInvoiceId( id: string ){

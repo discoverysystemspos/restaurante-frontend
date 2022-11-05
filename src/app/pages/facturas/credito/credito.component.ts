@@ -11,6 +11,7 @@ import { LoadInvoice } from '../../../interfaces/invoice.interface';
 import { Mesa } from '../../../models/mesas.model';
 import { Client } from 'src/app/models/client.model';
 import { SearchService } from 'src/app/services/search.service';
+import { log } from 'console';
 
 @Component({
   selector: 'app-credito',
@@ -65,7 +66,7 @@ export class CreditoComponent implements OnInit {
     this.cargando = true;
     this.sinResultados = true;
 
-    this.invoiceService.loadInvoices(this.desde)
+    this.invoiceService.loadInvoicesCredito(this.desde)
         .subscribe(({total, invoices}) => {
 
           // COMPROBAR SI EXISTEN RESULTADOS
