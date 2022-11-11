@@ -77,7 +77,7 @@
 
     <div class="row">
 
-        <div class="col-md-2">
+        <div class="col-md-3">
             <div class="shadow-lg p-3 mb-5 rounded bg-white">
 
                 <!-- BUSCADOR DE CLIENTES  -->
@@ -123,11 +123,29 @@
                 </div>
                 <!-- BUSCADOR DE CLIENTES  -->
 
+                <!-- BUSCADOR DE VENDEDOR MESAS  -->
+
+                <div class="mb-3">
+                    <h4 class="text-muted">Vendedores</h4>
+
+                    <div class="mb-2">
+                        <select class="form-select" aria-label="Default select example" #cajeros>
+                            <option value="none" selected>Todos</option>
+                            <option [value]="vendedor.mid" *ngFor="let vendedor of listaMesas">{{vendedor.mesero.name}}</option>
+                         </select>
+                    </div>
+
+                    <button (click)="buscarVendedores(cajeros.value)" type="button" name="" id="" class="btn btn-primary"> Buscar facturas</button>
+
+                </div>
+
+                <!-- BUSCADOR DE VENDEDOR MESAS  -->
+
             </div>
 
         </div>
         <!-- TABLE FACTURAS -->
-        <div class="col-md-10">
+        <div class="col-md-9">
 
             <div class="shadow-lg p-3 mb-5 rounded bg-white">
 

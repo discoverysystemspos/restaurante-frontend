@@ -47,8 +47,7 @@ export class TotalComponent implements OnInit {
                 private searchService: SearchService,
                 private mesasService: MesasService,
                 private empresaService: EmpresaService,
-                private userService: UserService,
-                private mesaService: MesasService) { }
+                private userService: UserService) { }
 
   ngOnInit(): void {
 

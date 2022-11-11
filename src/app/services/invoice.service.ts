@@ -133,6 +133,13 @@ export class InvoiceService {
   }
 
   /** ================================================================
+   *   LOAD INVOICE CREDIT CLIENT
+  ==================================================================== */
+  loadInvoiceCreditCajeroMesa( mesa: string ){
+    return this.http.get<ListInvoice>(`${base_url}/invoice/vendedor/mesa/${mesa}`, this.headers);
+  }
+
+  /** ================================================================
    *   LOAD INVOICE TURNS
   ==================================================================== */
   loadInvoiceCierre( endPoint: string ){

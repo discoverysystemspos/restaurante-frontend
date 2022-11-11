@@ -327,5 +327,52 @@ export class CreditoComponent implements OnInit {
 
   }
 
+  /** ================================================================
+   *   BUSCAR FACTURAS A CREDITOS POR VENDEDORES MESAS
+  ==================================================================== */
+  buscarVendedores(mesa:string){
+
+    this.cargando = true;
+    this.sinResultados = true;
+
+    this.invoiceService.loadInvoiceCreditCajeroMesa(mesa)
+        .subscribe( ({ total, invoices }) => {
+
+          // COMPROBAR SI EXISTEN RESULTADOS
+          if (invoices.length === 0) {
+            this.sinResultados = false;
+            this.cargando = false;
+            this.facturas = [];
+            this.resultado = 0;
+            this.btnAtras = 'disabled';
+            this.btnAdelante = 'disabled';
+            return;                
+          }
+          // COMPROBAR SI EXISTEN RESULTADOS
+
+          this.totalFacturas = total;
+          this.facturas = invoices;
+          this.facturasTemp = invoices;
+          this.resultado = 0;
+          this.cargando = false;
+
+          this.totalAbonado = 0;
+          this.totalAmount = 0;
+          
+          for (const factura of this.facturas) {
+            
+            this.totalAmount += factura.amount;
+
+            for (const pago of factura.payments) {              
+              this.totalAbonado += pago.amount;
+            }
+
+          }
+
+        });
+
+  }
+
+
   // FIN DE LA CLASE
 }
