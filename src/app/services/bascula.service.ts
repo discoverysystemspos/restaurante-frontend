@@ -37,7 +37,7 @@ export class BasculaService {
   ==================================================================== */
   loadPeso(init:number = 4, end:number = -3){
 
-    return this.http.get(`${base_url}/bascula?init=${init}&end=${end}`, this.headers)
+    return this.http.get(`http://localhost:3000/bascula?init=${init}&end=${end}`, this.headers)
                 .pipe(
                   map( (resp: { ok: boolean, pesos: number})=> {
                       return resp.pesos;

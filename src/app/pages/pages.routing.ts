@@ -39,6 +39,7 @@ import { ProveedoresComponent } from './proveedores/proveedores.component';
 import { KardexComponent } from './productos/kardex/kardex.component';
 import { EntradasSalidasComponent } from './configuracion/entradas-salidas/entradas-salidas.component';
 import { ImpuestosComponent } from './configuracion/impuestos/impuestos.component';
+import { BancosComponent } from './configuracion/bancos/bancos.component';
 
 const routes: Routes = [
     
@@ -55,6 +56,7 @@ const routes: Routes = [
           { path: 'compras', component: ComprasComponent, data:{ titulo: 'Compras'} },
           
           { path: 'configuracion', component: ConfiguracionComponent, canActivate: [AdminGuard], data:{ titulo: 'Configuracion'} },
+          { path: 'configuracion/bancos', component: BancosComponent, data:{ titulo: 'Bancos'} },
           { path: 'configuracion/caja', component: CajaComponent, canActivate: [AdminGuard], data:{ titulo: 'Caja' } },
           { path: 'configuracion/cierres', component: CierresComponent, canActivate: [AdminGuard], data:{ titulo: 'Cierres' } },
           { path: 'configuracion/empresa', component: EmpresaComponent, canActivate: [AdminGuard], data:{ titulo: 'Mi Empresa' } },

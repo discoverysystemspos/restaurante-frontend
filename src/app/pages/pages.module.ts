@@ -48,6 +48,7 @@ import { ProveedoresComponent } from './proveedores/proveedores.component';
 import { KardexComponent } from './productos/kardex/kardex.component';
 import { EntradasSalidasComponent } from './configuracion/entradas-salidas/entradas-salidas.component';
 import { ImpuestosComponent } from './configuracion/impuestos/impuestos.component';
+import { BancosComponent } from './configuracion/bancos/bancos.component';
 
 
 
@@ -87,7 +88,8 @@ import { ImpuestosComponent } from './configuracion/impuestos/impuestos.componen
     ProveedoresComponent,
     KardexComponent,
     EntradasSalidasComponent,
-    ImpuestosComponent
+    ImpuestosComponent,
+    BancosComponent
   ],
   exports: [
     PagesComponent,

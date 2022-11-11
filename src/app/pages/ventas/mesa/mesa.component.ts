@@ -45,6 +45,8 @@ import { LoadInvoice } from '../../../interfaces/invoice.interface';
 import { LoadTurno, _movements } from '../../../interfaces/load-turno.interface';
 import { LoadMesaId } from '../../../interfaces/load-mesas.interface';
 import { Impuestos } from 'src/app/models/impuestos.model';
+import { Banco } from 'src/app/models/bancos.model';
+import { BancosService } from '../../../services/bancos.service';
 
 @Component({
   selector: 'app-mesa',
@@ -97,7 +99,8 @@ export class MesaComponent implements OnInit {
                 private pedidoService: PedidosService,
                 private entradasService: EntradasService,
                 private modal: NgbModal,
-                private impuestosService: ImpuestosService ) {
+                private impuestosService: ImpuestosService,
+                private bancosService: BancosService) {
 
                   // CARGAR INFORMACION DEL USUARIO
                   this.user = this.userService.user;                  
@@ -131,8 +134,11 @@ export class MesaComponent implements OnInit {
       // DEPARTAMENTOS
       this.cargarDepartamentos();
       
-      // DEPARTAMENTOS
+      // IMPUESTOS
       this.cargarImpuestos();
+      
+      // BANCOS
+      this.cargarBancos();
 
       // CARGAR MESA
       this.activatedRoute.params.subscribe( ({id}) => {
@@ -152,6 +158,21 @@ export class MesaComponent implements OnInit {
       this.facturar = false;
     }
     
+  }
+
+  /** ================================================================
+   *   CARGAR BANCOS
+  ==================================================================== */
+  public bancos: Banco[] = [];
+  cargarBancos(){
+
+    this.bancosService.loadBancos()
+        .subscribe( ({bancos}) => {
+
+          this.bancos = bancos.filter( banco => banco.status === true);          
+
+        });
+
   }
 
   /** ================================================================
@@ -978,7 +999,7 @@ export class MesaComponent implements OnInit {
         this.totalCosto += Math.round(this.carrito[i].product.cost * this.carrito[i].qty);
 
         // SUMAR IMPUESTOS
-        if (this.empresa.impuesto!) {          
+        if (this.empresa?.impuesto!) {          
           this.impuestos.map( (impuesto) => {            
             
             if (impuesto.taxid === this.carrito[i].product.taxid) {
@@ -998,7 +1019,7 @@ export class MesaComponent implements OnInit {
         this.total = this.total - Math.round((this.total * this.mesa.porcentaje)/100);
       }
 
-      if (this.empresa.impuesto) {
+      if (this.empresa?.impuesto) {
         this.total += this.iva;
       }
 
