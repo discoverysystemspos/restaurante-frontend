@@ -41,15 +41,15 @@
 
                         <tbody>
 
-                            <tr>
+                            <tr style="color: black;">
                                 <td colspan="2"> <small> Fondo Caja </small> </td>
                                 <td> {{ inicial | currency: 'COP' : 'symbol' : '1.0-0' }}</td>
                             </tr>
-                            <tr>
+                            <tr style="color: black;">
                                 <td colspan="2"> <small> Ventas en efectivo </small> </td>
                                 <td> {{ efectivo | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                             </tr>
-                            <tr>
+                            <tr style="color: black;">
                                 <td colspan="2"> <small> Entradas </small> </td>
                                 <td> {{ entradas | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                             </tr>
@@ -82,21 +82,29 @@
 
                         <tbody>
 
-                            <tr>
+                            <tr style="color: black;">
                                 <td colspan="2"> <small> En Efectivo </small> </td>
                                 <td> {{ efectivo | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                             </tr>
-                            <tr>
+                            <tr style="color: black;">
                                 <td colspan="2"> <small> Con tarjeta </small> </td>
                                 <td> {{ tarjeta | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                             </tr>
-                            <tr>
+                            <tr style="color: black;">
                                 <td colspan="2"> <small> Con Transferencia </small> </td>
                                 <td> {{ transferencia | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                             </tr>
+
+                            <ng-container *ngIf="bancos.length > 0">
+                                <tr *ngFor="let banco of bancos">
+                                    <td colspan="2"> <small> {{ banco.name }} </small> </td>
+                                    <td> {{ banco.monto | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
+                                </tr>
+                            </ng-container>
+
                             <tr class="border-top">
                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + credito + vales | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
+                                <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + totalBancos + credito + vales | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                             </tr>
 
 
@@ -292,11 +300,11 @@
                 <div>
                     <table class="table">
                         <tbody>
-                            <tr>
+                            <tr style="color: black;">
                                 <td scope="row">Efectivo esperado en caja:</td>
                                 <td>{{ inicial + efectivo + abEfectivo + entradas + salidas | currency: 'COP' : 'symbol' : '1.0-0' }}</td>
                             </tr>
-                            <tr>
+                            <tr style="color: black;">
                                 <td scope="row">Cuanto efectivo hay en caja</td>
                                 <td>
                                     <div class="form-group">
@@ -304,7 +312,7 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr style="color: black;">
                                 <td scope="row"> Diferencia </td>
                                 <td [ngClass]=" {   'text-danger': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) !== 0, 
                                 'text-success': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) > 0
@@ -339,12 +347,12 @@
 
                             <table class="table text-center">
                                 <thead>
-                                    <tr>
+                                    <tr style="color: black;">
                                         <th scope="col">Diferencia</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr style="color: black;">
                                         <th scope="row">{{ montoDiferencia | currency: 'COP' : 'symbol' : '1.0-0' }} </th>
                                     </tr>
                                 </tbody>
@@ -356,12 +364,12 @@
 
                             <table class="table text-center">
                                 <thead>
-                                    <tr>
+                                    <tr style="color: black;">
                                         <th scope="col">Ventas Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr style="color: black;">
                                         <th scope="row">{{ efectivo + credito + tarjeta + transferencia + vales | currency: 'COP' : 'symbol' : '1.0-0' }} </th>
                                     </tr>
                                 </tbody>
@@ -373,12 +381,12 @@
 
                             <table class="table text-center">
                                 <thead>
-                                    <tr>
+                                    <tr style="color: black;">
                                         <th scope="col">Ganancia Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr style="color: black;">
                                         <th scope="row">{{ (efectivo + credito + tarjeta + transferencia + vales) - costo | currency: 'COP' : 'symbol' : '1.0-0' }} </th>
                                     </tr>
                                 </tbody>
@@ -391,26 +399,26 @@
                         <div style="color: black;" class="col-auto p-2" style="width: 18rem;">
 
                             <div class="card-body">
-                                <h5 class="card-title mb-0 text-center">Dinero en Caja</h5>
+                                <h5 class="card-title mb-0 text-center" style="color: black;">Dinero en Caja</h5>
                             </div>
 
                             <table class="table table-borderless table-hover table-sm animated fadeIn ">
 
                                 <tbody style="color: black;">
 
-                                    <tr>
+                                    <tr style="color: black;">
                                         <td colspan="2"> <small> Fondo Caja </small> </td>
                                         <td> {{ inicial | currency: 'COP' : 'symbol' : '1.0-0' }}</td>
                                     </tr>
-                                    <tr>
+                                    <tr style="color: black;">
                                         <td colspan="2"> <small> Ventas en efectivo </small> </td>
                                         <td> {{ efectivo | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                                     </tr>
-                                    <tr>
+                                    <tr style="color: black;">
                                         <td colspan="2"> <small> Abonos en efectivo </small> </td>
                                         <td> {{ abEfectivo | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                                     </tr>
-                                    <tr>
+                                    <tr style="color: black;">
                                         <td colspan="2"> <small> Entradas </small> </td>
                                         <td> {{ entradas | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                                     </tr>
@@ -440,21 +448,29 @@
 
                                     <tbody>
 
-                                        <tr>
+                                        <tr style="color: black;">
                                             <td colspan="2"> <small> En Efectivo </small> </td>
                                             <td> {{ efectivo | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                                         </tr>
-                                        <tr>
+                                        <tr style="color: black;">
                                             <td colspan="2"> <small> Con tarjeta </small> </td>
                                             <td> {{ tarjeta | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                                         </tr>
-                                        <tr>
+                                        <tr style="color: black;">
                                             <td colspan="2"> <small> Con Transferencia </small> </td>
                                             <td> {{ transferencia | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                                         </tr>
+
+                                        <ng-container *ngIf="bancos.length > 0">
+                                            <tr *ngFor="let banco of bancos">
+                                                <td colspan="2"> <small> {{ banco.name }} </small> </td>
+                                                <td> {{ banco.monto | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
+                                            </tr>
+                                        </ng-container>
+
                                         <tr class="border-top">
                                             <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                            <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + credito + vales | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
+                                            <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + totalBancos + credito + vales | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                                         </tr>
 
 
@@ -599,12 +615,12 @@
 
                                 <table class="table text-center">
                                     <thead>
-                                        <tr>
+                                        <tr style="color: black;">
                                             <th scope="col">Diferencia</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                        <tr style="color: black;">
                                             <th scope="row">{{ montoDiferencia | currency: 'COP' : 'symbol' : '1.0-0' }} </th>
                                         </tr>
                                     </tbody>
@@ -617,12 +633,12 @@
 
                             <table class="table text-center">
                                 <thead>
-                                    <tr>
+                                    <tr style="color: black;">
                                         <th scope="col">Ventas Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr style="color: black;">
                                         <th scope="row">{{ efectivo + credito + tarjeta + transferencia + vales | currency: 'COP' : 'symbol' : '1.0-0' }} </th>
                                     </tr>
                                 </tbody>
@@ -633,12 +649,12 @@
                         <div class="col-auto p-2">
                             <table class="table text-center">
                                 <thead>
-                                    <tr>
+                                    <tr style="color: black;">
                                         <th scope="col">Ganancia Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr style="color: black;">
                                         <th scope="row">{{ (efectivo + credito + tarjeta + transferencia + vales) - costo | currency: 'COP' : 'symbol' : '1.0-0' }} </th>
                                     </tr>
                                 </tbody>
@@ -672,19 +688,19 @@
 
                                         <tbody>
 
-                                            <tr>
+                                            <tr style="color: black;">
                                                 <td colspan="2"> <small> Fondo Caja </small> </td>
                                                 <td> {{ inicial | currency:'COP' }}</td>
                                             </tr>
-                                            <tr>
+                                            <tr style="color: black;">
                                                 <td colspan="2"> <small> Ventas en efectivo </small> </td>
                                                 <td> {{ efectivo | currency:'COP' }} </td>
                                             </tr>
-                                            <tr>
+                                            <tr style="color: black;">
                                                 <td colspan="2"> <small> Abonos en efectivo </small> </td>
                                                 <td> {{ abEfectivo | currency:'COP' }} </td>
                                             </tr>
-                                            <tr>
+                                            <tr style="color: black;">
                                                 <td colspan="2"> <small> Entradas </small> </td>
                                                 <td> {{ entradas | currency:'COP' }} </td>
                                             </tr>
@@ -716,15 +732,15 @@
 
                                         <tbody>
 
-                                            <tr>
+                                            <tr style="color: black;">
                                                 <td colspan="2"> <small> En Efectivo </small> </td>
                                                 <td> {{ efectivo | currency:'COP' }} </td>
                                             </tr>
-                                            <tr>
+                                            <tr style="color: black;">
                                                 <td colspan="2"> <small> Con tarjeta </small> </td>
                                                 <td> {{ tarjeta | currency:'COP' }} </td>
                                             </tr>
-                                            <tr>
+                                            <tr style="color: black;">
                                                 <td colspan="2"> <small> Con Transferencia </small> </td>
                                                 <td> {{ transferencia | currency:'COP' }} </td>
                                             </tr>

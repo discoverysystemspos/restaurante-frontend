@@ -923,7 +923,7 @@
                                                             <option *ngIf="invoiceForm.value.type === 'vale' || invoiceForm.value.type === 'mixto' || invoiceForm.value.type === 'credito'" value="vale">Vale</option>
                                                             
                                                             <ng-container *ngIf="invoiceForm.value.type !== 'efectivo'">
-                                                                <option *ngFor="let banco of bancos" value="{{invoiceForm.value.type}} - {{banco.name}}"> {{banco.name}}</option>                                                                
+                                                                <option *ngFor="let banco of bancos" [value]="banco.name"> {{banco.name}}</option>                                                                
                                                             </ng-container>
                                                         </select>
 

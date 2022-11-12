@@ -28,12 +28,13 @@ interface _departament {
 import { Caja } from '../../models/caja.model';
 import { User } from '../../models/user.model';
 import { DepartmentService } from '../../services/department.service';
+import { Banco } from 'src/app/models/bancos.model';
+import { BancosService } from '../../services/bancos.service';
 
 @Component({
   selector: 'app-corte',
   templateUrl: './corte.component.html',
-  styles: [
-  ]
+  styleUrls: ['./corte.component.css']
 })
 export class CorteComponent implements OnInit {
 
@@ -48,8 +49,7 @@ export class CorteComponent implements OnInit {
   public user:User;
 
   constructor(  private turnoService: TurnoService,
-                private cajaService: CajaService,
-                private router: Router,
+                private bancosService: BancosService,
                 private printerService: NgxPrinterService,
                 private userService: UserService,
                 private invoiceService: InvoiceService,
@@ -78,11 +78,33 @@ export class CorteComponent implements OnInit {
       // DEPARTAMENTO
       this.cargarDepartamento();
 
+      // BANCOS
+      this.cargarBancos();
+
     }else{
       Swal.fire('Atención!', 'No existe un turno asignado, no puedes hacer cortes ni cierres', 'info');
       return;
     }   
     
+
+  }
+
+  /** ================================================================
+   *   CARGAR BANCOS
+  ==================================================================== */
+  public bancos: Banco[] = [];
+  cargarBancos(){
+
+    this.bancosService.loadBancos()
+        .subscribe( ({ bancos }) => {
+
+          bancos.map( (banco) => {
+            banco.monto = 0;
+          })
+
+          this.bancos = bancos;
+
+        });
 
   }
 
@@ -183,6 +205,7 @@ export class CorteComponent implements OnInit {
   public vales: number = 0;
   public facturas: any[] = [];
   public departamento: _departament[] = [];
+  public totalBancos: number = 0;
 
   cargarFacturasTurno(){
 
@@ -207,7 +230,7 @@ export class CorteComponent implements OnInit {
 
               this.departamento.map( (depart) => {
 
-                if (product.product.department === depart._id) {
+                if (product.product?.department === depart._id) {
                   depart.qty += product.qty,
                   depart.monto += product.qty * product.price;
                 }
@@ -215,8 +238,27 @@ export class CorteComponent implements OnInit {
               });
               
             }
+
+            // SUMAR LOS PAGOS DE BANCOS
+            for (const pago of factura.payments) {
+
+              this.bancos.map( (banco) => {
+
+                if (banco.name === pago.type) {
+                  banco.monto += pago.amount;
+
+                  this.totalBancos += pago.amount;
+
+                };
+
+              });
+              
+            }
             
           }
+
+          console.log(this.bancos);
+          
           
           
         });
