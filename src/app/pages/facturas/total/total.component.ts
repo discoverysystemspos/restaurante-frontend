@@ -354,8 +354,6 @@ export class TotalComponent implements OnInit {
   public porcentaje: number = 0;
   comisionCalcular(monto: number){
 
-    console.log("Monto: ", monto);
-    console.log("Porcentajes: ", this.empresa.comisiones );
     this.comision = 0;
     this.porcentaje = 0;
 
@@ -368,9 +366,6 @@ export class TotalComponent implements OnInit {
     }
 
     this.comision = (monto * this.porcentaje)/100;
-
-    console.log("Porcentaje: ", this.porcentaje );
-    
 
   }
 

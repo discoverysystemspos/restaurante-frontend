@@ -1679,7 +1679,7 @@ export class MesaComponent implements OnInit {
       this.invoiceForm.setValue({
         amount: this.total,
         cost: this.totalCosto,
-        client: this.clienteTemp.cid,
+        client: this.clienteTemp.cid || '',
         type: this.invoiceForm.value.type,
         payments: this.payments, 
         products: this.carrito,
@@ -1736,28 +1736,29 @@ export class MesaComponent implements OnInit {
             this.mesa.nota = [];
             this.mesa.descuento = false;
             this.mesa.porcentaje = 0;
+
+            this.mesa.deleteClient = true;
             
             this.mesasServices.updateMesa(this.mesa, this.mesaID)
             .subscribe( (resp:{ok: boolean, mesa: Mesa}) => {      
 
+              if (this.empresa.printpos) {              
+                // window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
+                // IMPRIMIR FACTURA
+                setTimeout( () => {
+                  this.printDiv2();                      
+                },2000);
+                
+              }else{
+                window.open(`./dashboard/factura/${ this.factura.iid }`, '_blank');
+                setTimeout( () => {             
+                  window.location.reload();
+                },1000);
+              }
+              
             }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
             
-            // this.cargarMesa(this.mesaID);
-            // LIMPIAMOS LA MESA
 
-            // Swal.fire('Success', `Se ha creado la factura <strong> #${ resp.invoice.invoice }</strong>, exitosamente`, 'success');
-              
-            // TIPO DE IMPRESION POS O CARTA
-            if (this.empresa.printpos) {              
-              // window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
-              // IMPRIMIR FACTURA
-              setTimeout( () => {
-                this.printDiv2();                      
-              },2000);
-              
-            }else{
-              window.open(`./dashboard/factura/${ resp.invoice.iid }`, '_blank');
-            }
 
 
           }, (err) => {

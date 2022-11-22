@@ -108,6 +108,13 @@ export class MesasService {
   }
 
   /** ================================================================
+   *   DELETE CLIENT
+  ==================================================================== */
+  deleteClientMesa(mesa: string, cliente: string){
+    return this.http.delete<{ok: boolean, mesa: Mesa}>(`${base_url}/mesas/${mesa}/cliente/${cliente}`, this.headers);
+  }
+
+  /** ================================================================
    *   DELETE INGREDIENTE
   ==================================================================== */
   deleteIngrediente(mesa: string, comanda: string, ingrediente: string){

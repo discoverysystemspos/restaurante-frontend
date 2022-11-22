@@ -187,7 +187,7 @@
                             </div>
 
                             <div class="col-auto ms-2 d-flex align-items-center">
-                                <button type="button" class="btn btn-outline-primary btn-sm py-auto h-100" (click)="buscar(initial.value, end.value, cajeros.value, estado.checked, credito.checked)"> 
+                                <button type="button" class="btn btn-outline-primary btn-sm py-auto h-100" (click)="buscar(initial.value, end.value, cajeros.value, estado.checked, false)"> 
                                     <i class="bi-search"></i> Buscar 
                                 </button>
                             </div>
@@ -223,11 +223,11 @@
                                     <tr class="trHover" tabindex="0" data-bs-toggle="tooltip" title="Cajero: {{ factura.user.name }}">
                                         <th>{{ factura.invoice }}</th>
                                         <td colspan="2">
-                                            {{ factura.client?.name }}
+                                            {{ factura.client?.name || 'Ocasional' }}
                                             <span *ngIf="!factura.status" class="badge rounded-pill bg-danger">Cancelada</span>
                                             <span *ngIf="factura.credito && factura.status" class="badge rounded-pill bg-warning">Credito <small *ngIf="factura.apartado">- Apartado</small> </span>
                                         </td>
-                                        <td> {{ factura.client?.cedula }} </td>
+                                        <td> {{ factura.client?.cedula || '00000000' }} </td>
                                         <td colspan="2"> {{ factura.mesa?.name }} </td>
                                         <td> {{ factura.amount | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                                         <td> {{ factura.type }} </td>

@@ -90,10 +90,10 @@
 
                             <div class="row" style="color:black">
                                 <div class="col-md-4">
-                                    <h6 class="text-wrap mb-0 text-capitalize"><strong>CLIENTE / RAZON SOCIAL:  </strong><br><small>{{ factura.client?.name }}</small></h6>
+                                    <h6 class="text-wrap mb-0 text-capitalize"><strong>CLIENTE / RAZON SOCIAL:  </strong><br><small>{{ factura.client?.name || 'Ocasional' }}</small></h6>
                                 </div>
                                 <div class="col">
-                                    <h6 class="text-wrap mb-0 text-capitalize"><strong>CC / Nit: </strong> <br><small> {{ factura.client?.cedula }}</small></h6>
+                                    <h6 class="text-wrap mb-0 text-capitalize"><strong>CC / Nit: </strong> <br><small> {{ factura.client?.cedula || '00000000' }}</small></h6>
                                 </div>
                             </div>
 

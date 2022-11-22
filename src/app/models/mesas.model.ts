@@ -38,7 +38,8 @@ export class Mesa {
         public menu?: boolean,
         public ingredientes?: _ingredientes[],
         public descuento?: boolean,
-        public porcentaje?: number
+        public porcentaje?: number,
+        public deleteClient?: boolean
     ){}
 
 };
