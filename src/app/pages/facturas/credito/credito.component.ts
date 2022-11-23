@@ -66,6 +66,9 @@ export class CreditoComponent implements OnInit {
     this.cargando = true;
     this.sinResultados = true;
 
+    this.totalAbonado = 0;
+    this.totalAmount = 0;
+
     this.invoiceService.loadInvoicesCredito(this.desde)
         .subscribe(({total, invoices}) => {
 
@@ -250,6 +253,9 @@ export class CreditoComponent implements OnInit {
     this.cargando = true;
     this.sinResultados = true;
 
+    this.totalAbonado = 0;
+    this.totalAmount = 0;
+
     this.searchService.search('invoice', client)
         .subscribe( ({resultados}) => {
 
@@ -292,7 +298,10 @@ export class CreditoComponent implements OnInit {
     this.cargando = true;
     this.sinResultados = true;
 
-    const hoy = new Date();    
+    const hoy = new Date();
+
+    this.totalAbonado = 0;
+    this.totalAmount = 0;
 
     this.invoiceService.loadInvoicesVencidas(hoy)
         .subscribe( ({invoices}) => {          
@@ -335,6 +344,9 @@ export class CreditoComponent implements OnInit {
     this.cargando = true;
     this.sinResultados = true;
 
+    this.totalAbonado = 0;
+    this.totalAmount = 0;
+
     this.invoiceService.loadInvoiceCreditCajeroMesa(mesa)
         .subscribe( ({ total, invoices }) => {
 
@@ -370,6 +382,67 @@ export class CreditoComponent implements OnInit {
           }
 
         });
+
+  }
+
+  /** ================================================================
+   *   BUSCAR FACTURAS A CREDITOS POR VENDEDORES MESAS
+  ==================================================================== */
+  buscar(inicial:Date, final: Date, cajeros:string, estado:boolean, credito:boolean){
+    
+    this.sinResultados = true;
+    this.totalAbonado = 0;
+    this.totalAmount = 0;
+    
+    if (inicial === null && final === null) {
+      this.facturas = this.facturasTemp;
+      this.resultado = 0;
+      return;
+    }else{
+
+      if (!inicial) {
+        this.facturas = this.facturasTemp;
+        this.resultado = 0;
+        return;
+      }
+
+      // SET HOURS      
+      inicial = new Date(inicial);      
+      const initial = new Date(inicial.getTime() + 1000 * 60 * 60 * 5);
+
+      final = new Date(final);
+      const end = new Date(final.getTime() + 1000 * 60 * 60 * 5);      
+      // SET HOURS 
+               
+      this.sinResultados = true;
+      this.invoiceService.loadInvoicesDate(initial, end, cajeros, estado, credito)
+          .subscribe(({total, invoices, montos, costos}) => {
+
+            // COMPROBAR SI EXISTEN RESULTADOS
+            if (invoices.length === 0) {
+              this.sinResultados = false;
+              this.facturas = [];
+              this.resultado = 0;
+              return;                
+            }
+            // COMPROBAR SI EXISTEN RESULTADOS
+            this.facturas = invoices; 
+            this.resultado = invoices.length;
+
+            for (const factura of this.facturas) {
+            
+              this.totalAmount += factura.amount;
+  
+              for (const pago of factura.payments) {              
+                this.totalAbonado += pago.amount;
+              }
+  
+            }
+            
+
+          });
+          
+    }
 
   }
 
