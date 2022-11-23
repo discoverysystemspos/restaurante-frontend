@@ -82,6 +82,14 @@ export class ProductService {
   }
 
   /** ================================================================
+   *   CARGAR PRODUCTOS ELIMINADOS
+  ==================================================================== */
+  cargarProductosEliminados(){
+    const endPoint = `/products/eliminados`;
+    return this.http.get<LoadProduct>(`${base_url}${endPoint}`, this.headers);
+  }
+
+  /** ================================================================
    *   CARGAR PRODUCTOS POR ID
   ==================================================================== */
   cargarProductoId( id: string){

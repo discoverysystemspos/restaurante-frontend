@@ -673,6 +673,52 @@ export class ProductoComponent implements OnInit {
 
   }
 
+  /** ================================================================
+   *   BORRAR Ó ACTIVAR PRODUCTO
+  ==================================================================== */
+  borrarProducto(_id: string){
+
+    let msg = 'Eliminar';
+
+    if (this.producto.status === false) {
+      msg = 'Activar'
+    }
+
+    Swal.fire({
+      title: 'Atencion',
+      text: `Estas seguro de ${msg} este producto?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: `Si, ${msg}`,
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {  
+      
+      if (result.isConfirmed) {
+
+        this.productService.deleteProduct(_id)
+        .subscribe((resp:{product, ok}) =>{
+
+          if (resp.product.status) {
+            Swal.fire('Estupendo', 'Se ha habilitado el Producto exitosamente!', 'success');
+          }else{
+            Swal.fire('Estupendo', 'Se ha eliminado el Producto exitosamente!', 'success');
+          }
+          
+          this.producto.status = resp.product.status;
+          
+        }, (err) =>{
+          Swal.fire('Error', err.error.msg, 'error');
+        });
+
+      }
+
+    });
+
+    
+  }
+
   // FIN DE LA CLASE
 }
       

@@ -325,7 +325,20 @@ export class ProductosComponent implements OnInit {
   ==================================================================== */
   borrarProducto(_id: string){
 
-    this.productService.deleteProduct(_id)
+    Swal.fire({
+      title: 'Atencion',
+      text: "Estas seguro de eliminar este producto?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {  
+      
+      if (result.isConfirmed) {
+
+        this.productService.deleteProduct(_id)
         .subscribe((resp:{product, ok}) =>{
 
           if (resp.product.status) {
@@ -339,6 +352,12 @@ export class ProductosComponent implements OnInit {
         }, (err) =>{
           Swal.fire('Error', err.error.msg, 'error');
         });
+
+      }
+
+    });
+
+    
   }
 
   /** ================================================================

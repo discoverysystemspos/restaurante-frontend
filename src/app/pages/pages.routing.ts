@@ -40,6 +40,7 @@ import { KardexComponent } from './productos/kardex/kardex.component';
 import { EntradasSalidasComponent } from './configuracion/entradas-salidas/entradas-salidas.component';
 import { ImpuestosComponent } from './configuracion/impuestos/impuestos.component';
 import { BancosComponent } from './configuracion/bancos/bancos.component';
+import { EliminadosComponent } from './productos/eliminados/eliminados.component';
 
 const routes: Routes = [
     
@@ -85,6 +86,7 @@ const routes: Routes = [
           { path: 'productos/departamento', component: DepartamentosComponent,  canActivate: [AdminGuard], data:{ titulo: 'Departamentos'} },
           { path: 'productos/categorias', component: CategoriasComponent,  canActivate: [AdminGuard], data:{ titulo: 'Categorias'} },
           { path: 'productos/kardex', component: KardexComponent,  data:{ titulo: 'Kardex'} },
+          { path: 'productos/eliminados', component: EliminadosComponent,  canActivate: [AdminGuard],  data:{ titulo: 'Kardex'} },
           
           { path: 'proveedores', component: ProveedoresComponent,  canActivate: [AdminGuard], data:{ titulo: 'Kardex'} },
           

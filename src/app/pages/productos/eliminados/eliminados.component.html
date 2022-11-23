@@ -1,0 +1,145 @@
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<header>
+    <div class="bg-danger py-2 px-3 mb-2">
+        <h5 class="text-white m-0">PRODUCTOS ElIMINADOS</h5>
+    </div>
+    <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-dark" id="administracion-tab" [routerLink]="['/dashboard', 'productos']">
+                <i class="bi-files" style="font-size: 1rem"></i> Administracion de Productos
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-primary" id="nuevo-tab" [routerLink]="['/dashboard/productos', 'nuevo']"><i class="bi-pencil-square" style="font-size: 1rem"></i> Crear Producto</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" id="departamentos-tab" [routerLink]="['/dashboard/productos', 'departamento']"><i class="bi-collection" style="font-size: 1rem"></i> Departamentos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" id="categorias-tab" [routerLink]="['/dashboard/productos', 'categorias']" aria-selected="false"><i class="bi-collection" style="font-size: 1rem"></i> Categorias</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" id="movimientos-tab" [routerLink]="['/dashboard/productos', 'movimientos']" aria-selected="false"><i class="bi-collection" style="font-size: 1rem"></i> Movimientos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" id="kardex-tab" [routerLink]="['/dashboard/productos', 'kardex']" aria-selected="false"><i class="bi-collection" style="font-size: 1rem"></i> kardex</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark active" id="eliminados-tab" [routerLink]="['/dashboard/productos', 'eliminados']" aria-selected="false"><i class="bi-trash" style="font-size: 1rem"></i> Eliminados</a>
+        </li>
+    </ul>
+</header>
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+
+<div class="container-fluid">
+
+    <!-- TABLE CLIENTS -->
+    <div class="shadow-lg p-3 mb-5 rounded bg-white">
+
+        <!-- CARGANDO -->
+        <div *ngIf="cargando">
+            <div class="text-center p-4">
+                <div class="spinner-grow text-secondary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <small class="text-muted">cargando...</small>
+        </div>
+        <!-- CARGANDO -->
+
+        <div *ngIf="!cargando">
+
+            <div class="table-responsive ">
+                <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                    <thead class="border-bottom ">
+                        <tr>
+                            <th></th>
+                            <th class="text-muted " scope="col ">#</th>
+                            <th class="text-muted " scope="col ">Codigo</th>
+                            <th class="text-muted " scope="col " colspan="2">Nombre</th>
+                            <th class="text-muted " scope="col ">Departamento</th>
+                            <th class="text-muted " scope="col ">stock</th>
+                            <th class="text-muted " scope="col ">Tipo</th>
+                            <th class="text-muted " scope="col ">Costo</th>
+                            <th class="text-muted " scope="col ">Ganancia</th>
+                            <th class="text-muted " scope="col ">Precio</th>
+                            <th class="text-muted " scope="col ">Precio Mayor</th>
+                            <th class="text-muted w100 " scope="col ">Acciones</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="productos.length === 0" class="text-center ">
+                            <th colspan="14" class="py-4">
+                                <h4 class="text-muted">No se ha eliminado ningun producto</h4>
+                            </th>
+                        </tr>
+
+                        <ng-container *ngFor="let producto of productos; let i=index ">
+
+                            <tr class="trHover" [ngClass]=" { 'table-danger': producto.vencido}" (mouseover)="btnAddInv= true" (mouseout)="btnAddInv= false">
+
+                                <th class="align-items-center" *ngIf=" desde===0 " scope="row ">{{ i + 1}}</th>
+                                <th class="align-items-center" *ngIf="desde> 0" scope="row">{{ (i + 1) + desde }}</th>
+                                <td>
+                                    <img [src]="producto.img | imagen:'products'" class="avatar avatar-img" alt="">
+                                </td>
+                                <td><small>{{ producto.code }}</small></td>
+
+                                <td colspan="2">
+                                    {{ producto.name }}
+                                    <span *ngIf="producto.status && producto.low && !producto.out" class="badge rounded-pill bg-warning text-dark">Bajo</span>
+                                    <span *ngIf="producto.status && producto.out" class="badge rounded-pill bg-danger">Agotado</span>
+                                    <span *ngIf="producto.status && producto.vencido" class="badge rounded-pill bg-danger">Vencido</span>
+                                    <span *ngIf="!producto.status" class="badge rounded-pill bg-danger">Eliminado</span>
+                                </td>
+
+                                <td>
+                                    <span *ngIf="producto.department">{{ producto.department.name }}</span>
+                                    <span *ngIf="!producto.department"> Sin Departamento </span>
+                                </td>
+                                <td class="text-center">
+                                    <span *ngIf="producto.type === 'Granel'"> {{  producto.inventario | number:'1.3'}} </span>
+                                    <span *ngIf="producto.type !== 'Granel'"> {{  producto.inventario | number }} </span>
+                                </td>
+                                <td>{{ producto.type }}</td>
+                                <td>{{ producto.cost | currency: 'COP' : 'symbol' : '1.0-0' }}</td>
+                                <td>{{ producto.gain }}%</td>
+                                <td>{{ producto.price | currency: 'COP' : 'symbol' : '1.0-0' }}</td>
+                                <td>{{ producto.wholesale | currency: 'COP' : 'symbol' : '1.0-0' }}</td>
+                                <td class="text-center">
+                                    <a [routerLink]="['/dashboard/producto', producto.pid]" class="btn btn-link p-1 text-primary"><i class="bi bi-box-arrow-up-right"></i></a>
+                                    <button type="button" (click)="activarProducto(producto.pid)" class="btn btn-link p-1 text-success"><i class="bi-check-square" style="font-size: 0.9rem"></i></button>
+                                </td>
+                            </tr>
+
+                        </ng-container>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- BTN SIGUIENTE Y ANTERIOR -->
+            <div class="row">
+                <div class="col col-md-4">
+                    <small class="text-muted">Total de productos eliminados: ({{totalProductos}}) de {{ total }}</small>
+                </div>
+
+                <!-- <div *ngIf="search.value.length === 0" class="col d-flex justify-content-end">
+                    <button type="button" (click)="cambiarPagina(-10)" class="{{btnAtras}} btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
+                    <button type="button" (click)="cambiarPagina(10)" class="{{btnAdelante}} btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
+                </div> -->
+            </div>
+            <!-- BTN SIGUIENTE Y ANTERIOR -->
+
+        </div>
+    </div>
+    <!-- TABLE CLIENTS -->
+
+
+</div>

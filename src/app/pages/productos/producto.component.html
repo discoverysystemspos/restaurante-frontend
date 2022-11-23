@@ -82,8 +82,16 @@
         <!-- INFO PRODUCT -->
         <div class="col-lg-8">
             <div class="card">
-                <div class="card-header">
-                    Informacion del producto
+                <div class="card-header d-flex" *ngIf="producto">
+                    <div>
+                        Informacion del producto <span *ngIf="!producto.status" class="text-danger">Eliminado</span>
+                    </div>
+
+                    <button (click)="borrarProducto(producto.pid)" type="button" class="btn btn-sm ms-auto" [ngClass]="{'btn-success': !producto.status, 'btn-danger': producto.status}">
+                        <span *ngIf="producto.status"> <i class="bi-trash"></i> Eliminar</span>
+                        <span *ngIf="!producto.status"> <i class="bi-check"></i> Activar</span>
+                    </button>
+
                 </div>
                 <div class="card-body">
 
