@@ -490,6 +490,8 @@
 
                             <button (click)="timeCommand()" type="button" class="btn btn-info mt-2 btnW waves-effect waves-dark text-white" data-bs-toggle="modal" data-bs-target="#prefactura"> Prefactura </button>
 
+                            <button (click)="crearPedido()" [disabled]="carrito.length === 0 || clienteTemp.cedula === '' || btnPedido === false" type="button" class="btn btn-info mt-2 btnW waves-effect waves-dark text-white"> Crear Pedido </button>
+
                         </div>
 
                         <div class="col ms-auto text-end" *ngIf="empresa">
@@ -1021,22 +1023,22 @@
                         <div class="pb-2" style="border-bottom: 2px solid black;">
                             <h6 class="mb-0 text-wrap text-left">
                                 CLIENTE / RAZON SOCIAL <br>
-                                <small *ngIf="client" class="text-wrap fw-normal"> {{ factura.client.name }} </small>
-                                <small *ngIf="!client" class="text-wrap fw-normal"> ocasional </small>
+                                <small *ngIf="factura.client" class="text-wrap fw-normal"> {{ factura.client.name }} </small>
+                                <small *ngIf="!factura.client" class="text-wrap fw-normal"> ocasional </small>
                             </h6>
 
                             <h6 class="mb-0 text-wrap text-left">
                                 CC / NIT <br>
-                                <small *ngIf="client" class="text-wrap fw-normal"> {{ factura.client.cedula }} </small>
-                                <small *ngIf="!client" class="text-wrap fw-normal"> 00000000 </small>
+                                <small *ngIf="factura.client" class="text-wrap fw-normal"> {{ factura.client.cedula }} </small>
+                                <small *ngIf="!factura.client" class="text-wrap fw-normal"> 00000000 </small>
                             </h6>
                             <h6 class="mb-0 text-wrap text-left">
                                 TELEFONO <br>
-                                <small *ngIf="client" class="text-wrap fw-normal"> {{ factura.client.phone }} </small>
+                                <small *ngIf="factura.client" class="text-wrap fw-normal"> {{ factura.client.phone }} </small>
                             </h6>
                             <h6 class="mb-0 text-wrap text-left" *ngIf="factura.client">
                                 DIRECCIÓN <br>
-                                <small *ngIf="client" class="text-wrap fw-normal"> {{ factura.client.address || '----------'}} </small>
+                                <small *ngIf="factura.client" class="text-wrap fw-normal"> {{ factura.client.address || '----------'}} </small>
                             </h6>
 
                             <h6 class="mb-0 text-wrap text-left">

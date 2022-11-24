@@ -1663,40 +1663,48 @@ export class MesaComponent implements OnInit {
 
       this.invoiceForm.value.apartado = false;
       if (this.totalPagos < this.total) {
+        this.facturando = false;
         Swal.fire('Importante', 'El monto del pago es diferente al del total, porfavor verificar', 'warning');
         return;      
       }
 
     }else{
       if (this.invoiceForm.value.fechaCredito === '') {
+        this.facturando = false;
         Swal.fire('Importante', 'Debe de asignar una fecha de caducida a la factura a credito', 'warning');
         return;      
       }   
     }
 
+    this.invoiceForm.setValue({
+      amount: this.total,
+      cost: this.totalCosto,
+      client: this.clienteTemp.cid || '',
+      type: this.invoiceForm.value.type,
+      payments: this.payments, 
+      products: this.carrito,
+      credito: this.credit,
+      mesa: this.mesaID,
+      mesero: this.meserID,
+      fechaCredito: this.invoiceForm.value.fechaCredito,
+      turno: this.user.turno,
+      iva: this.iva,
+      base: this.base,
+      pago: this.pago,
+      vueltos: this.vueltos,
+      nota: this.invoiceForm.value.nota,
+      apartado: this.invoiceForm.value.apartado,
+      descuento: this.formDescuento.value.descuento,
+      porcentaje: this.formDescuento.value.porcentaje
+    });
+
+    if(!this.clienteTemp){
+      this.invoiceForm.value.client = '';
+    }
+
     try {
 
-      this.invoiceForm.setValue({
-        amount: this.total,
-        cost: this.totalCosto,
-        client: this.clienteTemp.cid || '',
-        type: this.invoiceForm.value.type,
-        payments: this.payments, 
-        products: this.carrito,
-        credito: this.credit,
-        mesa: this.mesaID,
-        mesero: this.meserID,
-        fechaCredito: this.invoiceForm.value.fechaCredito,
-        turno: this.user.turno,
-        iva: this.iva,
-        base: this.base,
-        pago: this.pago,
-        vueltos: this.vueltos,
-        nota: this.invoiceForm.value.nota,
-        apartado: this.invoiceForm.value.apartado,
-        descuento: this.formDescuento.value.descuento,
-        porcentaje: this.formDescuento.value.porcentaje
-      });      
+      
       
       this.invoiceService.createInvoice(this.invoiceForm.value, this.user.turno)
           .subscribe( (resp:{ok: boolean, invoice: LoadInvoice } ) => {
@@ -1756,16 +1764,21 @@ export class MesaComponent implements OnInit {
                 },1000);
               }
               
-            }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
+            }, (err) => { 
+              this.facturando = false;
+              Swal.fire('Error', err.error.msg, 'error'); 
+            });
             
 
 
 
           }, (err) => {
+            this.facturando = false;
             Swal.fire('Error', err.error.msg, 'error');
           });
       
-    } catch (err) {         
+    } catch (err) {      
+      this.facturando = false;   
       Swal.fire('Error', err.error.msg, 'error');
       
     }    
