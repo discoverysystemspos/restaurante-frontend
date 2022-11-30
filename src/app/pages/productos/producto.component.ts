@@ -159,8 +159,8 @@ export class ProductoComponent implements OnInit {
           }
 
           if (tax) {
-            impuestoT = taxid.name;
-            this.priceIva = Math.round(price * ((taxid.valor/100)+1));
+            impuestoT = taxid?.name;
+            this.priceIva = Math.round(price * ((taxid?.valor/100)+1));
           }
           
           if (taxid) {
