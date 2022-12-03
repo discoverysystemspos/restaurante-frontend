@@ -24,10 +24,12 @@ import { Datos } from '../../../models/empresa.model';
 
 // INTERFACES
 import { LoadInvoice, _products } from '../../../interfaces/invoice.interface';
-import { _payments, Carrito } from '../../../interfaces/carrito.interface';
+import { _payments, Carrito, _paymentsCredito } from '../../../interfaces/carrito.interface';
 import { LoadTurno, _movements } from '../../../interfaces/load-turno.interface';
 import { ImpuestosService } from 'src/app/services/impuestos.service';
 import { Impuestos } from '../../../models/impuestos.model';
+import { User } from 'src/app/models/user.model';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-factura',
@@ -46,6 +48,7 @@ export class FacturaComponent implements OnInit {
   $printItems: Observable<PrintItem[]>;
 
   public factura: LoadInvoice;
+  public user: User;
 
   constructor(  private invoiceService: InvoiceService,
                 private activatedRoute: ActivatedRoute,
@@ -53,7 +56,8 @@ export class FacturaComponent implements OnInit {
                 private turnoService: TurnoService,
                 private empresaService: EmpresaService,
                 private printerService: NgxPrinterService,
-                private impuestosService: ImpuestosService) {
+                private impuestosService: ImpuestosService,
+                private userService: UserService,) {
 
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
                     val => {
@@ -63,11 +67,16 @@ export class FacturaComponent implements OnInit {
               
                   this.$printItems = this.printerService.$printItems;
 
+                    this.user = userService.user;
+
                 }
 
   ngOnInit(): void {
 
     this.cargarDatos();
+
+    // CARGAR TURNO
+    this.cargarTurno();
     
   }
   /** ================================================================
@@ -131,6 +140,7 @@ export class FacturaComponent implements OnInit {
         .subscribe( invoice => {
 
           this.factura = invoice;
+          this.paymentsCredit = this.factura.paymentsCredit;
           this.payments = this.factura.payments;
           this.iva = invoice.iva;
           this.sumarPagos();          
@@ -268,7 +278,7 @@ export class FacturaComponent implements OnInit {
   public movimientos: _movements[] = [];
   cargarTurno(){
 
-    this.turnoService.getTurnoId(localStorage.getItem('turno'))
+    this.turnoService.getTurnoId(this.user.turno)
         .subscribe( (turno) => {
 
           this.turno = turno;
@@ -279,11 +289,12 @@ export class FacturaComponent implements OnInit {
   }
   
   public payments: _payments[] = [];
+  public paymentsCredit: _paymentsCredito[] = [];
   public credit: boolean = false;
 
   public invoiceForm = this.fb.group({
     type: ['efectivo', [Validators.required]],
-    payments: [''],
+    paymentsCredit: [''],
     credito: [this.credit]
   })
 
@@ -299,8 +310,6 @@ export class FacturaComponent implements OnInit {
   }
 
   agregarPagos(type: string, amount:number, description:string = '', credito: boolean){
-
-    
 
     if (amount === 0 || amount < 1) {
       Swal.fire('Atención', 'No has agregado un monto', 'info');
@@ -318,23 +327,24 @@ export class FacturaComponent implements OnInit {
       this.vueltos = (this.montoAdd.nativeElement.value - totales);
     }
 
-    this.payments.push({
+    this.paymentsCredit.push({
       type,
       amount,
-      description
+      description,
+      turno: this.user.turno
     });
 
     this.descripcionAdd.nativeElement.value = '';
-    this.montoAdd.nativeElement.value = '';
-
-    
+    this.montoAdd.nativeElement.value = '';    
 
     this.sumarPagos();
+
+    
 
     if (credito) {
 
       this.invoiceForm.setValue({
-        payments: this.payments,
+        paymentsCredit: this.paymentsCredit,
         credito: true,
         type: this.invoiceForm.value.type,
       });
@@ -342,9 +352,22 @@ export class FacturaComponent implements OnInit {
       this.invoiceService.updateInvoice( this.invoiceForm.value, this.factura.iid )
         .subscribe( ( resp:{ok: boolean, invoice: Invoice } ) => {
 
+          let payTurno = {
+            factura: this.factura.iid,
+            pay: resp.invoice.paymentsCredit[resp.invoice.paymentsCredit.length - 1]._id,
+            monto: amount,
+          }
+
+          this.turno.abonos.push(payTurno);
           
-          window.location.reload();
-          
+          this.turnoService.updateTurno({abonos:this.turno.abonos}, this.user.turno)
+          .subscribe( resp => {
+            
+              window.location.reload();                
+
+            }, (err) => {
+              console.log(err);              
+            })
 
         }, (err) => {
 
@@ -353,20 +376,20 @@ export class FacturaComponent implements OnInit {
     }
   }
   /** ================================================================
-   *   ELIMINAR METODO DE PAGO
+   *   ELIMINAR METODO DE PAGO 
   ==================================================================== */
   eliminarPagos( item: any ){
     
-    const i = this.payments.indexOf(item);
+    const i = this.paymentsCredit.indexOf(item);
 
-    if ( i !== -1 ) { this.payments.splice(i, 1); }
+    if ( i !== -1 ) { this.paymentsCredit.splice(i, 1); }
 
     this.sumarPagos();
 
     this.vueltos = (this.factura.amount - this.totalPagos);
 
     this.invoiceForm.setValue({
-      payments: this.payments,
+      paymentsCredit: this.paymentsCredit,
       credito: true,
       type: this.invoiceForm.value.type,
     });
@@ -399,7 +422,7 @@ export class FacturaComponent implements OnInit {
       this.credit = true;
     }
 
-    this.payments = this.factura.payments;
+    this.paymentsCredit = this.factura.paymentsCredit;
     this.sumarPagos();
     this.vueltos = Number( this.factura.amount - this.totalPagos);
     
@@ -412,11 +435,11 @@ export class FacturaComponent implements OnInit {
   sumarPagos(){
     
     this.totalPagos = 0;
-    if (this.payments.length > 0) {
+    if (this.paymentsCredit.length > 0) {
       
-      for (let i = 0; i < this.payments.length; i++) {
+      for (let i = 0; i < this.paymentsCredit.length; i++) {
         
-        this.totalPagos += Number( this.payments[i].amount );        
+        this.totalPagos += Number( this.paymentsCredit[i].amount );        
       }
 
     }
@@ -438,15 +461,13 @@ export class FacturaComponent implements OnInit {
     }
 
     this.invoiceForm.setValue({
-      payments: this.payments,
+      paymentsCredit: this.paymentsCredit,
       credito: this.credit,
       type: this.invoiceForm.value.type,
-    });
+    });        
 
     this.invoiceService.updateInvoice( this.invoiceForm.value, this.factura.iid )
         .subscribe( ( resp:{ok: boolean, invoice: Invoice } ) => {
-
-          
 
           this.invoiceForm.reset();
 
@@ -454,7 +475,8 @@ export class FacturaComponent implements OnInit {
           
 
         }, (err) => {
-
+          console.log(err);
+          
           Swal.fire('Error', err.error.msg, 'error');
         });
 
@@ -464,9 +486,6 @@ export class FacturaComponent implements OnInit {
    *   ACTUALIZAR FECHA DE VENCIMIENTO
   ==================================================================== */
   actualizarVencimiento(fechaCredito: Date){
-
-    console.log(fechaCredito);
-    
 
     this.invoiceService.updateInvoice({fechaCredito}, this.factura.iid)
         .subscribe( (resp: {invoice}) => {

@@ -48,7 +48,7 @@
             <button (click)="devolucion(factura.iid)" type="button" class="btn btn-outline-danger btn-sm mx-1 my-2"> 
                 <i class="bi-arrow-counterclockwise"></i> Cancelar Factura
             </button>
-            <button *ngIf="factura.credito" (click)="focusMonto()" type="button" class="btn btn-outline-dark btn-sm mx-1 my-2" data-bs-toggle="modal" data-bs-target="#facturar"> 
+            <button *ngIf="factura.credito" [disabled]="user.cerrada" (click)="focusMonto()" type="button" class="btn btn-outline-dark btn-sm mx-1 my-2" data-bs-toggle="modal" data-bs-target="#facturar"> 
                 Cobrar
             </button>
 
@@ -300,6 +300,15 @@
                                         <td>{{ pay.amount | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                                     </tr>
 
+                                    <tr class="trHover" *ngFor="let pay of paymentsCredit; let i = index">
+                                        <td>
+                                            <span *ngIf="pay.description !== ''">{{ pay.description }}</span>
+                                            <span *ngIf="pay.description === ''">Sin descripción</span>
+                                        </td>
+                                        <td>{{ pay.type }}</td>
+                                        <td>{{ pay.amount | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
+                                    </tr>
+
                                 </tbody>
                                 <tfoot>
                                     <tr class="border-top">
@@ -315,7 +324,7 @@
                         <!-- BTN SIGUIENTE Y ANTERIOR -->
                         <div class="row">
                             <div class="col">
-                                <small class="text-muted">Total de pagos: ({{payments.length}})</small>
+                                <small class="text-muted">Total de pagos: ({{payments.length + paymentsCredit.length}})</small>
                             </div>
                         </div>
                         <!-- BTN SIGUIENTE Y ANTERIOR -->
@@ -460,7 +469,8 @@
                                                                 <th></th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody formArrayName="payments">
+                                                        <tbody>
+
                                                             <tr class="trHover" *ngFor="let control of payments; let i = index">
                                                                 <th>{{ i + 1}}</th>
                                                                 <td>
@@ -471,6 +481,18 @@
                                                                     <button type="button" class="btn btn-link p-1 text-danger text-right" (click)="eliminarPagos(control)"> <i class="bi-trash"></i> </button>
                                                                 </td>
                                                             </tr>
+
+                                                            <tr class="trHover" *ngFor="let control of paymentsCredit; let i = index">
+                                                                <th>{{ i + 1}}</th>
+                                                                <td>
+                                                                    <p class="mb-0">{{ control.type }} <span *ngIf="control.description">- {{ control.description }}</span></p>
+                                                                </td>
+                                                                <td> {{ control.amount | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-link p-1 text-danger text-right" (click)="eliminarPagos(control)"> <i class="bi-trash"></i> </button>
+                                                                </td>
+                                                            </tr>
+
                                                         </tbody>
                                                     </table>
 
@@ -539,7 +561,7 @@
                     <div class="my-4 float-end">
                         <button type="button" (click)="guardarPago()" class="btn btn-outline-primary">
 
-                                    Imprimir
+                                    Guardar
                         </button>
                     </div>
                     <!-- BTN CREAR FACTURA -->

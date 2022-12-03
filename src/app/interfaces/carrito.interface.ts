@@ -9,6 +9,14 @@ export interface _payments {
     description?: string;
 }
 
+export interface _paymentsCredito {
+    type: string;
+    amount: number;
+    description?: string;
+    turno?: string;
+    _id?: string
+}
+
 export interface _notas{
     nota: string;
     date?: Date;

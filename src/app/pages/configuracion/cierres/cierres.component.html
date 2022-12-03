@@ -225,6 +225,7 @@
 
                             </div>
                         </div>
+
                         <div class="col-auto p-2">
 
                             <div class="card shadow px-2" style="width: 18rem;">
@@ -369,6 +370,43 @@
 
 
                                             </ng-container>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-auto p-2">
+                            <div class="card shadow px-2" style="width: 18rem;">
+
+                                <div class="card-body">
+                                    <h5 class="card-title mb-0">Abonos Credito</h5>
+                                </div>
+
+                                <div class="table-responsive ">
+                                    <table class="table table-borderless table-hover table-sm animated fadeIn ">
+
+                                        <tbody>
+
+                                            <tr>
+                                                <td colspan="2"> <small>Con Efectivo </small> </td>
+                                                <td> {{ abEfectivo || 0 | currency:'COP' : 'symbol' : '1.0-0' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"> <small> Con Tarjeta </small> </td>
+                                                <td> {{ abTarjeta || 0 | currency:'COP' : 'symbol' : '1.0-0' }} </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"> <small> Con Transferencia </small> </td>
+                                                <td> {{ abTransferencia || 0 | currency:'COP' : 'symbol' : '1.0-0' }} </td>
+                                            </tr>
+
+                                            <tr class="border-top">
+                                                <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                                <td class="fw-bold"> {{ (abEfectivo || 0) + (abTarjeta || 0) + (abTransferencia || 0) | currency:'COP' : 'symbol' : '1.0-0' }} </td>
+                                            </tr>
 
                                         </tbody>
                                     </table>

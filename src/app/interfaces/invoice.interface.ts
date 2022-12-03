@@ -2,7 +2,7 @@
 import { Client } from '../models/client.model';
 
 // INTERFACES
-import { _payments } from './carrito.interface';
+import { _payments, _paymentsCredito } from './carrito.interface';
 
 // MODELS
 import { User } from '../models/user.model';
@@ -66,6 +66,7 @@ export interface LoadInvoice {
     apartado: boolean;
     descuento: boolean;
     porcentaje: number;
+    paymentsCredit: _paymentsCredito[]
 
 }
 

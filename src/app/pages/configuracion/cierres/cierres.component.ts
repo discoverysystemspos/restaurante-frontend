@@ -239,6 +239,9 @@ export class CierresComponent implements OnInit {
   * TURNO - TURNO - TURNO - TURNO  
   ==================================================================== */
   public turnoId: LoadTurno;
+  public abEfectivo: number = 0;
+  public abTarjeta: number = 0;
+  public abTransferencia: number = 0;
   cargarTurnoId(id:string){
 
     this.movimientos = [];
@@ -250,6 +253,30 @@ export class CierresComponent implements OnInit {
       this.movimientos = turno.movements;     
 
       this.inicial = turno.initial;
+
+      this.abEfectivo = 0;
+      this.abTarjeta = 0;
+      this.abTransferencia = 0;
+
+      
+      for (const factura of turno.abonos) {        
+
+        for (const pago of factura.factura.paymentsCredit ) {
+
+          if (pago.turno === turno.tid  && factura.pay === pago._id && factura.factura.status) {
+            
+            if (pago.type === "efectivo") {
+              this.abEfectivo += pago.amount;
+            }else if (pago.type === "tarjeta") {
+              this.abTarjeta += pago.amount;              
+            }else if (pago.type === "transferencia") {
+              this.abTransferencia += pago.amount;              
+            }
+          }
+
+        }
+        
+      }      
       
       this.procesarInformacion(id);
       
@@ -267,7 +294,6 @@ export class CierresComponent implements OnInit {
   public vales: number = 0;
   public transferencia: number = 0;
   public inicial: number = 0;
-  public abEfectivo: number = 0;
   public entradas: number = 0;
   public salidas: number = 0;
   public montoDiferencia: number = 0;
@@ -287,7 +313,6 @@ export class CierresComponent implements OnInit {
     this.vales = 0;
     this.entradas = 0;
     this.salidas = 0;
-    this.abEfectivo = 0;
     this.montoDiferencia = 0;
 
     this.departamento.forEach(depart => {

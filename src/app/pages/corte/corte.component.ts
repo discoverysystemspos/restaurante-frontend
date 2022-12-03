@@ -178,6 +178,9 @@ export class CorteComponent implements OnInit {
   /** ===============================================================
   * TURNO - TURNO - TURNO - TURNO  
   ==================================================================== */
+  public abEfectivo: number = 0;
+  public abTarjeta: number = 0;
+  public abTransferencia: number = 0;
   public turno: LoadTurno;
   cargarTurno(){  
     this.turnoService.getTurnoId(this.user.turno)
@@ -185,6 +188,39 @@ export class CorteComponent implements OnInit {
       this.turno = turno;
       this.movimientos = turno.movements;
       this.inicial = turno.initial;
+
+      this.abEfectivo = 0;
+      this.abTarjeta = 0;
+      this.abTransferencia = 0;
+
+      console.log(turno);
+      
+
+      
+      for (const factura of turno.abonos) {        
+
+        for (const pago of factura.factura.paymentsCredit) {
+          if (pago.turno === turno.tid && factura.pay === pago._id && factura.factura.status) {
+
+            
+            if (pago.type === "efectivo") {
+              this.abEfectivo += pago.amount;
+            }else if (pago.type === "tarjeta") {
+              this.abTarjeta += pago.amount;              
+            }else if (pago.type === "transferencia") {
+              this.abTransferencia += pago.amount;              
+            }
+          }
+
+        }
+        
+      }
+
+      console.log(this.abEfectivo);
+      console.log(this.abTarjeta);
+      console.log(this.abTransferencia);
+      
+      
       
       this.procesarInformacion();
       
@@ -256,10 +292,6 @@ export class CorteComponent implements OnInit {
             }
             
           }
-
-          console.log(this.bancos);
-          
-          
           
         });
   }
@@ -268,7 +300,6 @@ export class CorteComponent implements OnInit {
   * PROCESAR LA INFORMACION 
   ==================================================================== */
   public inicial: number = 0;
-  public abEfectivo: number = 0;
   public entradas: number = 0;
   public salidas: number = 0;
   public movimientos: _movements[] = [];

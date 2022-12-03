@@ -45,6 +45,12 @@
                                 <td colspan="2"> <small> Fondo Caja </small> </td>
                                 <td> {{ inicial | currency: 'COP' : 'symbol' : '1.0-0' }}</td>
                             </tr>
+
+                            <tr style="color: black;">
+                                <td colspan="2"> <small> Abonos Creditos Efectivo </small> </td>
+                                <td> {{ abEfectivo | currency: 'COP' : 'symbol' : '1.0-0' }}</td>
+                            </tr>
+
                             <tr style="color: black;">
                                 <td colspan="2"> <small> Ventas en efectivo </small> </td>
                                 <td> {{ efectivo | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
@@ -260,6 +266,59 @@
                                 </tr>
 
                             </ng-container>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-auto p-2">
+
+            <div class="card shadow px-2" style="width: 18rem;">
+
+                <div class="card-body">
+                    <h5 class="card-title mb-0">ABONOS CREDITOS</h5>
+                </div>
+
+                <div class="table-responsive ">
+                    <table class="table table-borderless table-hover table-sm animated fadeIn ">
+
+                        <tbody>
+
+                            <tr>
+                                <td colspan="2"> Abono con Efectivo </td>
+                                <td class="text-end">
+                                    <span class="fw-bolder">
+                                        {{ abEfectivo || 0 | currency: 'COP' : 'symbol' : '1.0-0' }}
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2"> Abono con Tarjetas </td>
+                                <td class="text-end">
+                                    <span class="fw-bolder">
+                                        {{ abTarjeta || 0 | currency: 'COP' : 'symbol' : '1.0-0' }}
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2"> Abono con Transferencias </td>
+                                <td class="text-end">
+                                    <span class="fw-bolder">
+                                        {{ abETransferencia || 0 | currency: 'COP' : 'symbol' : '1.0-0' }}
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr class="border-top">
+                                <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                <td class="fw-bold"> {{ (abEfectivo || 0) + (abTarjeta || 0) + (abETransferencia || 0) | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
+                            </tr>
 
                         </tbody>
                     </table>
@@ -595,14 +654,51 @@
                         </div>
                         <!-- TOTAL DEPARTAMENTOS -->
 
+                        <!-- ABONOS CREDITOS -->
+                        <div style="color: black;" class="col-auto p-2" style="width: 18rem;">
+                            <div class="card-body">
+                                <h5 class="card-title mb-0 text-center">Abonos Creditos</h5>
+                            </div>
+
+                            <div class="table-responsive ">
+                                <table class="table table-borderless table-hover table-sm animated fadeIn ">
+
+                                    <tbody>
+
+                                        <tr style="color: black;">
+                                            <td colspan="2"> <small> En Efectivo </small> </td>
+                                            <td> {{ abEfectivo | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
+                                        </tr>
+                                        <tr style="color: black;">
+                                            <td colspan="2"> <small> Con tarjeta </small> </td>
+                                            <td> {{ abTarjeta | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
+                                        </tr>
+                                        <tr style="color: black;">
+                                            <td colspan="2"> <small> Con Transferencia </small> </td>
+                                            <td> {{ abTransferencia | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
+                                        </tr>
+
+                                        <tr class="border-top">
+                                            <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                            <td class="fw-bold"> {{ (abEfectivo || 0) + (abTarjeta || 0) + (abTransferencia || 0) | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- ABONOS CREDITOS -->
+
                     </div>
                 </div>
 
                 <!-- NEW -->
-                <div class="d-flex justify-content-center">
+                <!-- <div class="d-flex justify-content-center"> -->
 
-                    <!-- SECCION DE IMPRESIOM -->
-                    <!-- <div id="printDiv">
+                <!-- SECCION DE IMPRESIOM -->
+                <!-- <div id="printDiv">
 
                         <div class="col-auto p-2">
                             <div class="card-body" *ngIf="fechaCierre">
@@ -875,7 +971,7 @@
 
                     </div> -->
 
-                </div>
+                <!-- </div> -->
                 <!-- ============================================================================
                     IMPRIMIR 
                 ================================================================================= -->

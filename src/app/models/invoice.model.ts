@@ -1,5 +1,5 @@
 // INTERFACES
-import { Carrito, _payments } from '../interfaces/carrito.interface';
+import { Carrito, _payments, _paymentsCredito } from '../interfaces/carrito.interface';
 
 export class Invoice {
     
@@ -19,7 +19,8 @@ export class Invoice {
         public nota?: string,
         public apartado?: boolean,
         public descuento?: boolean,
-        public porcentaje?: number
+        public porcentaje?: number,
+        public paymentsCredit?: _paymentsCredito[]
     ){}
 
 }
