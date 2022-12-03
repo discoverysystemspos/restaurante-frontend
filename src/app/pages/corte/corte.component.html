@@ -55,17 +55,25 @@
                                 <td colspan="2"> <small> Ventas en efectivo </small> </td>
                                 <td> {{ efectivo | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                             </tr>
+
                             <tr style="color: black;">
                                 <td colspan="2"> <small> Entradas </small> </td>
                                 <td> {{ entradas | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                             </tr>
+
                             <tr class="text-danger">
                                 <td colspan="2"> <small> Salidas </small> </td>
                                 <td> {{ salidas | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                             </tr>
+
+                            <tr class="text-danger">
+                                <td colspan="2"> <small> devolucion </small> </td>
+                                <td> {{ devolucion | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
+                            </tr>
+
                             <tr class="border-top">
                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                <td class="fw-bold"> {{ inicial + efectivo + abEfectivo + entradas + salidas | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
+                                <td class="fw-bold"> {{ (inicial + efectivo + abEfectivo + entradas + salidas) + devolucion | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                             </tr>
 
                         </tbody>
@@ -108,9 +116,14 @@
                                 </tr>
                             </ng-container>
 
+                            <tr class="text-danger">
+                                <td colspan="2"> <small> devolucion </small> </td>
+                                <td> {{ devolucion | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
+                            </tr>
+
                             <tr class="border-top">
                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + totalBancos + credito + vales | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
+                                <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + totalBancos + credito + vales + devolucion | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                             </tr>
 
 
@@ -292,7 +305,7 @@
                                 <td colspan="2"> Abono con Efectivo </td>
                                 <td class="text-end">
                                     <span class="fw-bolder">
-                                        {{ abEfectivo || 0 | currency: 'COP' : 'symbol' : '1.0-0' }}
+                                        {{ abEfectivo | currency: 'COP' : 'symbol' : '1.0-0' }}
                                     </span>
                                 </td>
                             </tr>
@@ -301,7 +314,7 @@
                                 <td colspan="2"> Abono con Tarjetas </td>
                                 <td class="text-end">
                                     <span class="fw-bolder">
-                                        {{ abTarjeta || 0 | currency: 'COP' : 'symbol' : '1.0-0' }}
+                                        {{ abTarjeta | currency: 'COP' : 'symbol' : '1.0-0' }}
                                     </span>
                                 </td>
                             </tr>
@@ -310,14 +323,14 @@
                                 <td colspan="2"> Abono con Transferencias </td>
                                 <td class="text-end">
                                     <span class="fw-bolder">
-                                        {{ abETransferencia || 0 | currency: 'COP' : 'symbol' : '1.0-0' }}
+                                        {{ abTransferencia | currency: 'COP' : 'symbol' : '1.0-0' }}
                                     </span>
                                 </td>
                             </tr>
 
                             <tr class="border-top">
                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                <td class="fw-bold"> {{ (abEfectivo || 0) + (abTarjeta || 0) + (abETransferencia || 0) | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
+                                <td class="fw-bold"> {{ abEfectivo + abTarjeta + abTransferencia | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                             </tr>
 
                         </tbody>
@@ -361,8 +374,9 @@
                         <tbody>
                             <tr style="color: black;">
                                 <td scope="row">Efectivo esperado en caja:</td>
-                                <td>{{ inicial + efectivo + abEfectivo + entradas + salidas | currency: 'COP' : 'symbol' : '1.0-0' }}</td>
+                                <td>{{ inicial + efectivo + abEfectivo + entradas + salidas + devolucion | currency: 'COP' : 'symbol' : '1.0-0' }}</td>
                             </tr>
+
                             <tr style="color: black;">
                                 <td scope="row">Cuanto efectivo hay en caja</td>
                                 <td>
@@ -371,19 +385,20 @@
                                     </div>
                                 </td>
                             </tr>
+
                             <tr style="color: black;">
                                 <td scope="row"> Diferencia </td>
-                                <td [ngClass]=" {   'text-danger': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) !== 0, 
-                                'text-success': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) > 0
-                            }">
-                                    {{ cajaA.value - (inicial + efectivo + abEfectivo + entradas + salidas) | currency: 'COP' : 'symbol' : '1.0-0'}}
+                                <td [ngClass]=" {   'text-danger': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value + devolucion) !== 0, 
+                                                    'text-success': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value + devolucion) > 0
+                                }">
+                                    {{ cajaA.value - (inicial + efectivo + abEfectivo + entradas + salidas + devolucion) | currency: 'COP' : 'symbol' : '1.0-0'}}
                                 </td>
                             </tr>
                         </tbody>
                     </table>
 
-                    <p class="animated fadeIn mb-2 text-danger" *ngIf="(inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) !== 0 "> <i class="bi-exclamation-triangle"></i> Existe una diferencia, todo va a quedar almacenado </p>
-                    <p class="animated fadeIn mb-2 text-success" *ngIf="(inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) === 0"> <i class="bi-check2-all"></i> Todo en orden</p>
+                    <p class="animated fadeIn mb-2 text-danger" *ngIf="(inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value + devolucion) !== 0 "> <i class="bi-exclamation-triangle"></i> Existe una diferencia, todo va a quedar almacenado </p>
+                    <p class="animated fadeIn mb-2 text-success" *ngIf="(inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value + devolucion) === 0"> <i class="bi-check2-all"></i> Todo en orden</p>
 
                     <button type="button" class="btn btn-primary" (click)="cerrarTurno(cajaA.value)">Hacer cierre</button>
 
@@ -429,7 +444,7 @@
                                 </thead>
                                 <tbody>
                                     <tr style="color: black;">
-                                        <th scope="row">{{ efectivo + credito + tarjeta + transferencia + vales | currency: 'COP' : 'symbol' : '1.0-0' }} </th>
+                                        <th scope="row">{{ efectivo + credito + tarjeta + transferencia + vales + devolucion | currency: 'COP' : 'symbol' : '1.0-0' }} </th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -485,9 +500,13 @@
                                         <td colspan="2"> <small> Salidas </small> </td>
                                         <td> {{ salidas | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                                     </tr>
+                                    <tr class="text-danger">
+                                        <td colspan="2"> <small> devolucion </small> </td>
+                                        <td> {{ devolucion | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
+                                    </tr>
                                     <tr class="border-top">
                                         <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                        <td class="fw-bold"> {{ inicial + efectivo + abEfectivo + entradas + salidas | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
+                                        <td class="fw-bold"> {{ inicial + efectivo + abEfectivo + entradas + salidas + devolucion | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                                     </tr>
 
                                 </tbody>
@@ -527,9 +546,14 @@
                                             </tr>
                                         </ng-container>
 
+                                        <tr class="text-danger">
+                                            <td colspan="2"> <small> devolucion </small> </td>
+                                            <td> {{ devolucion | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
+                                        </tr>
+
                                         <tr class="border-top">
                                             <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                            <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + totalBancos + credito + vales | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
+                                            <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + totalBancos + credito + vales + devolucion | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                                         </tr>
 
 
@@ -680,7 +704,7 @@
 
                                         <tr class="border-top">
                                             <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                            <td class="fw-bold"> {{ (abEfectivo || 0) + (abTarjeta || 0) + (abTransferencia || 0) | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
+                                            <td class="fw-bold"> {{ (abEfectivo) + (abTarjeta) + (abTransferencia) | currency: 'COP' : 'symbol' : '1.0-0' }} </td>
                                         </tr>
 
 

@@ -293,6 +293,7 @@ export class CierresComponent implements OnInit {
   public credito: number = 0;
   public vales: number = 0;
   public transferencia: number = 0;
+  public devolucion: number = 0;
   public inicial: number = 0;
   public entradas: number = 0;
   public salidas: number = 0;
@@ -314,6 +315,7 @@ export class CierresComponent implements OnInit {
     this.entradas = 0;
     this.salidas = 0;
     this.montoDiferencia = 0;
+    this.devolucion = 0;
 
     this.departamento.forEach(depart => {
       depart.qty = 0;
@@ -323,7 +325,7 @@ export class CierresComponent implements OnInit {
     const endPoint = `?turno=${id}`;
 
     this.invoiceService.loadInvoiceCierre(endPoint)
-        .subscribe(({invoices, total, montos, costos, efectivo, tarjeta, transferencia, credit, vales}) => {
+        .subscribe(({invoices, total, montos, devolucion, costos, efectivo, tarjeta, transferencia, credit, vales}) => {
 
           this.montos = montos;
           this.costo = costos;
@@ -332,6 +334,7 @@ export class CierresComponent implements OnInit {
           this.transferencia = transferencia;
           this.credito = credit;
           this.vales = vales;
+          this.devolucion = devolucion;
 
           this.facturas = invoices;
 

@@ -80,6 +80,7 @@ export interface ListInvoice {
     transferencia?: number;
     credit?: number;
     vales?: number;
+    devolucion?: number;
 }
 
 export interface ListCreditoCliente{

@@ -179,6 +179,8 @@ export class FacturaComponent implements OnInit {
 
           this.factura = resp.invoice;
 
+          this.cargarFactura(this.idFactura);
+
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); })    
 
   }
