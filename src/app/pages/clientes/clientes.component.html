@@ -446,10 +446,11 @@
 <!-- =========================================================================
     LISTAR FACTURAS A CREDITOS  
 ========================================================================= -->
-<div class="modal fade" id="credito" tabindex="-1" aria-labelledby="creditoModal" aria-hidden="true" #mdlCredito>
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg ">
-        <div class="modal-content ">
-            <div class="modal-header ">
+<div class="modal fade" id="credito" tabindex="-1" aria-labelledby="creditoModal" aria-hidden="true">
+    <!-- <div class="modal fade" id="credito" tabindex="-1" aria-labelledby="creditoModal" aria-hidden="true"> -->
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
 
                 <div *ngIf="clienteCredito ">
                     <h5 class="modal-title " id="creditoModal ">
@@ -459,7 +460,7 @@
                     <p class="mb-0 text-muted ">{{ clienteCredito?.phone}} </p>
                 </div>
 
-                <button type="button " class="btn-close " data-bs-dismiss="modal "></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body ">
 
@@ -501,7 +502,7 @@
                                     <td> {{ factura.type }} </td>
                                     <td> {{ factura.fecha | date:'medium' }} </td>
                                     <td class="text-center ">
-                                        <button type="button " data-bs-dismiss="modal " [routerLink]="[ '/dashboard/factura', factura.iid] " class="btn btn-link p-1 text-primary "><i class="bi bi-box-arrow-up-right "></i></button>
+                                        <button type="button" [routerLink]="[ '/dashboard/factura', factura.iid] " class="btn btn-link p-1 text-primary" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-box-arrow-up-right "></i></button>
                                     </td>
                                 </tr>
 
@@ -515,7 +516,7 @@
 
             </div>
             <div class="modal-footer ">
-                <button type="button " class="btn btn-secondary" data-bs-dismiss="modal ">Cerrar</button>
+                <button type="button " class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cerrar</button>
             </div>
         </div>
     </div>
