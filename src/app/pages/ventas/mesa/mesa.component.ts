@@ -993,10 +993,17 @@ export class MesaComponent implements OnInit {
     if (this.carrito.length > 0) {
       
       for (let i = 0; i < this.carrito.length; i++) {
+
+        this.total += (this.carrito[i].price * this.carrito[i].qty);
+        this.base += (this.carrito[i].price * this.carrito[i].qty);
+        this.totalCosto += (this.carrito[i].product.cost * this.carrito[i].qty);
+
+        if (this.empresa.decimal! === false) {          
+          this.total = Math.round(this.total);
+          this.base = Math.round(this.base);
+          this.totalCosto = Math.round(this.totalCosto);
+        }
         
-        this.total += Math.round(this.carrito[i].price * this.carrito[i].qty);
-        this.base += Math.round(this.carrito[i].price * this.carrito[i].qty);
-        this.totalCosto += Math.round(this.carrito[i].product.cost * this.carrito[i].qty);
 
         // SUMAR IMPUESTOS
         if (this.empresa?.impuesto!) {          

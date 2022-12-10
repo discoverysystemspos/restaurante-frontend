@@ -107,10 +107,10 @@
                                     <span *ngIf="producto.type !== 'Granel'"> {{  producto.inventario | number }} </span>
                                 </td>
                                 <td>{{ producto.type }}</td>
-                                <td>{{ producto.cost | currency: 'COP' : 'symbol' : '1.0-0' }}</td>
+                                <td>{{ producto.cost | divisa }}</td>
                                 <td>{{ producto.gain }}%</td>
-                                <td>{{ producto.price | currency: 'COP' : 'symbol' : '1.0-0' }}</td>
-                                <td>{{ producto.wholesale | currency: 'COP' : 'symbol' : '1.0-0' }}</td>
+                                <td>{{ producto.price | divisa }}</td>
+                                <td>{{ producto.wholesale | divisa }}</td>
                                 <td class="text-center">
                                     <a [routerLink]="['/dashboard/producto', producto.pid]" class="btn btn-link p-1 text-primary"><i class="bi bi-box-arrow-up-right"></i></a>
                                     <button type="button" (click)="activarProducto(producto.pid)" class="btn btn-link p-1 text-success"><i class="bi-check-square" style="font-size: 0.9rem"></i></button>

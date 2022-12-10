@@ -18,7 +18,7 @@
                         <div class="d-flex align-items-center flex-wrap">
                             <div class="flex-grow-1">
                                 <div class="small font-weight-bold text-primary mb-1">Monto Total Facturas</div>
-                                <div class="h5">({{totalAmount | currency: 'COP' : 'symbol' : '1.0-0'}})</div>
+                                <div class="h5">({{totalAmount | divisa}})</div>
                                 <div class="text-xs font-weight-bold text-success d-inline-flex align-items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up mr-1"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
                                 </div>
@@ -38,7 +38,7 @@
                         <div class="d-flex align-items-center flex-wrap">
                             <div class="flex-grow-1">
                                 <div class="small font-weight-bold text-success mb-1">Abonado</div>
-                                <div class="h5"> {{ totalAbonado | currency: 'COP' : 'symbol' : '1.0-0' }} </div>
+                                <div class="h5"> {{ totalAbonado | divisa }} </div>
                                 <div class="text-xs font-weight-bold text-success d-inline-flex align-items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up mr-1"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
                                 </div>
@@ -58,7 +58,7 @@
                         <div class="d-flex align-items-center flex-wrap">
                             <div class="flex-grow-1">
                                 <div class="small font-weight-bold text-warning mb-1">Pendiente por cobrar</div>
-                                <div class="h5"> {{ totalAmount - totalAbonado | currency: 'COP' : 'symbol' : '1.0-0' }} </div>
+                                <div class="h5"> {{ totalAmount - totalAbonado | divisa }} </div>
                                 <div class="text-xs font-weight-bold text-warning d-inline-flex align-items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up mr-1"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
                                 </div>
@@ -229,7 +229,7 @@
                                         </td>
                                         <td> {{ factura.client?.cedula || '00000000' }} </td>
                                         <td colspan="2"> {{ factura.mesa?.name }} </td>
-                                        <td> {{ factura.amount | currency: 'COP' }} </td>
+                                        <td> {{ factura.amount | divisa }} </td>
                                         <td> {{ factura.type }} </td>
                                         <td> {{ factura.fecha | date:'medium' }} </td>
                                         <td class="text-center">

@@ -37,7 +37,13 @@ export class Datos{
         public fruver?: boolean,
         public comandas?: boolean,
         public commissions?: boolean,
-        public comisiones?: comisiones[]
+        public comisiones?: comisiones[],
+        public moneda?: string,
+        public decimal?: boolean,
+        public usd?: boolean,
+        public currencyusd?: number,
+        public cop?: boolean,
+        public currencycop?: number
     ){}
 
     /** ================================================================

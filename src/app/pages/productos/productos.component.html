@@ -130,9 +130,9 @@
                                     </div>
 
                                     <div class="ms-auto text-end">
-                                        <h4 class="mb-0 text-success"> Ganancia total {{ totalPrice - totalCost | currency: 'COP' : 'symbol' : '1.0-0'}} </h4>
-                                        <small class="mb-0 text-muted"> Total de venta {{ totalPrice | currency: 'COP' : 'symbol' : '1.0-0'}} </small>
-                                        <small class="mb-0 text-muted"> Total de inversión {{ totalCost | currency: 'COP' : 'symbol' : '1.0-0'}} </small>
+                                        <h4 class="mb-0 text-success"> Ganancia total {{ (totalPrice - totalCost) | divisa }} </h4>
+                                        <small class="mb-0 text-muted"> Total de venta {{ totalPrice | divisa}} </small>
+                                        <small class="mb-0 text-muted"> Total de inversión {{ totalCost | divisa}} </small>
 
                                         <div class="my-2">
                                             <button class="btn btn-info btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#updateExcel"> Actualizar Lote</button>
@@ -159,10 +159,10 @@
                                             Inventario: <span class="fw-bold"> {{ inventarioB | number }} </span>
                                         </div>
                                         <div class="col-sm-12 col-md-4 text-wrap">
-                                            Total Inversion: <span class="fw-bold"> {{ costoB | currency: 'COP' : 'symbol' : '1.0-0' }} </span>
+                                            Total Inversion: <span class="fw-bold"> {{ costoB | divisa }} </span>
                                         </div>
                                         <div class="col-sm-12 col-md-4 text-wrap">
-                                            Total Venta: <span class="fw-bold"> {{ precioB | currency: 'COP' : 'symbol' : '1.0-0' }} </span>
+                                            Total Venta: <span class="fw-bold"> {{ precioB | divisa }} </span>
                                         </div>
 
                                     </div>
@@ -233,10 +233,10 @@
                                                     <span *ngIf="producto.type !== 'Granel'"> {{  producto.inventario | number }} </span>
                                                 </td>
                                                 <td>{{ producto.type }}</td>
-                                                <td>{{ producto.cost | currency: 'COP' : 'symbol' : '1.0-0' }}</td>
+                                                <td>{{ producto.cost | divisa }}</td>
                                                 <td>{{ producto.gain }}%</td>
-                                                <td>{{ producto.price | currency: 'COP' : 'symbol' : '1.0-0' }}</td>
-                                                <td>{{ producto.wholesale | currency: 'COP' : 'symbol' : '1.0-0' }}</td>
+                                                <td>{{ producto.price | divisa }}</td>
+                                                <td>{{ producto.wholesale | divisa }}</td>
                                                 <td class="text-center">
                                                     <a [routerLink]="['/dashboard/producto', producto.pid]" class="btn btn-link p-1 text-primary"><i class="bi bi-box-arrow-up-right"></i></a>
                                                     <button type="button" (click)="borrarProducto(producto.pid)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>

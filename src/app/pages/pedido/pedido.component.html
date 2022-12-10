@@ -163,9 +163,9 @@
                                     <td><small class="text-wrap">{{ producto.product.code }}</small></td>
                                     <td colspan="2">{{ producto.product.name }}</td>
                                     <td>{{ producto.product.type }}</td>
-                                    <td>{{ producto.price | currency: 'COP'}}</td>
+                                    <td>{{ producto.price | divisa}}</td>
                                     <td class="text-center">{{ producto.qty }}</td>
-                                    <td>{{ producto.price * producto.qty | currency: 'COP'}}</td>
+                                    <td>{{ producto.price * producto.qty | divisa}}</td>
                                     <td>
                                         <button type="button" class="btn btn-link p-1 text-warning" (click)="devolverProducto(producto)">
                                         <i class="bi-arrow-90deg-left"></i>
@@ -194,18 +194,18 @@
                                 <div class="border-start col px-4" *ngIf="empresa">
 
                                     <!-- NO RESPONSABLE -->
-                                    <h6 class="mb-0 text-wrap text-primary text-rigth" *ngIf="!empresa.responsable"> {{ pedido.base | currency: 'COP' }} </h6>
-                                    <h6 class="mb-0 text-wrap text-primary text-rigth" *ngIf="empresa.responsable"> {{ pedido.base | currency: 'COP' }} </h6>
+                                    <h6 class="mb-0 text-wrap text-primary text-rigth" *ngIf="!empresa.responsable"> {{ pedido.base | divisa }} </h6>
+                                    <h6 class="mb-0 text-wrap text-primary text-rigth" *ngIf="empresa.responsable"> {{ pedido.base | divisa }} </h6>
                                     <!-- NO RESPONSABLE -->
 
                                     <h6 *ngIf="!empresa.responsable" class="mb-0 text-wrap text-primary text-left">No responsable de IVA</h6>
-                                    <h6 *ngIf="empresa.responsable && !empresa.impuestoconsumo" class="mb-0 text-wrap text-primary text-left">IVA {{empresa.tax}}% {{ iva | currency: 'COP' }}% </h6>
-                                    <h6 *ngIf="empresa.responsable && empresa.impuestoconsumo" class="mb-0 text-wrap text-primary text-left">Impuesto al consumo {{empresa.tax}}% {{iva | currency: 'COP' }} </h6>
+                                    <h6 *ngIf="empresa.responsable && !empresa.impuestoconsumo" class="mb-0 text-wrap text-primary text-left">IVA {{empresa.tax}}% {{ iva | divisa }}% </h6>
+                                    <h6 *ngIf="empresa.responsable && empresa.impuestoconsumo" class="mb-0 text-wrap text-primary text-left">Impuesto al consumo {{empresa.tax}}% {{iva | divisa }} </h6>
 
                                     <!-- TOTAL -->
-                                    <h5 *ngIf="empresa.responsable" class="display-6 fw-bold text-primary">{{ pedido.amount | currency: 'COP' }}</h5>
+                                    <h5 *ngIf="empresa.responsable" class="display-6 fw-bold text-primary">{{ pedido.amount | divisa }}</h5>
 
-                                    <h5 *ngIf="!empresa.responsable" class="display-6 fw-bold text-primary">{{ pedido.amount | currency: 'COP' }}</h5>
+                                    <h5 *ngIf="!empresa.responsable" class="display-6 fw-bold text-primary">{{ pedido.amount | divisa }}</h5>
                                     <!-- TOTAL -->
 
                                 </div>
@@ -261,14 +261,14 @@
                                             <span *ngIf="pay.description === ''">Sin descripción</span>
                                         </td>
                                         <td>{{ pay.type }}</td>
-                                        <td>{{ pay.amount | currency: 'COP' }} </td>
+                                        <td>{{ pay.amount | divisa }} </td>
                                     </tr>
 
                                 </tbody>
                                 <tfoot>
                                     <tr class="border-top">
                                         <td colspan="2"> <span class="fw-bold"> Total </span></td>
-                                        <td> <span class="fw-bold">{{this.totalPagos | currency: 'COP' }}</span> </td>
+                                        <td> <span class="fw-bold">{{this.totalPagos | divisa }}</span> </td>
                                     </tr>
                                 </tfoot>
 

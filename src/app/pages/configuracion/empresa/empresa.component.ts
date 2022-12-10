@@ -41,7 +41,7 @@ export class EmpresaComponent implements OnInit {
 
           this.comisiones = datos.comisiones || [];
           
-          const { tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas, commissions, comisiones, fruver } = datos;
+          const { tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas, commissions, comisiones, fruver, moneda, decimal, usd,  currencyusd, cop, currencycop } = datos;
 
           let tipoImpuesto = '';
 
@@ -51,7 +51,37 @@ export class EmpresaComponent implements OnInit {
             tipoImpuesto = 'consumo';
           }
 
-          this.formUpdate.reset({ tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas, commissions, comisiones, fruver, tipoImpuesto  });
+          this.formUpdate.reset(
+            { 
+              tax, 
+              name, 
+              address, 
+              phone, 
+              nit, 
+              eid, 
+              impuesto, 
+              printpos, 
+              responsable, 
+              impuestoconsumo, 
+              resolucion, 
+              prefijopos, 
+              commission, 
+              comision, 
+              tip, 
+              propina, 
+              bascula, 
+              comandas, 
+              commissions, 
+              comisiones, 
+              fruver, 
+              tipoImpuesto, 
+              moneda: moneda || 'COP', 
+              decimal: decimal || false, 
+              usd: usd || false,  
+              currencyusd: currencyusd || 0, 
+              cop: cop || false, 
+              currencycop: currencycop || 0  
+            });
 
         });
 
@@ -83,7 +113,13 @@ export class EmpresaComponent implements OnInit {
     comandas: false,
     commissions: false,
     comisiones: [],
-    tipoImpuesto: ['']
+    tipoImpuesto: [''],
+    moneda: ['COP', [Validators.required]],
+    decimal: false,
+    usd: false,
+    currencyusd: 0,
+    cop: false,
+    currencycop: 0,
   })
 
   actualizarDatos(){
@@ -108,6 +144,16 @@ export class EmpresaComponent implements OnInit {
     if (!this.formUpdate.value.impuesto) {
       this.formUpdate.value.responsable = false;
       this.formUpdate.value.impuestoconsumo = false;
+    }
+
+    if (this.formUpdate.value.moneda === 'COP') {
+      this.formUpdate.value.cop = false; 
+      this.formUpdate.value.currencycop = 0; 
+    }
+
+    if (this.formUpdate.value.moneda === 'USD') {
+      this.formUpdate.value.usd = false; 
+      this.formUpdate.value.currencyusd = 0; 
     }
 
     this.empresaService.updateDatos(this.formUpdate.value, this.empresa.eid)
