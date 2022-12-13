@@ -196,8 +196,8 @@ export class CorteComponent implements OnInit {
       for (const factura of turno.abonos) {        
 
         for (const pago of factura.factura.paymentsCredit) {
-          if (pago.turno === turno.tid && factura.pay === pago._id && factura.factura.status) {
 
+          if (pago.turno === turno.tid && factura.pay === pago._id && factura.factura.status) {
             
             if (pago.type === "efectivo") {
               this.abEfectivo += pago.amount;

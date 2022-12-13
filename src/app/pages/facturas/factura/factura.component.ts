@@ -483,10 +483,24 @@ export class FacturaComponent implements OnInit {
     this.invoiceService.updateInvoice( this.invoiceForm.value, this.factura.iid )
         .subscribe( ( resp:{ok: boolean, invoice: Invoice } ) => {
 
-          this.invoiceForm.reset();
+          let payTurno = {
+            factura: this.factura.iid,
+            pay: resp.invoice.paymentsCredit[resp.invoice.paymentsCredit.length - 1]._id,
+            monto: resp.invoice.paymentsCredit[resp.invoice.paymentsCredit.length - 1].amount,
+          }
 
-          window.location.reload();
+          this.turno.abonos.push(payTurno);
           
+          this.turnoService.updateTurno({abonos:this.turno.abonos}, this.user.turno)
+          .subscribe( resp => {
+
+              this.invoiceForm.reset();
+            
+              window.location.reload();                
+
+            }, (err) => {
+              console.log(err);              
+            })          
 
         }, (err) => {
           console.log(err);
