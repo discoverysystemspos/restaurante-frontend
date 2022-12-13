@@ -143,7 +143,10 @@ export class FacturaComponent implements OnInit {
           this.paymentsCredit = this.factura.paymentsCredit;
           this.payments = this.factura.payments;
           this.iva = invoice.iva;
-          this.sumarPagos();          
+          this.sumarPagos();
+
+          console.log(invoice);
+          
 
           this.vueltos = Number( this.factura.amount - this.totalPagos);    
           
@@ -442,6 +445,15 @@ export class FacturaComponent implements OnInit {
       for (let i = 0; i < this.paymentsCredit.length; i++) {
         
         this.totalPagos += Number( this.paymentsCredit[i].amount );        
+      }
+
+    }
+
+    if (this.payments.length > 0) {
+      
+      for (let i = 0; i < this.payments.length; i++) {
+        
+        this.totalPagos += Number( this.payments[i].amount );        
       }
 
     }
