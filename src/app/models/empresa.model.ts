@@ -43,7 +43,10 @@ export class Datos{
         public usd?: boolean,
         public currencyusd?: number,
         public cop?: boolean,
-        public currencycop?: number
+        public currencycop?: number,
+        public basculaimp?: boolean,
+        public basculatype?: string,
+        public basculacode?: string,
     ){}
 
     /** ================================================================

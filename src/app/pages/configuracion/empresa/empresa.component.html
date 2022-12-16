@@ -417,6 +417,44 @@
 
                         </div>
 
+                        <hr>
+
+                        <h5 class="text-muted">Bascula con impresora de codigos</h5>
+
+
+
+                        <div class="row mb-3">
+
+                            <div class="col-md-12">
+                                <div class="form-check">
+                                    <input #bascIn formControlName="basculaimp" class="form-check-input" type="checkbox" id="basculaimp">
+                                    <label class="form-check-label" for="basculaimp">
+                                        Bascula Impresora
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div *ngIf="bascIn.checked" class="col-md-6">
+
+                                <div class="form-floating">
+                                    <input formControlName="basculacode" type="text" class="form-control" placeholder="2000">
+                                    <label for="floatingInput">El codigo de la bascula inicia en</label>
+                                </div>
+
+                            </div>
+
+                            <div *ngIf="bascIn.checked" class="col-md-6">
+                                <div class="form-group row">
+                                    <select formControlName="basculatype" id="basculatype" class="custom-select custom-select-sm" value="precio">
+                                        <option value="peso" >Imprime Peso</option>
+                                        <option value="precio" selected>Imprime Precio</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                        </div>
+
                         <div class="row">
                             <div class="text-danger mb-2">
                                 <p *ngIf="campoValido('name')" class="mb-1 animated fadeIn">- El nombre es obligatorio</p>

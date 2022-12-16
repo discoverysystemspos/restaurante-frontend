@@ -465,8 +465,11 @@ export class MesaComponent implements OnInit {
       return;      
     }
 
+    
     let codigo = '';
-    let cantidad = 1;
+    let cantidad:any = 1;
+    let precio = 0;
+    
 
     if (code.includes('+')) {
       
@@ -476,7 +479,26 @@ export class MesaComponent implements OnInit {
       cantidad = Number(newCode[0]);
 
     }else{
-      codigo = code;
+
+      // COMPROBAR SI ES CODIGO DE BARRA CON PESO O PRECIO
+      if (code.slice(0,4) === this.empresa.basculacode) {
+        codigo = code.slice(4,7);       
+        
+        if(this.empresa.basculatype === 'peso'){
+
+          let m = Number(code.slice(7,9));
+          let d = Number(code.slice(9,12));
+
+          cantidad = parseFloat(m+'.'+d);
+
+
+        }else if(this.empresa.basculatype === 'precio'){
+          precio = Number(code.slice(7,12));
+        }
+
+      }else{
+        codigo = code;
+      }
     }
 
     this.productService.cargarProductoCodigo(codigo)
@@ -492,6 +514,22 @@ export class MesaComponent implements OnInit {
             // SI ES GRANEL
             if (product.type === 'Granel') {
               // SI ESTA USANDO BASCULA
+
+              if (code.slice(0,4) === this.empresa.basculacode) {
+
+                if(this.empresa.basculatype === 'precio'){
+                  cantidad = precio / product.price;
+                }
+
+                // GUARDAR AL CARRITO
+                this.searchCode.nativeElement.value = '';
+                this.searchCode.nativeElement.onFocus = true;
+                this.carritoTemp(product, cantidad, product.price);
+                // GUARDAR AL CARRITO
+                return;
+                
+              }
+
               
               if (this.empresa.bascula) {                
                 
