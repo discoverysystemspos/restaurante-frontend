@@ -30,6 +30,8 @@ import { User } from '../../models/user.model';
 import { DepartmentService } from '../../services/department.service';
 import { Banco } from 'src/app/models/bancos.model';
 import { BancosService } from '../../services/bancos.service';
+import { EmpresaService } from 'src/app/services/empresa.service';
+import { Datos } from 'src/app/models/empresa.model';
 
 @Component({
   selector: 'app-corte',
@@ -52,6 +54,7 @@ export class CorteComponent implements OnInit {
                 private bancosService: BancosService,
                 private printerService: NgxPrinterService,
                 private userService: UserService,
+                private empresaService: EmpresaService,
                 private invoiceService: InvoiceService,
                 private departmentService: DepartmentService) {
 
@@ -71,7 +74,11 @@ export class CorteComponent implements OnInit {
 
                 }
 
+  public empresa!: Datos;
+
   ngOnInit(): void {    
+
+    this.empresaService.getDatos().subscribe( datos => this.empresa = datos );
 
     if (!this.user.cerrada) {
       
@@ -182,9 +189,17 @@ export class CorteComponent implements OnInit {
   public abTarjeta: number = 0;
   public abTransferencia: number = 0;
   public turno: LoadTurno;
+  public totalDevolucion: number = 0; 
   cargarTurno(){  
     this.turnoService.getTurnoId(this.user.turno)
     .subscribe( (turno) => { 
+
+      if (turno.devolucion.length > 0) {
+        turno.devolucion.forEach(devolucion => {
+          this.totalDevolucion += devolucion.monto;
+        });
+      }
+
       this.turno = turno;
       this.movimientos = turno.movements;
       this.inicial = turno.initial;

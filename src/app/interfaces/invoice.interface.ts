@@ -8,6 +8,7 @@ import { _payments, _paymentsCredito } from './carrito.interface';
 import { User } from '../models/user.model';
 import { Product } from '../models/product.model';
 import { Impuesto } from '../models/impuesto.model';
+import { _devolucion } from './load-turno.interface';
 
 // INTERFACES INVOICE
 export interface _products{
@@ -66,7 +67,8 @@ export interface LoadInvoice {
     apartado: boolean;
     descuento: boolean;
     porcentaje: number;
-    paymentsCredit: _paymentsCredito[]
+    paymentsCredit: _paymentsCredito[],
+    devolucion: _devolucion[]
 
 }
 

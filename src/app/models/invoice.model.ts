@@ -1,5 +1,6 @@
 // INTERFACES
 import { Carrito, _payments, _paymentsCredito } from '../interfaces/carrito.interface';
+import { _devolucion } from '../interfaces/load-turno.interface';
 
 export class Invoice {
     
@@ -20,7 +21,8 @@ export class Invoice {
         public apartado?: boolean,
         public descuento?: boolean,
         public porcentaje?: number,
-        public paymentsCredit?: _paymentsCredito[]
+        public paymentsCredit?: _paymentsCredito[],
+        public devolucion?: _devolucion[]
     ){}
 
 }

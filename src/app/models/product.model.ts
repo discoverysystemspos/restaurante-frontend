@@ -42,6 +42,7 @@ export class Product {
         public taxid?: any,
         public impuesto?: Impuesto[],
         public inventario?: number,
+        public _id?: string
     ){}
 
     /** ================================================================

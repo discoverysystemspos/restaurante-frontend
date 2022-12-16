@@ -24,7 +24,7 @@ export interface _notas{
 
 export interface Carrito{
     qty: number;
-    product: string;
+    product: any;
     price: number;
     producto?: Product;
     _id?: string;

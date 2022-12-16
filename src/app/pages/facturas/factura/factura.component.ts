@@ -134,6 +134,7 @@ export class FacturaComponent implements OnInit {
   ==================================================================== */
   public idFactura;
   public iva: number = 0;
+  public totalDevolucion: number = 0;
   cargarFactura(id: string){
     
     this.invoiceService.loadInvoiceId(id)
@@ -143,12 +144,19 @@ export class FacturaComponent implements OnInit {
           this.paymentsCredit = this.factura.paymentsCredit;
           this.payments = this.factura.payments;
           this.iva = invoice.iva;
-          this.sumarPagos();
+          this.sumarPagos();          
 
-          console.log(invoice);
-          
+          this.vueltos = Number( this.factura.amount - this.totalPagos);
 
-          this.vueltos = Number( this.factura.amount - this.totalPagos);    
+          this.totalDevolucion = 0;
+          if (invoice.devolucion.length > 0) {
+            
+            invoice.devolucion.forEach( devolucion => {
+              this.totalDevolucion += devolucion.monto;
+            });
+
+          }
+
           
           if( this.empresa.impuesto ){
 
@@ -177,10 +185,62 @@ export class FacturaComponent implements OnInit {
   ==================================================================== */
   eliminarProducto(id: string){
 
+    let devolucion:any = {
+      factura: this.factura.iid
+    }
+
+    this.factura.products.filter( product => {
+
+      if (product._id === id) {
+        devolucion.product = product.product._id;
+        devolucion.qty = product.qty;
+        devolucion.price = product.price;
+        devolucion.monto = product.price * product.qty;
+      }
+
+    });
+
+    this.factura.devolucion.push(devolucion);
+
+    // SI YA HAN HECHO PAGOS
+    if( ( this.factura.amount - this.totalPagos) <= 0 || ( this.factura.amount - this.totalPagos) < (devolucion.monto)){
+      
+      this.factura.payments.push({
+        type: 'devolucion',
+        amount: devolucion.monto * -1,
+        description: `Devolucion de item`,
+      });
+
+    }
+
     this.invoiceService.deleteProductInvoice(this.idFactura, id)
         .subscribe( (resp: {ok: boolean, invoice: LoadInvoice} ) => {
 
-          this.factura = resp.invoice;
+
+          this.invoiceService.updateInvoice({devolucion: this.factura.devolucion, payments: this.factura.payments}, this.factura.iid)
+                    .subscribe( resp => {
+
+                      // GUARDAR EN EL TURNO LA DEVOLUCION SI EXITEN PAGOS 
+                      if( ( this.factura.amount - this.totalPagos) <= 0 || ( this.factura.amount - this.totalPagos) < (devolucion.monto)){
+
+                        this.turno.devolucion.push(devolucion);
+                          
+                          this.turnoService.updateTurno({devolucion:this.turno.devolucion}, this.user.turno)
+                          .subscribe( resp => {
+                            
+                              window.location.reload();                
+                
+                            }, (err) => {
+                              console.log(err);              
+                          })
+                      }else{
+
+                        this.cargarFactura(this.idFactura);
+                      }
+
+
+
+                    });
 
           this.cargarFactura(this.idFactura);
 
@@ -212,21 +272,64 @@ export class FacturaComponent implements OnInit {
         
         const cantidad:number = Number(result.value);
 
-        if (cantidad < producto.qty && cantidad !== 0) {
+        // COMPROBAR Q LA CANTIDAD NO SEA MAYOR
+        if (cantidad >= producto.qty && cantidad !== 0) {
+          Swal.fire('Información', 'No se devolvio ningun producto, si vas a devolver todos los productos dar click en eliminar', 'info');
+          return;
+        }
+
+        let devolucion = {
+          factura: this.factura.iid,
+          product: producto.product._id,
+          qty: cantidad,
+          price: producto.price,
+          monto: producto.price * cantidad,
+        }
+
+        // SI YA HAN HECHO PAGOS
+        if( ( this.factura.amount - this.totalPagos) <= 0 || ( this.factura.amount - this.totalPagos) < (devolucion.monto)){
+          
+          this.factura.payments.push({
+            type: 'devolucion',
+            amount: devolucion.monto * -1,
+            description: `Devolucion de item`,
+          });
+
+        }
 
           this.invoiceService.updateProdutInvoice(this.idFactura, producto._id, cantidad)
               .subscribe( resp => {
 
+                this.factura.devolucion.push(devolucion);
+
+                this.invoiceService.updateInvoice({devolucion: this.factura.devolucion, payments: this.factura.payments}, this.factura.iid)
+                    .subscribe( resp => {
+
+                      // GUARDAR EN EL TURNO LA DEVOLUCION SI EXITEN PAGOS 
+                      if( ( this.factura.amount - this.totalPagos) === 0 || ( this.factura.amount - this.totalPagos) < (producto.price * cantidad)){
+
+                        this.turno.devolucion.push(devolucion);
+                          
+                          this.turnoService.updateTurno({devolucion:this.turno.devolucion}, this.user.turno)
+                          .subscribe( resp => {
+                            
+                              window.location.reload();                
+                
+                            }, (err) => {
+                              console.log(err);              
+                          })
+                      }
+
+
+                      this.cargarFactura(this.idFactura);
+
+                    });
+
                                 
-                this.cargarFactura(this.idFactura);
                 
               });
           
-        }else if (cantidad >= producto.qty) {
-          
-          Swal.fire('Información', 'No se devolvio ningun producto, si vas a devolver todos los productos dar click en eliminar', 'info');
-          
-        }
+        
         
         return;
       }else{
@@ -372,7 +475,7 @@ export class FacturaComponent implements OnInit {
 
             }, (err) => {
               console.log(err);              
-            })
+          })
 
         }, (err) => {
 

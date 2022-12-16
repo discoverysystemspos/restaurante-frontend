@@ -68,12 +68,12 @@
 
                             <tr class="text-danger">
                                 <td colspan="2"> <small> devolucion </small> </td>
-                                <td> {{ devolucion | divisa }} </td>
+                                <td> {{ totalDevolucion | divisa }} </td>
                             </tr>
 
                             <tr class="border-top">
                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                <td class="fw-bold"> {{ (inicial + efectivo + abEfectivo + entradas + salidas) + devolucion | divisa }} </td>
+                                <td class="fw-bold"> {{ (inicial + efectivo + abEfectivo + entradas + salidas) + totalDevolucion | divisa }} </td>
                             </tr>
 
                         </tbody>
@@ -123,7 +123,7 @@
 
                             <tr class="border-top">
                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + totalBancos + credito + vales + devolucion | divisa }} </td>
+                                <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + totalBancos + credito + vales + totalDevolucion | divisa }} </td>
                             </tr>
 
 
@@ -341,7 +341,54 @@
 
         </div>
 
+    </div>
 
+    <!-- DEVOLUCIONES -->
+
+    <div class="col-auto p-2">
+
+        <div class="card shadow px-2">
+
+            <div class="card-body">
+                <h5 class="card-title mb-0">DEVOLUCIONES</h5>
+            </div>
+
+            <div class="table-responsive table-sm">
+                <table class="table table-borderless table-hover table-sm animated fadeIn ">
+                    <thead>
+                        <tr>
+                            <th>Factura</th>
+                            <th>Codigo</th>
+                            <th>Cant.</th>
+                            <th>Precio</th>
+                            <th>Monto</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr *ngIf="turno?.devolucion.length === 0 ">
+                            <td colspan="5">Sin devoluciones</td>
+                        </tr>
+
+                        <tr *ngFor="let devolucion of turno?.devolucion">
+                            <td> <a [routerLink]="['/dashboard/factura/', devolucion.factura._id]"> {{ devolucion.factura.invoice }} </a> </td>
+                            <td> {{ devolucion.product.code! }} </td>
+                            <td> {{ devolucion.qty }} </td>
+                            <td> {{ devolucion.price }} </td>
+                            <td> {{ devolucion.monto }} </td>
+                        </tr>
+
+                        <tr class="border-top">
+                            <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                            <td class="fw-bold"> {{ totalDevolucion | divisa }} </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
 
     </div>
 
@@ -374,7 +421,7 @@
                         <tbody>
                             <tr style="color: black;">
                                 <td scope="row">Efectivo esperado en caja:</td>
-                                <td>{{ inicial + efectivo + abEfectivo + entradas + salidas + devolucion | divisa }}</td>
+                                <td>{{ inicial + efectivo + abEfectivo + entradas + salidas + totalDevolucion | divisa }}</td>
                             </tr>
 
                             <tr style="color: black;">
@@ -388,17 +435,17 @@
 
                             <tr style="color: black;">
                                 <td scope="row"> Diferencia </td>
-                                <td [ngClass]=" {   'text-danger': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value + devolucion) !== 0, 
-                                                    'text-success': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value + devolucion) > 0
+                                <td [ngClass]=" {   'text-danger': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value + totalDevolucion) !== 0, 
+                                                    'text-success': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value + totalDevolucion) > 0
                                 }">
-                                    {{ cajaA.value - (inicial + efectivo + abEfectivo + entradas + salidas + devolucion) | divisa}}
+                                    {{ cajaA.value - (inicial + efectivo + abEfectivo + entradas + salidas + totalDevolucion) | divisa}}
                                 </td>
                             </tr>
                         </tbody>
                     </table>
 
-                    <p class="animated fadeIn mb-2 text-danger" *ngIf="(inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value + devolucion) !== 0 "> <i class="bi-exclamation-triangle"></i> Existe una diferencia, todo va a quedar almacenado </p>
-                    <p class="animated fadeIn mb-2 text-success" *ngIf="(inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value + devolucion) === 0"> <i class="bi-check2-all"></i> Todo en orden</p>
+                    <p class="animated fadeIn mb-2 text-danger" *ngIf="(inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value + totalDevolucion) !== 0 "> <i class="bi-exclamation-triangle"></i> Existe una diferencia, todo va a quedar almacenado </p>
+                    <p class="animated fadeIn mb-2 text-success" *ngIf="(inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value + totalDevolucion) === 0"> <i class="bi-check2-all"></i> Todo en orden</p>
 
                     <button type="button" class="btn btn-primary" (click)="cerrarTurno(cajaA.value)">Hacer cierre</button>
 
@@ -444,7 +491,7 @@
                                 </thead>
                                 <tbody>
                                     <tr style="color: black;">
-                                        <th scope="row">{{ efectivo + credito + tarjeta + transferencia + vales + devolucion | divisa }} </th>
+                                        <th scope="row">{{ efectivo + credito + tarjeta + transferencia + vales + totalDevolucion | divisa }} </th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -506,7 +553,7 @@
                                     </tr>
                                     <tr class="border-top">
                                         <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                        <td class="fw-bold"> {{ inicial + efectivo + abEfectivo + entradas + salidas + devolucion | divisa }} </td>
+                                        <td class="fw-bold"> {{ inicial + efectivo + abEfectivo + entradas + salidas + totalDevolucion | divisa }} </td>
                                     </tr>
 
                                 </tbody>
@@ -553,7 +600,7 @@
 
                                         <tr class="border-top">
                                             <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                            <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + totalBancos + credito + vales + devolucion | divisa }} </td>
+                                            <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + totalBancos + credito + vales + totalDevolucion | divisa }} </td>
                                         </tr>
 
 

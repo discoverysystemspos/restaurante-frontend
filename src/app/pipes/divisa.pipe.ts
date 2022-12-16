@@ -16,7 +16,7 @@ export class DivisaPipe implements PipeTransform {
 
     if (moneda === 'none') {
 
-      if(!this.empresa.moneda){
+      if(!this.empresa?.moneda){
         this.empresa.moneda = 'COP';
       }
 
@@ -25,7 +25,7 @@ export class DivisaPipe implements PipeTransform {
     }
 
         
-    if (!this.empresa.decimal) {
+    if (!this.empresa?.decimal) {
       monto =  Math.round(monto) ;      
     }else{
       monto = Number.parseFloat(monto).toFixed(2) ;
@@ -41,11 +41,11 @@ export class DivisaPipe implements PipeTransform {
     monto[1] ? monto.join('.'): monto[0];
     // AGREGAR SEPARADORES    
     
-    if (this.empresa.moneda === 'COP') {
+    if (this.empresa?.moneda === 'COP') {
       newMonto = `$${monto}`;
-    }else if(this.empresa.moneda === 'USD'){
+    }else if(this.empresa?.moneda === 'USD'){
       newMonto = `${monto}$`;
-    }else if(this.empresa.moneda === 'BS'){
+    }else if(this.empresa?.moneda === 'BS'){
       newMonto = `${monto}bs`;
     }
 

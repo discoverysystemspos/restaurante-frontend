@@ -1,9 +1,19 @@
+import { Invoice } from '../models/invoice.model';
+import { Product } from '../models/product.model';
 import { _caja, _cajero } from './load-caja.interface';
 
 export interface _movements {
     descripcion: string;
     monto: number;
     type: string;
+}
+
+export interface _devolucion{
+    factura: any;
+    product: any;
+    qty: number;
+    price: number;
+    monto: number;
 }
 
 export interface LoadTurno {
@@ -21,6 +31,7 @@ export interface LoadTurno {
     tid?: string;
     montoD?: number;
     cierre?: Date;
+    devolucion?: _devolucion[];
 
 }
 
