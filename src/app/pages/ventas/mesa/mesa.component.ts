@@ -486,11 +486,9 @@ export class MesaComponent implements OnInit {
         
         if(this.empresa.basculatype === 'peso'){
 
-          let m = Number(code.slice(7,9));
-          let d = Number(code.slice(9,12));
+          let cant = Number(code.slice(7,12))/1000;
 
-          cantidad = parseFloat(m+'.'+d);
-
+          cantidad = cant.toFixed(3);
 
         }else if(this.empresa.basculatype === 'precio'){
           precio = Number(code.slice(7,12));
