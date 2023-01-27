@@ -1,23 +1,23 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 // MODELS
 import { Product } from '../../models/product.model';
+import { Department } from 'src/app/models/department.model';
+import { User } from '../../models/user.model';
+import { Impuestos } from 'src/app/models/impuestos.model';
 
 // SERVICES
 import { ProductService } from '../../services/product.service';
 import { SearchService } from '../../services/search.service';
-import Swal from 'sweetalert2';
 import { DepartmentService } from '../../services/department.service';
-import { Department } from 'src/app/models/department.model';
+import { UserService } from '../../services/user.service';
+import { ImpuestosService } from 'src/app/services/impuestos.service';
 
 // EXCEL
 import * as XLSX from 'xlsx';
-import { User } from '../../models/user.model';
-import { UserService } from '../../services/user.service';
-import { ImpuestosService } from 'src/app/services/impuestos.service';
-import { Impuestos } from 'src/app/models/impuestos.model';
 
 @Component({
   selector: 'app-productos',

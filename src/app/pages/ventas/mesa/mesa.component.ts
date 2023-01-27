@@ -968,6 +968,10 @@ export class MesaComponent implements OnInit {
         this.mesa.comanda = this.comandas;
         this.mesa.carrito =  this.productUp;
 
+        if(this.comanda.length === 0){
+          delete this.mesa.comanda;
+        }
+
         this.mesasServices.updateMesa(this.mesa, this.mesaID)
             .subscribe( (resp:{ok: boolean, mesa: any}) => {
 

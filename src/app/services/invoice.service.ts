@@ -160,6 +160,14 @@ export class InvoiceService {
   }
 
   /** ================================================================
+   *   POST QUERY INVOICE
+  ==================================================================== */
+  postQueryInvoice(query: any){
+    return this.http.post<ListInvoice>(`${base_url}/invoice/search/query`, query,this.headers);
+  }
+
+
+  /** ================================================================
    *   DELETE PRODUCT INVOICE
   ==================================================================== */
   deleteProductInvoice(factura: string, product: string){

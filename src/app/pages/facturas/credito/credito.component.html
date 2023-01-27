@@ -188,6 +188,7 @@
 
                         <div>
                             <button type="button" class="btn btn-outline-primary btn-sm" (click)="cargarFacturas()"> <i class="bi-arrow-clockwise"></i> Recargar </button>
+                            <button type="button" class="ml-2 btn btn-outline-success btn-sm" (click)="exportar()"> <i class="bi-file-earmark-spreadsheet"></i> Excel </button>
                         </div>
 
                         <div class="ms-2">
@@ -202,6 +203,7 @@
                             <thead class="border-bottom ">
                                 <tr>
                                     <th class="text-muted" scope="col ">#</th>
+                                    <th class="text-muted" scope="col ">control</th>
                                     <th class="text-muted" scope="col " colspan="2">Cliente</th>
                                     <th class="text-muted" scope="col ">Cedula</th>
                                     <th class="text-muted" scope="col " colspan="2">Ruta</th>
@@ -222,6 +224,7 @@
 
                                     <tr *ngIf="factura.credito" class="trHover" tabindex="0" data-bs-toggle="tooltip" title="Cajero: {{ factura.user.name }}">
                                         <th>{{ factura.invoice }}</th>
+                                        <th>{{ factura.control }}</th>
                                         <td colspan="2">
                                             {{ factura.client?.name || 'Ocasional' }}
                                             <span *ngIf="!factura.status" class="badge rounded-pill bg-danger">Cancelada</span>

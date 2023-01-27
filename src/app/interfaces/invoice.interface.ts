@@ -41,6 +41,7 @@ export interface _mesa{
 export interface LoadInvoice {
         
     invoice: number;
+    control: number;
     client: _client;
     mesero: User;
     mesa: {
@@ -62,6 +63,7 @@ export interface LoadInvoice {
     iva: number;
     base: number;
     pago: number;
+    cost: number;
     vueltos: number;
     nota: string;
     apartado: boolean;
@@ -77,12 +79,14 @@ export interface ListInvoice {
     invoices: LoadInvoice[];
     montos?: number;
     costos?: number;
+    cost?: number;
     efectivo: number;
     tarjeta?: number;
     transferencia?: number;
     credit?: number;
     vales?: number;
     devolucion?: number;
+    iva?: number;
 }
 
 export interface ListCreditoCliente{

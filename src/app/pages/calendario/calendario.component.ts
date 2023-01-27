@@ -50,12 +50,21 @@ const colors: any = {
   },
 };
 
+// @Component({
+//   selector: 'app-calendario',
+//   templateUrl: './calendario.component.html',
+//   styles: [
+//   ]
+// })
+
 @Component({
   selector: 'app-calendario',
   templateUrl: './calendario.component.html',
   styles: [
   ]
 })
+
+
 export class CalendarioComponent implements OnInit {
 
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
@@ -77,7 +86,7 @@ export class CalendarioComponent implements OnInit {
     {
       label: '<i class="bi-trash"></i>',
       a11yLabel: 'Delete',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
+      onClick: ({ event }: { event: any }): void => {
         
         console.log(event);
 
@@ -186,7 +195,7 @@ export class CalendarioComponent implements OnInit {
    *  CREAR CALENDARIO
   ==================================================================== */
   public formSubmitted = false;
-  public evento: Calendario;
+  public evento: any;
   public newCalendarioForm = this.fb.group({
     start: [ '' , [Validators.required]],
     end: ['', [Validators.required]],
@@ -257,8 +266,6 @@ export class CalendarioComponent implements OnInit {
         end: end,
         color: colors.blue,
         actions: this.actions,
-        user: this.evento.user,
-        calid: this.evento.calid,
         resizable: {
           beforeStart: true,
           afterEnd: true,
@@ -290,7 +297,7 @@ export class CalendarioComponent implements OnInit {
 
           this.events = [];
           
-          calendarios.forEach(calendario => {
+          calendarios.forEach((calendario:any) => {
 
            // SET HOURS  
            let inicial;
@@ -311,8 +318,6 @@ export class CalendarioComponent implements OnInit {
                start: addDays(setHours(setMinutes(new Date(initial), Number(initial.getMinutes())), Number(initial.getHours())), 0),
                color: colors.blue,
                actions: this.actions,
-               user: calendario.user,
-               calid: calendario.calid,
                resizable: {
                  beforeStart: true,
                  afterEnd: true,

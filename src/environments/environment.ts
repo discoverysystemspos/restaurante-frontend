@@ -2,6 +2,15 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.ss
 
+/**
+
+  base_url: 'https://.discoverysystemspos.com/api',
+  base_url: 'http://localhost:3000/api',
+  base_url: 'http://192.168.1.150:3000/api',
+
+ */
+
+
 export const environment = {
   production: false,
   base_url: 'http://localhost:3000/api',

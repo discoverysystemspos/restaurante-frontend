@@ -13,6 +13,9 @@ import { Client } from 'src/app/models/client.model';
 import { SearchService } from 'src/app/services/search.service';
 import { log } from 'console';
 
+// EXCEL
+import * as XLSX from 'xlsx';
+
 @Component({
   selector: 'app-credito',
   templateUrl: './credito.component.html',
@@ -61,6 +64,8 @@ export class CreditoComponent implements OnInit {
   ==================================================================== */
   public totalAmount: number = 0;
   public totalAbonado: number = 0;
+  public totalIva: number = 0;
+  public totalCost: number = 0;
   cargarFacturas(){
 
     this.cargando = true;
@@ -92,10 +97,14 @@ export class CreditoComponent implements OnInit {
 
           this.totalAbonado = 0;
           this.totalAmount = 0;
+          this.totalIva = 0;
+          this.totalCost = 0;
           
           for (const factura of this.facturas) {
             
             this.totalAmount += factura.amount;
+            this.totalCost += factura.cost;
+            this.totalIva += factura.iva;
 
             for (const pago of factura.payments) {              
               this.totalAbonado += pago.amount;
@@ -370,10 +379,14 @@ export class CreditoComponent implements OnInit {
 
           this.totalAbonado = 0;
           this.totalAmount = 0;
+          this.totalIva = 0;
+          this.totalCost = 0;
           
           for (const factura of this.facturas) {
             
             this.totalAmount += factura.amount;
+            this.totalIva += factura.amount;
+            this.totalCost += factura.amount;
 
             for (const pago of factura.payments) {              
               this.totalAbonado += pago.amount;
@@ -393,6 +406,8 @@ export class CreditoComponent implements OnInit {
     this.sinResultados = true;
     this.totalAbonado = 0;
     this.totalAmount = 0;
+    this.totalIva = 0;
+    this.totalCost = 0;
     
     if (inicial === null && final === null) {
       this.facturas = this.facturasTemp;
@@ -432,6 +447,8 @@ export class CreditoComponent implements OnInit {
             for (const factura of this.facturas) {
             
               this.totalAmount += factura.amount;
+              this.totalIva += factura.amount;
+              this.totalCost += factura.amount;
   
               for (const pago of factura.payments) {              
                 this.totalAbonado += pago.amount;
@@ -443,6 +460,60 @@ export class CreditoComponent implements OnInit {
           });
           
     }
+
+  }
+
+  /** ================================================================
+   *   EXPORTAR EXCEL
+  ==================================================================== */
+  exportar(){
+
+    let invoices = [];
+
+    for (const invoi of this.facturas) {
+
+      let cliente = `${invoi.client?.name || 'Ocasional'} - ${invoi.client?.cedula || '0000000'}`;
+      let usuario = `${invoi.user.name}`;
+      
+      let { invoice, amount, cost, base, type, iva, fecha } = invoi;
+
+      invoices.push({
+        invoice, 
+        cliente,
+        type, 
+        cost,
+        base, 
+        iva, 
+        amount, 
+        fecha,
+        usuario
+      })
+
+    }
+
+    let datos = [
+      {
+        total: this.totalAmount + this.totalIva,
+        ganancias: this.totalAmount - this.totalCost,
+        iva: this.totalIva
+      }
+    ]
+
+    invoices = invoices.concat(datos)
+
+    /* generate a worksheet */
+    var ws = XLSX.utils.json_to_sheet(invoices);
+
+    /* add to workbook */
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Facturas");
+
+    /* title */
+    let title = 'Invoices.xls';
+
+    /* write workbook and force a download */
+    XLSX.writeFile(wb, title);
+
 
   }
 

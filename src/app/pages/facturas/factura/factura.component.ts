@@ -628,6 +628,30 @@ export class FacturaComponent implements OnInit {
   }
 
   /** ================================================================
+   *   EDITAR CONTROL
+  ==================================================================== */
+  updateControl(control: any){
+
+    if( (control.keyCode < 48 || control.keyCode > 57) && 
+        (control.keyCode < 96 || control.keyCode > 105) && 
+        control.keyCode !==190  && control.keyCode !==110 && 
+        control.keyCode !==8 && 
+        control.keyCode !==9  ){
+        Swal.fire('Error', 'debe de usar solo numeros en el control', 'error');
+    }
+
+    this.invoiceService.updateInvoice({control}, this.factura.iid!)
+        .subscribe( (resp:{invoice}) => {
+
+          this.factura.control = control;
+          Swal.fire('Estupendo', 'Se ha actualizado el control exitosamente', 'success');
+
+        }, (err) => {
+          console.log(err);          
+        })
+  }
+
+  /** ================================================================
    *   PDF
   ==================================================================== */
   downloadPDF() {

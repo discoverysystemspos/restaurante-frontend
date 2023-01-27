@@ -17,6 +17,9 @@ import { User } from '../../../models/user.model';
 import { Datos, comisiones } from '../../../models/empresa.model';
 import { Client } from 'src/app/models/client.model';
 
+// EXCEL
+import * as XLSX from 'xlsx';
+
 @Component({
   selector: 'app-total',
   templateUrl: './total.component.html',
@@ -178,6 +181,7 @@ export class TotalComponent implements OnInit {
 
     this.invoiceService.loadInvoices(this.desde)
         .subscribe(({total, invoices}) => {
+          
 
           // COMPROBAR SI EXISTEN RESULTADOS
           if (invoices.length === 0) {
@@ -196,6 +200,16 @@ export class TotalComponent implements OnInit {
           this.facturasTemp = invoices;
           this.resultado = 0;
           this.cargando = false;
+
+          this.totalAmount = 0;
+          this.totalCost = 0;
+          this.totalIva = 0;          
+          
+          for (const factura of invoices) {
+            this.totalAmount += factura.amount;
+            this.totalCost += factura.cost;
+            this.totalIva += factura.iva;            
+          }
 
           // BOTONOS DE ADELANTE Y ATRAS          
           if (this.desde === 0 && this.totalFacturas > 10) {
@@ -222,11 +236,13 @@ export class TotalComponent implements OnInit {
   ==================================================================== */
   public totalAmount: number = 0;
   public totalCost: number = 0;
+  public totalIva: number = 0;
 
   buscar(inicial:Date, final: Date, cajeros:string, estado:boolean, credito:boolean){
 
     this.totalAmount = 0;    
     this.totalCost = 0;    
+    this.totalIva = 0;    
     this.sinResultados = true;
     
     if (inicial === null && final === null) {
@@ -251,7 +267,7 @@ export class TotalComponent implements OnInit {
                
       this.sinResultados = true;
       this.invoiceService.loadInvoicesDate(initial, end, cajeros, estado, credito)
-          .subscribe(({total, invoices, montos, costos}) => {
+          .subscribe(({total, invoices, montos, costos, iva}) => {
 
             // COMPROBAR SI EXISTEN RESULTADOS
             if (invoices.length === 0) {
@@ -265,6 +281,7 @@ export class TotalComponent implements OnInit {
             this.resultado = invoices.length; 
             this.totalAmount = montos;
             this.totalCost = costos;
+            this.totalIva = iva;
 
             this.comisionCalcular(this.totalAmount);
             
@@ -366,6 +383,96 @@ export class TotalComponent implements OnInit {
     }
 
     this.comision = (monto * this.porcentaje)/100;
+
+  }
+
+  /** ================================================================
+   *   BUSCAR POR CONTROL
+  ==================================================================== */
+  buscarControl(control: any){
+
+    this.totalAmount = 0;    
+    this.totalCost = 0;    
+    this.totalIva = 0;    
+    this.sinResultados = true;
+
+    this.invoiceService.postQueryInvoice({control})
+      .subscribe(({total, invoices, montos, costos, iva}) => {
+
+        // COMPROBAR SI EXISTEN RESULTADOS
+        if (invoices.length === 0) {
+          this.sinResultados = false;
+          this.facturas = [];
+          this.resultado = 0;
+          return;                
+        }
+        // COMPROBAR SI EXISTEN RESULTADOS
+        this.facturas = invoices; 
+        this.resultado = invoices.length; 
+        this.totalAmount = montos;
+        this.totalCost = costos;
+        this.totalIva = iva;
+
+        this.comisionCalcular(this.totalAmount);
+        
+
+      }, (err) => {
+          console.log(err);          
+        });
+
+  }
+
+  /** ================================================================
+   *   EXPORTAR EXCEL
+  ==================================================================== */
+  exportar(){
+
+    let invoices = [];
+
+    for (const invoi of this.facturas) {
+
+      let cliente = `${invoi.client?.name || 'Ocasional'} - ${invoi.client?.cedula || '0000000'}`;
+      let usuario = `${invoi.user.name}`;
+      
+      let { invoice, amount, cost, base, type, iva, fecha } = invoi;
+
+      invoices.push({
+        invoice, 
+        cliente,
+        type, 
+        cost,
+        base, 
+        iva, 
+        amount, 
+        fecha,
+        usuario
+      })
+
+    }
+
+    let datos = [
+      {
+        total: this.totalAmount + this.totalIva,
+        ganancias: this.totalAmount - this.totalCost,
+        iva: this.totalIva
+      }
+    ]
+
+    invoices = invoices.concat(datos)
+
+    /* generate a worksheet */
+    var ws = XLSX.utils.json_to_sheet(invoices);
+
+    /* add to workbook */
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Facturas");
+
+    /* title */
+    let title = 'Invoices.xls';
+
+    /* write workbook and force a download */
+    XLSX.writeFile(wb, title);
+
 
   }
 
