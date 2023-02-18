@@ -114,7 +114,7 @@
                         </div>
                     </div>
 
-                    <div class="col-xl-3 col-md-3 mb-4">
+                    <div *ngIf="user.role !== 'CASHIER'" class="col-xl-3 col-md-3 mb-4">
                         <!-- Dashboard info widget 1-->
                         <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-success h-100 bg-white">
                             <div class="card-body">

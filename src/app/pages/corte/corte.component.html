@@ -145,8 +145,7 @@
                 </div>
 
             </div>
-
-            <div *ngIf="user.privilegios[0].cierre !== false" class="card shadow px-2 my-3 bg-dark border-0" style="width: 18rem;">
+            <div *ngIf="user.privilegios[0].cierre !== false && user.role !== 'CASHIER'" class="card shadow px-2 my-3 bg-dark border-0" style="width: 18rem;">
 
                 <div class="card-body text-white">
                     <h4 class="card-title mb-0 text-center">Ganancia Total</h4>

@@ -46,11 +46,17 @@ export class TotalComponent implements OnInit {
   public btnAtras: string = '';
   public btnAdelante: string = '';
 
+  public user!: User;
+
   constructor(  private invoiceService: InvoiceService,
                 private searchService: SearchService,
                 private mesasService: MesasService,
                 private empresaService: EmpresaService,
-                private userService: UserService) { }
+                private userService: UserService) { 
+
+                  this.user = userService.user;
+
+                }
 
   ngOnInit(): void {
 

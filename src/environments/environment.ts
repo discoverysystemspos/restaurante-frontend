@@ -4,7 +4,7 @@
 
 /**
 
-  base_url: 'https://.discoverysystemspos.com/api',
+  base_url: 'https://segetech.discoverysystemspos.com/api',
   base_url: 'http://localhost:3000/api',
   base_url: 'http://192.168.1.150:3000/api',
 
@@ -13,7 +13,7 @@
 
 export const environment = {
   production: false,
-  base_url: 'http://192.168.1.150:3000/api',
+  base_url: 'http://localhost:3000/api',
   local_url: 'https://castitoner.com/api'
 };
 
