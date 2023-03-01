@@ -14,6 +14,8 @@ import { ngxPrintMarkerPosition } from 'projects/ngx-printer/src/public_api';
 import { LoadTurno, _movements } from '../../../interfaces/load-turno.interface';
 import { DepartmentService } from 'src/app/services/department.service';
 import { Observable, Subscription } from 'rxjs';
+import { BancosService } from 'src/app/services/bancos.service';
+import { Banco } from 'src/app/models/bancos.model';
 interface _departament {
   _id?: string,
   name?: string,
@@ -51,6 +53,7 @@ export class CierresComponent implements OnInit {
 
   constructor(  private turnoService: TurnoService,
                 private searchService: SearchService,
+                private bancosService: BancosService,
                 private invoiceService: InvoiceService,
                 private printerService: NgxPrinterService,
                 private departmentService: DepartmentService) { 
@@ -74,8 +77,30 @@ export class CierresComponent implements OnInit {
     // CARGAR DEPARTAMENTOS
     this.cargarDepartamento();
 
+    // BANCOS
+    this.cargarBancos();
+
     // CARGAR TURNOS
     this.cargarTurno();
+  }
+
+  /** ================================================================
+   *   CARGAR BANCOS
+  ==================================================================== */
+  public bancos: Banco[] = [];
+  cargarBancos(){
+
+    this.bancosService.loadBancos()
+        .subscribe( ({ bancos }) => {
+
+          bancos.map( (banco) => {
+            banco.monto = 0;
+          })
+
+          this.bancos = bancos;
+
+        });
+
   }
 
   /** ================================================================
@@ -242,6 +267,7 @@ export class CierresComponent implements OnInit {
   public abEfectivo: number = 0;
   public abTarjeta: number = 0;
   public abTransferencia: number = 0;
+  public totalBancos: number = 0;
   cargarTurnoId(id:string){
 
     this.movimientos = [];
@@ -257,6 +283,7 @@ export class CierresComponent implements OnInit {
       this.abEfectivo = 0;
       this.abTarjeta = 0;
       this.abTransferencia = 0;
+      
 
       
       for (const factura of turno.abonos) {        
@@ -275,6 +302,8 @@ export class CierresComponent implements OnInit {
           }
 
         }
+
+        
         
       }      
       
@@ -352,8 +381,25 @@ export class CierresComponent implements OnInit {
               });
               
             }
+
+            for (const pago of factura.payments) {
+
+              this.bancos.map( (banco) => {
+    
+                if (banco.name === pago.type) {
+                  banco.monto += pago.amount;
+    
+                  this.totalBancos += pago.amount;
+    
+                };
+    
+              });
+              
+            }
             
           }
+
+          
 
 
         });

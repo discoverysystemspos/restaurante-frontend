@@ -255,6 +255,14 @@
                                                 <td colspan="2"> <small> Con Transferencia </small> </td>
                                                 <td> {{ transferencia | divisa }} </td>
                                             </tr>
+
+                                            <ng-container *ngIf="bancos.length > 0">
+                                                <tr *ngFor="let banco of bancos">
+                                                    <td colspan="2"> <small> {{ banco.name }} </small> </td>
+                                                    <td> {{ banco.monto | divisa }} </td>
+                                                </tr>
+                                            </ng-container>
+
                                             <tr class="text-danger">
                                                 <td colspan="2"> <small> devolucion </small> </td>
                                                 <td> {{ devolucion | divisa }} </td>
