@@ -328,6 +328,7 @@ export class CierresComponent implements OnInit {
   public salidas: number = 0;
   public montoDiferencia: number = 0;
   public movimientos: _movements[] = [];
+  public totalDevolucion: number = 0; 
 
   public facturas: any[] = [];
   public departamento: _departament[] = [];
