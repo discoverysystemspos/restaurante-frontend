@@ -2,31 +2,9 @@
     HEADER 
 ========================================================================= -->
 <header>
-    <div class="bg-header-yellow py-2 px-3 mb-2">
-        <h5 class="text-white m-0">PRODUCTOS</h5>
+    <div class="bg-header-blue py-2 px-3 mb-2">
+        <h5 class="text-white m-0">Movimientos</h5>
     </div>
-    <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <a class="nav-link text-dark" id="administracion-tab" [routerLink]="['/dashboard', 'productos']">
-                <i class="bi-files" style="font-size: 1rem"></i> Administracion de Productos
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-primary" id="nuevo-tab" [routerLink]="['/dashboard/productos', 'nuevo']"><i class="bi-pencil-square" style="font-size: 1rem"></i> Crear Producto</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark " id="departamentos-tab" [routerLink]="['/dashboard/productos', 'departamento']"><i class="bi-collection" style="font-size: 1rem"></i> Departamentos</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" id="departamentos-tab" [routerLink]="['/dashboard/productos', 'categorias']" aria-selected="false"><i class="bi-collection" style="font-size: 1rem"></i> Categorias</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark active" id="departamentos-tab" [routerLink]="['/dashboard/productos', 'movimientos']" aria-selected="false"><i class="bi-collection" style="font-size: 1rem"></i> Movimientos</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" id="departamentos-tab" [routerLink]="['/dashboard/productos', 'kardex']" aria-selected="false"><i class="bi-collection" style="font-size: 1rem"></i> kardex</a>
-        </li>
-    </ul>
 </header>
 <!-- =========================================================================
     HEADER 
@@ -208,7 +186,7 @@
                         <!-- <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + productosLog.length }})</small> -->
                     </div>
 
-                    <div *ngIf="search.value.length === 0" class="col d-flex justify-content-end">
+                    <div class="col d-flex justify-content-end">
                         <button type="button" (click)="cambiarPagina('back')" class="{{btnAtras}} btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
                         <button type="button" (click)="cambiarPagina('next')" class="{{btnAdelante}} btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
                     </div>

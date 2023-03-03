@@ -36,9 +36,6 @@ export class EntradasSalidasComponent implements OnInit {
     this.entradasService.loadMovimientos(this.desde, this.hasta)
         .subscribe( ({movimientos, total}) => {
 
-          console.log(movimientos);
-          
-
           // COMPROBAR SI EXISTEN RESULTADOS
           if (movimientos.length === 0) {
             this.sinResultados = false;
@@ -103,7 +100,7 @@ export class EntradasSalidasComponent implements OnInit {
   buscarPor(inicial:Date, final: Date, tipo: string = 'none'){
 
     this.monto = 0;
-    this.sinResultados = true;
+    this.sinResultados = true;    
 
     if(tipo === 'none' && inicial === null && final === null){
       this.movimientos = this.movimientosTemp;
@@ -122,6 +119,9 @@ export class EntradasSalidasComponent implements OnInit {
     this.entradasService.loadMovimientosDate(initial, end, tipo)
         .subscribe( ({movimientos}) => {
 
+          this.totalEntrada = 0;
+          this.totalSalida = 0;
+
           // COMPROBAR SI EXISTEN RESULTADOS
           if (movimientos.length === 0) {
             this.sinResultados = false;
@@ -135,8 +135,22 @@ export class EntradasSalidasComponent implements OnInit {
             this.monto += log.monto || 0;
           }   
 
+          
+
           this.movimientos = movimientos; 
           this.resultado = movimientos.length;
+
+          for (const log of movimientos) {
+
+            if (log.type === 'entrada') {
+              
+              this.totalEntrada += log.monto || 0;
+            }else{
+              
+              this.totalSalida += log.monto || 0;
+            }
+
+          }
           
         });
 
