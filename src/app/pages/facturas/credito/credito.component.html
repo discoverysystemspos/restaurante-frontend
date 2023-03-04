@@ -71,6 +71,25 @@
                 </div>
             </div>
 
+            <ng-container *ngIf="empresa">
+                <div class="col-xl-3 col-md-3 mb-4" *ngFor="let impuesto of impuestos">
+                    <!-- Dashboard info widget 1-->
+                    <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-info h-100 bg-white">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center flex-wrap">
+                                <div class="flex-grow-1">
+                                    <div class="small font-weight-bold text-info mb-1"> {{ impuesto.name }} </div>
+                                    <div class="h5"> ({{ impuesto.total | divisa}}) </div>
+                                </div>
+                                <div class="ms-2">
+                                    <i class="bi bi-cash text-muted" style="font-size: 1.5rem;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
         </div>
 
     </div>

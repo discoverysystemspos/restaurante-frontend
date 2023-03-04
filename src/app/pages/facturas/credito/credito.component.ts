@@ -15,6 +15,11 @@ import { log } from 'console';
 
 // EXCEL
 import * as XLSX from 'xlsx';
+import { ImpuestosService } from 'src/app/services/impuestos.service';
+import { Impuestos } from 'src/app/models/impuestos.model';
+import { EmpresaService } from 'src/app/services/empresa.service';
+import { Datos } from 'src/app/models/empresa.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-credito',
@@ -46,9 +51,17 @@ export class CreditoComponent implements OnInit {
 
   constructor(  private invoiceService: InvoiceService,
                 private mesasService: MesasService,
+                private impuestosService: ImpuestosService,
+                private empresaService: EmpresaService,
                 private searchService: SearchService,) { }
 
   ngOnInit(): void {
+
+    // CARGAR DATOS
+    this.cargarDatos();
+
+    // CARGAR DATOS
+    this.cargarImpuestos();
 
     // CARGAR FACTURAS
     this.cargarFacturas();
@@ -56,6 +69,37 @@ export class CreditoComponent implements OnInit {
     // CARGAR MESAS
     this.cargarMesas();
 
+
+  }
+
+  /** ================================================================
+   *   CARGAR DATOS DE LA EMPRESA
+  ==================================================================== */
+  public empresa: Datos;
+  cargarDatos(){
+
+    this.empresaService.getDatos()
+        .subscribe( datos => {
+          this.empresa = datos;   
+        }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
+  }
+
+  /** ================================================================
+   *   CARGAR IMPUESTOS
+  ==================================================================== */
+  public impuestos: Impuestos[] = [];
+  cargarImpuestos(){
+
+    this.impuestosService.loadImpuestos()
+        .subscribe( ({taxes}) => {
+
+          this.impuestos = taxes;
+
+          this.impuestos.map( impuesto => {
+            impuesto.total = 0;
+          });
+
+        });
 
   }
 
@@ -73,6 +117,10 @@ export class CreditoComponent implements OnInit {
 
     this.totalAbonado = 0;
     this.totalAmount = 0;
+
+    this.impuestos.map( impuesto => {
+      impuesto.total = 0;
+    });
 
     this.invoiceService.loadInvoicesCredito(this.desde)
         .subscribe(({total, invoices}) => {
@@ -108,6 +156,24 @@ export class CreditoComponent implements OnInit {
 
             for (const pago of factura.payments) {              
               this.totalAbonado += pago.amount;
+            }
+
+            if( this.empresa.impuesto ){
+
+              for (const product of factura.products) {
+  
+                this.impuestos.map( (impuesto) => {
+    
+                  if (impuesto.taxid === product.product.taxid) {
+                    
+                    impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
+  
+                  }
+    
+                });
+  
+              }
+  
             }
 
           }
@@ -265,6 +331,10 @@ export class CreditoComponent implements OnInit {
     this.totalAbonado = 0;
     this.totalAmount = 0;
 
+    this.impuestos.map( impuesto => {
+      impuesto.total = 0;
+    });
+
     this.searchService.search('invoice', client)
         .subscribe( ({resultados}) => {
 
@@ -292,6 +362,24 @@ export class CreditoComponent implements OnInit {
               this.totalAbonado += pago.amount;
             }
 
+            if( this.empresa.impuesto ){
+
+              for (const product of factura.products) {
+  
+                this.impuestos.map( (impuesto) => {
+    
+                  if (impuesto.taxid === product.product.taxid) {
+                    
+                    impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
+  
+                  }
+    
+                });
+  
+              }
+  
+            }
+
           }
           
     });
@@ -311,6 +399,10 @@ export class CreditoComponent implements OnInit {
 
     this.totalAbonado = 0;
     this.totalAmount = 0;
+
+    this.impuestos.map( impuesto => {
+      impuesto.total = 0;
+    });
 
     this.invoiceService.loadInvoicesVencidas(hoy)
         .subscribe( ({invoices}) => {          
@@ -339,6 +431,24 @@ export class CreditoComponent implements OnInit {
               this.totalAbonado += pago.amount;
             }
 
+            if( this.empresa.impuesto ){
+
+              for (const product of factura.products) {
+  
+                this.impuestos.map( (impuesto) => {
+    
+                  if (impuesto.taxid === product.product.taxid) {
+                    
+                    impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
+  
+                  }
+    
+                });
+  
+              }
+  
+            }
+
           }
           
     });
@@ -355,6 +465,10 @@ export class CreditoComponent implements OnInit {
 
     this.totalAbonado = 0;
     this.totalAmount = 0;
+
+    this.impuestos.map( impuesto => {
+      impuesto.total = 0;
+    });
 
     this.invoiceService.loadInvoiceCreditCajeroMesa(mesa)
         .subscribe( ({ total, invoices }) => {
@@ -392,6 +506,24 @@ export class CreditoComponent implements OnInit {
               this.totalAbonado += pago.amount;
             }
 
+            if( this.empresa.impuesto ){
+
+              for (const product of factura.products) {
+  
+                this.impuestos.map( (impuesto) => {
+    
+                  if (impuesto.taxid === product.product.taxid) {
+                    
+                    impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
+  
+                  }
+    
+                });
+  
+              }
+  
+            }
+
           }
 
         });
@@ -408,6 +540,10 @@ export class CreditoComponent implements OnInit {
     this.totalAmount = 0;
     this.totalIva = 0;
     this.totalCost = 0;
+
+    this.impuestos.map( impuesto => {
+      impuesto.total = 0;
+    });
     
     if (inicial === null && final === null) {
       this.facturas = this.facturasTemp;
@@ -452,6 +588,24 @@ export class CreditoComponent implements OnInit {
   
               for (const pago of factura.payments) {              
                 this.totalAbonado += pago.amount;
+              }
+
+              if( this.empresa.impuesto ){
+
+                for (const product of factura.products) {
+    
+                  this.impuestos.map( (impuesto) => {
+      
+                    if (impuesto.taxid === product.product.taxid) {
+                      
+                      impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
+    
+                    }
+      
+                  });
+    
+                }
+    
               }
   
             }

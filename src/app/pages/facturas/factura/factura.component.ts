@@ -174,7 +174,7 @@ export class FacturaComponent implements OnInit {
 
             }
 
-          }          
+          }        
           
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
 

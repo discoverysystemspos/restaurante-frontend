@@ -45,7 +45,7 @@
             </ng-container>
 
 
-            <button (click)="devolucion(factura.iid)" type="button" class="btn btn-outline-danger btn-sm mx-1 my-2"> 
+            <button (click)="devolucion(factura.iid)" [disabled]="user.role !== 'ADMIN'" type="button" class="btn btn-outline-danger btn-sm mx-1 my-2"> 
                 <i class="bi-arrow-counterclockwise"></i> Cancelar Factura
             </button>
             <button *ngIf="factura.credito" [disabled]="user.cerrada" (click)="focusMonto()" type="button" class="btn btn-outline-dark btn-sm mx-1 my-2" data-bs-toggle="modal" data-bs-target="#facturar"> 
@@ -190,10 +190,10 @@
                                     <td class="text-center">{{ producto.qty }}</td>
                                     <td>{{ producto.price * producto.qty | divisa}}</td>
                                     <td>
-                                        <button type="button" [disabled]="user.cerrada" class="btn btn-link p-1 text-warning" (click)="devolverProducto(producto)">
+                                        <button type="button" [disabled]="user.cerrada || user.role === 'CASHIER'" class="btn btn-link p-1 text-warning" (click)="devolverProducto(producto)">
                                         <i class="bi-arrow-90deg-left"></i>
                                     </button>
-                                        <button type="button" [disabled]="user.cerrada" (click)="eliminarProducto(producto._id)" class="btn btn-link p-1 text-danger">
+                                        <button type="button" [disabled]="user.cerrada || user.role === 'CASHIER'" (click)="eliminarProducto(producto._id)" class="btn btn-link p-1 text-danger">
                                         <i class="bi-x"></i>
                                     </button>
                                     </td>

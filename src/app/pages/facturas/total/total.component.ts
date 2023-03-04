@@ -19,6 +19,8 @@ import { Client } from 'src/app/models/client.model';
 
 // EXCEL
 import * as XLSX from 'xlsx';
+import { ImpuestosService } from 'src/app/services/impuestos.service';
+import { Impuestos } from 'src/app/models/impuestos.model';
 
 @Component({
   selector: 'app-total',
@@ -51,6 +53,7 @@ export class TotalComponent implements OnInit {
   constructor(  private invoiceService: InvoiceService,
                 private searchService: SearchService,
                 private mesasService: MesasService,
+                private impuestosService: ImpuestosService,
                 private empresaService: EmpresaService,
                 private userService: UserService) { 
 
@@ -72,6 +75,28 @@ export class TotalComponent implements OnInit {
     // CARGAR FACTURAS
     this.cargarFacturas();
 
+    // IMPUESTOS
+    this.cargarImpuestos();
+
+
+  }
+
+  /** ================================================================
+   *   CARGAR IMPUESTOS
+  ==================================================================== */
+  public impuestos: Impuestos[] = [];
+  cargarImpuestos(){
+
+    this.impuestosService.loadImpuestos()
+        .subscribe( ({taxes}) => {
+
+          this.impuestos = taxes;
+
+          this.impuestos.map( impuesto => {
+            impuesto.total = 0;
+          });
+
+        });
 
   }
 
@@ -129,6 +154,10 @@ export class TotalComponent implements OnInit {
     this.cargando = true;
     this.sinResultados = true;
 
+    this.impuestos.map( impuesto => {
+      impuesto.total = 0;
+    });
+
     this.searchService.search('invoice', client)
         .subscribe( ({resultados}) => {
 
@@ -144,6 +173,30 @@ export class TotalComponent implements OnInit {
           this.facturas = resultados;
           this.totalFacturas = resultados.length;
           this.cargando = false;
+
+          for (const factura of resultados) {
+
+            if( this.empresa.impuesto ){
+
+              for (const product of factura.products) {
+  
+                this.impuestos.map( (impuesto) => {
+    
+                  if (impuesto.taxid === product.product.taxid) {
+                    
+                    impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
+  
+                  }
+    
+                });
+  
+              }
+  
+            }
+            
+          }
+
+          
           
         });
     
@@ -185,10 +238,13 @@ export class TotalComponent implements OnInit {
     this.cargando = true;
     this.sinResultados = true;
 
+    this.impuestos.map( impuesto => {
+      impuesto.total = 0;
+    });
+
     this.invoiceService.loadInvoices(this.desde)
         .subscribe(({total, invoices}) => {
           
-
           // COMPROBAR SI EXISTEN RESULTADOS
           if (invoices.length === 0) {
             this.sinResultados = false;
@@ -214,7 +270,27 @@ export class TotalComponent implements OnInit {
           for (const factura of invoices) {
             this.totalAmount += factura.amount;
             this.totalCost += factura.cost;
-            this.totalIva += factura.iva;            
+            this.totalIva += factura.iva;
+            
+            
+            if( this.empresa.impuesto ){
+
+              for (const product of factura.products) {
+  
+                this.impuestos.map( (impuesto) => {
+    
+                  if (impuesto.taxid === product.product.taxid) {
+                    
+                    impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
+  
+                  }
+    
+                });
+  
+              }
+  
+            }
+            
           }
 
           // BOTONOS DE ADELANTE Y ATRAS          
@@ -250,6 +326,10 @@ export class TotalComponent implements OnInit {
     this.totalCost = 0;    
     this.totalIva = 0;    
     this.sinResultados = true;
+
+    this.impuestos.map( impuesto => {
+      impuesto.total = 0;
+    });
     
     if (inicial === null && final === null) {
       this.facturas = this.facturasTemp;
@@ -288,6 +368,28 @@ export class TotalComponent implements OnInit {
             this.totalAmount = montos;
             this.totalCost = costos;
             this.totalIva = iva;
+
+            if( this.empresa.impuesto ){
+              for (const factura of invoices) {
+
+
+                for (const product of factura.products) {
+    
+                  this.impuestos.map( (impuesto) => {
+      
+                    if (impuesto.taxid === product.product.taxid) {
+                      
+                      impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
+    
+                    }
+      
+                  });
+    
+                }
+    
+              }
+              
+            }
 
             this.comisionCalcular(this.totalAmount);
             
@@ -402,6 +504,10 @@ export class TotalComponent implements OnInit {
     this.totalIva = 0;    
     this.sinResultados = true;
 
+    this.impuestos.map( impuesto => {
+      impuesto.total = 0;
+    });
+
     this.invoiceService.postQueryInvoice({control})
       .subscribe(({total, invoices, montos, costos, iva}) => {
 
@@ -420,6 +526,26 @@ export class TotalComponent implements OnInit {
         this.totalIva = iva;
 
         this.comisionCalcular(this.totalAmount);
+
+        if( this.empresa.impuesto ){
+          for (const factura of invoices) {
+
+            for (const product of factura.products) {
+
+              this.impuestos.map( (impuesto) => {
+  
+                if (impuesto.taxid === product.product.taxid) {
+                  
+                  impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
+
+                }
+  
+              });
+
+            }
+
+          }
+        }
         
 
       }, (err) => {
