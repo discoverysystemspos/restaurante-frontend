@@ -583,6 +583,9 @@
                                                             <option *ngIf="invoiceForm.value.type === 'transferencia' || invoiceForm.value.type === 'mixto' || invoiceForm.value.type === 'credito'" value="transferencia">Transferencia</option>
                                                             <option *ngIf="invoiceForm.value.type === 'tarjeta' || invoiceForm.value.type === 'mixto' || invoiceForm.value.type === 'credito'" value="tarjeta">Tarjeta</option>
                                                             <option *ngIf="invoiceForm.value.type === 'vale' || invoiceForm.value.type === 'mixto' || invoiceForm.value.type === 'credito'" value="vale">Vale</option>
+                                                            <ng-container *ngIf="invoiceForm.value.type !== 'efectivo'">
+                                                                <option *ngFor="let banco of bancos" [value]="banco.name"> {{banco.name}}</option>                                                                
+                                                            </ng-container>
                                                         </select>
 
                                                     </div>

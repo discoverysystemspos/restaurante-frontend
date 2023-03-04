@@ -30,6 +30,8 @@ import { ImpuestosService } from 'src/app/services/impuestos.service';
 import { Impuestos } from '../../../models/impuestos.model';
 import { User } from 'src/app/models/user.model';
 import { UserService } from '../../../services/user.service';
+import { BancosService } from 'src/app/services/bancos.service';
+import { Banco } from 'src/app/models/bancos.model';
 
 @Component({
   selector: 'app-factura',
@@ -57,7 +59,8 @@ export class FacturaComponent implements OnInit {
                 private empresaService: EmpresaService,
                 private printerService: NgxPrinterService,
                 private impuestosService: ImpuestosService,
-                private userService: UserService,) {
+                private userService: UserService,
+                private bancosService: BancosService) {
 
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
                     val => {
@@ -76,9 +79,28 @@ export class FacturaComponent implements OnInit {
     this.cargarDatos();
 
     // CARGAR TURNO
+    this.cargarBancos();
+
+    // CARGAR TURNO
     this.cargarTurno();
     
   }
+
+  /** ================================================================
+   *   CARGAR BANCOS
+  ==================================================================== */
+  public bancos: Banco[] = [];
+  cargarBancos(){
+
+    this.bancosService.loadBancos()
+        .subscribe( ({bancos}) => {
+
+          this.bancos = bancos.filter( banco => banco.status === true);          
+
+        });
+
+  }
+
   /** ================================================================
    *   CARGAR IMPUESTOS
   ==================================================================== */

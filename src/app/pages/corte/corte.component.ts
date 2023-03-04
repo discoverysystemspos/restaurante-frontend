@@ -100,6 +100,7 @@ export class CorteComponent implements OnInit {
    *   CARGAR BANCOS
   ==================================================================== */
   public bancos: Banco[] = [];
+  public bancosAbonos: Banco[] = [];
   cargarBancos(){
 
     this.bancosService.loadBancos()
@@ -110,6 +111,7 @@ export class CorteComponent implements OnInit {
           })
 
           this.bancos = bancos;
+          this.bancosAbonos = bancos;
 
         });
 
@@ -208,7 +210,24 @@ export class CorteComponent implements OnInit {
       this.abTarjeta = 0;
       this.abTransferencia = 0;
       
-      for (const factura of turno.abonos) {        
+      for (const factura of turno.abonos) {
+
+        // ABONOS EN BANCOS bancosAbonos
+        for (const pago of factura.factura.paymentsCredit) {
+
+          this.bancosAbonos.map( (banco) => {
+
+            if (banco.name === pago.type) {
+              banco.monto += pago.amount;
+
+              this.totalBancosAbono += pago.amount;
+
+            };
+
+          });
+          
+        }
+           
 
         for (const pago of factura.factura.paymentsCredit) {
 
@@ -248,6 +267,7 @@ export class CorteComponent implements OnInit {
   public facturas: any[] = [];
   public departamento: _departament[] = [];
   public totalBancos: number = 0;
+  public totalBancosAbono: number = 0;
 
   cargarFacturasTurno(){
 
@@ -299,6 +319,7 @@ export class CorteComponent implements OnInit {
             }
             
           }
+         
           
         });
   }

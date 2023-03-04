@@ -327,10 +327,22 @@
                                 </td>
                             </tr>
 
+                            <ng-container *ngIf="bancos.length > 0">
+                                <tr *ngFor="let banco of bancosAbonos">
+                                    <td colspan="2"> <small> {{ banco.name }} </small> </td>
+                                    <td class="text-end">
+                                        <span class="fw-bolder">
+                                            {{ banco.monto | divisa }} 
+                                        </span>
+                                    </td>
+                                </tr>
+                            </ng-container>
+
                             <tr class="border-top">
                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                <td class="fw-bold"> {{ abEfectivo + abTarjeta + abTransferencia | divisa }} </td>
+                                <td class="fw-bold"> {{ abEfectivo + abTarjeta + abTransferencia + totalBancosAbono | divisa }} </td>
                             </tr>
+
 
                         </tbody>
                     </table>
@@ -748,9 +760,18 @@
                                             <td> {{ abTransferencia | divisa }} </td>
                                         </tr>
 
+                                        <ng-container *ngIf="bancos.length > 0">
+                                            <tr *ngFor="let banco of bancosAbonos">
+                                                <td colspan="2"> <small> {{ banco.name }} </small> </td>
+                                                <td>
+                                                    {{ banco.monto | divisa }}
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+
                                         <tr class="border-top">
                                             <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                            <td class="fw-bold"> {{ (abEfectivo) + (abTarjeta) + (abTransferencia) | divisa }} </td>
+                                            <td class="fw-bold"> {{ (abEfectivo) + (abTarjeta) + (abTransferencia) + (totalBancosAbono) | divisa }} </td>
                                         </tr>
 
 

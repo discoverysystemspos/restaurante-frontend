@@ -88,6 +88,7 @@ export class CierresComponent implements OnInit {
    *   CARGAR BANCOS
   ==================================================================== */
   public bancos: Banco[] = [];
+  public bancosAbonos: Banco[] = [];
   cargarBancos(){
 
     this.bancosService.loadBancos()
@@ -98,6 +99,7 @@ export class CierresComponent implements OnInit {
           })
 
           this.bancos = bancos;
+          this.bancosAbonos = bancos;
 
         });
 
@@ -268,10 +270,22 @@ export class CierresComponent implements OnInit {
   public abTarjeta: number = 0;
   public abTransferencia: number = 0;
   public totalBancos: number = 0;
+  public totalBancosAbono: number = 0;
+
   cargarTurnoId(id:string){
 
     this.movimientos = [];
     this.inicial = 0;
+
+    this.totalBancosAbono = 0;
+
+    this.bancosAbonos.map( (banco) => {
+      banco.monto = 0;
+    })
+    
+    this.bancos.map( (banco) => {
+      banco.monto = 0;
+    })
 
     this.turnoService.getTurnoId(id)
     .subscribe( (turno) => { 
@@ -300,6 +314,17 @@ export class CierresComponent implements OnInit {
               this.abTransferencia += pago.amount;              
             }
           }
+
+          this.bancosAbonos.map( (banco) => {
+
+            if (banco.name === pago.type) {
+              banco.monto += pago.amount;
+
+              this.totalBancosAbono += pago.amount;
+
+            };
+
+          });
 
         }
 
