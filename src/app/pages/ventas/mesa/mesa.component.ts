@@ -1038,7 +1038,7 @@ export class MesaComponent implements OnInit {
         this.base += (this.carrito[i].price * this.carrito[i].qty);
         this.totalCosto += (this.carrito[i].product.cost * this.carrito[i].qty);
 
-        if (this.empresa.decimal! === false) {          
+        if (this.empresa?.decimal === false) {          
           this.total = Math.round(this.total);
           this.base = Math.round(this.base);
           this.totalCosto = Math.round(this.totalCosto);

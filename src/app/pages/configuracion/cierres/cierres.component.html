@@ -220,7 +220,7 @@
                                             </tr>
                                             <tr class="border-top">
                                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                                <td class="fw-bold"> {{ inicial + efectivo + abEfectivo + entradas + salidas + devolucion | divisa }} </td>
+                                                <td class="fw-bold"> {{ (inicial + efectivo + abEfectivo + entradas + salidas) + devolucion | divisa }} </td>
                                             </tr>
 
                                         </tbody>
@@ -267,9 +267,10 @@
                                                 <td colspan="2"> <small> devolucion </small> </td>
                                                 <td> {{ devolucion | divisa }} </td>
                                             </tr>
+
                                             <tr class="border-top">
                                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                                <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + totalBancos + credito + vales + totalDevolucion | divisa }} </td>
+                                                <td class="fw-bold"> {{ (efectivo + tarjeta + transferencia + totalBancos + credito + vales) + devolucion | divisa }} </td>
                                             </tr>
 
 

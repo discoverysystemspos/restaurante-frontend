@@ -371,6 +371,7 @@ export class CierresComponent implements OnInit {
     this.salidas = 0;
     this.montoDiferencia = 0;
     this.devolucion = 0;
+    this.totalBancos = 0;
 
     this.departamento.forEach(depart => {
       depart.qty = 0;
@@ -407,7 +408,7 @@ export class CierresComponent implements OnInit {
               });
               
             }
-
+          
             for (const pago of factura.payments) {
 
               this.bancos.map( (banco) => {
