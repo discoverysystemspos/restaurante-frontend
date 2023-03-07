@@ -420,11 +420,11 @@
                                                 <td> {{ abTransferencia | divisa }} </td>
                                             </tr>
 
-                                            <ng-container *ngIf="bancos.length > 0">
-                                                <tr *ngFor="let banco of bancosAbonos">
-                                                    <td colspan="2"> <small> {{ banco.name }} </small> </td>
+                                            <ng-container *ngIf="bancosAbonos.length > 0">
+                                                <tr *ngFor="let bank of bancosAbonos">
+                                                    <td colspan="2"> <small> {{ bank.name }} </small> </td>
                                                     <td>
-                                                        {{ banco.monto | divisa }}
+                                                        {{ bank.monto | divisa }}
                                                     </td>
                                                 </tr>
                                             </ng-container>

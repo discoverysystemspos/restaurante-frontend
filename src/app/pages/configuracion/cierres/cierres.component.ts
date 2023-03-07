@@ -91,12 +91,16 @@ export class CierresComponent implements OnInit {
   public bancosAbonos: Banco[] = [];
   cargarBancos(){
 
+    this.bancos = [];
+    this.bancosAbonos = [];
+
     this.bancosService.loadBancos()
         .subscribe( ({ bancos }) => {
 
           bancos.map( (banco) => {
-            banco.monto = 0;
+            banco.monto = 0;            
           })
+          
 
           this.bancos = bancos;
           this.bancosAbonos = bancos;
@@ -272,20 +276,14 @@ export class CierresComponent implements OnInit {
   public totalBancos: number = 0;
   public totalBancosAbono: number = 0;
 
-  cargarTurnoId(id:string){
+  async cargarTurnoId(id:string){
 
     this.movimientos = [];
     this.inicial = 0;
 
     this.totalBancosAbono = 0;
 
-    this.bancosAbonos.map( (banco) => {
-      banco.monto = 0;
-    })
-    
-    this.bancos.map( (banco) => {
-      banco.monto = 0;
-    })
+    await this.cargarBancos();
 
     this.turnoService.getTurnoId(id)
     .subscribe( (turno) => { 
@@ -297,40 +295,30 @@ export class CierresComponent implements OnInit {
       this.abEfectivo = 0;
       this.abTarjeta = 0;
       this.abTransferencia = 0;
-      
 
-      
-      for (const factura of turno.abonos) {        
-
-        for (const pago of factura.factura.paymentsCredit ) {
-
-          if (pago.turno === turno.tid  && factura.pay === pago._id && factura.factura.status) {
-            
-            if (pago.type === "efectivo") {
-              this.abEfectivo += pago.amount;
-            }else if (pago.type === "tarjeta") {
-              this.abTarjeta += pago.amount;              
-            }else if (pago.type === "transferencia") {
-              this.abTransferencia += pago.amount;              
+        
+        for (const factura of turno.abonos) {        
+  
+          for (const pago of factura.factura.paymentsCredit ) {
+  
+            if (pago.turno === turno.tid  && factura.pay === pago._id && factura.factura.status) {
+              
+              if (pago.type === "efectivo") {
+                this.abEfectivo += pago.amount;
+              }else if (pago.type === "tarjeta") {
+                this.abTarjeta += pago.amount;              
+              }else if (pago.type === "transferencia") {
+                this.abTransferencia += pago.amount;              
+              }
             }
+  
+            
+  
           }
-
-          this.bancosAbonos.map( (banco) => {
-
-            if (banco.name === pago.type) {
-              banco.monto += pago.amount;
-
-              this.totalBancosAbono += pago.amount;
-
-            };
-
-          });
-
-        }
-
-        
-        
-      }      
+          
+          
+        }  
+      
       
       this.procesarInformacion(id);
       
@@ -371,7 +359,6 @@ export class CierresComponent implements OnInit {
     this.salidas = 0;
     this.montoDiferencia = 0;
     this.devolucion = 0;
-    this.totalBancos = 0;
 
     this.departamento.forEach(depart => {
       depart.qty = 0;
@@ -424,6 +411,35 @@ export class CierresComponent implements OnInit {
               
             }
             
+          }
+
+
+          // CARGAR LOS ABONOS A CREDITO          
+          if (this.turnoId.abonos.length > 0) {
+
+            for (const factura of this.turnoId.abonos) {
+
+              for (const pago of factura.factura.paymentsCredit) {
+                
+                this.bancosAbonos.map( (banco) => {
+      
+                  if (banco.name === pago.type) {
+                    banco.monto += pago.amount;      
+                    this.totalBancosAbono += pago.amount;
+      
+                  };
+      
+                });
+              }
+              
+            }
+
+          }else{
+
+            this.bancosAbonos.map( (banco) => {    
+              banco.monto = 0;  
+            });
+
           }
 
           
