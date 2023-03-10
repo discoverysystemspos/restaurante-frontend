@@ -1,0 +1,214 @@
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<header>
+    <div class="bg-header-blue py-2 px-3 mb-2">
+        <h5 class="text-white m-0">Configuraciones / Prestamos</h5>
+    </div>
+    <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
+
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-dark active" id="ticket1-tab"><i class="bi-gear" style="font-size: 1rem"></i> Tablero Principal</a>
+        </li>
+
+    </ul>
+</header>
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+
+<div class="container-fluid my-4">
+
+    <!-- TABLE PRESTAMOS -->
+    <div class="shadow-lg p-3 mb-5 rounded bg-white">
+
+        <!-- CARGANDO -->
+        <div *ngIf="cargando">
+            <div class="text-center p-4">
+                <div class="spinner-grow text-secondary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <small class="text-muted">cargando...</small>
+        </div>
+        <!-- CARGANDO -->
+
+        <div *ngIf="!cargando">
+
+            <!-- BTN CREAR IMPUESTO -->
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-sm btn-primary btnW waves-effect waves-ligth" data-bs-toggle="modal" data-bs-target="#nuevoPrestamo">Crear</button>
+            </div>
+            <!-- BTN CREAR IMPUESTO -->
+
+            <div class="table-responsive ">
+                <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                    <thead class="border-bottom ">
+                        <tr>
+                            <th class="text-muted" scope="col ">Fecha</th>
+                            <th class="text-muted" scope="col ">Cliente</th>
+                            <th class="text-muted" scope="col ">Monto</th>
+                            <th class="text-muted" scope="col ">Porcentaje</th>
+                            <th class="text-muted" scope="col ">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="!sinResultados" class="text-center ">
+                            <th colspan="10" class="py-4">
+                                <h4 class="text-muted">Sin Resultados</h4>
+                            </th>
+                        </tr>
+
+                        <tr class="trHover" *ngFor="let prestamo of listaPrestamos; let i = index">
+                            <td>{{ prestamo.fecha | date: 'short' }}</td>
+                            <td>{{ prestamo.client.name }}</td>
+                            <td>{{ prestamo.monto | divisa}}</td>
+                            <td>{{ prestamo.porcentaje }}%</td>
+                            <td class="text-center">
+                                <a class="btn btn-link p-1 text-primary" [routerLink]="['/dashboard/configuracion/prestamo', prestamo.presid]">
+                                    <i class="bi bi-box-arrow-up-right"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- BTN SIGUIENTE Y ANTERIOR -->
+            <div class="row">
+                <div class="col col-md-4">
+                    <small class="text-muted">Total de prestamos: ({{totalPrestamos}})</small>
+                    <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
+                    <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + listaPrestamos.length }})</small>
+                </div>
+            </div>
+            <!-- BTN SIGUIENTE Y ANTERIOR -->
+
+        </div>
+    </div>
+    <!-- TABLE PRESTAMOS -->
+
+
+</div>
+
+<!-- =========================================================================
+    NUEVO PRESTAMO 
+========================================================================= -->
+<div class="modal fade" id="nuevoPrestamo" tabindex="-1" aria-labelledby="nuevoPrestamoModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="nuevoPrestamoModal"><i class="bi-collection" style="font-size: 1rem"></i> Crear Banco Nuevo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <h5 class="text-muted">Buscar Cliente</h5>
+
+                <div class="col-md-12 mt-2 px-md-1">
+
+                    <input type="text" class="form-control" placeholder="buscar cliente" (keyup)="buscarClient(searchClient.value)" #searchClient>
+
+                    <div *ngIf="listClients.length > 0 && searchClient.value.length !== 0" class="bg-white px-2 shadow col-auto" style="position: absolute; z-index: 1020;">
+
+                        <ul class="list-group list-group-flush overflow-auto" style="max-height: 150px;">
+
+                            <li class="list-group-item py-1">
+                                <h6>Resultados: ({{ listClients.length }})</h6>
+                            </li>
+
+                            <li class="list-group-item py-1" *ngFor="let cliente of listClients">
+                                <button [disabled]="!cliente.status" class="border-0 bg-white w-100 text-start" (click)="clientS = cliente; listClients = [] " type="button">
+                                    <div class="d-flex">
+                                        <div class="align-self-center">
+                                            <span> {{ cliente.name }} </span>
+                                            <span> {{ cliente.cedula }} </span>
+                                            <span> {{ cliente.phone }} </span>
+                                            <span *ngIf="!cliente.status" class="badge rounded-pill bg-danger">Eliminado</span>
+                                        </div>
+                                    </div>
+                                </button>
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </div>
+
+                <hr>
+
+
+                <form autocomplete="off" [formGroup]="createForm" (ngSubmit)="create()">
+
+                    <!-- =======================================================================
+                        Informacion del Prestamo
+                    =========================================================================== -->
+                    <div class="row mb-2">
+
+                        <div class="col-md-12 px-md-1">
+                            <label for="">Nombre</label>
+                            <div class="form-floating">
+                                <input readonly type="text" class="form-control text-capitalize" placeholder="Numero del Cliente" [value]="clientS?.name || ''">
+                                <label for="floatingInput">Nombre</label>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12 px-md-1">
+                            <label for="">Cedula</label>
+                            <div class="form-floating">
+                                <input readonly type="text" class="form-control text-capitalize" placeholder="Cedula del cliente" [value]="clientS?.cedula || ''">
+                                <label for="floatingInput">Cedula</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 px-md-1">
+                            <label for="">Frecuencia</label>
+                            <div class="form-floating">
+                                <input formControlName="frecuencia" type="number" min="1" class="form-control text-capitalize" placeholder="Frecuencia">
+                                <label for="floatingInput">Frecuencia</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 px-md-1">
+                            <label for="">Monto</label>
+                            <div class="form-floating">
+                                <input formControlName="monto" type="number" min="5000" class="form-control text-capitalize" placeholder="Monto">
+                                <label for="floatingInput">Monto</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 px-md-1">
+                            <label for="">Porcentaje</label>
+                            <div class="form-floating">
+                                <input formControlName="porcentaje" type="number" min="0" class="form-control text-capitalize" placeholder="Porcentaje">
+                                <label for="floatingInput">Porcentaje</label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="text-danger mb-2">
+                            <p *ngIf="validate('frecuencia')" class="mb-1 animated fadeIn">- La frecuencia de cobro es obligatoria</p>
+                            <p *ngIf="validate('monto')" class="mb-1 animated fadeIn">- El Monto es obligatorio, minimo $5000</p>
+                            <p *ngIf="validate('porcentaje')" class="mb-1 animated fadeIn">- El Porcentaje es obligatorio</p>
+                        </div>
+                    </div>
+
+
+                    <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary">crear</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =========================================================================
+    NUEVO PRESTAMO
+========================================================================= -->

@@ -50,6 +50,8 @@ import { EntradasSalidasComponent } from './configuracion/entradas-salidas/entra
 import { ImpuestosComponent } from './configuracion/impuestos/impuestos.component';
 import { BancosComponent } from './configuracion/bancos/bancos.component';
 import { EliminadosComponent } from './productos/eliminados/eliminados.component';
+import { PrestamosComponent } from './configuracion/prestamos/prestamos.component';
+import { PrestamoComponent } from './configuracion/prestamos/prestamo/prestamo.component';
 
 
 
@@ -91,7 +93,9 @@ import { EliminadosComponent } from './productos/eliminados/eliminados.component
     EntradasSalidasComponent,
     ImpuestosComponent,
     BancosComponent,
-    EliminadosComponent
+    EliminadosComponent,
+    PrestamosComponent,
+    PrestamoComponent
   ],
   exports: [
     PagesComponent,

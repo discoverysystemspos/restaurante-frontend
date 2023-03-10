@@ -41,6 +41,8 @@ import { EntradasSalidasComponent } from './configuracion/entradas-salidas/entra
 import { ImpuestosComponent } from './configuracion/impuestos/impuestos.component';
 import { BancosComponent } from './configuracion/bancos/bancos.component';
 import { EliminadosComponent } from './productos/eliminados/eliminados.component';
+import { PrestamosComponent } from './configuracion/prestamos/prestamos.component';
+import { PrestamoComponent } from './configuracion/prestamos/prestamo/prestamo.component';
 
 const routes: Routes = [
     
@@ -64,7 +66,10 @@ const routes: Routes = [
           { path: 'configuracion/mesas', component: MesasComponent, canActivate: [AdminGuard], data:{ titulo: 'Mesas' } },
           { path: 'configuracion/usuarios', component: UsuariosComponent, canActivate: [AdminGuard], data:{ titulo: 'Usuarios' } },
           { path: 'configuracion/impuestos', component: ImpuestosComponent,  canActivate: [AdminGuard], data:{ titulo: 'Impuestos'} },
-
+          
+          { path: 'configuracion/prestamos', component: PrestamosComponent, data:{ titulo: 'Prestamos'} },
+          { path: 'configuracion/prestamo/:id', component: PrestamoComponent, data:{ titulo: 'Prestamo'} },
+          
           { path: 'corte', component: CorteComponent, data:{ titulo: 'Corte'} },
 
 
