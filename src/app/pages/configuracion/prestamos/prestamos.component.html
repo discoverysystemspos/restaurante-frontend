@@ -19,76 +19,204 @@
 
 <div class="container-fluid my-4">
 
-    <!-- TABLE PRESTAMOS -->
-    <div class="shadow-lg p-3 mb-5 rounded bg-white">
+    <!-- TARJETAS -->
+    <div class="d-flex flex-wrap gap-3 mt-2">
 
-        <!-- CARGANDO -->
-        <div *ngIf="cargando">
-            <div class="text-center p-4">
-                <div class="spinner-grow text-secondary" role="status">
-                    <span class="visually-hidden">Loading...</span>
+        <div class="mb-4">
+            <!-- Dashboard info widget 1-->
+            <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-success h-100 bg-white">
+                <div class="card-body">
+                    <div class="d-flex align-items-center flex-wrap">
+                        <div class="flex-grow-1">
+                            <div class="small font-weight-bold text-success mb-1">Prestamos</div>
+                            <div class="h5"> {{ total | currency }} </div>
+                        </div>
+                        <div class="ms-2">
+                            <i class="bi bi-cash text-muted" style="font-size: 1.5rem;"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <small class="text-muted">cargando...</small>
         </div>
-        <!-- CARGANDO -->
 
-        <div *ngIf="!cargando">
-
-            <!-- BTN CREAR IMPUESTO -->
-            <div class="d-flex justify-content-end">
-                <button type="button" class="btn btn-sm btn-primary btnW waves-effect waves-ligth" data-bs-toggle="modal" data-bs-target="#nuevoPrestamo">Crear</button>
-            </div>
-            <!-- BTN CREAR IMPUESTO -->
-
-            <div class="table-responsive ">
-                <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
-                    <thead class="border-bottom ">
-                        <tr>
-                            <th class="text-muted" scope="col ">Fecha</th>
-                            <th class="text-muted" scope="col ">Cliente</th>
-                            <th class="text-muted" scope="col ">Monto</th>
-                            <th class="text-muted" scope="col ">Porcentaje</th>
-                            <th class="text-muted" scope="col ">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngIf="!sinResultados" class="text-center ">
-                            <th colspan="10" class="py-4">
-                                <h4 class="text-muted">Sin Resultados</h4>
-                            </th>
-                        </tr>
-
-                        <tr class="trHover" *ngFor="let prestamo of listaPrestamos; let i = index">
-                            <td>{{ prestamo.fecha | date: 'short' }}</td>
-                            <td>{{ prestamo.client.name }}</td>
-                            <td>{{ prestamo.monto | divisa}}</td>
-                            <td>{{ prestamo.porcentaje }}%</td>
-                            <td class="text-center">
-                                <a class="btn btn-link p-1 text-primary" [routerLink]="['/dashboard/configuracion/prestamo', prestamo.presid]">
-                                    <i class="bi bi-box-arrow-up-right"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    </tbody>
-
-                </table>
-
-            </div>
-
-            <!-- BTN SIGUIENTE Y ANTERIOR -->
-            <div class="row">
-                <div class="col col-md-4">
-                    <small class="text-muted">Total de prestamos: ({{totalPrestamos}})</small>
-                    <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
-                    <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + listaPrestamos.length }})</small>
+        <div class="mb-4">
+            <!-- Dashboard info widget 1-->
+            <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-dark h-100 bg-white">
+                <div class="card-body">
+                    <div class="d-flex align-items-center flex-wrap">
+                        <div class="flex-grow-1">
+                            <div class="small font-weight-bold text-dark mb-1">Total Abonado</div>
+                            <div class="h5"> {{ totalAbonado | currency }} </div>
+                        </div>
+                        <div class="ms-2">
+                            <i class="bi bi-cash text-muted" style="font-size: 1.5rem;"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- BTN SIGUIENTE Y ANTERIOR -->
-
         </div>
+
+        <div class="mb-4">
+            <!-- Dashboard info widget 1-->
+            <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-info h-100 bg-white">
+                <div class="card-body">
+                    <div class="d-flex align-items-center flex-wrap">
+                        <div class="flex-grow-1">
+                            <div class="small font-weight-bold text-info mb-1">Total Intereses</div>
+                            <div class="h5"> {{ totalIntereses | currency }} </div>
+                        </div>
+                        <div class="ms-2">
+                            <i class="bi bi-cash text-muted" style="font-size: 1.5rem;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
-    <!-- TABLE PRESTAMOS -->
+    <!-- TARJETAS -->
+
+    <div class="d-flex flex-wrap gap-3">
+
+        <!-- FILTROS -->
+        <div class="shadow-lg p-3 rounded bg-white col-auto">
+
+            <!-- BUSCADOR DE CLIENTES  -->
+            <div class="mb-3">
+                <h4 class="text-muted">Buscar Cliente</h4>
+                <div>
+                    <input type="text" class="form-control" placeholder="buscar cliente" (keyup)="buscarClient(searchClient.value)" #searchClient>
+                </div>
+
+                <hr>
+
+                <div *ngIf="listClients.length > 0" class="bg-white py-3 px-2 shadow" style="position: absolute; z-index: 1020;">
+
+                    <div *ngIf="cargandoCliente" class="text-center py-3">
+                        <div class="spinner-grow text-secondary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <div>
+                            <small class="text-muted">Cargando...</small>
+                        </div>
+                    </div>
+
+                    <ul *ngIf="!cargandoCliente" class="list-group list-group-flush overflow-auto" style="max-height: 200px; min-width: 250px;">
+
+                        <li class="list-group-item">
+                            <h6>Resultados: ({{ listClients.length }})</h6>
+                        </li>
+
+                        <li class="list-group-item" *ngFor="let item of listClients">
+                            <button (click)="buscarPrestamoClient(item.cid)" type="button" style="background: none; border: 0;">
+                                <div class="d-flex ">
+                                    <div class="align-self-center">
+                                        <span class="text-capitalize fw-bold"> {{ item.name }} </span><br>
+                                        <small> C.C: {{ item.cedula }} </small>
+                                    </div>
+
+                                    <div class="ms-auto">
+                                        <i class="text-success bi-arrow-90deg-right"></i>
+                                    </div>
+                                </div>
+                            </button>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+            <!-- BUSCADOR DE CLIENTES  -->
+
+            <h4 class="text-muted">Filtros</h4>
+
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="">Por fecha</label>
+                    <input type="datetime-local" class="form-control" #vence>
+                </div>
+
+                <button (click)="buscarFechas(vence.value)" type="button" class="btn btn-primary btn-sm btn-block">buscar</button>
+
+            </div>
+
+        </div>
+        <!-- FILTROS -->
+
+        <!-- TABLE PRESTAMOS -->
+        <div class="shadow-lg p-3 rounded bg-white col-auto">
+
+            <!-- CARGANDO -->
+            <div *ngIf="cargando">
+                <div class="text-center p-4">
+                    <div class="spinner-grow text-secondary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <small class="text-muted">cargando...</small>
+            </div>
+            <!-- CARGANDO -->
+
+            <div *ngIf="!cargando">
+
+                <!-- BTN CREAR IMPUESTO -->
+                <div class="d-flex">
+                    <button (click)="loadPrestamos()" type="button" class="btn btn-sm btn-success btnW waves-effect waves-ligth">Recargar</button>
+                    <button type="button" class="btn btn-sm btn-primary btnW waves-effect waves-ligth ms-auto" data-bs-toggle="modal" data-bs-target="#nuevoPrestamo">Crear</button>
+                </div>
+                <!-- BTN CREAR IMPUESTO -->
+
+                <div class="table-responsive">
+                    <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                        <thead class="border-bottom ">
+                            <tr>
+                                <th class="text-muted" scope="col ">Fecha</th>
+                                <th class="text-muted" scope="col ">Cliente</th>
+                                <th class="text-muted" scope="col ">Monto</th>
+                                <th class="text-muted" scope="col ">Porcentaje</th>
+                                <th class="text-muted text-center" cope="col ">Vence</th>
+                                <th class="text-muted" scope="col ">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr *ngIf="!sinResultados" class="text-center ">
+                                <th colspan="10" class="py-4">
+                                    <h4 class="text-muted">Sin Resultados</h4>
+                                </th>
+                            </tr>
+
+                            <tr class="trHover" *ngFor="let prestamo of listaPrestamos; let i = index">
+                                <td>{{ prestamo.fecha | date: 'd/M/y' }}</td>
+                                <td>{{ prestamo.client.name }}</td>
+                                <td>{{ prestamo.monto | divisa}}</td>
+                                <td class="text-center">{{ prestamo.porcentaje }}%</td>
+                                <td class="text-center">{{ prestamo.vence | date:'d MMMM, y' }}</td>
+                                <td class="text-center">
+                                    <a class="btn btn-link p-1 text-primary" [routerLink]="['/dashboard/configuracion/prestamo', prestamo.presid]">
+                                        <i class="bi bi-box-arrow-up-right"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <!-- BTN SIGUIENTE Y ANTERIOR -->
+                <div class="row">
+                    <div class="col col-md-4">
+                        <small class="text-muted">Total de prestamos: ({{totalPrestamos}})</small>
+                        <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
+                        <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + listaPrestamos.length }})</small>
+                    </div>
+                </div>
+                <!-- BTN SIGUIENTE Y ANTERIOR -->
+
+            </div>
+        </div>
+        <!-- TABLE PRESTAMOS -->
+    </div>
 
 
 </div>
@@ -100,7 +228,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="nuevoPrestamoModal"><i class="bi-collection" style="font-size: 1rem"></i> Crear Banco Nuevo</h5>
+                <h5 class="modal-title" id="nuevoPrestamoModal"><i class="bi-collection" style="font-size: 1rem"></i> Crear Prestamo Nuevo</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -109,18 +237,18 @@
 
                 <div class="col-md-12 mt-2 px-md-1">
 
-                    <input type="text" class="form-control" placeholder="buscar cliente" (keyup)="buscarClient(searchClient.value)" #searchClient>
+                    <input type="text" class="form-control" placeholder="buscar cliente" (keyup)="buscarClient2(searchClient2.value)" #searchClient2>
 
-                    <div *ngIf="listClients.length > 0 && searchClient.value.length !== 0" class="bg-white px-2 shadow col-auto" style="position: absolute; z-index: 1020;">
+                    <div *ngIf="listClients2.length > 0 && searchClient2.value.length !== 0" class="bg-white px-2 shadow col-auto" style="position: absolute; z-index: 1020;">
 
                         <ul class="list-group list-group-flush overflow-auto" style="max-height: 150px;">
 
                             <li class="list-group-item py-1">
-                                <h6>Resultados: ({{ listClients.length }})</h6>
+                                <h6>Resultados: ({{ listClients2.length }})</h6>
                             </li>
 
-                            <li class="list-group-item py-1" *ngFor="let cliente of listClients">
-                                <button [disabled]="!cliente.status" class="border-0 bg-white w-100 text-start" (click)="clientS = cliente; listClients = [] " type="button">
+                            <li class="list-group-item py-1" *ngFor="let cliente of listClients2">
+                                <button [disabled]="!cliente.status" class="border-0 bg-white w-100 text-start" (click)="clientS = cliente; listClients2 = [] " type="button">
                                     <div class="d-flex">
                                         <div class="align-self-center">
                                             <span> {{ cliente.name }} </span>

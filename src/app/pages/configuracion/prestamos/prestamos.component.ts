@@ -39,6 +39,9 @@ export class PrestamosComponent implements OnInit {
   public listaPrestamos: Prestamo[] = [];
   public listaPrestamosTemp: Prestamo[] = [];
   public totalPrestamos: number = 0;
+  public total: number = 0;
+  public totalAbonado: number = 0;
+  public totalIntereses: number = 0;
 
   loadPrestamos(){
 
@@ -47,6 +50,10 @@ export class PrestamosComponent implements OnInit {
 
     this.prestamosService.loadPrestamos(this.desde, this.hasta)
         .subscribe( ({prestamos, total}) => {
+
+          this.total = 0;
+          this.totalAbonado = 0;
+          this.totalIntereses = 0;
 
           // COMPROBAR SI EXISTEN RESULTADOS
           if (prestamos.length === 0) {
@@ -65,6 +72,22 @@ export class PrestamosComponent implements OnInit {
           this.listaPrestamosTemp = prestamos;
           this.resultado = 0;
           this.cargando = false;
+          this.sinResultados = true;
+
+          for (const prestamo of prestamos) {
+            this.total += prestamo.monto;
+
+            prestamo.payments.map( pago => {
+              if (pago.type === 'interes') {
+                this.totalIntereses += pago.amount;
+              }
+              if (pago.type === 'abono') {
+                this.totalAbonado += pago.amount;
+              }
+            })
+
+          }
+
 
         }, (err) => {
           console.log(err);
@@ -155,11 +178,150 @@ export class PrestamosComponent implements OnInit {
     }
     
     this.searhcService.search('clients', termino)
-    .subscribe( ({resultados}) => {
+    .subscribe( ({resultados}) => {      
 
         this.listClients = resultados;          
 
+      }, (err) => {
+        console.log(err);
+        
       });
+
+  }
+
+  /** ================================================================
+   *   SEARCH CLIENT ""
+  ==================================================================== */
+  public listClients2: any[] = [];
+  public clientS2: Client;
+  buscarClient2(termino: string){
+    
+
+    this.listClients = [];
+    
+    if (termino.length < 1) {
+      this.listClients = [];
+      return;      
+    }
+    
+    this.searhcService.search('clients', termino)
+    .subscribe( ({resultados}) => {      
+
+        this.listClients2 = resultados;          
+
+      }, (err) => {
+        console.log(err);
+        
+      });
+
+  }
+
+  /** ================================================================
+   *   SEARCH PRESTAMOS OF CLIENTS
+  ==================================================================== */
+  buscarPrestamoClient( client: string ){
+
+    this.listClients = [];
+    this.listaPrestamos = [];
+    this.prestamosService.loadPrestamoClient(client)
+        .subscribe( ({prestamos, total}) => {
+
+          this.total = 0;
+          this.totalAbonado = 0;
+          this.totalIntereses = 0;
+
+          // COMPROBAR SI EXISTEN RESULTADOS
+          if (prestamos.length === 0) {
+            this.sinResultados = false;
+            this.cargando = false;
+            this.listaPrestamos = [];
+            this.resultado = 0;
+            this.btnAtras = 'disabled';
+            this.btnAdelante = 'disabled';
+            return;                
+          }
+          // COMPROBAR SI EXISTEN RESULTADOS
+
+          this.totalPrestamos = prestamos.length;
+          this.listaPrestamos = prestamos;
+          this.resultado = 0;
+          this.cargando = false;
+          this.sinResultados = true;
+
+          for (const prestamo of prestamos) {
+            this.total += prestamo.monto;
+
+            prestamo.payments.map( pago => {
+              if (pago.type === 'interes') {
+                this.totalIntereses += pago.amount;
+              }
+              if (pago.type === 'abono') {
+                this.totalAbonado += pago.amount;
+              }
+            })
+
+          }
+
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');
+          
+        })
+
+  }
+
+  /** ================================================================
+   *   BUSCAR PRESTAMOS POR FECHAS
+  ==================================================================== */
+  buscarFechas(vence: any){
+
+    if (vence.length === 0) {
+      return;
+    }
+
+    this.prestamosService.loadPrestamosDates(new Date(vence).getTime())
+        .subscribe( ({prestamos, total}) => {
+
+          this.total = 0;
+          this.totalAbonado = 0;
+          this.totalIntereses = 0;
+
+          // COMPROBAR SI EXISTEN RESULTADOS
+          if (prestamos.length === 0) {
+            this.sinResultados = false;
+            this.cargando = false;
+            this.listaPrestamos = [];
+            this.resultado = 0;
+            this.btnAtras = 'disabled';
+            this.btnAdelante = 'disabled';
+            return;                
+          }
+          // COMPROBAR SI EXISTEN RESULTADOS
+
+          this.totalPrestamos = prestamos.length;
+          this.listaPrestamos = prestamos;
+          this.resultado = 0;
+          this.cargando = false;
+          this.sinResultados = true;
+
+          for (const prestamo of prestamos) {
+            this.total += prestamo.monto;
+
+            prestamo.payments.map( pago => {
+              if (pago.type === 'interes') {
+                this.totalIntereses += pago.amount;
+              }
+              if (pago.type === 'abono') {
+                this.totalAbonado += pago.amount;
+              }
+            })
+
+          }
+
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');          
+        });
 
   }
 

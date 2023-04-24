@@ -306,8 +306,10 @@ export class CorteComponent implements OnInit {
             for (const pago of factura.payments) {
 
               this.bancos.map( (banco) => {
+                
+                
+                if (banco.name === pago.type) {                  
 
-                if (banco.name === pago.type) {
                   banco.monto += pago.amount;
 
                   this.totalBancos += pago.amount;
@@ -319,6 +321,12 @@ export class CorteComponent implements OnInit {
             }
             
           }
+
+          this.bancos.map( (banco) => {
+
+              this.totalBancos += banco.monto;
+
+          });
          
           
         });
@@ -371,7 +379,7 @@ export class CorteComponent implements OnInit {
 
     const totalEfectivo = (this.efectivo + this.entradas + this.inicial + this.abEfectivo + this.salidas);
 
-    if (Number(dineroCaja) !== totalEfectivo) {
+    if ((Number(dineroCaja) - this.totalDevolucion) !== totalEfectivo) {
       this.turno.diferencia = true;
       this.turno.montoD = Number(dineroCaja) - totalEfectivo;
     }
@@ -384,8 +392,8 @@ export class CorteComponent implements OnInit {
         .subscribe( (resp:{ ok:boolean, turno: LoadTurno }) => {        
           
           this.fechaCierre = resp.turno.cierre;
-          this.diferencia = resp.turno.diferencia;
-          this.montoDiferencia = resp.turno.montoD;
+          this.diferencia = resp.turno.diferencia ;
+          this.montoDiferencia = resp.turno.montoD ;
 
           this.userService.user.cerrada = true;
 

@@ -13,7 +13,7 @@ export interface _ingredientes {
 }
 
 export interface _comanda {
-    product: string;
+    product: any;
     ingredientes: _ingredientes[];
     qty: number;
     nota: string;

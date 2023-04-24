@@ -73,7 +73,7 @@
 
                             <tr class="border-top">
                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                <td class="fw-bold"> {{ (inicial + efectivo + abEfectivo + entradas + salidas) + totalDevolucion | divisa }} </td>
+                                <td class="fw-bold"> {{ (inicial + efectivo + abEfectivo + entradas + salidas) - (totalDevolucion) | divisa }} </td>
                             </tr>
 
                         </tbody>
@@ -123,7 +123,7 @@
 
                             <tr class="border-top">
                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + totalBancos + credito + vales + totalDevolucion | divisa }} </td>
+                                <td class="fw-bold"> {{ (efectivo + tarjeta + transferencia + totalBancos ) - totalDevolucion | divisa }} </td>
                             </tr>
 
 
@@ -141,7 +141,7 @@
 
                 <div class="card-body text-white">
                     <h4 class="card-title mb-0 text-center">Ventas Totales</h4>
-                    <h5 class="text-center"> {{ montos | divisa }} </h5>
+                    <h5 class="text-center"> {{ (efectivo + credito + tarjeta + transferencia + vales) | divisa}} </h5>
                 </div>
 
             </div>
@@ -149,7 +149,7 @@
 
                 <div class="card-body text-white">
                     <h4 class="card-title mb-0 text-center">Ganancia Total</h4>
-                    <h5 class="text-center"> {{ montos - costo | divisa }} </h5>
+                    <h5 class="text-center"> {{ ((efectivo + credito + tarjeta + transferencia + vales) - totalDevolucion) - costo | divisa }} </h5>
                 </div>
 
             </div>
@@ -432,7 +432,7 @@
                         <tbody>
                             <tr style="color: black;">
                                 <td scope="row">Efectivo esperado en caja:</td>
-                                <td>{{ inicial + efectivo + abEfectivo + entradas + salidas + totalDevolucion | divisa }}</td>
+                                <td>{{ (inicial + efectivo + abEfectivo + entradas + salidas) - totalDevolucion | divisa }}</td>
                             </tr>
 
                             <tr style="color: black;">
@@ -446,17 +446,17 @@
 
                             <tr style="color: black;">
                                 <td scope="row"> Diferencia </td>
-                                <td [ngClass]=" {   'text-danger': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value + totalDevolucion) !== 0, 
-                                                    'text-success': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value + totalDevolucion) > 0
+                                <td [ngClass]=" {   'text-danger': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) - totalDevolucion !== 0, 
+                                                    'text-success': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) - totalDevolucion > 0
                                 }">
-                                    {{ cajaA.value - (inicial + efectivo + abEfectivo + entradas + salidas + totalDevolucion) | divisa}}
+                                    {{ cajaA.value - (inicial + efectivo + abEfectivo + entradas + salidas ) - totalDevolucion | divisa}}
                                 </td>
                             </tr>
                         </tbody>
                     </table>
 
-                    <p class="animated fadeIn mb-2 text-danger" *ngIf="(inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value + totalDevolucion) !== 0 "> <i class="bi-exclamation-triangle"></i> Existe una diferencia, todo va a quedar almacenado </p>
-                    <p class="animated fadeIn mb-2 text-success" *ngIf="(inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value + totalDevolucion) === 0"> <i class="bi-check2-all"></i> Todo en orden</p>
+                    <p class="animated fadeIn mb-2 text-danger" *ngIf="(inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value ) - totalDevolucion !== 0 "> <i class="bi-exclamation-triangle"></i> Existe una diferencia, todo va a quedar almacenado </p>
+                    <p class="animated fadeIn mb-2 text-success" *ngIf="(inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value ) - totalDevolucion === 0"> <i class="bi-check2-all"></i> Todo en orden</p>
 
                     <button type="button" class="btn btn-primary" (click)="cerrarTurno(cajaA.value)">Hacer cierre</button>
 
@@ -502,7 +502,7 @@
                                 </thead>
                                 <tbody>
                                     <tr style="color: black;">
-                                        <th scope="row">{{ efectivo + credito + tarjeta + transferencia + vales + totalDevolucion | divisa }} </th>
+                                        <th scope="row">{{ (efectivo + credito + tarjeta + transferencia + vales) - totalDevolucion | divisa }} </th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -519,7 +519,7 @@
                                 </thead>
                                 <tbody>
                                     <tr style="color: black;">
-                                        <th scope="row">{{ (efectivo + credito + tarjeta + transferencia + vales) - costo | divisa }} </th>
+                                        <th scope="row">{{ ((efectivo + credito + tarjeta + transferencia + vales) - totalDevolucion) - costo | divisa }} </th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -564,7 +564,7 @@
                                     </tr>
                                     <tr class="border-top">
                                         <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                        <td class="fw-bold"> {{ inicial + efectivo + abEfectivo + entradas + salidas + totalDevolucion | divisa }} </td>
+                                        <td class="fw-bold"> {{ (inicial + efectivo + abEfectivo + entradas + salidas) - totalDevolucion | divisa }} </td>
                                     </tr>
 
                                 </tbody>
@@ -611,7 +611,7 @@
 
                                         <tr class="border-top">
                                             <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                            <td class="fw-bold"> {{ efectivo + tarjeta + transferencia + totalBancos + credito + vales + totalDevolucion | divisa }} </td>
+                                            <td class="fw-bold"> {{ (efectivo + tarjeta + transferencia + totalBancos + credito + vales) - totalDevolucion | divisa }} </td>
                                         </tr>
 
 

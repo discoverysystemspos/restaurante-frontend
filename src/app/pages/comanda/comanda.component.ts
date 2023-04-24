@@ -78,20 +78,29 @@ export class ComandaComponent implements OnInit {
   /** ================================================================
    *   IMPRIMIR
   ==================================================================== */
-  printDiv() {
-    this.printerService.printDiv('printDiv');
+  printDiv(imprimir: string, tipo: any[]) {
 
-    let coman = this.comanda.comanda;
+    this.printerService.printDiv(imprimir);
 
-    for (let i = 0; i < coman.length; i++) {
-      
-      if ( coman[i].estado === 'pendiente' ) {
-        
-        this.cambiarEstado(coman, coman[i].product, 'Preparando', this.comanda);
+    tipo.map( (item) => {
 
+      if (item.estado === 'pendiente') {
+        this.cambiarEstado(this.comanda.comanda, item.product, 'Preparando', this.comanda);
       }
+
+    });
+
+    // let coman = this.comanda.comanda;
+
+    // for (let i = 0; i < coman.length; i++) {
       
-    }
+    //   if ( coman[i].estado === 'pendiente' ) {
+        
+    //     this.cambiarEstado(coman, coman[i].product, 'Preparando', this.comanda);
+
+    //   }
+      
+    // }
 
 
   }
@@ -139,6 +148,8 @@ export class ComandaComponent implements OnInit {
     this.mesasService.updateMesa(this.mesa, mesaID)
         .subscribe( (resp:{ok: boolean, mesa: any}) => {
 
+          this.comandaModal(this.mesa);
+
         })
 
   }
@@ -164,9 +175,28 @@ export class ComandaComponent implements OnInit {
    *   COMANDA
   ==================================================================== */
   public comanda: Mesa;
+  public barra    =  [];
+  public bebidas  =  [];
+  public cocina   =  [];
   comandaModal(comanda: Mesa){
 
+    this.cocina = [];
+    this.barra = [];
+    this.bebidas = [];
+
     this.comanda = comanda;
+
+    comanda.comanda.map( (item) => {
+
+      if (item.product.tipo === 'Cocina') {
+        this.cocina.push(item);
+      }else if(item.product.tipo === 'Barra'){
+        this.barra.push(item);
+      }else if(item.product.tipo === 'Bebidas'){
+        this.bebidas.push(item);
+      }
+
+    });
 
   }
 

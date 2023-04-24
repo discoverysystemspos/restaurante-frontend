@@ -55,7 +55,14 @@ export class PrestamosService {
    *  LOAD PRESTAMO ID
   ==================================================================== */
   loadPrestamosDates(fecha: number){
-    return this.http.get<{ok: boolean, prestamos: Prestamo[]}>(`${base_url}/prestamos/date/${fecha}`, this.headers);
+    return this.http.get<{ok: boolean, prestamos: Prestamo[], total: number}>(`${base_url}/prestamos/date/${fecha}`, this.headers);
+  }
+
+  /** ================================================================
+   *  LOAD PRESTAMOS CLIENT
+  ==================================================================== */
+  loadPrestamoClient(client: string){
+    return this.http.get<{ok: boolean, prestamos: Prestamo[], total: number}>(`${base_url}/prestamos/client/${client}`, this.headers);
   }
 
   /** ================================================================
