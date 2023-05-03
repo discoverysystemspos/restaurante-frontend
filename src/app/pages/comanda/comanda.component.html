@@ -135,11 +135,11 @@
 
             <div class="modal-body">
 
-                <hr>
-                <h4>Cocina</h4>
-
                 <!-- COCINA -->
                 <div *ngIf="cocina.length > 0">
+
+                    <hr>
+                    <h4>Cocina</h4>
 
                     <div class="d-flex justify-content-end my-2">
                         <button type="button" (click)="printDiv('printDiv1', cocina)" class="btn btn-sm btn-success btnW waves-effect waves-ligth">
@@ -217,11 +217,13 @@
                 </div>
                 <!-- COCINA -->
 
-                <hr>
-                <h4>Bebidas</h4>
+
 
                 <!-- BEBIDAS -->
                 <div *ngIf="bebidas.length > 0">
+
+                    <hr>
+                    <h4>Bebidas</h4>
 
                     <div class="d-flex justify-content-end my-2">
                         <button type="button" (click)="printDiv('printDiv2', bebidas)" class="btn btn-sm btn-success btnW waves-effect waves-ligth">
@@ -299,11 +301,11 @@
                 </div>
                 <!-- BEBIDAS -->
 
-                <hr>
-                <h4>Barra</h4>
-
                 <!-- BARRA -->
                 <div *ngIf="barra.length > 0">
+
+                    <hr>
+                    <h4>Barra</h4>
 
                     <div class="d-flex justify-content-end my-2">
                         <button type="button" (click)="printDiv('printDiv3', barra)" class="btn btn-sm btn-success btnW waves-effect waves-ligth">

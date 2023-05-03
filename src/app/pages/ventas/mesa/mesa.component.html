@@ -774,6 +774,11 @@
                                         <!-- FORM INVOICE - FORM INVOICE -->
                                         <form autocomplete="off" [formGroup]="invoiceForm">
 
+                                            <div class="col-auto">
+                                                <label for="fecha" class="">Fecha</label>
+                                                <input type="datetime-local" formControlName="fecha" class="form-control" id="fecha" placeholder="Selecciona una fecha limite" #fechCredito>
+                                            </div>
+
                                             <div class="row text-center">
                                                 <div class="col p-2">
 

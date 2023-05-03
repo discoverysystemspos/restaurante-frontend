@@ -1548,6 +1548,7 @@ export class MesaComponent implements OnInit {
     nota: [''],
     apartado: false,
     porcentaje: 0,
+    fecha: new Date(),
     descuento: false
   })
 
@@ -1742,12 +1743,14 @@ export class MesaComponent implements OnInit {
       nota: this.invoiceForm.value.nota,
       apartado: this.invoiceForm.value.apartado,
       descuento: this.formDescuento.value.descuento,
-      porcentaje: this.formDescuento.value.porcentaje
+      porcentaje: this.formDescuento.value.porcentaje,
+      fecha: this.invoiceForm.value.fecha || new Date()
     });
 
     if(!this.clienteTemp){
       this.invoiceForm.value.client = '';
-    }
+      
+    }    
 
     try {
 
