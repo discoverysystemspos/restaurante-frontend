@@ -47,6 +47,7 @@ export class Datos{
         public basculaimp?: boolean,
         public basculatype?: string,
         public basculacode?: string,
+        public electronica?: boolean,
     ){}
 
     /** ================================================================

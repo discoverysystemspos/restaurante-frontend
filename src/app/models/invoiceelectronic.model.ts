@@ -23,7 +23,7 @@ export interface Attachment {
 }
 
 export interface FacturaElectronica {
-    issue_date:         string;
+    issue_date:         Date;
     invoice_type_code:  'FACTURA_VENTA' | 'FACTURA_EXPORTACION' | 'FACTURA_CONTINGENCIA';
     charges:            Charge[];
     order_reference:    string;

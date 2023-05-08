@@ -8,6 +8,7 @@ import { FileUploadService } from '../../../services/file-upload.service';
 // MODELS
 import { Datos, comisiones } from '../../../models/empresa.model';
 import Swal from 'sweetalert2';
+import { DataicoService } from 'src/app/services/dataico.service';
 
 @Component({
   selector: 'app-empresa',
@@ -21,7 +22,8 @@ export class EmpresaComponent implements OnInit {
 
   constructor(  private empresaService: EmpresaService,
                 private fb: FormBuilder,
-                private fileUploadService: FileUploadService) { }
+                private fileUploadService: FileUploadService,
+                private dataicoService: DataicoService) { }
 
   ngOnInit(): void {
 
@@ -41,7 +43,7 @@ export class EmpresaComponent implements OnInit {
 
           this.comisiones = datos.comisiones || [];
           
-          const { tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas, commissions, comisiones, fruver, moneda, decimal, usd,  currencyusd, cop, currencycop, basculaimp, basculatype, basculacode } = datos;
+          const { tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas, commissions, comisiones, fruver, moneda, decimal, usd,  currencyusd, cop, currencycop, basculaimp, basculatype, basculacode, electronica } = datos;
 
           let tipoImpuesto = '';
 
@@ -84,6 +86,7 @@ export class EmpresaComponent implements OnInit {
               basculaimp: basculaimp || false,
               basculatype: basculatype ||'precio',
               basculacode: basculacode ||'2000',
+              electronica: electronica || false
 
             });
 
@@ -127,6 +130,7 @@ export class EmpresaComponent implements OnInit {
     basculaimp: false,
     basculatype: 'precio',
     basculacode: '2000',
+    electronica: false
   })
 
   actualizarDatos(){
@@ -270,5 +274,102 @@ export class EmpresaComponent implements OnInit {
     this.formUpdate.value.comisiones = this.comisiones;
   }
 
+  /** ================================================================
+   *  OBTENER DATOS DE LA FACTURA ELECTRONICA
+  ==================================================================== */
+  public dataico: any;
+  loadDataDataico(){
 
+    this.dataicoService.loadDataDataico()
+        .subscribe( ({dataico}) => {
+
+          console.log(dataico);
+          
+
+        }, (err) => {
+          console.log(err);
+          
+        });
+
+  }
+
+  /** ================================================================
+   *  CREAR LOS DATOS DE DATAICO
+  ==================================================================== */
+  public dataicoFormSubmitted: boolean = false;
+  public dataicoForm = this.fb.group({    
+
+    authtoken: ['', [Validators.required]],
+    dataico_account_id: ['', [Validators.required]],
+
+    party_type: ['PERSONA_NATURAL', [Validators.required]],
+
+    // SI ES JURIDICO
+    company_name: ['', [Validators.required]],
+    
+    // SI ES PERSONA NATURAL
+    first_name: ['', [Validators.required]],
+    family_name: ['', [Validators.required]],
+
+    party_identification_type: ['NIT', [Validators.required]],
+    party_identification: ['', [Validators.required]],
+
+    department: ['', [Validators.required]],
+    city: ['', [Validators.required]],
+    address_line: ['', [Validators.required]],
+    email: ['', [Validators.required]],
+    phone: ['', [Validators.required]],
+
+    tax_level_code: ['SIMPLIFICADO', [Validators.required]],
+    regimen: ['SIMPLE', [Validators.required]],
+    invoice_type_code: ['FACTURA_VENTA', [Validators.required]],
+    
+    resolution_number: ['', [Validators.required]],
+    prefix: ['', [Validators.required]],
+    flexible: [false, [Validators.required]],
+
+    operation: ['ESTANDAR', [Validators.required]],
+    env: ['PRUEBAS', [Validators.required]],
+
+    send_dian: [false, [Validators.required]],
+    send_email: [false, [Validators.required]],
+
+
+  });
+
+  createDataico(){
+    this.dataicoFormSubmitted = true;
+
+    if (this.dataicoForm.invalid) {
+      return;
+    }
+
+    this.dataicoService.postDataico(this.dataicoForm.value)
+        .subscribe( ({dataico}) => {
+
+          console.log(dataico);
+          
+
+        }, (err) => {
+          console.log(err);
+          
+        });
+
+  }
+
+  /** ================================================================
+   *  VALIDAR DATOS DE DATAICO
+  ==================================================================== */
+  validate(campo: string): boolean{
+    if (this.dataicoForm.get(campo).invalid && this.dataicoFormSubmitted) {
+      return true;
+    }else{
+      return false;
+    }
+
+  }
+
+
+
+  // FIN DE LA CLASE
 }
