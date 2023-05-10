@@ -36,14 +36,14 @@ export class DataicoService {
    *  LOAD DATA DATAICO
   ==================================================================== */
   loadDataDataico(){    
-    return this.http.get<DataicoInterface>(`${base_url}/dataico`, this.headers);
+    return this.http.get<{dataico: DataicoInterface, ok: boolean}>(`${base_url}/dataico`, this.headers);
   }
 
   /** ================================================================
    *  POST DATAICO
   ==================================================================== */
   postDataico(formData: any){
-    return this.http.post<DataicoInterface>(`${base_url}/dataico`, formData, this.headers);
+    return this.http.post<{dataico: DataicoInterface, ok: boolean}>(`${base_url}/dataico`, formData, this.headers);
   }
 
 

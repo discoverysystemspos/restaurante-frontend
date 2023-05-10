@@ -126,7 +126,8 @@
                             </div>
 
                             <div class="col-md-4" *ngIf="electronicaIn.checked">
-                                <button (click)="loadDataDataico()" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#electronicaUpdate"> Configurar</button>
+                                <button *ngIf="dataDataico" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#electronicaUpdate"> Actualizar</button>
+                                <button *ngIf="!dataDataico" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#electronicaPost"> Configurar</button>
 
                             </div>
 
@@ -503,11 +504,11 @@
 <!-- =========================================================================
     CONFIGURAR FACTURACION ELECTRONICA
 ========================================================================= -->
-<div class="modal fade" id="electronicaUpdate" tabindex="-1" aria-labelledby="electronicaUpdateModal" aria-hidden="true">
+<div class="modal fade" id="electronicaPost" tabindex="-1" aria-labelledby="electronicaPostModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="electronicaUpdateModal"><i class="bi-collection" style="font-size: 1rem"></i> Información para factura electronica</h5>
+                <h5 class="modal-title" id="electronicaPostModal"><i class="bi-collection" style="font-size: 1rem"></i> Información para factura electronica</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -531,7 +532,7 @@
                                     <input formControlName="authtoken" type="text" class="form-control text-capitalize" placeholder="Token de dataico">
                                     <label for="floatingInput">Token</label>
                                 </div>
-                                <p *ngIf="campoValido('authtoken')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                                <p *ngIf="validate('authtoken')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
                             </div>
 
                             <div class="col-md-12 mb-3 px-md-1">
@@ -540,7 +541,7 @@
                                     <input formControlName="dataico_account_id" type="text" class="form-control text-capitalize" placeholder="ID de dataico">
                                     <label for="floatingInput">ID Dataico </label>
                                 </div>
-                                <p *ngIf="campoValido('dataico_account_id')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                                <p *ngIf="validate('dataico_account_id')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
                             </div>
 
                         </div>
@@ -554,40 +555,40 @@
                             <!-- Tipo de empresa -->
                             <div class="col-md-12 mb-3 px-md-1">
                                 <label for="partyType" class="col-sm-auto col-form-label">Tipo de empresa</label>
-                                <select formcontrolname="party_type" class="form-select" id="partyType" #partyType (change)="partyType.value" aria-label="Floating label select example">
-                                    <option value="PERSONA_NATURAL" selected>Persona Natural</option>
+                                <select formcontrolname="party_type" class="form-select" id="partyType" #partyTypeUp (change)="partyTypeUp.value" aria-label="Floating label select example">
+                                    <option value="PERSONA_NATURAL">Persona Natural</option>
                                     <option value="PERSONA_JURIDICA" >Persona Juridica</option>
                                 </select>
                             </div>
 
                             <!-- Nombre de la empresa -->
-                            <div *ngIf="partyType.value === 'PERSONA_JURIDICA'" class="col-md-12 mb-3 px-md-1">
+                            <div *ngIf="partyTypeUp.value === 'PERSONA_JURIDICA'" class="col-md-12 mb-3 px-md-1">
                                 <label for="companyName">Nombre de la empresa </label>
                                 <div class="form-floating">
                                     <input id="companyName" formControlName="company_name" type="text" class="form-control text-capitalize" placeholder="Nombre de la empresa">
                                     <label for="floatingInput">Nombre de la empresa </label>
                                 </div>
-                                <p *ngIf="campoValido('company_name')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                                <p *ngIf="validate('company_name')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
                             </div>
 
                             <!-- Nombres de la persona natural -->
-                            <div *ngIf="partyType.value === 'PERSONA_NATURAL'" class="col-md-12 mb-3 px-md-1">
+                            <div *ngIf="partyTypeUp.value === 'PERSONA_NATURAL'" class="col-md-12 mb-3 px-md-1">
                                 <label for="firstName">Nombres de la persona natural </label>
                                 <div class="form-floating">
                                     <input id="firstName" formControlName="first_name" type="text" class="form-control text-capitalize" placeholder="Nombres de la persona natural">
                                     <label for="floatingInput">Nombres de la persona natural </label>
                                 </div>
-                                <p *ngIf="campoValido('first_name')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                                <p *ngIf="validate('first_name')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
                             </div>
 
                             <!-- Apellidos de la persona natural -->
-                            <div *ngIf="partyType.value === 'PERSONA_NATURAL'" class="col-md-12 mb-3 px-md-1">
+                            <div *ngIf="partyTypeUp.value === 'PERSONA_NATURAL'" class="col-md-12 mb-3 px-md-1">
                                 <label for="familyName">Apellidos de la persona natural </label>
                                 <div class="form-floating">
                                     <input id="familyName" formControlName="family_name" type="text" class="form-control text-capitalize" placeholder="Apellidos de la persona natural">
                                     <label for="floatingInput">Apellidos de la persona natural </label>
                                 </div>
-                                <p *ngIf="campoValido('family_name')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                                <p *ngIf="validate('family_name')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
                             </div>
 
                             <!-- TIPO DE DOCUMENTO -->
@@ -614,7 +615,7 @@
                                     <input id="numberIndentity" formControlName="party_identification" type="text" class="form-control text-capitalize" placeholder="Numero de identificacion o documento">
                                     <label for="floatingInput">Numero de identificacion o documento </label>
                                 </div>
-                                <p *ngIf="campoValido('party_identification')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                                <p *ngIf="validate('party_identification')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
                             </div>
 
                             <!-- DEPARTAMENTO -->
@@ -624,7 +625,7 @@
                                     <input id="departamento" formControlName="department" type="text" class="form-control text-capitalize" placeholder="Departamento">
                                     <label for="floatingInput">Departamento </label>
                                 </div>
-                                <p *ngIf="campoValido('department')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                                <p *ngIf="validate('department')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
                             </div>
 
                             <!-- CIUDAD -->
@@ -634,7 +635,7 @@
                                     <input id="ciudad" formControlName="city" type="text" class="form-control text-capitalize" placeholder="Ciudad">
                                     <label for="floatingInput">Ciudad </label>
                                 </div>
-                                <p *ngIf="campoValido('city')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                                <p *ngIf="validate('city')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
                             </div>
 
                             <!-- DIRECCION -->
@@ -644,7 +645,7 @@
                                     <input id="direccion" formControlName="address_line" type="text" class="form-control text-capitalize" placeholder="Dirección">
                                     <label for="floatingInput">Dirección </label>
                                 </div>
-                                <p *ngIf="campoValido('address_line')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                                <p *ngIf="validate('address_line')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
                             </div>
 
                             <!-- EMAIL -->
@@ -654,7 +655,7 @@
                                     <input id="email" formControlName="email" type="text" class="form-control" placeholder="Correo electronico">
                                     <label for="floatingInput">Correo electronico </label>
                                 </div>
-                                <p *ngIf="campoValido('email')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                                <p *ngIf="validate('email')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
                             </div>
 
                             <!-- TELEFONO -->
@@ -664,7 +665,7 @@
                                     <input id="telefono" formControlName="phone" type="text" class="form-control" placeholder="Telefono">
                                     <label for="floatingInput">Telefono </label>
                                 </div>
-                                <p *ngIf="campoValido('phone')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                                <p *ngIf="validate('phone')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
                             </div>
 
                         </div>
@@ -715,7 +716,7 @@
                                     <input id="resolutionNumber" formControlName="resolution_number" type="text" class="form-control" placeholder="Resolución">
                                     <label for="floatingInput">Resolución </label>
                                 </div>
-                                <p *ngIf="campoValido('resolution_number')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                                <p *ngIf="validate('resolution_number')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
                             </div>
 
                             <!-- PREFIJO -->
@@ -725,11 +726,11 @@
                                     <input id="prefixNumber" formControlName="prefix" type="text" class="form-control" placeholder="Prefijo">
                                     <label for="floatingInput">Prefijo </label>
                                 </div>
-                                <p *ngIf="campoValido('prefix')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                                <p *ngIf="validate('prefix')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
                             </div>
 
                             <!-- FACTURACION FLEXIBLE -->
-                            <div class="col-md-4">
+                            <div class="col-md-12">
                                 <div class="form-check">
                                     <input formControlName="flexible" class="form-check-input" type="checkbox" id="flexibleInvoice">
                                     <label class="form-check-label" for="flexibleInvoice">
@@ -802,4 +803,308 @@
 </div>
 <!-- =========================================================================
     CONFIGURAR FACTURACION ELECTRONICA
+========================================================================= -->
+
+<!-- =========================================================================
+    ACTUALIZAR CONFIGURACION DE FACTURACION ELECTRONICA
+========================================================================= -->
+<div class="modal fade" id="electronicaUpdate" tabindex="-1" aria-labelledby="electronicaUpdateModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="electronicaUpdateModal"><i class="bi-collection" style="font-size: 1rem"></i>Actualizar Información para factura electronica</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="container">
+
+                    <form autocomplete="off" [formGroup]="dataicoUpdateForm" (ngSubmit)="updateDataico()">
+
+                        <!-- =======================================================================
+                        Configuracion
+                    =========================================================================== -->
+                        <hr>
+                        <h5 class="text-muted text-center">Informaciòn Dataico</h5>
+                        <hr>
+
+                        <div class="row mb-2">
+
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="">Token</label>
+                                <div class="form-floating">
+                                    <input formControlName="authtoken" type="text" class="form-control text-capitalize" placeholder="Token de dataico">
+                                    <label for="floatingInput">Token</label>
+                                </div>
+                                <p *ngIf="validate('authtoken')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                            </div>
+
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="">ID Dataico </label>
+                                <div class="form-floating">
+                                    <input formControlName="dataico_account_id" type="text" class="form-control text-capitalize" placeholder="ID de dataico">
+                                    <label for="floatingInput">ID Dataico </label>
+                                </div>
+                                <p *ngIf="validate('dataico_account_id')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                            </div>
+
+                        </div>
+
+                        <hr>
+                        <h5 class="text-muted text-center">Datos de la empresa</h5>
+                        <hr>
+
+                        <div class="row mb-2">
+
+                            <!-- Tipo de empresa -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="partyType" class="col-sm-auto col-form-label">Tipo de empresa</label>
+                                <select formcontrolname="party_type" class="form-select" id="partyType" #partyType (change)="partyType.value" aria-label="Floating label select example">
+                                    <option value="PERSONA_NATURAL" selected>Persona Natural</option>
+                                    <option value="PERSONA_JURIDICA" >Persona Juridica</option>
+                                </select>
+                            </div>
+
+                            <!-- Nombre de la empresa -->
+                            <div *ngIf="partyType.value === 'PERSONA_JURIDICA'" class="col-md-12 mb-3 px-md-1">
+                                <label for="companyName">Nombre de la empresa </label>
+                                <div class="form-floating">
+                                    <input id="companyName" formControlName="company_name" type="text" class="form-control text-capitalize" placeholder="Nombre de la empresa">
+                                    <label for="floatingInput">Nombre de la empresa </label>
+                                </div>
+                                <p *ngIf="validate('company_name')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                            </div>
+
+                            <!-- Nombres de la persona natural -->
+                            <div *ngIf="partyType.value === 'PERSONA_NATURAL'" class="col-md-12 mb-3 px-md-1">
+                                <label for="firstName">Nombres de la persona natural </label>
+                                <div class="form-floating">
+                                    <input id="firstName" formControlName="first_name" type="text" class="form-control text-capitalize" placeholder="Nombres de la persona natural">
+                                    <label for="floatingInput">Nombres de la persona natural </label>
+                                </div>
+                                <p *ngIf="validate('first_name')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                            </div>
+
+                            <!-- Apellidos de la persona natural -->
+                            <div *ngIf="partyType.value === 'PERSONA_NATURAL'" class="col-md-12 mb-3 px-md-1">
+                                <label for="familyName">Apellidos de la persona natural </label>
+                                <div class="form-floating">
+                                    <input id="familyName" formControlName="family_name" type="text" class="form-control text-capitalize" placeholder="Apellidos de la persona natural">
+                                    <label for="floatingInput">Apellidos de la persona natural </label>
+                                </div>
+                                <p *ngIf="validate('family_name')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                            </div>
+
+                            <!-- TIPO DE DOCUMENTO -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="indentityType" class="col-sm-auto col-form-label">Tipo de documento</label>
+                                <select formcontrolname="party_identification_type" class="form-select" id="indentityType" aria-label="Floating label select example">
+                                    <option value="NIT" selected>NIT</option>
+                                    <option value="CC" >CC</option>
+                                    <option value="PASAPORTE" >PASAPORTE</option>
+                                    <option value="CE" >CE</option>
+                                    <option value="TE" >TE</option>
+                                    <option value="PEP" >PEP</option>
+                                    <option value="TI" >TI</option>
+                                    <option value="RC" >RC</option>
+                                    <option value="IE" >IE</option>
+                                    <option value="NIT_OTRO_PAIS" >Nit de otro pais</option>
+                                </select>
+                            </div>
+
+                            <!-- NUMERO DE DOCUMENTO -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="numberIndentity">Numero de identificacion o documento </label>
+                                <div class="form-floating">
+                                    <input id="numberIndentity" formControlName="party_identification" type="text" class="form-control text-capitalize" placeholder="Numero de identificacion o documento">
+                                    <label for="floatingInput">Numero de identificacion o documento </label>
+                                </div>
+                                <p *ngIf="validate('party_identification')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                            </div>
+
+                            <!-- DEPARTAMENTO -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="departamento">Departamento </label>
+                                <div class="form-floating">
+                                    <input id="departamento" formControlName="department" type="text" class="form-control text-capitalize" placeholder="Departamento">
+                                    <label for="floatingInput">Departamento </label>
+                                </div>
+                                <p *ngIf="validate('department')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                            </div>
+
+                            <!-- CIUDAD -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="ciudad">Ciudad </label>
+                                <div class="form-floating">
+                                    <input id="ciudad" formControlName="city" type="text" class="form-control text-capitalize" placeholder="Ciudad">
+                                    <label for="floatingInput">Ciudad </label>
+                                </div>
+                                <p *ngIf="validate('city')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                            </div>
+
+                            <!-- DIRECCION -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="direccion">Dirección </label>
+                                <div class="form-floating">
+                                    <input id="direccion" formControlName="address_line" type="text" class="form-control text-capitalize" placeholder="Dirección">
+                                    <label for="floatingInput">Dirección </label>
+                                </div>
+                                <p *ngIf="validate('address_line')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                            </div>
+
+                            <!-- EMAIL -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="email">Correo electronico </label>
+                                <div class="form-floating">
+                                    <input id="email" formControlName="email" type="text" class="form-control" placeholder="Correo electronico">
+                                    <label for="floatingInput">Correo electronico </label>
+                                </div>
+                                <p *ngIf="validate('email')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                            </div>
+
+                            <!-- TELEFONO -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="telefono">Telefono </label>
+                                <div class="form-floating">
+                                    <input id="telefono" formControlName="phone" type="text" class="form-control" placeholder="Telefono">
+                                    <label for="floatingInput">Telefono </label>
+                                </div>
+                                <p *ngIf="validate('phone')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                            </div>
+
+                        </div>
+
+                        <hr>
+                        <h5 class="text-muted text-center">Mas Información</h5>
+                        <hr>
+
+                        <div class="row mb-2">
+
+                            <!-- TIPO DE IMPUESTO -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="taxLevel" class="col-sm-auto col-form-label">Tipo de impuesto</label>
+                                <select formcontrolname="tax_level_code" class="form-select" id="taxLevel" aria-label="Floating label select example">
+                                    <option value="SIMPLIFICADO" selected>SIMPLIFICADO</option>
+                                    <option value="RESPONSABLE_DE_IVA" >RESPONSABLE DE IVA</option>
+                                    <option value="NO_RESPONSABLE_DE_IVA" >NO RESPONSABLE DE IVA</option>
+                                    <option value="COMUN" >COMUN</option>
+                                </select>
+                            </div>
+
+                            <!-- REGIMEN -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="regimen" class="col-sm-auto col-form-label">Regimen</label>
+                                <select formcontrolname="regimen" class="form-select" id="regimen" aria-label="Floating label select example">
+                                    <option value="SIMPLE" selected>SIMPLE</option>
+                                    <option value="AUTORRETENEDOR" >AUTORRETENEDOR</option>
+                                    <option value="AGENTE_RETENCION_IVA" >AGENTE RETENCION IVA</option>
+                                    <option value="ORDINARIO" >ORDINARIO</option>
+                                    <option value="GRAN_CONTRIBUYENTE" >GRAN CONTRIBUYENTE</option>
+                                </select>
+                            </div>
+
+                            <!-- TIPO DE FACTURACION -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="invoiceTypeCode" class="col-sm-auto col-form-label">Tipo de factura</label>
+                                <select formcontrolname="invoice_type_code" class="form-select" id="invoiceTypeCode" aria-label="Floating label select example">
+                                    <option value="FACTURA_VENTA" selected>FACTURA DE VENTA</option>
+                                    <option value="FACTURA_EXPORTACION" >FACTURA DE EXPORTACION</option>
+                                    <option value="FACTURA_CONTINGENCIA" >FACTURA DE CONTINGENCIA </option>
+                                </select>
+                            </div>
+
+                            <!-- RESOLUCION -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="resolutionNumber">Resolución </label>
+                                <div class="form-floating">
+                                    <input id="resolutionNumber" formControlName="resolution_number" type="text" class="form-control" placeholder="Resolución">
+                                    <label for="floatingInput">Resolución </label>
+                                </div>
+                                <p *ngIf="validate('resolution_number')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                            </div>
+
+                            <!-- PREFIJO -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="prefixNumber">Prefijo </label>
+                                <div class="form-floating">
+                                    <input id="prefixNumber" formControlName="prefix" type="text" class="form-control" placeholder="Prefijo">
+                                    <label for="floatingInput">Prefijo </label>
+                                </div>
+                                <p *ngIf="validate('prefix')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                            </div>
+
+                            <!-- FACTURACION FLEXIBLE -->
+                            <div class="col-md-12">
+                                <div class="form-check">
+                                    <input formControlName="flexible" class="form-check-input" type="checkbox" id="flexibleInvoice">
+                                    <label class="form-check-label" for="flexibleInvoice">
+                                    Facturación Flexible
+                                  </label>
+                                </div>
+                            </div>
+
+                            <!-- TIPO DE OPERACION -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="operationType" class="col-sm-auto col-form-label">Tipo de operación</label>
+                                <select formcontrolname="operation" class="form-select" id="operationType" aria-label="Floating label select example">
+                                    <option value="ESTANDAR" selected> ESTANDAR </option>
+                                    <option value="AIU"> AIU </option>
+                                    <option value="MANDATO"> MANDATO </option>
+                                    <option value="EXPORTACION"> EXPORTACION </option>
+                                    <option value="SS_RECAUDO"> SS RECAUDO </option>
+                                    <option value="SS_CUFE"> SS CUFE </option>
+                                    <option value="SS_CUDE"> SS CUDE </option>
+                                    <option value="SS_POS"> SS POS </option>
+                                    <option value="SS_NUM"> SS NUM </option>
+                                    <option value="SS_REPORTE"> SS REPORTE </option>
+                                    <option value="SS_SIN_APORTE "> SS SIN APORTE  </option>
+                                </select>
+                            </div>
+
+                            <!-- PRUEBAS O DESARROLLO -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="env" class="col-sm-auto col-form-label">Pruebas o Producción</label>
+                                <select formcontrolname="env" class="form-select" id="env" aria-label="Floating label select example">
+                                    <option value="PRUEBAS" selected>PRUEBAS</option>
+                                    <option value="PRODUCCION" >PRODUCCION </option>
+                                </select>
+                            </div>
+
+                            <!-- ENVIAR A LA DIAN -->
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input formControlName="send_dian" class="form-check-input" type="checkbox" id="sendDian">
+                                    <label class="form-check-label" for="sendDian">
+                                    Enviar a la DIAN
+                                  </label>
+                                </div>
+                            </div>
+
+                            <!-- ENVIAR FACTURA AL CORREO -->
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input formControlName="send_email" class="form-check-input" type="checkbox" id="sendEmail">
+                                    <label class="form-check-label" for="sendEmail">
+                                    Enviar factura al correo
+                                  </label>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary w-100">Guardar</button>
+                    </form>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =========================================================================
+    ACTUALIZAR CONFIGURACION DE FACTURACION ELECTRONICA
 ========================================================================= -->

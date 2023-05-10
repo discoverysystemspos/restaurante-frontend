@@ -47,6 +47,9 @@ import { LoadMesaId } from '../../../interfaces/load-mesas.interface';
 import { Impuestos } from 'src/app/models/impuestos.model';
 import { Banco } from 'src/app/models/bancos.model';
 import { BancosService } from '../../../services/bancos.service';
+import { DataicoInterface } from 'src/app/interfaces/dataico.interface';
+import { DataicoService } from 'src/app/services/dataico.service';
+import { ElectronicaService } from 'src/app/services/electronica.service';
 
 @Component({
   selector: 'app-mesa',
@@ -100,7 +103,9 @@ export class MesaComponent implements OnInit {
                 private entradasService: EntradasService,
                 private modal: NgbModal,
                 private impuestosService: ImpuestosService,
-                private bancosService: BancosService) {
+                private bancosService: BancosService,
+                private dataicoService: DataicoService,
+                private electronicaService: ElectronicaService) {
 
                   // CARGAR INFORMACION DEL USUARIO
                   this.user = this.userService.user;                  
@@ -120,7 +125,6 @@ export class MesaComponent implements OnInit {
     }else{
       this.menu = JSON.parse(localStorage.getItem('menu'));
     }
-      
       
       // TURNOS
       this.cargarTurno();
@@ -157,7 +161,38 @@ export class MesaComponent implements OnInit {
     }else{
       this.facturar = false;
     }
+
+    this.loadDataDataico();
     
+  }
+
+  /** ================================================================
+   *  OBTENER DATOS DE LA FACTURA ELECTRONICA
+  ==================================================================== */
+  public dataDataico: boolean = false;
+  public dataico: DataicoInterface;
+  loadDataDataico(){
+
+    this.dataicoService.loadDataDataico()
+        .subscribe( ({dataico}) => {
+
+          delete dataico.actions._id;
+          delete dataico.actions.email;
+          delete dataico.actions.attachments;
+          delete dataico.datid;
+          delete dataico.customer._id;
+          delete dataico.numbering._id;
+
+          if (dataico) {
+            this.dataDataico = true;
+            this.dataico = dataico;
+          }          
+
+        }, (err) => {
+          console.log(err);
+          
+        });
+
   }
 
   /** ================================================================
@@ -1748,13 +1783,10 @@ export class MesaComponent implements OnInit {
     });
 
     if(!this.clienteTemp){
-      this.invoiceForm.value.client = '';
-      
+      this.invoiceForm.value.client = '';      
     }    
 
     try {
-
-      
       
       this.invoiceService.createInvoice(this.invoiceForm.value, this.user.turno)
           .subscribe( (resp:{ok: boolean, invoice: LoadInvoice } ) => {
@@ -1798,21 +1830,35 @@ export class MesaComponent implements OnInit {
             this.mesa.deleteClient = true;
             
             this.mesasServices.updateMesa(this.mesa, this.mesaID)
-            .subscribe( (resp:{ok: boolean, mesa: Mesa}) => {      
-
-              if (this.empresa.printpos) {              
-                // window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
-                // IMPRIMIR FACTURA
-                setTimeout( () => {
-                  this.printDiv2();                      
-                },2000);
+              .subscribe( (resp:{ok: boolean, mesa: Mesa}) => {
                 
-              }else{
-                window.open(`./dashboard/factura/${ this.factura.iid }`, '_blank');
-                setTimeout( () => {             
-                  window.location.reload();
-                },1000);
-              }
+                if (this.empresa.electronica) {
+                  
+                  this.electronicaService.postFacturaDataico(this.factura, this.dataico, this.impuestos)
+                      .subscribe( resp => {
+
+                        console.log(resp);
+                        
+                      });
+                  
+                  
+                }else{
+
+                  if (this.empresa.printpos) {              
+                    // window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
+                    // IMPRIMIR FACTURA
+                    setTimeout( () => {
+                      this.printDiv2();                      
+                    },2000);
+                    
+                  }else{
+                    window.open(`./dashboard/factura/${ this.factura.iid }`, '_blank');
+                    setTimeout( () => {             
+                      window.location.reload();
+                    },1000);
+                  }
+                }
+
               
             }, (err) => { 
               this.facturando = false;

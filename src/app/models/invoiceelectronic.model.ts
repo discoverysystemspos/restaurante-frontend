@@ -12,9 +12,10 @@ export interface InvoiceElectronic {
 export interface Actions {
     send_dian:   boolean;
     send_email:  boolean;
-    email:       string;
-    pdf:         string;
-    attachments: Attachment[];
+    email?:       string;
+    pdf?:         string;
+    attachments?: Attachment[];
+    _id?: Attachment[];
 }
 
 export interface Attachment {
@@ -23,23 +24,23 @@ export interface Attachment {
 }
 
 export interface FacturaElectronica {
-    issue_date:         Date;
+    issue_date:         string;
     invoice_type_code:  'FACTURA_VENTA' | 'FACTURA_EXPORTACION' | 'FACTURA_CONTINGENCIA';
-    charges:            Charge[];
-    order_reference:    string;
     items:              Item[];
     payment_means_type: 'DEBITO' | 'CRÉDITO';
-    retentions:         InvoiceRetention[];
-    prepayments:        Prepayment[];
     operation:          'ESTANDAR' | 'AIU' | 'MANDATO' | 'EXPORTACION' | 'SS_RECAUDO' | 'SS_CUFE' | 'SS_CUDE' | 'SS_POS' | 'SS_NUM' | 'SS_REPORTE' | 'SS_SIN_APORTE';
     number:             string;
     numbering:          Numbering;
     dataico_account_id: string;
     payment_date:       string;
     env:                'PRUEBAS' | 'PRODUCCION';
-    notes:              string[];
     customer:           Customer;
     payment_means:      'CREDIT_ACH' | 'DEBIT_ACH' | 'CASH' | 'CREDIT_AHORRO' | 'DEBIT_AHORRO' | 'CHEQUE' | 'CREDIT_TRANSFER' | 'DEBIT_TRANSFER' | 'BANK_TRANSFER' | 'MUTUAL_AGREEMENT' | 'CREDIT_BANK_TRANSFER' | 'DEBIT_INTERBANK_TRANSFER' | 'DEBIT_BANK_TRANSFER' | 'CREDIT_CARD' | 'DEBIT_CARD';
+    notes?:              string[];
+    retentions?:         InvoiceRetention[];
+    prepayments?:        Prepayment[];
+    order_reference?:    string;
+    charges?:            Charge[];
 }
 
 export interface Charge {
@@ -63,6 +64,7 @@ export interface Customer {
     family_name:               string;
     regimen:                   'AUTORRETENEDOR' | 'AGENTE_RETENCION_IVA' | 'ORDINARIO' | 'SIMPLE' | 'GRAN_CONTRIBUYENTE';
     party_identification:      string;
+    _id?:                string;
 }
 
 export interface AssociatedDocument {
@@ -102,16 +104,16 @@ export interface User {
 
 export interface Item {
     sku:                            string;
-    "mandante-identification":      string;
     taxes:                          Tax[];
-    "measuring-unit":               string;
     quantity:                       number;
-    retentions:                     ItemRetention[];
-    "mandante-identification-type": string;
-    "original-price":               number;
-    "discount-rate":                number;
     price:                          number;
     description:                    string;
+    "mandante-identification"?:      string;
+    "original-price"?:               number;
+    "discount-rate"?:                number;
+    "mandante-identification-type"?: string;
+    retentions?:                     ItemRetention[];
+    "measuring-unit"?:               string;
 }
 
 export interface ItemRetention {
@@ -123,17 +125,18 @@ export interface ItemRetention {
 
 export interface Tax {
     "tax-category":    string;
-    "tax-rate":        number;
     "tax-amount":      number;
-    "tax-description": string;
-    "tax-base":        number;
-    "base-amount":     number;
+    "tax-rate"?:        number;
+    "tax-description"?: string;
+    "tax-base"?:        number;
+    "base-amount"?:     number;
 }
 
 export interface Numbering {
     resolution_number: string;
     prefix:            string;
     flexible:          boolean;
+    _id:               string;
 }
 
 export interface Prepayment {

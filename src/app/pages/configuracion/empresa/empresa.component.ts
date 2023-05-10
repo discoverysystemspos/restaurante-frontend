@@ -9,6 +9,7 @@ import { FileUploadService } from '../../../services/file-upload.service';
 import { Datos, comisiones } from '../../../models/empresa.model';
 import Swal from 'sweetalert2';
 import { DataicoService } from 'src/app/services/dataico.service';
+import { DataicoInterface } from 'src/app/interfaces/dataico.interface';
 
 @Component({
   selector: 'app-empresa',
@@ -28,6 +29,9 @@ export class EmpresaComponent implements OnInit {
   ngOnInit(): void {
 
     this.cargarDatos();
+
+    // CARGA DATA DATAICO
+    this.loadDataDataico();
   }
 
   /** ================================================================
@@ -277,14 +281,18 @@ export class EmpresaComponent implements OnInit {
   /** ================================================================
    *  OBTENER DATOS DE LA FACTURA ELECTRONICA
   ==================================================================== */
-  public dataico: any;
+  public dataDataico: boolean = false;
+  public dataico: DataicoInterface;
   loadDataDataico(){
 
     this.dataicoService.loadDataDataico()
         .subscribe( ({dataico}) => {
 
-          console.log(dataico);
-          
+          if (dataico) {
+            this.dataDataico = true;
+            this.dataico = dataico;
+            this.updateFormDataico();
+          }          
 
         }, (err) => {
           console.log(err);
@@ -297,44 +305,32 @@ export class EmpresaComponent implements OnInit {
    *  CREAR LOS DATOS DE DATAICO
   ==================================================================== */
   public dataicoFormSubmitted: boolean = false;
-  public dataicoForm = this.fb.group({    
-
+  public dataicoForm = this.fb.group({
     authtoken: ['', [Validators.required]],
     dataico_account_id: ['', [Validators.required]],
-
     party_type: ['PERSONA_NATURAL', [Validators.required]],
-
     // SI ES JURIDICO
-    company_name: ['', [Validators.required]],
-    
+    company_name: '',    
     // SI ES PERSONA NATURAL
-    first_name: ['', [Validators.required]],
-    family_name: ['', [Validators.required]],
-
+    first_name: '',
+    family_name: '',
     party_identification_type: ['NIT', [Validators.required]],
     party_identification: ['', [Validators.required]],
-
     department: ['', [Validators.required]],
     city: ['', [Validators.required]],
     address_line: ['', [Validators.required]],
     email: ['', [Validators.required]],
     phone: ['', [Validators.required]],
-
     tax_level_code: ['SIMPLIFICADO', [Validators.required]],
     regimen: ['SIMPLE', [Validators.required]],
-    invoice_type_code: ['FACTURA_VENTA', [Validators.required]],
-    
+    invoice_type_code: ['FACTURA_VENTA', [Validators.required]],    
     resolution_number: ['', [Validators.required]],
     prefix: ['', [Validators.required]],
     flexible: [false, [Validators.required]],
-
     operation: ['ESTANDAR', [Validators.required]],
     env: ['PRUEBAS', [Validators.required]],
-
     send_dian: [false, [Validators.required]],
     send_email: [false, [Validators.required]],
-
-
   });
 
   createDataico(){
@@ -344,11 +340,53 @@ export class EmpresaComponent implements OnInit {
       return;
     }
 
-    this.dataicoService.postDataico(this.dataicoForm.value)
-        .subscribe( ({dataico}) => {
+    let actions = {
+      send_dian: this.dataicoForm.value.send_dian,
+      send_email: this.dataicoForm.value.send_email
+    }
 
-          console.log(dataico);
+    let numbering = {
+      resolution_number: this.dataicoForm.value.resolution_number,
+      prefix: this.dataicoForm.value.prefix,
+      flexible: this.dataicoForm.value.flexible
+    }
+
+    let customer = {
+      department: this.dataicoForm.value.department,
+      address_line: this.dataicoForm.value.address_line,
+      party_type: this.dataicoForm.value.party_type,
+      city: this.dataicoForm.value.city,
+      tax_level_code: this.dataicoForm.value.tax_level_code,
+      email: this.dataicoForm.value.email,
+      first_name: this.dataicoForm.value.first_name,
+      phone: this.dataicoForm.value.phone,
+      party_identification_type: this.dataicoForm.value.party_identification_type,
+      company_name: this.dataicoForm.value.company_name,
+      family_name: this.dataicoForm.value.family_name,
+      regimen: this.dataicoForm.value.regimen,
+      party_identification: this.dataicoForm.value.party_identification,
+    }
+
+    let dataico = {
+      invoice_type_code: this.dataicoForm.value.invoice_type_code,
+      actions,
+      authtoken: this.dataicoForm.value.authtoken,
+      dataico_account_id: this.dataicoForm.value.dataico_account_id,
+      customer,
+      numbering,
+      env: this.dataicoForm.value.env,
+      operation: this.dataicoForm.value.operation,
+    }
+
+    this.dataicoService.postDataico(dataico)
+        .subscribe( ({dataico}) => {
           
+          if (dataico) {
+            this.dataDataico = true;
+            this.dataico = dataico;
+            this.dataicoFormSubmitted = false;
+            this.updateFormDataico();
+          }          
 
         }, (err) => {
           console.log(err);
@@ -362,6 +400,129 @@ export class EmpresaComponent implements OnInit {
   ==================================================================== */
   validate(campo: string): boolean{
     if (this.dataicoForm.get(campo).invalid && this.dataicoFormSubmitted) {
+      return true;
+    }else{
+      return false;
+    }
+
+  }
+
+  /** ================================================================
+   *  ACTUALIZAR FORMULARIO DE ACTUALIZAR
+  ==================================================================== */
+  updateFormDataico(){
+
+    this.dataicoUpdateForm.setValue({
+      authtoken: this.dataico.authtoken,
+      dataico_account_id: this.dataico.dataico_account_id,
+      party_type: this.dataico.customer.party_type,
+      company_name: this.dataico.customer.company_name,
+      first_name: this.dataico.customer.first_name,
+      family_name: this.dataico.customer.family_name,
+      party_identification_type: this.dataico.customer.party_identification_type,
+      party_identification: this.dataico.customer.party_identification,
+      department: this.dataico.customer.department,
+      city: this.dataico.customer.city,
+      address_line: this.dataico.customer.address_line,
+      email: this.dataico.customer.email,
+      phone: this.dataico.customer.phone,
+      tax_level_code: this.dataico.customer.tax_level_code,
+      regimen: this.dataico.customer.regimen,
+      invoice_type_code: this.dataico.invoice_type_code,
+      resolution_number: this.dataico.numbering.resolution_number,
+      prefix: this.dataico.numbering.prefix,
+      flexible: this.dataico.numbering.flexible,
+      operation: this.dataico.operation,
+      env: this.dataico.env,
+      send_dian: this.dataico.actions.send_dian,
+      send_email: this.dataico.actions.send_email
+    });    
+
+  }
+
+  /** ================================================================
+   *  ACTUALIZAR DATOS DE DATAICO
+  ==================================================================== */
+  public dataicoUpdateFormSubmitted: boolean = false;
+  public dataicoUpdateForm = this.fb.group({
+    authtoken: ['', [Validators.required]],
+    dataico_account_id: ['', [Validators.required]],
+    party_type: ['PERSONA_NATURAL', [Validators.required]],
+    company_name: '',
+    first_name: '',
+    family_name: '',
+    party_identification_type: ['NIT', [Validators.required]],
+    party_identification: ['', [Validators.required]],
+    department: ['', [Validators.required]],
+    city: ['', [Validators.required]],
+    address_line: ['', [Validators.required]],
+    email: ['', [Validators.required]],
+    phone: ['', [Validators.required]],
+    tax_level_code: ['SIMPLIFICADO', [Validators.required]],
+    regimen: ['SIMPLE', [Validators.required]],
+    invoice_type_code: ['FACTURA_VENTA', [Validators.required]],    
+    resolution_number: ['', [Validators.required]],
+    prefix: ['', [Validators.required]],
+    flexible: [false, [Validators.required]],
+    operation: ['ESTANDAR', [Validators.required]],
+    env: ['PRUEBAS', [Validators.required]],
+    send_dian: [false, [Validators.required]],
+    send_email: [false, [Validators.required]],
+  });
+
+  updateDataico(){
+
+    this.dataicoUpdateFormSubmitted = true;
+
+    if (this.dataicoUpdateForm.invalid) {
+      return;
+    }
+
+    let actions = {
+      send_dian: this.dataicoUpdateForm.value.send_dian,
+      send_email: this.dataicoUpdateForm.value.send_email
+    }
+
+    let numbering = {
+      resolution_number: this.dataicoUpdateForm.value.resolution_number,
+      prefix: this.dataicoUpdateForm.value.prefix,
+      flexible: this.dataicoUpdateForm.value.flexible
+    }
+
+    let customer = {
+      department: this.dataicoUpdateForm.value.department,
+      address_line: this.dataicoUpdateForm.value.address_line,
+      party_type: this.dataicoUpdateForm.value.party_type,
+      city: this.dataicoUpdateForm.value.city,
+      tax_level_code: this.dataicoUpdateForm.value.tax_level_code,
+      email: this.dataicoUpdateForm.value.email,
+      first_name: this.dataicoUpdateForm.value.first_name,
+      phone: this.dataicoUpdateForm.value.phone,
+      party_identification_type: this.dataicoUpdateForm.value.party_identification_type,
+      company_name: this.dataicoUpdateForm.value.company_name,
+      family_name: this.dataicoUpdateForm.value.family_name,
+      regimen: this.dataicoUpdateForm.value.regimen,
+      party_identification: this.dataicoUpdateForm.value.party_identification,
+    }
+
+    let dataico = {
+      invoice_type_code: this.dataicoUpdateForm.value.invoice_type_code,
+      actions,
+      authtoken: this.dataicoUpdateForm.value.authtoken,
+      dataico_account_id: this.dataicoUpdateForm.value.dataico_account_id,
+      customer,
+      numbering,
+      env: this.dataicoUpdateForm.value.env,
+      operation: this.dataicoUpdateForm.value.operation,
+    }
+
+  }
+
+  /** ================================================================
+   *  VALIDAR DATOS DE DATAICO
+  ==================================================================== */
+  validateUpdate(campo: string): boolean{
+    if (this.dataicoUpdateForm.get(campo).invalid && this.dataicoUpdateFormSubmitted) {
       return true;
     }else{
       return false;
