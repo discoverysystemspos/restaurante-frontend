@@ -859,7 +859,8 @@ export class MesaComponent implements OnInit {
     }
 
     // GUARDAR LA INFORMACION DE LA COMANDA
-    this.mesa.comanda = this.comandas;    
+    this.mesa.comanda = this.comandas;
+    this.mesa.fecha   = new Date(); 
 
     this.mesasServices.updateMesa(this.mesa, this.mesaID)
         .subscribe( (resp:{ok: boolean, mesa: any}) => { 
@@ -1463,8 +1464,6 @@ export class MesaComponent implements OnInit {
 
               qty = resp;
               this.cantidad.nativeElement.value = qty;
-              
-              console.log(resp);
               
               return;                    
 

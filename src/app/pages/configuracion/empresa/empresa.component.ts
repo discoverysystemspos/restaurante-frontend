@@ -437,7 +437,7 @@ export class EmpresaComponent implements OnInit {
       send_dian: this.dataico.actions.send_dian,
       send_email: this.dataico.actions.send_email
     });    
-
+    
   }
 
   /** ================================================================
@@ -515,6 +515,22 @@ export class EmpresaComponent implements OnInit {
       env: this.dataicoUpdateForm.value.env,
       operation: this.dataicoUpdateForm.value.operation,
     }
+
+
+    this.dataicoService.updateDataico(dataico, this.dataico.datid)
+        .subscribe( ({dataico}) => {
+
+            this.dataDataico = true;
+            this.dataico = dataico;
+            this.dataicoUpdateFormSubmitted = false;
+            this.updateFormDataico();
+
+            Swal.fire('Estupendo', 'Se a actualizado conrrectamente!', 'success');
+            
+          }, (err) => {
+            console.log(err);
+            Swal.fire('Error', err.error.msg, 'error');          
+        });
 
   }
 

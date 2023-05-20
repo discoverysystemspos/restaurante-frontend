@@ -46,6 +46,13 @@ export class DataicoService {
     return this.http.post<{dataico: DataicoInterface, ok: boolean}>(`${base_url}/dataico`, formData, this.headers);
   }
 
+  /** ================================================================
+   *  POST DATAICO
+  ==================================================================== */
+  updateDataico(formData: any, id: string){
+    return this.http.put<{dataico: DataicoInterface, ok: boolean}>(`${base_url}/dataico/${id}`, formData, this.headers);
+  }
+
 
   // FIN DE LA CLASE
 }

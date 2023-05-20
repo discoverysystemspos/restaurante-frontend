@@ -859,8 +859,8 @@
                             <!-- Tipo de empresa -->
                             <div class="col-md-12 mb-3 px-md-1">
                                 <label for="partyType" class="col-sm-auto col-form-label">Tipo de empresa</label>
-                                <select formcontrolname="party_type" class="form-select" id="partyType" #partyType (change)="partyType.value" aria-label="Floating label select example">
-                                    <option value="PERSONA_NATURAL" selected>Persona Natural</option>
+                                <select formcontrolname="party_type" [value]="dataico?.customer.party_type" class="form-select" id="partyType" #partyType (change)="partyType.value" aria-label="Floating label select example">
+                                    <option value="PERSONA_NATURAL">Persona Natural</option>
                                     <option value="PERSONA_JURIDICA" >Persona Juridica</option>
                                 </select>
                             </div>
@@ -898,8 +898,8 @@
                             <!-- TIPO DE DOCUMENTO -->
                             <div class="col-md-12 mb-3 px-md-1">
                                 <label for="indentityType" class="col-sm-auto col-form-label">Tipo de documento</label>
-                                <select formcontrolname="party_identification_type" class="form-select" id="indentityType" aria-label="Floating label select example">
-                                    <option value="NIT" selected>NIT</option>
+                                <select formcontrolname="party_identification_type" [value]="dataico?.customer.party_identification_type" class="form-select" id="indentityType" aria-label="Floating label select example">
+                                    <option value="NIT">NIT</option>
                                     <option value="CC" >CC</option>
                                     <option value="PASAPORTE" >PASAPORTE</option>
                                     <option value="CE" >CE</option>
@@ -983,8 +983,8 @@
                             <!-- TIPO DE IMPUESTO -->
                             <div class="col-md-12 mb-3 px-md-1">
                                 <label for="taxLevel" class="col-sm-auto col-form-label">Tipo de impuesto</label>
-                                <select formcontrolname="tax_level_code" class="form-select" id="taxLevel" aria-label="Floating label select example">
-                                    <option value="SIMPLIFICADO" selected>SIMPLIFICADO</option>
+                                <select formcontrolname="tax_level_code" [value]="dataico?.customer.tax_level_code" class="form-select" id="taxLevel" aria-label="Floating label select example">
+                                    <option value="SIMPLIFICADO">SIMPLIFICADO</option>
                                     <option value="RESPONSABLE_DE_IVA" >RESPONSABLE DE IVA</option>
                                     <option value="NO_RESPONSABLE_DE_IVA" >NO RESPONSABLE DE IVA</option>
                                     <option value="COMUN" >COMUN</option>
@@ -994,8 +994,8 @@
                             <!-- REGIMEN -->
                             <div class="col-md-12 mb-3 px-md-1">
                                 <label for="regimen" class="col-sm-auto col-form-label">Regimen</label>
-                                <select formcontrolname="regimen" class="form-select" id="regimen" aria-label="Floating label select example">
-                                    <option value="SIMPLE" selected>SIMPLE</option>
+                                <select formcontrolname="regimen" [value]="dataico?.customer.regimen" class="form-select" id="regimen" aria-label="Floating label select example">
+                                    <option value="SIMPLE">SIMPLE</option>
                                     <option value="AUTORRETENEDOR" >AUTORRETENEDOR</option>
                                     <option value="AGENTE_RETENCION_IVA" >AGENTE RETENCION IVA</option>
                                     <option value="ORDINARIO" >ORDINARIO</option>
@@ -1006,8 +1006,8 @@
                             <!-- TIPO DE FACTURACION -->
                             <div class="col-md-12 mb-3 px-md-1">
                                 <label for="invoiceTypeCode" class="col-sm-auto col-form-label">Tipo de factura</label>
-                                <select formcontrolname="invoice_type_code" class="form-select" id="invoiceTypeCode" aria-label="Floating label select example">
-                                    <option value="FACTURA_VENTA" selected>FACTURA DE VENTA</option>
+                                <select formcontrolname="invoice_type_code" [value]="dataico?.invoice_type_code" class="form-select" id="invoiceTypeCode" aria-label="Floating label select example">
+                                    <option value="FACTURA_VENTA">FACTURA DE VENTA</option>
                                     <option value="FACTURA_EXPORTACION" >FACTURA DE EXPORTACION</option>
                                     <option value="FACTURA_CONTINGENCIA" >FACTURA DE CONTINGENCIA </option>
                                 </select>
@@ -1046,8 +1046,8 @@
                             <!-- TIPO DE OPERACION -->
                             <div class="col-md-12 mb-3 px-md-1">
                                 <label for="operationType" class="col-sm-auto col-form-label">Tipo de operación</label>
-                                <select formcontrolname="operation" class="form-select" id="operationType" aria-label="Floating label select example">
-                                    <option value="ESTANDAR" selected> ESTANDAR </option>
+                                <select formcontrolname="operation" [value]="dataico?.operation" class="form-select" id="operationType" aria-label="Floating label select example">
+                                    <option value="ESTANDAR"> ESTANDAR </option>
                                     <option value="AIU"> AIU </option>
                                     <option value="MANDATO"> MANDATO </option>
                                     <option value="EXPORTACION"> EXPORTACION </option>
@@ -1064,8 +1064,8 @@
                             <!-- PRUEBAS O DESARROLLO -->
                             <div class="col-md-12 mb-3 px-md-1">
                                 <label for="env" class="col-sm-auto col-form-label">Pruebas o Producción</label>
-                                <select formcontrolname="env" class="form-select" id="env" aria-label="Floating label select example">
-                                    <option value="PRUEBAS" selected>PRUEBAS</option>
+                                <select formcontrolname="env" class="form-select" id="env" [value]="dataico?.env" aria-label="Floating label select example">
+                                    <option value="PRUEBAS">PRUEBAS</option>
                                     <option value="PRODUCCION" >PRODUCCION </option>
                                 </select>
                             </div>
