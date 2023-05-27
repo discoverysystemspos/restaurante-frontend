@@ -307,22 +307,7 @@ export class EmpresaComponent implements OnInit {
   public dataicoFormSubmitted: boolean = false;
   public dataicoForm = this.fb.group({
     authtoken: ['', [Validators.required]],
-    dataico_account_id: ['', [Validators.required]],
-    party_type: ['PERSONA_NATURAL', [Validators.required]],
-    // SI ES JURIDICO
-    company_name: '',    
-    // SI ES PERSONA NATURAL
-    first_name: '',
-    family_name: '',
-    party_identification_type: ['NIT', [Validators.required]],
-    party_identification: ['', [Validators.required]],
-    department: ['', [Validators.required]],
-    city: ['', [Validators.required]],
-    address_line: ['', [Validators.required]],
-    email: ['', [Validators.required]],
-    phone: ['', [Validators.required]],
-    tax_level_code: ['SIMPLIFICADO', [Validators.required]],
-    regimen: ['SIMPLE', [Validators.required]],
+    dataico_account_id: ['', [Validators.required]],    
     invoice_type_code: ['FACTURA_VENTA', [Validators.required]],    
     resolution_number: ['', [Validators.required]],
     prefix: ['', [Validators.required]],
@@ -351,28 +336,11 @@ export class EmpresaComponent implements OnInit {
       flexible: this.dataicoForm.value.flexible
     }
 
-    let customer = {
-      department: this.dataicoForm.value.department,
-      address_line: this.dataicoForm.value.address_line,
-      party_type: this.dataicoForm.value.party_type,
-      city: this.dataicoForm.value.city,
-      tax_level_code: this.dataicoForm.value.tax_level_code,
-      email: this.dataicoForm.value.email,
-      first_name: this.dataicoForm.value.first_name,
-      phone: this.dataicoForm.value.phone,
-      party_identification_type: this.dataicoForm.value.party_identification_type,
-      company_name: this.dataicoForm.value.company_name,
-      family_name: this.dataicoForm.value.family_name,
-      regimen: this.dataicoForm.value.regimen,
-      party_identification: this.dataicoForm.value.party_identification,
-    }
-
     let dataico = {
       invoice_type_code: this.dataicoForm.value.invoice_type_code,
       actions,
       authtoken: this.dataicoForm.value.authtoken,
       dataico_account_id: this.dataicoForm.value.dataico_account_id,
-      customer,
       numbering,
       env: this.dataicoForm.value.env,
       operation: this.dataicoForm.value.operation,
@@ -415,19 +383,6 @@ export class EmpresaComponent implements OnInit {
     this.dataicoUpdateForm.setValue({
       authtoken: this.dataico.authtoken,
       dataico_account_id: this.dataico.dataico_account_id,
-      party_type: this.dataico.customer.party_type,
-      company_name: this.dataico.customer.company_name,
-      first_name: this.dataico.customer.first_name,
-      family_name: this.dataico.customer.family_name,
-      party_identification_type: this.dataico.customer.party_identification_type,
-      party_identification: this.dataico.customer.party_identification,
-      department: this.dataico.customer.department,
-      city: this.dataico.customer.city,
-      address_line: this.dataico.customer.address_line,
-      email: this.dataico.customer.email,
-      phone: this.dataico.customer.phone,
-      tax_level_code: this.dataico.customer.tax_level_code,
-      regimen: this.dataico.customer.regimen,
       invoice_type_code: this.dataico.invoice_type_code,
       resolution_number: this.dataico.numbering.resolution_number,
       prefix: this.dataico.numbering.prefix,
@@ -446,20 +401,7 @@ export class EmpresaComponent implements OnInit {
   public dataicoUpdateFormSubmitted: boolean = false;
   public dataicoUpdateForm = this.fb.group({
     authtoken: ['', [Validators.required]],
-    dataico_account_id: ['', [Validators.required]],
-    party_type: ['PERSONA_NATURAL', [Validators.required]],
-    company_name: '',
-    first_name: '',
-    family_name: '',
-    party_identification_type: ['NIT', [Validators.required]],
-    party_identification: ['', [Validators.required]],
-    department: ['', [Validators.required]],
-    city: ['', [Validators.required]],
-    address_line: ['', [Validators.required]],
-    email: ['', [Validators.required]],
-    phone: ['', [Validators.required]],
-    tax_level_code: ['SIMPLIFICADO', [Validators.required]],
-    regimen: ['SIMPLE', [Validators.required]],
+    dataico_account_id: ['', [Validators.required]],    
     invoice_type_code: ['FACTURA_VENTA', [Validators.required]],    
     resolution_number: ['', [Validators.required]],
     prefix: ['', [Validators.required]],
@@ -489,28 +431,11 @@ export class EmpresaComponent implements OnInit {
       flexible: this.dataicoUpdateForm.value.flexible
     }
 
-    let customer = {
-      department: this.dataicoUpdateForm.value.department,
-      address_line: this.dataicoUpdateForm.value.address_line,
-      party_type: this.dataicoUpdateForm.value.party_type,
-      city: this.dataicoUpdateForm.value.city,
-      tax_level_code: this.dataicoUpdateForm.value.tax_level_code,
-      email: this.dataicoUpdateForm.value.email,
-      first_name: this.dataicoUpdateForm.value.first_name,
-      phone: this.dataicoUpdateForm.value.phone,
-      party_identification_type: this.dataicoUpdateForm.value.party_identification_type,
-      company_name: this.dataicoUpdateForm.value.company_name,
-      family_name: this.dataicoUpdateForm.value.family_name,
-      regimen: this.dataicoUpdateForm.value.regimen,
-      party_identification: this.dataicoUpdateForm.value.party_identification,
-    }
-
     let dataico = {
       invoice_type_code: this.dataicoUpdateForm.value.invoice_type_code,
       actions,
       authtoken: this.dataicoUpdateForm.value.authtoken,
       dataico_account_id: this.dataicoUpdateForm.value.dataico_account_id,
-      customer,
       numbering,
       env: this.dataicoUpdateForm.value.env,
       operation: this.dataicoUpdateForm.value.operation,

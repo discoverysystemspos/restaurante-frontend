@@ -7,6 +7,7 @@ export class Impuestos{
         public _id: string,
         public taxid: string,
         public total: number,
+        public taxcategory: string,
     ){}
 
 }

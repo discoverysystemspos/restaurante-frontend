@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import * as SerialPort from 'serialport';
+import { HttpClient } from '@angular/common/http';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -50,6 +51,11 @@ import { BancosService } from '../../../services/bancos.service';
 import { DataicoInterface } from 'src/app/interfaces/dataico.interface';
 import { DataicoService } from 'src/app/services/dataico.service';
 import { ElectronicaService } from 'src/app/services/electronica.service';
+
+interface _Department {
+  codigo: string,
+  departamento: string,
+}
 
 @Component({
   selector: 'app-mesa',
@@ -105,7 +111,8 @@ export class MesaComponent implements OnInit {
                 private impuestosService: ImpuestosService,
                 private bancosService: BancosService,
                 private dataicoService: DataicoService,
-                private electronicaService: ElectronicaService) {
+                private electronicaService: ElectronicaService,
+                private http: HttpClient) {
 
                   // CARGAR INFORMACION DEL USUARIO
                   this.user = this.userService.user;                  
@@ -163,7 +170,44 @@ export class MesaComponent implements OnInit {
     }
 
     this.loadDataDataico();
+
+    this.loadDepartmentAndCitys();
     
+  }
+
+  /** ================================================================
+   *  OBTENER DEPARTAMENTOS Y CIUDADES
+  ==================================================================== */
+  public departments: _Department[] = [];
+  public cities: any[] = [];
+  loadDepartmentAndCitys(){
+
+    this.http.get('assets/json/departamentos.json')
+        .subscribe( (data: any) => {          
+          this.departments = data;            
+        });
+
+    this.http.get('assets/json/ciudades.json')
+    .subscribe( (data: any) => {          
+      this.cities = data;          
+    })
+
+  }
+
+  /** ================================================================
+   *  OBTENER CIUDADES DEPENDIENDO DEL DEPARTAMENTO
+  ==================================================================== */
+  public ListCities: any[] = [];
+  searchCities(department: string){
+
+    this.ListCities = [];
+
+    if (department.length === 0 ) {
+      return;
+    }
+
+    this.ListCities = this.cities.filter( city =>  department === city.departamento );
+
   }
 
   /** ================================================================
@@ -180,7 +224,7 @@ export class MesaComponent implements OnInit {
           delete dataico.actions.email;
           delete dataico.actions.attachments;
           delete dataico.datid;
-          delete dataico.customer._id;
+          delete dataico.customer;
           delete dataico.numbering._id;
 
           if (dataico) {
@@ -218,9 +262,7 @@ export class MesaComponent implements OnInit {
 
     this.impuestosService.loadImpuestos()
         .subscribe( ({taxes}) => {
-
           this.impuestos = taxes;
-
         });
 
   }
@@ -1207,23 +1249,52 @@ export class MesaComponent implements OnInit {
   /** ================================================================
    *  CREAR CLIENTE
   ==================================================================== */
+  public formSubmitted: boolean = false;
   public newClientForm = this.fb.group({
-    name: ['' , [Validators.required, Validators.minLength(3)]],
+    party_type: ['PERSONA_NATURAL', [Validators.required]],
+    tax_level_code: ['NO_RESPONSABLE_DE_IVA', [Validators.required]],
+    party_identification_type: ['CC', [Validators.required]],
+    company_name: '',
+    first_name: '',
+    family_name: '',
+    department: '',
+    address_line: '',
+    regimen: ['SIMPLE',],
+    party_identification: '',
+    codigodepartamento: '',
+    codigociudad: '',
+    sendemail: false,
+    // OLD
+    name: '',
     cedula: ['', [Validators.required, Validators.minLength(6)]],
     email: ['', [Validators.email, Validators.minLength(7)]],
-    phone: ['', [Validators.minLength(3)]],
-    city: ['', [Validators.minLength(3)]],
-    address: ['', [Validators.minLength(3)]]
+    phone: '',
+    city: '',
+    address: ''
   });
-  public formSubmitted: boolean = false;
+  
 
-  crearCliente(){
+  async crearCliente(){
+
+    // OBTENER CODIGO DEL DEPARTAMENTO Y CIUDAD
+    let codigoD = await this.departments.find( departamento => this.newClientForm.value.department === departamento.departamento );
+    let codigoC = await this.cities.find( city => this.newClientForm.value.city === city.ciudad );
+    this.newClientForm.value.codigodepartamento  = codigoD.codigo;
+    this.newClientForm.value.codigociudad  = codigoC.codigo;
 
     this.formSubmitted = true;
 
     if (this.newClientForm.invalid) {
       return;
     }
+
+    if (this.newClientForm.value.party_type === 'PERSONA_NATURAL') {      
+      this.newClientForm.value.name = `${this.newClientForm.value.first_name} ${this.newClientForm.value.family_name}`
+    }else{
+      this.newClientForm.value.name = this.newClientForm.value.company_name;
+    }
+
+    this.newClientForm.value.party_identification = this.newClientForm.value.cedula;
 
     this.clientService.createClient(this.newClientForm.value)
         .subscribe((resp: any) => {
@@ -1836,7 +1907,24 @@ export class MesaComponent implements OnInit {
                   this.electronicaService.postFacturaDataico(this.factura, this.dataico, this.impuestos)
                       .subscribe( resp => {
 
-                        console.log(resp);
+                        this.facturando = false;
+
+                        if (this.empresa.printpos) {              
+                          // window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
+                          // IMPRIMIR FACTURA
+                          setTimeout( () => {
+                            this.printDiv2();                      
+                          },2000);
+                          
+                        }else{
+                          window.open(`./dashboard/factura/${ this.factura.iid }`, '_blank');
+                          setTimeout( () => {             
+                            window.location.reload();
+                          },1000);
+                        }
+                        
+                      }, (err) => {
+                        console.log(err);
                         
                       });
                   

@@ -56,7 +56,7 @@ export interface Customer {
     "city":                      string;
     "tax_level_code":            'SIMPLIFICADO' | 'RESPONSABLE_DE_IVA' | 'NO_RESPONSABLE_DE_IVA' | 'COMUN';
     "email":                     string;
-    "country_code":              'CO';
+    "country_code":              string;
     "first_name":                string;
     "phone":                     string;
     "party_identification_type": 'TE' | 'PEP' | 'TI' | 'RC' | 'CC' | 'CE' | 'PASAPORTE' | 'IE' | 'NIT_OTRO_PAIS' | 'NIT';
@@ -124,8 +124,8 @@ export interface ItemRetention {
 }
 
 export interface Tax {
-    "tax-category":     string;
     "tax-rate":        number;
+    "tax-category"?:     string;
     "tax-amount"?:       number;
     "tax-description"?: string;
     "tax-base"?:        number;

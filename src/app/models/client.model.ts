@@ -18,7 +18,11 @@ export class Client {
         public cid?: string,
         public credit?: boolean,
         public mayoreo?: boolean,
-        public contratista?: boolean
+        public contratista?: boolean,
+        public codigoDepartamento?: string,
+        public codigoCiudad?: string,
+        public sendemail?: boolean,
+
     ){}
     
 

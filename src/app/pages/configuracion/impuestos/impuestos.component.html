@@ -47,11 +47,13 @@
                         <tr>
                             <th class="text-muted " scope="col ">Nombre</th>
                             <th class="text-muted " scope="col ">Valor</th>
+                            <th class="text-muted " scope="col ">Categoria</th>
                             <th class="text-muted " scope="col ">Estado</th>
                             <th class="text-muted w100 " scope="col ">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
+
                         <tr *ngIf="!sinResultados" class="text-center ">
                             <th colspan="10" class="py-4">
                                 <h4 class="text-muted">Sin Resultados</h4>
@@ -61,12 +63,13 @@
                         <tr class="trHover" *ngFor="let impuesto of listaImpuesto; let i = index">
                             <td>{{ impuesto.name }}</td>
                             <td>{{ impuesto.valor }}%</td>
+                            <td>{{ impuesto.taxcategory || 'No definida' }}</td>
                             <td>
                                 <span *ngIf="impuesto.status" class="badge rounded-pill bg-success text-white-75">Activo</span>
                                 <span *ngIf="!impuesto.status" class="badge rounded-pill bg-danger text-white-75">Desactivo</span>
                             </td>
                             <td class="text-center">
-                                <button type="button" class="btn btn-link p-1 text-primary" data-bs-toggle="modal" data-bs-target="#actualizarMesa">
+                                <button (click)="setFormUpdate(impuesto)" type="button" class="btn btn-link p-1 text-primary" data-bs-toggle="modal" data-bs-target="#editarImpuesto">
                                     <i class="bi bi-box-arrow-up-right"></i>
                                 </button>
                             </td>
@@ -95,7 +98,7 @@
 </div>
 
 <!-- =========================================================================
-    NUEVA MESA 
+    NUEVO IMPUESTO 
 ========================================================================= -->
 <div class="modal fade" id="nuevoImpuesto" tabindex="-1" aria-labelledby="nuevoImpuestoModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -107,7 +110,7 @@
             <div class="modal-body">
 
 
-                <form id="newMesaForm" autocomplete="off" [formGroup]="newImpuestoForm" (ngSubmit)="crearImpuesto()">
+                <form autocomplete="off" [formGroup]="newImpuestoForm" (ngSubmit)="crearImpuesto()">
 
                     <!-- =======================================================================
                         Informacion del Caja
@@ -141,6 +144,27 @@
 
                     </div>
 
+                    <div class="row mb-2">
+                        <div class="col-md-12 mb-3 px-md-1">
+                            <label for="indentityType" class="col-sm-auto col-form-label">Categoria</label>
+                            <select formControlName="taxcategory" class="form-select" id="indentityType" aria-label="Floating label select example">
+                                <option value="IVA" selected>IVA</option>
+                                <option value="IMP_CONSUMO" selected>Impuesto al Consumo</option>
+                                <option value="COMBUSTIBLES_SOBRETASA" > Combustibles Sobretasa</option>
+                                <option value="IMP_BOLSA_PLASTICA" >Impuesto Bolsa Plastica</option>
+                                <option value="IMP_CONSUMO_LICOR" >Impuesto Consumo Licor</option>
+                                <option value="CARBONO" >CARBONO</option>
+                                <option value="TIMBRE" >TIMBRE</option>
+                                <option value="SORDICOM_MINORISTAS" >SORDICOM MINORISTAS</option>
+                                <option value="ZZ" >ZZ</option>
+                                <option value="IMP_CONSUMO_DEPARTAMENTAL" >Impuesto Consumo Departamental</option>
+                                <option value="COMBUSTIBLES_NACIONAL" >COMBUSTIBLES NACIONAL</option>
+                                <option value="ICA" >ICA</option>
+                                <option value="HORTICULTURA" >HORTICULTURA</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="text-danger mb-2">
                             <p *ngIf="campoValido('name')" class="mb-1 animated fadeIn">- El nombre del impuesto es obligatorio</p>
@@ -160,5 +184,97 @@
     </div>
 </div>
 <!-- =========================================================================
-    NUEVA MESA 
+    NUEVO IMPUESTO 
+========================================================================= -->
+
+<!-- =========================================================================
+    EDITAR IMPUESTO 
+========================================================================= -->
+<div class="modal fade" id="editarImpuesto" tabindex="-1" aria-labelledby="editarImpuestoModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editarImpuestoModal"><i class="bi-collection" style="font-size: 1rem"></i> Crear Impuesto Nuevo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <form autocomplete="off" [formGroup]="updateImpuestoForm" (ngSubmit)="updateTax()">
+
+                    <!-- =======================================================================
+                        Informacion del Caja
+                    =========================================================================== -->
+                    <h5 class="text-muted">Informaciòn</h5>
+
+
+                    <div class="row mb-2">
+
+                        <div class="col-md-12 px-md-1">
+                            <label for="">Nombre</label>
+                            <div class="form-floating">
+                                <input formControlName="name" type="text" class="form-control text-capitalize" placeholder="Numero de mesa">
+                                <label for="floatingInput">Nombre</label>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row mb-2">
+
+                        <div class="col-md-12 px-md-1">
+                            <label for="">Valor</label>
+                            <div class="form-floating">
+                                <input formControlName="valor" min="0" type="number" class="form-control text-capitalize" placeholder="Numero de mesa">
+                                <label for="floatingInput">Valor</label>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row mb-2">
+                        <div class="col-md-12 mb-3 px-md-1">
+                            <label for="categoriaTax" class="col-sm-auto col-form-label">Categoria</label>
+                            <select formControlName="taxcategory" class="form-select" id="categoriaTax" aria-label="Floating label select example">
+                                <option value="">Seleccionar Categoria</option>
+                                <option value="IVA">IVA</option>
+                                <option value="IMP_CONSUMO" selected>Impuesto al Consumo</option>
+                                <option value="COMBUSTIBLES_SOBRETASA" > Combustibles Sobretasa</option>
+                                <option value="IMP_BOLSA_PLASTICA" >Impuesto Bolsa Plastica</option>
+                                <option value="IMP_CONSUMO_LICOR" >Impuesto Consumo Licor</option>
+                                <option value="CARBONO" >CARBONO</option>
+                                <option value="TIMBRE" >TIMBRE</option>
+                                <option value="SORDICOM_MINORISTAS" >SORDICOM MINORISTAS</option>
+                                <option value="ZZ" >ZZ</option>
+                                <option value="IMP_CONSUMO_DEPARTAMENTAL" >Impuesto Consumo Departamental</option>
+                                <option value="COMBUSTIBLES_NACIONAL" >COMBUSTIBLES NACIONAL</option>
+                                <option value="ICA" >ICA</option>
+                                <option value="HORTICULTURA" >HORTICULTURA</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="text-danger mb-2">
+                            <p *ngIf="validarUpdate('name')" class="mb-1 animated fadeIn">- El nombre del impuesto es obligatorio</p>
+                            <p *ngIf="validarUpdate('valor')" class="mb-1 animated fadeIn">- El valor es obligatorio</p>
+                            <p *ngIf="validarUpdate('taxcategory')" class="mb-1 animated fadeIn">- La categoria es obligatoria</p>
+                        </div>
+                    </div>
+
+
+                    <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Actualizar</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =========================================================================
+    EDITAR IMPUESTO 
 ========================================================================= -->

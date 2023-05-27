@@ -9,11 +9,23 @@ import { environment } from '../../environments/environment';
 // INTERFACES
 import { DataicoInterface } from '../interfaces/dataico.interface';
 import { LoadInvoice } from '../interfaces/invoice.interface';
-import { Actions, FacturaElectronica, InvoiceElectronic, Item, Tax } from '../models/invoiceelectronic.model';
+import { Actions, Customer, FacturaElectronica, InvoiceElectronic, Item, Tax } from '../models/invoiceelectronic.model';
 import { Impuestos } from '../models/impuestos.model';
 
 const base_url = environment.base_url;
 const dataico_url = environment.dataico_url;
+
+interface _Department {
+  codigo: string,
+  departamento: string,
+}
+
+interface _City {
+  "codigo departamento": string,
+  departamento: string,
+  codigo: string,
+  ciudad: string,
+}
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +55,44 @@ export class ElectronicaService {
   /** ================================================================
    *  ENVIAR FACTURA A DATAICO
   ==================================================================== */
-  postFacturaDataico(invoice: LoadInvoice, dataico: DataicoInterface, impuestos: Impuestos[]){
+  postFacturaDataico(invoice: LoadInvoice, dataico: DataicoInterface, impuestos: Impuestos[]) {
+    
+    let customer: Customer = {
+      department: '68',
+      city: '001',
+      address_line: 'No aplica',
+      party_type: 'PERSONA_NATURAL',
+      tax_level_code: 'SIMPLIFICADO',
+      email: 'ivsmca90@gmail.com',
+      country_code: 'CO',
+      first_name: 'Ocacional',
+      phone: '3166078657',
+      party_identification_type: 'CC',
+      company_name: '',
+      family_name: 'Predeterminado',
+      regimen: 'SIMPLE',
+      party_identification: '0000000000' ,
+    };
+
+    if (invoice.client) {
+      customer = {
+        department:                 invoice.client.codigodepartamento,
+        city:                       invoice.client.codigociudad,
+        address_line:               invoice.client.address,
+        party_type:                 invoice.client.party_type,
+        tax_level_code:             invoice.client.tax_level_code,
+        email:                      invoice.client.email,
+        country_code:               invoice.client.country_code,
+        first_name:                 invoice.client.first_name,
+        phone:                      invoice.client.phone,
+        party_identification_type:  invoice.client.party_identification_type,
+        company_name:               invoice.client.company_name,
+        family_name:                invoice.client.family_name,
+        regimen:                    invoice.client.regimen,
+        party_identification:       invoice.client.cedula
+      }
+    }
+    
 
     // SETEAR FECHA
     let d = new Date();
@@ -52,8 +101,7 @@ export class ElectronicaService {
     (Number(f[1]) < 10)? f[1] = `0${f[1]}` : f[1];
     let fecha = `${f[0]}/${f[1]}/${f[2]}`;
     // SETEAR FECHA
-
-    let { _id, ...customer } = dataico.customer;
+   
     let {  ...actions } = dataico.actions;
     delete actions._id;
     delete dataico.numbering._id;
@@ -67,54 +115,56 @@ export class ElectronicaService {
 
       let tax: Tax[] = [];
 
+      let type = '94';
+      if (product.product.type === 'Granel') {
+        type = 'AB';
+      }else if(product.product.type === 'Paquete'){
+        type = 'PA';
+      }
+
       tax.push({
-        "tax-category": "IVA",
+        "tax-category": impuesto.taxcategory,
         "tax-rate":   impuesto.valor
       });
       
       let item: Item = {
-        "sku":          product.product.code,
-        "quantity":     product.qty,
-        "price":        product.price,
-        "description":  product.product.name,
-        "taxes":        tax
+        "sku":            product.product.code,
+        "quantity":       product.qty,
+        "price":          product.price,
+        "description":    product.product.name,
+        "taxes":          tax,
+        "measuring-unit": type
       }
 
       items.push(item);
 
     }
 
-    // SETEAR ALGUNOS DATOS
-    dataico.customer.city = dataico.customer.city.toUpperCase();
-    dataico.customer.department = dataico.customer.department.toUpperCase();   
-
+    
+    
     // "issue_date": `${fecha.getDate()}/${fecha.getMonth()+1}/${fecha.getFullYear()}`,
     let factura: FacturaElectronica = {
       "issue_date": fecha,
       "invoice_type_code": dataico.invoice_type_code,
       "items": items,
       "payment_means_type": 'DEBITO',
-      "number": "822",
+      "number": invoice.invoice.toString(),
       "numbering": dataico.numbering,
       "dataico_account_id": dataico.dataico_account_id,
       "payment_date": fecha,
       "env": 'PRODUCCION',
-      "customer": dataico.customer,
+      "customer": customer,
       "payment_means": 'DEBIT_CARD'
     };
     
     let data: InvoiceElectronic = {
       actions: dataico.actions,
       invoice: factura
-    };
+    }; 
 
-    data.invoice.customer.city = '001';
-    data.invoice.customer.department = '54';    
-
-    return this.http.post(`${base_url}/electronica/${dataico.authtoken}`, data, this.headers)
+    return this.http.post(`${base_url}/electronica/${dataico.authtoken}/${invoice.iid}`, data, this.headers)
 
   }
-
   
-
+  // FIN DE LA CLASE
 }

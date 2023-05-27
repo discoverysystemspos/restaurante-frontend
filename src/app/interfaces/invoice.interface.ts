@@ -20,6 +20,15 @@ export interface _products{
 
 interface _client{
     cedula: string;
+    party_type?: 'PERSONA_JURIDICA' | 'PERSONA_NATURAL';
+    tax_level_code?: 'SIMPLIFICADO' | 'RESPONSABLE_DE_IVA' | 'NO_RESPONSABLE_DE_IVA' | 'COMUN';
+    country_code?: string;
+    first_name?: string;
+    party_identification_type?: 'TE' | 'PEP' | 'TI' | 'RC' | 'CC' | 'CE' | 'PASAPORTE' | 'IE' | 'NIT_OTRO_PAIS' | 'NIT';
+    company_name?: string;
+    family_name?: string;
+    regimen?: 'AUTORRETENEDOR' | 'AGENTE_RETENCION_IVA' | 'ORDINARIO' | 'SIMPLE' | 'GRAN_CONTRIBUYENTE';
+    party_identification?: string;
     name?: string;
     phone?: string;
     email?: string;
@@ -30,6 +39,9 @@ interface _client{
     status?: string;
     fecha?: string;
     cid?: string;
+    codigodepartamento?: string;
+    codigociudad?: string;
+    sendemail?: boolean;
 }
 
 export interface _mesa{

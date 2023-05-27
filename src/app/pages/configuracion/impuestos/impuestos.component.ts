@@ -78,7 +78,8 @@ export class ImpuestosComponent implements OnInit {
   public formSubmitted:boolean = false;
   public newImpuestoForm = this.fb.group({
     name: ['', [Validators.required]],
-    valor: [0, [Validators.required, Validators.min(0)]]
+    valor: [0, [Validators.required, Validators.min(0)]],
+    taxcategory: 'IVA'
   })
 
   crearImpuesto(){
@@ -110,6 +111,71 @@ export class ImpuestosComponent implements OnInit {
   campoValido(campo: string): boolean{
 
     if ( this.newImpuestoForm.get(campo).invalid &&  this.formSubmitted) {      
+      return true;      
+    } else{      
+      return false;
+    }
+
+  }
+
+  /** ================================================================
+   *   SETEAR FORMULARIO DE ACTUALIZACION
+  ==================================================================== */
+  setFormUpdate(impuesto: Impuesto){
+
+    this.updateImpuestoForm.reset({
+      id:           impuesto.taxid,
+      name:         impuesto.name,
+      valor:        impuesto.valor,
+      taxcategory:  impuesto.taxcategory || '',
+    })
+
+  }
+
+  /** ================================================================
+   *   EDITAR IMPUESTO
+  ==================================================================== */
+  public formSubmittedUpdate:boolean = false;
+  public updateImpuestoForm = this.fb.group({
+    id: '',
+    name: ['', [Validators.required]],
+    valor: [0, [Validators.required, Validators.min(0)]],
+    taxcategory: 'IVA'
+  });
+
+  updateTax(){
+
+    this.formSubmittedUpdate = true;
+
+    if (this.updateImpuestoForm.invalid) {
+      return;
+    }
+
+    if (this.updateImpuestoForm.value.taxcategory === '') {
+      Swal.fire('Atención', 'Debes asignar una categoria al impuesto', 'info');
+      return;
+    }
+
+    this.impuestosService.updateImpuesto(this.updateImpuestoForm.value, this.updateImpuestoForm.value.id)
+        .subscribe( ({tax}) => {
+
+          this.formSubmittedUpdate = false;
+          this.cargarImpuestos();
+          
+
+        },(err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');
+        })
+
+  }
+
+  /** ================================================================
+   *   VALIDAR CAMPOS
+  ==================================================================== */
+  validarUpdate(campo: string): boolean{
+
+    if ( this.updateImpuestoForm.get(campo).invalid &&  this.formSubmittedUpdate) {      
       return true;      
     } else{      
       return false;

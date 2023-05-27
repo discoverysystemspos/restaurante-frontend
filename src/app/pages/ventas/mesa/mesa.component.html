@@ -366,8 +366,8 @@
                     <div>
                         <h6 class="fw-bold mb-0">Telefono: <span *ngIf="clienteTemp.phone"> <p class="mb-0 fw-normal">{{ clienteTemp.phone }}</p> </span> </h6>
                     </div>
-                    <div *ngIf="clienteTemp.phone">
-                        <h6 class="fw-bold mb-0">correo: <span> <p class="mb-0 fw-normal">{{ clienteTemp.phone }}</p> </span> </h6>
+                    <div *ngIf="clienteTemp.email">
+                        <h6 class="fw-bold mb-0">correo: <span> <p class="mb-0 fw-normal">{{ clienteTemp.email }}</p> </span> </h6>
                     </div>
                     <div *ngIf="mesa">
                         <h6 class="fw-bold mb-0">
@@ -531,7 +531,7 @@
 ========================================================================= -->
 
 <!-- =========================================================================
-    MODAL BUSCAR CLIENTE 
+    MODAL CREAR CLIENTE 
 ========================================================================= -->
 <div class="modal fade" id="buscarCliente" tabindex="-1" aria-labelledby="buscarClienteModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -550,60 +550,149 @@
                             DATOS PERSONALES 
                         =========================================================================== -->
 
-                        <h5 class="text-muted">Datos Personales</h5>
+                        <div class="row mb-2">
 
-
-                        <div class="col-md-10 mx-auto p-2 ">
-
-                            <div class="form-floating">
-                                <input formControlName="name" type="text" class="form-control text-capitalize" placeholder="Nombres">
-                                <label for="floatingInput">Nombres</label>
-                                <p *ngIf="campoValido('name')" class="mb-1 animated fadeIn text-danger">* El nombre es obligatorio</p>
+                            <!-- Tipo de empresa ** -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="partyType" class="col-sm-auto col-form-label">Tipo de empresa</label>
+                                <select formControlName="party_type" class="form-select" id="partyType" #partyType (change)="partyType.value" aria-label="Floating label select example">
+                                    <option value="PERSONA_NATURAL">Persona Natural</option>
+                                    <option value="PERSONA_JURIDICA" >Persona Juridica</option>
+                                </select>
                             </div>
 
-                        </div>
-                        <div class="col-md-10 mx-auto p-2  ">
-
-                            <div class="form-floating">
-                                <input formControlName="cedula" type="text" class="form-control" placeholder="Cedula de ciudadania">
-                                <label for="floatingInput">Cedula de ciudadania</label>
-                                <p *ngIf="campoValido('cedula')" class="mb-1 animated fadeIn text-danger">* La cedula de ciudadania es obligatoria</p>
+                            <!-- Nombre de la empresa -->
+                            <div *ngIf="partyType.value === 'PERSONA_JURIDICA'" class="col-md-12 mb-3 px-md-1">
+                                <label for="companyName">Nombre de la empresa </label>
+                                <div class="form-floating">
+                                    <input id="companyName" formControlName="company_name" type="text" class="form-control text-capitalize" placeholder="Nombre de la empresa">
+                                    <label for="floatingInput">Nombre de la empresa </label>
+                                </div>
+                                <p *ngIf="campoValido('company_name')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
                             </div>
 
-                        </div>
-
-                        <div class="col-md-10 mx-auto p-2 ">
-
-                            <div class="form-floating">
-                                <input formControlName="email" type="email" class="form-control" placeholder="Email">
-                                <label for="floatingInput">Email</label>
+                            <!-- Nombres de la persona natural -->
+                            <div *ngIf="partyType.value === 'PERSONA_NATURAL'" class="col-md-12 mb-3 px-md-1">
+                                <label for="firstName">Nombres de la persona natural </label>
+                                <div class="form-floating">
+                                    <input id="firstName" formControlName="first_name" type="text" class="form-control text-capitalize" placeholder="Nombres de la persona natural">
+                                    <label for="floatingInput">Nombres de la persona natural </label>
+                                </div>
+                                <p *ngIf="campoValido('first_name')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
                             </div>
 
-                        </div>
-
-                        <div class="col-md-10 mx-auto p-2 ">
-
-                            <div class="form-floating">
-                                <input formControlName="city" type="text" class="form-control" placeholder="Ciudad">
-                                <label for="floatingInput">Ciudad</label>
+                            <!-- Apellidos de la persona natural -->
+                            <div *ngIf="partyType.value === 'PERSONA_NATURAL'" class="col-md-12 mb-3 px-md-1">
+                                <label for="familyName">Apellidos de la persona natural </label>
+                                <div class="form-floating">
+                                    <input id="familyName" formControlName="family_name" type="text" class="form-control text-capitalize" placeholder="Apellidos de la persona natural">
+                                    <label for="floatingInput">Apellidos de la persona natural </label>
+                                </div>
+                                <p *ngIf="campoValido('family_name')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
                             </div>
 
-                        </div>
-
-                        <div class="col-md-10 mx-auto p-2 ">
-
-                            <div class="form-floating">
-                                <input formControlName="address" type="text" class="form-control" placeholder="Dirección">
-                                <label for="floatingInput">Dirección</label>
+                            <!-- TIPO DE DOCUMENTO -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="indentityType" class="col-sm-auto col-form-label">Tipo de documento</label>
+                                <select formControlName="party_identification_type" class="form-select" id="indentityType" aria-label="Floating label select example">
+                                    <option value="NIT">NIT</option>
+                                    <option value="CC" selected>CC</option>
+                                    <option value="PASAPORTE" >PASAPORTE</option>
+                                    <option value="CE" >CE</option>
+                                    <option value="TE" >TE</option>
+                                    <option value="PEP" >PEP</option>
+                                    <option value="TI" >TI</option>
+                                    <option value="RC" >RC</option>
+                                    <option value="IE" >IE</option>
+                                    <option value="NIT_OTRO_PAIS" >Nit de otro pais</option>
+                                </select>
                             </div>
 
-                        </div>
+                            <!-- CEDULA O NIT -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="cedula">CC / NIT </label>
+                                <div class="form-floating">
+                                    <input id="cedula" formControlName="cedula" type="text" class="form-control" placeholder="cedula">
+                                    <label for="floatingInput">CC / NIT </label>
+                                </div>
+                            </div>
 
-                        <div class="col-md-10 mx-auto p-2 ">
+                            <!-- EMAIL ** -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="email">Correo electronico </label>
+                                <div class="form-floating">
+                                    <input id="email" formControlName="email" type="text" class="form-control" placeholder="Correo electronico">
+                                    <label for="floatingInput">Correo electronico </label>
+                                </div>
+                            </div>
 
-                            <div class="form-floating">
-                                <input formControlName="phone" type="text" class="form-control" placeholder="Telefono">
-                                <label for="floatingInput">Telefono</label>
+                            <!-- DEPARTAMENTO ** -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="departamentoS" class="col-sm-auto col-form-label">Departamento</label>
+                                <select formControlName="department" class="form-select" id="departamentoS" #departmentSS (change)="searchCities(departmentSS.value)">
+                                    <option >Seleccionar Departamento</option>
+                                    <option *ngFor="let department of departments" [value]="department.departamento" >{{department.departamento}}</option>
+                                </select>
+                            </div>
+
+                            <!-- CIUDAD ** -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="ciudadS" class="col-sm-auto col-form-label">Departamento</label>
+                                <select formControlName="city" class="form-select" id="ciudadS" aria-label="Floating label select example">
+                                    <option value="" selected>Seleccionar Ciudad</option>
+                                    <option *ngFor="let city of ListCities" [value]="city.ciudad" >{{city.ciudad}}</option>
+                                </select>
+                            </div>
+
+                            <!-- DIRECCION ** -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="direccion">Dirección </label>
+                                <div class="form-floating">
+                                    <input id="direccion" formControlName="address" type="text" class="form-control text-capitalize" placeholder="Dirección">
+                                    <label for="floatingInput">Dirección </label>
+                                </div>
+
+                            </div>
+
+                            <!-- TELEFONO -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="telefono">Telefono </label>
+                                <div class="form-floating">
+                                    <input id="telefono" formControlName="phone" type="text" class="form-control" placeholder="Telefono">
+                                    <label for="floatingInput">Telefono </label>
+                                </div>
+                            </div>
+
+                            <!-- REGIMEN -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="regimen" class="col-sm-auto col-form-label">Regimen</label>
+                                <select formControlName="regimen" class="form-select" id="regimen" aria-label="Floating label select example">
+                                    <option value="SIMPLE">SIMPLE</option>
+                                    <option value="AUTORRETENEDOR" >AUTORRETENEDOR</option>
+                                    <option value="AGENTE_RETENCION_IVA" >AGENTE RETENCION IVA</option>
+                                    <option value="ORDINARIO" >ORDINARIO</option>
+                                    <option value="GRAN_CONTRIBUYENTE" >GRAN CONTRIBUYENTE</option>
+                                </select>
+                            </div>
+
+                            <!-- TIPO DE IMPUESTO ** -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="taxLevel" class="col-sm-auto col-form-label">Tipo de impuesto</label>
+                                <select formControlName="tax_level_code" class="form-select" id="taxLevel" aria-label="Floating label select example">
+                                    <option value="SIMPLIFICADO">SIMPLIFICADO</option>
+                                    <option value="RESPONSABLE_DE_IVA" >RESPONSABLE DE IVA</option>
+                                    <option value="NO_RESPONSABLE_DE_IVA" selected>NO RESPONSABLE DE IVA</option>
+                                    <option value="COMUN" >COMUN</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-12 mb-3 px-md-1 ml-2 ms-2">
+                                <div class="form-check mt-2">
+                                    <input formControlName="sendemail" class="form-check-input" type="checkbox" value="" id="sendemail">
+                                    <label class="form-check-label" for="sendemail">
+                                        Enviar Factura al Correo
+                                    </label>
+                                </div>
                             </div>
 
                         </div>
