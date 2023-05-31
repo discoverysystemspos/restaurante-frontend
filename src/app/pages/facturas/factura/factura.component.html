@@ -44,10 +44,10 @@
                 </button>
             </ng-container>
 
-
             <button (click)="devolucion(factura.iid)" [disabled]="user.role !== 'ADMIN'" type="button" class="btn btn-outline-danger btn-sm mx-1 my-2"> 
                 <i class="bi-arrow-counterclockwise"></i> Cancelar Factura
             </button>
+
             <button *ngIf="factura.credito" [disabled]="user.cerrada" (click)="focusMonto()" type="button" class="btn btn-outline-dark btn-sm mx-1 my-2" data-bs-toggle="modal" data-bs-target="#facturar"> 
                 Cobrar
             </button>
@@ -67,6 +67,10 @@
             <button type="button" class="btn btn-secondary btn-sm mx-1 my-2" data-bs-toggle="modal" data-bs-target="#editControl"> 
                 Editar Control
             </button>
+
+            <a *ngIf="factura.pdf_url" [href]="factura.pdf_url" target="_blank" class="btn btn-outline-danger btn-sm mx-1 my-2">
+                <i class="bi bi-file-pdf"></i> Factura Electronica
+            </a>
 
         </div>
 

@@ -264,6 +264,7 @@
                                         <td> {{ factura.fecha | date:'medium' }} </td>
                                         <td class="text-center">
                                             <a [routerLink]="['/dashboard/factura', factura.iid]" class="btn btn-link p-1 text-primary"><i class="bi bi-box-arrow-up-right"></i></a>
+                                            <a *ngIf="factura.pdf_url" [href]="factura.pdf_url" target="_blank" class="btn btn-link p-1 text-danger"><i class="bi bi-file-pdf"></i></a>
                                         </td>
                                     </tr>
 

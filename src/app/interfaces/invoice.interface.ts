@@ -81,8 +81,10 @@ export interface LoadInvoice {
     apartado: boolean;
     descuento: boolean;
     porcentaje: number;
-    paymentsCredit: _paymentsCredito[],
-    devolucion: _devolucion[]
+    paymentsCredit: _paymentsCredito[];
+    devolucion: _devolucion[];
+    pdf_url: string;
+    uuid: string;
 
 }
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import Swal from 'sweetalert2';
 
 // MODELS
@@ -11,6 +12,10 @@ import { SearchService } from '../../services/search.service';
 import { InvoiceService } from '../../services/invoice.service';
 import { LoadInvoice, ListInvoice, ListCreditoCliente } from '../../interfaces/invoice.interface';
 
+interface _Department {
+  codigo: string,
+  departamento: string,
+}
 
 @Component({
   selector: 'app-clientes',
@@ -37,11 +42,49 @@ export class ClientesComponent implements OnInit {
   constructor(  private clientService: ClientService,
                 private searchService: SearchService,
                 private fb:FormBuilder,
-                private invoicesService: InvoiceService) {  }
+                private invoicesService: InvoiceService,
+                private http: HttpClient) {  }
 
   ngOnInit(): void {
     
     this.cargarClientes();
+
+    this.loadDepartmentAndCitys();
+
+  }
+
+  /** ================================================================
+   *  OBTENER DEPARTAMENTOS Y CIUDADES
+  ==================================================================== */
+  public departments: _Department[] = [];
+  public cities: any[] = [];
+  loadDepartmentAndCitys(){
+
+    this.http.get('assets/json/departamentos.json')
+        .subscribe( (data: any) => {          
+          this.departments = data;            
+        });
+
+    this.http.get('assets/json/ciudades.json')
+    .subscribe( (data: any) => {          
+      this.cities = data;          
+    })
+
+  }
+
+  /** ================================================================
+   *  OBTENER CIUDADES DEPENDIENDO DEL DEPARTAMENTO
+  ==================================================================== */
+  public ListCities: any[] = [];
+  searchCities(department: string){
+
+    this.ListCities = [];
+
+    if (department.length === 0 ) {
+      return;
+    }
+
+    this.ListCities = this.cities.filter( city =>  department === city.departamento );
 
   }
 
@@ -51,7 +94,20 @@ export class ClientesComponent implements OnInit {
   // FORMULARIO
   public formSubmitted = false;
   public newClientForm = this.fb.group({
-    name: [ '' , [Validators.required, Validators.minLength(3)]],
+    party_type: ['PERSONA_NATURAL', [Validators.required]],
+    tax_level_code: ['NO_RESPONSABLE_DE_IVA', [Validators.required]],
+    party_identification_type: ['CC', [Validators.required]],
+    company_name: '',
+    first_name: '',
+    family_name: '',
+    address_line: '',
+    regimen: ['SIMPLE',],
+    party_identification: '',
+    codigodepartamento: '',
+    codigociudad: '',
+    sendemail: false,
+    // OLD
+    name: [''],
     cedula: ['', [Validators.required, Validators.minLength(3)]],
     email: [''],
     phone: [''],
@@ -63,13 +119,27 @@ export class ClientesComponent implements OnInit {
     contratista: false,
   });
 
-  crearCliente(){
+  async crearCliente(){
+
+    // OBTENER CODIGO DEL DEPARTAMENTO Y CIUDAD
+    let codigoD = await this.departments.find( departamento => this.newClientForm.value.department === departamento.departamento );
+    let codigoC = await this.cities.find( city => this.newClientForm.value.city === city.ciudad );
+    this.newClientForm.value.codigodepartamento  = codigoD.codigo;
+    this.newClientForm.value.codigociudad  = codigoC.codigo;
 
     this.formSubmitted = true;
 
     if (this.newClientForm.invalid) {
       return;
-    }    
+    }
+    
+    if (this.newClientForm.value.party_type === 'PERSONA_NATURAL') {      
+      this.newClientForm.value.name = `${this.newClientForm.value.first_name} ${this.newClientForm.value.family_name}`
+    }else{
+      this.newClientForm.value.name = this.newClientForm.value.company_name;
+    }
+
+    this.newClientForm.value.party_identification = this.newClientForm.value.cedula;
 
     this.clientService.createClient(this.newClientForm.value)
         .subscribe((resp: any) => {
@@ -215,8 +285,19 @@ export class ClientesComponent implements OnInit {
   ==================================================================== */
   public formSubmittedUp = false;
   public upClientForm = this.fb.group({
+    party_type: ['PERSONA_NATURAL', [Validators.required]],
+    tax_level_code: ['NO_RESPONSABLE_DE_IVA', [Validators.required]],
+    party_identification_type: ['CC', [Validators.required]],
+    company_name: '',
+    first_name: '',
+    family_name: '',
+    regimen: ['SIMPLE',],
+    party_identification: '',
+    codigodepartamento: '',
+    codigociudad: '',
+    // OLD
     _id: [ '' , [Validators.required, Validators.minLength(24)]],
-    name: [ '' , [Validators.required, Validators.minLength(3)]],
+    name: [''],
     cedula: ['', [Validators.required, Validators.minLength(3)]],
     email: [''],
     phone: [''],
@@ -232,8 +313,21 @@ export class ClientesComponent implements OnInit {
   // OBTENER LA INFORMACION DEL CLIENTE
   actualizarCliente(cliente: Client){
 
+    this.upClientForm.reset();
+
     this.upClientForm.setValue({
 
+      party_type: cliente.party_type || 'PERSONA_NATURAL',
+      tax_level_code: cliente.tax_level_code || 'NO_RESPONSABLE_DE_IVA',
+      party_identification_type: cliente.party_identification_type || 'CC',
+      company_name: cliente.company_name || '',
+      first_name: cliente.first_name || '',
+      family_name: cliente.family_name || '',
+      regimen: cliente.regimen || 'SIMPLE',
+      party_identification: cliente.party_identification || '',
+      codigodepartamento: cliente.codigodepartamento || '',
+      codigociudad: cliente.codigociudad || '',
+      // OLD
       _id: cliente.cid,
       name: cliente.name || '',
       cedula: cliente.cedula || '', 
@@ -255,13 +349,27 @@ export class ClientesComponent implements OnInit {
   /** ================================================================
    *  ACTUALIZAR CLIENTE
   ==================================================================== */
-  updateCLiente(){
+  async updateCLiente(){
+
+    // OBTENER CODIGO DEL DEPARTAMENTO Y CIUDAD
+    let codigoD = await this.departments.find( departamento => this.upClientForm.value.department === departamento.departamento );
+    let codigoC = await this.cities.find( city => this.upClientForm.value.city === city.ciudad );
+    this.upClientForm.value.codigodepartamento  = codigoD.codigo;
+    this.upClientForm.value.codigociudad  = codigoC.codigo;
 
     this.formSubmittedUp = true;
 
     if (this.upClientForm.invalid) {
       return;
     }
+
+    if (this.upClientForm.value.party_type === 'PERSONA_NATURAL') {      
+      this.upClientForm.value.name = `${this.upClientForm.value.first_name} ${this.upClientForm.value.family_name}`
+    }else{
+      this.upClientForm.value.name = this.upClientForm.value.company_name;
+    }
+
+    this.upClientForm.value.party_identification = this.upClientForm.value.cedula;
     
     this.clientService.updateClient(this.upClientForm.value, this.upClientForm.value._id)
           .subscribe( resp => {
