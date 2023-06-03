@@ -47,7 +47,7 @@ export class EmpresaComponent implements OnInit {
 
           this.comisiones = datos.comisiones || [];
           
-          const { tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas, commissions, comisiones, fruver, moneda, decimal, usd,  currencyusd, cop, currencycop, basculaimp, basculatype, basculacode, electronica } = datos;
+          const { tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas, commissions, comisiones, fruver, moneda, decimal, usd,  currencyusd, cop, currencycop, basculaimp, basculatype, basculacode, electronica, min } = datos;
 
           let tipoImpuesto = '';
 
@@ -90,7 +90,8 @@ export class EmpresaComponent implements OnInit {
               basculaimp: basculaimp || false,
               basculatype: basculatype ||'precio',
               basculacode: basculacode ||'2000',
-              electronica: electronica || false
+              electronica: electronica || false,
+              min
 
             });
 
@@ -134,7 +135,8 @@ export class EmpresaComponent implements OnInit {
     basculaimp: false,
     basculatype: 'precio',
     basculacode: '2000',
-    electronica: false
+    electronica: false,
+    min: 212000
   })
 
   actualizarDatos(){
@@ -316,6 +318,8 @@ export class EmpresaComponent implements OnInit {
     env: ['PRUEBAS', [Validators.required]],
     send_dian: [false, [Validators.required]],
     send_email: [false, [Validators.required]],
+    desde: [0, [Validators.required]],
+    hasta: [0, [Validators.required]]
   });
 
   createDataico(){
@@ -344,6 +348,9 @@ export class EmpresaComponent implements OnInit {
       numbering,
       env: this.dataicoForm.value.env,
       operation: this.dataicoForm.value.operation,
+      desde: this.dataicoForm.value.desde,
+      hasta: this.dataicoForm.value.hasta,
+      
     }
 
     this.dataicoService.postDataico(dataico)
@@ -390,7 +397,9 @@ export class EmpresaComponent implements OnInit {
       operation: this.dataico.operation,
       env: this.dataico.env,
       send_dian: this.dataico.actions.send_dian,
-      send_email: this.dataico.actions.send_email
+      send_email: this.dataico.actions.send_email,
+      desde: this.dataico.desde || 0,
+      hasta: this.dataico.hasta || 0
     });    
     
   }
@@ -410,6 +419,8 @@ export class EmpresaComponent implements OnInit {
     env: ['PRUEBAS', [Validators.required]],
     send_dian: [false, [Validators.required]],
     send_email: [false, [Validators.required]],
+    desde: [0, [Validators.required]],
+    hasta: [0, [Validators.required]]
   });
 
   updateDataico(){
@@ -439,6 +450,8 @@ export class EmpresaComponent implements OnInit {
       numbering,
       env: this.dataicoUpdateForm.value.env,
       operation: this.dataicoUpdateForm.value.operation,
+      desde: this.dataicoUpdateForm.value.desde,
+      hasta: this.dataicoUpdateForm.value.hasta
     }
 
 

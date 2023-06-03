@@ -1808,7 +1808,7 @@ export class MesaComponent implements OnInit {
   public facturando: boolean = false;
   
   @ViewChild('fechCredito') fechCredito: ElementRef;  
-  crearFactura(){
+  crearFactura( send_dian: boolean ){
 
     this.facturando = true;
 
@@ -1902,7 +1902,7 @@ export class MesaComponent implements OnInit {
             this.mesasServices.updateMesa(this.mesa, this.mesaID)
               .subscribe( (resp:{ok: boolean, mesa: Mesa}) => {
                 
-                if (this.empresa.electronica) {
+                if (this.empresa.electronica && send_dian) {
                   
                   this.electronicaService.postFacturaDataico(this.factura, this.dataico, this.impuestos)
                       .subscribe( resp => {

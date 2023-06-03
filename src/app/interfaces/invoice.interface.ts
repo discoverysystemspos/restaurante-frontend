@@ -85,6 +85,8 @@ export interface LoadInvoice {
     devolucion: _devolucion[];
     pdf_url: string;
     uuid: string;
+    electronica: boolean;
+    number: string;
 
 }
 

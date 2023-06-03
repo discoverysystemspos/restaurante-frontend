@@ -11,4 +11,6 @@ export interface DataicoInterface{
     env: 'PRUEBAS' | 'PRODUCCION';
     operation: 'ESTANDAR' | 'AIU' | 'MANDATO' | 'EXPORTACION' | 'SS_RECAUDO' | 'SS_CUFE' | 'SS_CUDE' | 'SS_POS' | 'SS_NUM' | 'SS_REPORTE' | 'SS_SIN_APORTE';
     datid?: string;
+    desde?: number;
+    hasta?: number;
 }

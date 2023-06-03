@@ -62,16 +62,16 @@ export class ElectronicaService {
       city: '001',
       address_line: 'No aplica',
       party_type: 'PERSONA_NATURAL',
-      tax_level_code: 'SIMPLIFICADO',
+      tax_level_code: 'NO_RESPONSABLE_DE_IVA',
       email: 'ivsmca90@gmail.com',
       country_code: 'CO',
-      first_name: 'Ocacional',
+      first_name: 'Ocasional',
+      family_name: 'Predeterminado',
       phone: '3166078657',
       party_identification_type: 'CC',
       company_name: '',
-      family_name: 'Predeterminado',
       regimen: 'SIMPLE',
-      party_identification: '0000000000' ,
+      party_identification: '222222222222' ,
     };
 
     if (invoice.client) {
@@ -162,7 +162,15 @@ export class ElectronicaService {
       invoice: factura
     }; 
 
-    return this.http.post(`${base_url}/electronica/${dataico.authtoken}/${invoice.iid}`, data, this.headers)
+    let desde;
+
+    if(!dataico.desde || dataico.desde === 0){
+      desde = 0;
+    }else{
+      desde = (dataico.desde - 1);
+    }
+
+    return this.http.post(`${base_url}/electronica/${dataico.authtoken}/${invoice.iid}/${desde}`, data, this.headers)
 
   }
   

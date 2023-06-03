@@ -23,7 +23,9 @@ export class Invoice {
         public descuento?: boolean,
         public porcentaje?: number,
         public paymentsCredit?: _paymentsCredito[],
-        public devolucion?: _devolucion[]
+        public devolucion?: _devolucion[],
+        public electronica?: boolean,
+        public number?: string
     ){}
 
 }

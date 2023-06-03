@@ -837,6 +837,12 @@
 
                             <div class="container-fluid py-4">
 
+                                <ng-container *ngIf="empresa?.min">
+                                    <div *ngIf="total >= empresa.min" class="alert alert-warning fade show" role="alert">
+                                        <strong>Atención:</strong> Para montos mayores a <strong>{{ empresa.min | number }}</strong> se debe crear factura electronica
+                                    </div>
+                                </ng-container>
+
                                 <!-- TOTAL -->
                                 <div class="text-center my-3" *ngIf="empresa">
                                     <h4 class="display-4 text-primary">{{ total | divisa }}</h4>
@@ -1076,13 +1082,23 @@
 
                     </div>
 
-                    <!-- BTN CREAR FACTURA -->
-                    <div class="my-4 float-end">
-                        <button type="button" [disabled]="facturando == true" (click)="crearFactura()" class="btn btn-outline-primary">
-                            Crear Factura
+                    <div class="d-flex justify-content-end gap-2">
+                        <!-- BTN CREAR FACTURA -->
+                        <div class="my-4 float-end">
+                            <button type="button" [disabled]="facturando == true" (click)="crearFactura(false)" class="btn btn-outline-primary">
+                            Crear Factura Pos
                         </button>
+                        </div>
+                        <!-- BTN CREAR FACTURA -->
+
+                        <!-- BTN CREAR FACTURA -->
+                        <div class="my-4 float-end" *ngIf="empresa?.electronica">
+                            <button type="button" [disabled]="facturando == true" (click)="crearFactura(true)" class="btn btn-outline-success">
+                            Crear Factura Electronica
+                        </button>
+                        </div>
+                        <!-- BTN CREAR FACTURA -->
                     </div>
-                    <!-- BTN CREAR FACTURA -->
 
 
                 </div>
