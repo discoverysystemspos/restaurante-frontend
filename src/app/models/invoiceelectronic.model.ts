@@ -57,11 +57,11 @@ export interface Customer {
     "tax_level_code":            'SIMPLIFICADO' | 'RESPONSABLE_DE_IVA' | 'NO_RESPONSABLE_DE_IVA' | 'COMUN';
     "email":                     string;
     "country_code":              string;
-    "first_name":                string;
+    "first_name"?:                string;
     "phone":                     string;
     "party_identification_type": 'TE' | 'PEP' | 'TI' | 'RC' | 'CC' | 'CE' | 'PASAPORTE' | 'IE' | 'NIT_OTRO_PAIS' | 'NIT';
-    "company_name":              string;
-    "family_name":               string;
+    "company_name"?:              string;
+    "family_name"?:               string;
     "regimen":                   'AUTORRETENEDOR' | 'AGENTE_RETENCION_IVA' | 'ORDINARIO' | 'SIMPLE' | 'GRAN_CONTRIBUYENTE';
     "party_identification":      string;
     "_id"?:                string;

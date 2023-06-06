@@ -1907,6 +1907,9 @@ export class MesaComponent implements OnInit {
                   this.electronicaService.postFacturaDataico(this.factura, this.dataico, this.impuestos)
                       .subscribe( (resp: {status, invoice, ok}) => {
 
+                        console.log(resp);
+                        
+
                         this.facturando = false;
                         
                         if (resp.status === 500) {

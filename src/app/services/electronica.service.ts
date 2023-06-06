@@ -92,6 +92,13 @@ export class ElectronicaService {
         party_identification:       invoice.client.cedula
       }
     }
+
+    if(customer.party_type === 'PERSONA_JURIDICA'){
+      delete customer.first_name;
+      delete customer.family_name;
+    }else{
+      delete customer.company_name;
+    }
     
 
     // SETEAR FECHA
@@ -156,6 +163,8 @@ export class ElectronicaService {
       "customer": customer,
       "payment_means": 'DEBIT_CARD'
     };
+
+    dataico.actions.send_email = true;
     
     let data: InvoiceElectronic = {
       actions: dataico.actions,
