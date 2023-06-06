@@ -68,6 +68,10 @@
                 Editar Control
             </button>
 
+            <button (click)="sendInvoice()" *ngIf="factura.electronica && !factura.send" type="button" class="btn btn-warning btn-sm mx-1 my-2"> 
+                Enviar Factura DIAN
+            </button>
+
             <a *ngIf="factura.pdf_url" [href]="factura.pdf_url" target="_blank" class="btn btn-outline-danger btn-sm mx-1 my-2">
                 <i class="bi bi-file-pdf"></i> Factura Electronica
             </a>

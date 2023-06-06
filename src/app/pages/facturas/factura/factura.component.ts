@@ -32,6 +32,9 @@ import { User } from 'src/app/models/user.model';
 import { UserService } from '../../../services/user.service';
 import { BancosService } from 'src/app/services/bancos.service';
 import { Banco } from 'src/app/models/bancos.model';
+import { DataicoService } from 'src/app/services/dataico.service';
+import { ElectronicaService } from 'src/app/services/electronica.service';
+import { DataicoInterface } from 'src/app/interfaces/dataico.interface';
 
 @Component({
   selector: 'app-factura',
@@ -60,7 +63,9 @@ export class FacturaComponent implements OnInit {
                 private printerService: NgxPrinterService,
                 private impuestosService: ImpuestosService,
                 private userService: UserService,
-                private bancosService: BancosService) {
+                private bancosService: BancosService,
+                private dataicoService: DataicoService,
+                private electronicaService: ElectronicaService) {
 
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
                     val => {
@@ -83,7 +88,39 @@ export class FacturaComponent implements OnInit {
 
     // CARGAR TURNO
     this.cargarTurno();
+
+    // CARGAR TURNO
+    this.loadDataDataico();
     
+  }
+
+  /** ================================================================
+   *  OBTENER DATOS DE LA FACTURA ELECTRONICA
+  ==================================================================== */
+  public dataDataico: boolean = false;
+  public dataico: DataicoInterface;
+  loadDataDataico(){
+
+    this.dataicoService.loadDataDataico()
+        .subscribe( ({dataico}) => {
+
+          delete dataico.actions._id;
+          delete dataico.actions.email;
+          delete dataico.actions.attachments;
+          delete dataico.datid;
+          delete dataico.customer;
+          delete dataico.numbering._id;
+
+          if (dataico) {
+            this.dataDataico = true;
+            this.dataico = dataico;
+          }          
+
+        }, (err) => {
+          console.log(err);
+          
+        });
+
   }
 
   /** ================================================================
@@ -672,6 +709,33 @@ export class FacturaComponent implements OnInit {
           console.log(err);          
         })
   }
+
+  /** ================================================================
+   *   PDF
+  ==================================================================== */
+  sendInvoice(){
+
+    this.electronicaService.postFacturaDataico(this.factura, this.dataico, this.impuestos)
+        .subscribe( (resp: {status, invoice, ok}) => {
+
+          if (resp.status === 500) {
+            Swal.fire('Atención', 'No se pudo enviar la factura electronica a la DIAN, si el problema persiste, ponte en contacto', 'warning');
+            return;
+          }
+
+          Swal.fire('Estupendo', 'Se ha enviado la factura exitosamente', 'success');
+          setTimeout( () => {
+            window.location.reload();
+          }, 2000)
+
+
+        }, (err) => {
+          console.log(err);          
+        });
+
+  }
+
+
 
   /** ================================================================
    *   PDF

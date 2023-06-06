@@ -87,6 +87,7 @@ export interface LoadInvoice {
     uuid: string;
     electronica: boolean;
     number: string;
+    send: boolean;
 
 }
 

@@ -24,6 +24,8 @@ import { Mesa, _comanda, _ingredientes } from '../../../models/mesas.model';
 import { Kit } from '../../../models/kits.model';
 import { User } from '../../../models/user.model';
 import { Datos } from '../../../models/empresa.model';
+import { Impuestos } from 'src/app/models/impuestos.model';
+import { Banco } from 'src/app/models/bancos.model';
 
 // SERVICES
 import { ProductService } from '../../../services/product.service';
@@ -39,18 +41,16 @@ import { BasculaService } from '../../../services/bascula.service';
 import { PedidosService } from '../../../services/pedidos.service';
 import { EntradasService } from 'src/app/services/entradas.service';
 import { ImpuestosService } from 'src/app/services/impuestos.service';
+import { DataicoService } from 'src/app/services/dataico.service';
+import { ElectronicaService } from 'src/app/services/electronica.service';
+import { BancosService } from '../../../services/bancos.service';
 
 // INTERFACES
 import { Carrito, _payments, LoadCarrito, _notas } from '../../../interfaces/carrito.interface';
 import { LoadInvoice } from '../../../interfaces/invoice.interface';
 import { LoadTurno, _movements } from '../../../interfaces/load-turno.interface';
 import { LoadMesaId } from '../../../interfaces/load-mesas.interface';
-import { Impuestos } from 'src/app/models/impuestos.model';
-import { Banco } from 'src/app/models/bancos.model';
-import { BancosService } from '../../../services/bancos.service';
 import { DataicoInterface } from 'src/app/interfaces/dataico.interface';
-import { DataicoService } from 'src/app/services/dataico.service';
-import { ElectronicaService } from 'src/app/services/electronica.service';
 
 interface _Department {
   codigo: string,
@@ -1905,9 +1905,14 @@ export class MesaComponent implements OnInit {
                 if (this.empresa.electronica && send_dian) {
                   
                   this.electronicaService.postFacturaDataico(this.factura, this.dataico, this.impuestos)
-                      .subscribe( resp => {
+                      .subscribe( (resp: {status, invoice, ok}) => {
 
                         this.facturando = false;
+                        
+                        if (resp.status === 500) {
+                          Swal.fire('Atención', 'No se pudo enviar la factura electronica a la DIAN, ve a la factura y vuelve a enviarla, si el problema persiste, ponte en contacto', 'warning');
+                          window.open(`./dashboard/factura/${ this.factura.iid }`, '_blank');
+                        }
 
                         if (this.empresa.printpos) {              
                           // window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');

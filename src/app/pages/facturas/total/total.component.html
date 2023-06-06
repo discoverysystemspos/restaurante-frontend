@@ -250,7 +250,9 @@
                                 <ng-container *ngFor="let factura of facturas; let i=index ">
 
                                     <tr class="trHover" tabindex="0" data-bs-toggle="tooltip" title="Cajero: {{ factura.user.name }}">
-                                        <th>{{ factura.invoice }}</th>
+                                        <th>
+                                            <span *ngIf="factura.electronica && !factura.send" class="text-warning"><i class="bi bi-exclamation-triangle"></i></span> {{ factura.invoice }}
+                                        </th>
                                         <th>{{ factura.control }}</th>
                                         <td colspan="2">
                                             {{ factura.client?.name || 'Ocasional' }}
