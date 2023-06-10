@@ -146,6 +146,13 @@ export class ProductService {
   }
 
   /** ================================================================
+   *   RESET INVENTARIO
+  ==================================================================== */
+  resetInventario(){
+    return this.http.put(`${base_url}/products/reset/inventario`, '',this.headers);
+  }
+
+  /** ================================================================
    *   IVA A TODOS
   ==================================================================== */
   ivaAllProducts(formData:any){

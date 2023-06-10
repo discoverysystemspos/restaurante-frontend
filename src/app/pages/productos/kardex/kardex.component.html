@@ -51,7 +51,7 @@
 
                     <hr>
 
-                    <label for="">Departamentos</label>
+                    <label for="">Kardex</label>
 
                     <select class="form-select" aria-label="Departamentos" (change)="buscar(selectDepart.value)" #selectDepart>
                         <option value="Ninguno" selected>Seleccionar Departamento</option>
@@ -109,7 +109,7 @@
 
                         <ng-container *ngFor=" let producto of productos ">
 
-                            <li *ngIf="producto.inventario > 0" class="list-group-item d-flex align-items-start py-0 " style=" border-bottom: 1px solid #000;">
+                            <li class="list-group-item d-flex align-items-start py-0 " style=" border-bottom: 1px solid #000;">
                                 <span class="fw-bold "> {{ producto.inventario }} </span> <span class="text-break"> - {{ producto.name }}</span>
                             </li>
 
