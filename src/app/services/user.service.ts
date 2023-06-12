@@ -20,6 +20,7 @@ import { environment } from '../../environments/environment';
 // MODELS
 import { User } from '../models/user.model';
 import Swal from 'sweetalert2';
+import { EmpresaService } from './empresa.service';
 
 const base_url = environment.base_url;
 
@@ -32,7 +33,8 @@ export class UserService {
 
   constructor( private http: HttpClient,
                 private router: Router,
-                private turnoService: TurnoService ) { }
+                private turnoService: TurnoService,
+                private empresaService: EmpresaService) { }
 
   /** ================================================================
    *   GET TOKEN
@@ -73,6 +75,9 @@ export class UserService {
    *   VALIDATE TOKEN OR RENEW TOKEN
   ==================================================================== */
   validateToken():Observable<boolean>{
+
+    this.empresaService.getDatos();
+
     const token = localStorage.getItem('token') || '';
     
     return this.http.get(`${base_url}/login/renew`, {
@@ -80,7 +85,7 @@ export class UserService {
         'x-token': token
       }
     }).pipe(
-      tap( (resp: any) => {
+      tap((resp: any)  => {        
         
         const { usuario, name, role, img, uid, status, cerrada, turno, privilegios} = resp.usuario;
 

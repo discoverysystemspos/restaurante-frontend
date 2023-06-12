@@ -141,7 +141,7 @@
 
                 <div class="card-body text-white">
                     <h4 class="card-title mb-0 text-center">Ventas Totales</h4>
-                    <h5 class="text-center"> {{ (efectivo + credito + tarjeta + transferencia + vales) | divisa}} </h5>
+                    <h5 class="text-center"> {{ (efectivo + credito + tarjeta + transferencia + vales + totalBancos) | divisa }} </h5>
                 </div>
 
             </div>
@@ -149,7 +149,7 @@
 
                 <div class="card-body text-white">
                     <h4 class="card-title mb-0 text-center">Ganancia Total</h4>
-                    <h5 class="text-center"> {{ ((efectivo + credito + tarjeta + transferencia + vales) - totalDevolucion) - costo | divisa }} </h5>
+                    <h5 class="text-center"> {{ (efectivo + credito + tarjeta + transferencia + vales + totalBancos) - costo | divisa }} </h5>
                 </div>
 
             </div>
@@ -292,7 +292,7 @@
             <div class="card shadow px-2" style="width: 18rem;">
 
                 <div class="card-body">
-                    <h5 class="card-title mb-0">ABONOS CREDITOS</h5>
+                    <h5 class="card-title mb-0">ABONOS CREDITOS NEW</h5>
                 </div>
 
                 <div class="table-responsive ">
@@ -327,9 +327,10 @@
                                 </td>
                             </tr>
 
-                            <ng-container *ngIf="bancos.length > 0">
+                            <ng-container *ngIf="bancosAbonos.length > 0">
                                 <tr *ngFor="let banco of bancosAbonos">
-                                    <td colspan="2"> <small> {{ banco.name }} </small> </td>
+                                    <td colspan="2">
+                                        <small> {{ banco.name }} </small> </td>
                                     <td class="text-end">
                                         <span class="fw-bolder">
                                             {{ banco.monto | divisa }} 
@@ -432,7 +433,7 @@
                         <tbody>
                             <tr style="color: black;">
                                 <td scope="row">Efectivo esperado en caja:</td>
-                                <td>{{ (inicial + efectivo + abEfectivo + entradas + salidas) - totalDevolucion | divisa }}</td>
+                                <td>{{ (inicial + efectivo + abEfectivo + entradas + salidas) | divisa }}</td>
                             </tr>
 
                             <tr style="color: black;">
@@ -502,7 +503,7 @@
                                 </thead>
                                 <tbody>
                                     <tr style="color: black;">
-                                        <th scope="row">{{ (efectivo + credito + tarjeta + transferencia + vales) - totalDevolucion | divisa }} </th>
+                                        <th scope="row">{{ (efectivo + credito + tarjeta + transferencia + vales + totalBancos) | divisa }} </th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -519,7 +520,7 @@
                                 </thead>
                                 <tbody>
                                     <tr style="color: black;">
-                                        <th scope="row">{{ ((efectivo + credito + tarjeta + transferencia + vales) - totalDevolucion) - costo | divisa }} </th>
+                                        <th scope="row">{{ (efectivo + credito + tarjeta + transferencia + vales + totalBancos) - costo | divisa }} </th>
                                     </tr>
                                 </tbody>
                             </table>

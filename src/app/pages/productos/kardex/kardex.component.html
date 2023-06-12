@@ -41,7 +41,15 @@
 
     <div class="row py-4">
 
-        <diV class="col-md-4">
+        <diV class="col-md-6">
+
+            <div class="shadow-lg py-3 mb-2 rounded bg-white">
+                <!-- ESCANEAR PRODUCTO -->
+                <div class="my-2 container">
+                    <label for="scan">Escanear codigo de barras</label>
+                    <input type="search" id="scan" class="form-control" placeholder="Ingrese o busca un codigo de barras" (keyup.enter)="sumProduct(searchCode.value)" #searchCode>
+                </div>
+            </div>
 
             <div class="shadow-lg py-3 mb-5 rounded bg-white sticky-md-top">
 
@@ -73,11 +81,11 @@
         </diV>
 
         <!-- KARDEX -->
-        <div class="col-md-8">
+        <div class="col-md-6">
 
-            <div class="shadow-lg py-3 mb-5 rounded bg-white">
+            <div class="shadow-lg py-3 mb-5 rounded bg-white" style="max-width: 16rem;">
 
-                <div id="printDiv">
+                <div id="printDiv" style="max-width: 16rem;">
 
                     <h4 class="ms-2 mb-0">Listado de productos</h4>
 
@@ -100,22 +108,51 @@
 
                     <h5 class="ms-2" *ngIf="productos.length > 0">Total: {{ productos.length }} </h5>
 
-                    <ul *ngIf="productos.length > 0" class="list-group list-group-flush pt-3">
+                    <div *ngIf="productos.length > 0">
+
+                        <table class="table table-sm table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Inv</th>
+                                    <th>Producto</th>
+                                    <th>Escaneado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor=" let producto of productos " class="align-middle" style="border-bottom: 1px #000 solid;">
+                                    <td class="text-center fw-bold"> {{ producto.inventario }} </td>
+                                    <td style="color: #000"> {{ producto.name }} </td>
+                                    <td class="text-center fw-bold"> {{ producto.kardex || 0 }} </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <!-- <ul *ngIf="productos.length > 0" class="list-group list-group-flush pt-3">
+
+
+
+
 
                         <li class="list-group-item d-flex align-items-start" style=" border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 4px;">
                             <span class="fw-bold "> INV. - </span>
-                            <span class="fw-bold ">PRODUCTO</span>
+                            <span class="fw-bold ">PRODUCTO - </span>
+                            <span class="fw-bold ">Escaneado</span>
                         </li>
 
                         <ng-container *ngFor=" let producto of productos ">
 
                             <li class="list-group-item d-flex align-items-start py-0 " style=" border-bottom: 1px solid #000;">
-                                <span class="fw-bold "> {{ producto.inventario }} </span> <span class="text-break"> - {{ producto.name }}</span>
+                                <span class="fw-bold "> {{ producto.inventario }} </span>
+                                <span class="text-break"> - {{ producto.name }}</span>
+                                <span class="text-break"> - {{ producto.kardex || 0 }}</span>
                             </li>
 
                         </ng-container>
 
-                    </ul>
+                    </ul> -->
                 </div>
             </div>
         </div>

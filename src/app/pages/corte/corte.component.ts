@@ -19,6 +19,7 @@ import { LoadTurno, _movements } from '../../interfaces/load-turno.interface';
 import { _caja } from '../../interfaces/load-caja.interface';
 interface _departament {
   _id?: string,
+  did?: string,
   name?: string,
   qty?: number,
   monto?: number
@@ -32,6 +33,8 @@ import { Banco } from 'src/app/models/bancos.model';
 import { BancosService } from '../../services/bancos.service';
 import { EmpresaService } from 'src/app/services/empresa.service';
 import { Datos } from 'src/app/models/empresa.model';
+import { ImpuestosService } from 'src/app/services/impuestos.service';
+import { Impuesto } from 'src/app/models/impuesto.model';
 
 @Component({
   selector: 'app-corte',
@@ -56,7 +59,8 @@ export class CorteComponent implements OnInit {
                 private userService: UserService,
                 private empresaService: EmpresaService,
                 private invoiceService: InvoiceService,
-                private departmentService: DepartmentService) {
+                private departmentService: DepartmentService,
+                private impuestosService: ImpuestosService) {
 
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
                     val => {
@@ -82,6 +86,9 @@ export class CorteComponent implements OnInit {
 
     if (!this.user.cerrada) {
       
+      // IMPUESTOS
+      this.cargarImpuestos();
+
       // DEPARTAMENTO
       this.cargarDepartamento();
 
@@ -104,16 +111,26 @@ export class CorteComponent implements OnInit {
   cargarBancos(){
 
     this.bancosService.loadBancos()
-        .subscribe( ({ bancos }) => {
+        .subscribe( ({ bancos }) => {          
 
           bancos.map( (banco) => {
             banco.monto = 0;
-          })
+          });   
 
           this.bancos = bancos;
+
+    });
+
+    this.bancosService.loadBancos()
+        .subscribe( ({ bancos }) => {          
+
+          bancos.map( (banco) => {
+            banco.monto = 0;
+          });   
+          
           this.bancosAbonos = bancos;
 
-        });
+    });
 
   }
 
@@ -122,56 +139,22 @@ export class CorteComponent implements OnInit {
   ==================================================================== */
   printDiv() {
     this.printerService.printDiv('printDiv');
-  }
-
-  /** ===============================================================
-  * CAJA - CAJA - CAJA - CAJA  
-  ==================================================================== */
-  public caja: Caja;
-  // cargarCaja(){
-
-  //   this.cajaService.loadOneCaja(this.user.turno)
-  //       .subscribe( (caja) => {
-
-  //         this.caja = caja;      
-
-  //       }, (err) => { Swal.fire('Error', err.error.msg, 'error') });
-
-  // }
+  }  
 
   /** ===============================================================
   * DEPARTAMENTO - DEPARTAMENTO - DEPARTAMENTO - DEPARTAMENTO  
   ==================================================================== */
+  public departamento: _departament[] = [];
   cargarDepartamento(){
 
     this.departmentService.loadDepartment()
         .subscribe( ({departments}) => {
 
-          for (let i = 0; i < departments.length; i++) {
-            
-            const validarItem = this.departamento.findIndex( (resp) =>{             
-  
-              if (resp._id === departments[i].did ) {
-                return true;
-              }else {
-                return false;
-              }
-
-            });
-
-            if ( validarItem === -1 ) {
-              
-              this.departamento.push({
-                _id: departments[i].did,
-                name: departments[i].name,
-                qty: 0,
-                monto: 0
-              });
-
-            }
-            
-          };
-         
+          this.departamento = departments;
+          this.departamento.map((departamento) => {
+            departamento.monto = 0;
+            departamento.qty = 0;
+          } );          
           
           // TURNO
           this.cargarTurno();
@@ -180,8 +163,19 @@ export class CorteComponent implements OnInit {
           this.cargarFacturasTurno();
           // CAJA
 
-        });
+    });
 
+  }
+
+  /** ===============================================================
+  * DEPARTAMENTO - DEPARTAMENTO - DEPARTAMENTO - DEPARTAMENTO  
+  ==================================================================== */
+  public impuestos: Impuesto[] = [];
+  cargarImpuestos(){
+    this.impuestosService.loadImpuestos()
+        .subscribe( ({taxes}) => {
+          this.impuestos = taxes; 
+        });
   }
 
   /** ===============================================================
@@ -209,6 +203,7 @@ export class CorteComponent implements OnInit {
       this.abEfectivo = 0;
       this.abTarjeta = 0;
       this.abTransferencia = 0;
+      this.totalBancosAbono = 0;
       
       for (const factura of turno.abonos) {
 
@@ -245,8 +240,7 @@ export class CorteComponent implements OnInit {
         }
         
       }     
-            
-      this.procesarInformacion();
+      
       
     });
   }
@@ -265,7 +259,7 @@ export class CorteComponent implements OnInit {
   public vales: number = 0;
   public devolucion: number = 0;
   public facturas: any[] = [];
-  public departamento: _departament[] = [];
+  
   public totalBancos: number = 0;
   public totalBancosAbono: number = 0;
 
@@ -279,34 +273,48 @@ export class CorteComponent implements OnInit {
           this.montos = montos;
           this.costo = costos;
           this.efectivo = efectivo;
-          this.tarjeta = tarjeta;
-          this.transferencia = transferencia;
           this.credito = credit;
-          this.vales = vales;
-          this.devolucion = devolucion;          
+          this.devolucion = devolucion;
+          this.transferencia = transferencia;
+          this.totalBancos = 0;
 
           this.facturas = invoices;
-          
+
           for (const factura of this.facturas) {
             
+            // SUMAR LAS VENTAS POR DEPARTAMENTOS
             for (const product of factura.products) {
-
+              
               this.departamento.map( (depart) => {
+                                
+                if (product.product?.department === depart.did) {                  
 
-                if (product.product?.department === depart._id) {
-                  depart.qty += product.qty,
-                  depart.monto += product.qty * product.price;
+                  // COMPROBAR SI EL PRODUCTO TIENE IMPUESTO
+                  if (!product.product.tax) {
+                    depart.qty = depart.qty + product.qty,
+                    depart.monto = depart.monto + (product.qty * product.price);
+                    
+                  }else{              
+
+                    depart.qty = depart.qty + product.qty,
+                    this.impuestos.map( (impuesto) => {
+                      if (product.product.taxid === impuesto.taxid) {
+                        depart.monto = depart.monto + (product.qty * (((product.price * impuesto.valor)/100) + product.price));                        
+                      }
+                    })
+
+                  }
+                
                 }
 
               });
               
             }
 
-            // SUMAR LOS PAGOS DE BANCOS
+            // SUMAR LOS PAGOS DE CADA BANCO
             for (const pago of factura.payments) {
-
-              this.bancos.map( (banco) => {
-                
+              
+              this.bancos.map( (banco) => {                
                 
                 if (banco.name === pago.type) {                  
 
@@ -314,20 +322,15 @@ export class CorteComponent implements OnInit {
 
                   this.totalBancos += pago.amount;
 
-                };
+                }
 
               });
               
             }
-            
-          }
 
-          this.bancos.map( (banco) => {
-
-              this.totalBancos += banco.monto;
-
-          });
-         
+          }          
+          
+          this.procesarInformacion();
           
         });
   }

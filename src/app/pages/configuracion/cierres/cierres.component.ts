@@ -16,8 +16,11 @@ import { DepartmentService } from 'src/app/services/department.service';
 import { Observable, Subscription } from 'rxjs';
 import { BancosService } from 'src/app/services/bancos.service';
 import { Banco } from 'src/app/models/bancos.model';
+import { ImpuestosService } from 'src/app/services/impuestos.service';
+import { Impuesto } from 'src/app/models/impuesto.model';
 interface _departament {
   _id?: string,
+  did?: string,
   name?: string,
   qty?: number,
   monto?: number
@@ -56,7 +59,8 @@ export class CierresComponent implements OnInit {
                 private bancosService: BancosService,
                 private invoiceService: InvoiceService,
                 private printerService: NgxPrinterService,
-                private departmentService: DepartmentService) { 
+                private departmentService: DepartmentService,
+                private impuestosService: ImpuestosService) { 
 
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
                     val => {                
@@ -74,6 +78,9 @@ export class CierresComponent implements OnInit {
 
   ngOnInit(): void {
     
+    // CARGAR IMPUESTOS
+    this.cargarImpuestos();
+
     // CARGAR DEPARTAMENTOS
     this.cargarDepartamento();
 
@@ -95,17 +102,26 @@ export class CierresComponent implements OnInit {
     this.bancosAbonos = [];
 
     this.bancosService.loadBancos()
-        .subscribe( ({ bancos }) => {
+        .subscribe( ({ bancos }) => {          
 
           bancos.map( (banco) => {
-            banco.monto = 0;            
-          })
-          
+            banco.monto = 0;
+          });   
 
           this.bancos = bancos;
+
+    });
+
+    this.bancosService.loadBancos()
+        .subscribe( ({ bancos }) => {          
+
+          bancos.map( (banco) => {
+            banco.monto = 0;
+          });   
+          
           this.bancosAbonos = bancos;
 
-        });
+    });
 
   }
 
@@ -124,32 +140,24 @@ export class CierresComponent implements OnInit {
     this.departmentService.loadDepartment()
         .subscribe( ({departments}) => {
 
-          for (let i = 0; i < departments.length; i++) {
-            
-            const validarItem = this.departamento.findIndex( (resp) =>{             
-  
-              if (resp._id === departments[i].did ) {
-                return true;
-              }else {
-                return false;
-              }
+          this.departamento = departments;
+          this.departamento.map((departamento) => {
+            departamento.monto = 0;
+            departamento.qty = 0;
+          } );
+    });
 
-            });
+  }
 
-            if ( validarItem === -1 ) {
-              
-              this.departamento.push({
-                _id: departments[i].did,
-                name: departments[i].name,
-                qty: 0
-              });
-
-            }
-            
-          };
-
+  /** ===============================================================
+  * DEPARTAMENTO - DEPARTAMENTO - DEPARTAMENTO - DEPARTAMENTO  
+  ==================================================================== */
+  public impuestos: Impuesto[] = [];
+  cargarImpuestos(){
+    this.impuestosService.loadImpuestos()
+        .subscribe( ({taxes}) => {
+          this.impuestos = taxes; 
         });
-
   }
 
   /** ===============================================================
@@ -283,7 +291,15 @@ export class CierresComponent implements OnInit {
 
     this.totalBancosAbono = 0;
 
-    await this.cargarBancos();
+    this.bancos.map( (banco) => {
+      banco.monto = 0;
+    });
+
+    this.bancosAbonos.map( (banco) => {
+      banco.monto = 0;
+    });
+
+    // await this.cargarBancos();
 
     this.turnoService.getTurnoId(id)
     .subscribe( (turno) => { 
@@ -359,6 +375,7 @@ export class CierresComponent implements OnInit {
     this.salidas = 0;
     this.montoDiferencia = 0;
     this.devolucion = 0;
+    this.totalBancos = 0;
 
     this.departamento.forEach(depart => {
       depart.qty = 0;
@@ -386,10 +403,31 @@ export class CierresComponent implements OnInit {
             for (const product of factura.products) {
 
               this.departamento.map( (depart) => {
+                
 
-                if (product.product.department === depart._id) {
-                  depart.qty += product.qty,
-                  depart.monto += product.qty * product.price;
+                // if (product.product.department === depart._id) {
+                //   depart.qty += product.qty,
+                //   depart.monto += product.qty * product.price;
+                // }
+
+                if (product.product?.department === depart.did) {                  
+
+                  // COMPROBAR SI EL PRODUCTO TIENE IMPUESTO
+                  if (!product.product.tax) {
+                    depart.qty = depart.qty + product.qty,
+                    depart.monto = depart.monto + (product.qty * product.price);
+                    
+                  }else{              
+
+                    depart.qty = depart.qty + product.qty,
+                    this.impuestos.map( (impuesto) => {
+                      if (product.product.taxid === impuesto.taxid) {
+                        depart.monto = depart.monto + (product.qty * (((product.price * impuesto.valor)/100) + product.price));                        
+                      }
+                    })
+
+                  }
+                
                 }
 
               });

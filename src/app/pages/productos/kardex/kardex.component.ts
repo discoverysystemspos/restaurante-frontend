@@ -100,9 +100,40 @@ export class KardexComponent implements OnInit {
         .subscribe( ({ products }) => {
 
           this.productos = products;
-          this.cargando = false;
+          this.cargando = false;          
 
         });    
+
+  }
+
+  /** ================================================================================
+   * SUMAR PRODUCTO ACTUAL
+  ================================================================================== */
+  @ViewChild('searchCode') searchCode: ElementRef;
+  sumProduct(code: string){
+
+    if (this.productos.length === 0) {
+      this.searchCode.nativeElement.value = '';
+      this.searchCode.nativeElement.onFocus = true;
+      return;
+    }
+
+    this.productos.map( (product) => {
+
+      if (product.code === code) {
+
+        if (!product.kardex) {
+          product.kardex = 1;
+        }else{
+          product.kardex = product.kardex + 1;
+        }
+
+      }
+
+    });
+
+    this.searchCode.nativeElement.value = '';
+    this.searchCode.nativeElement.onFocus = true;
 
   }
 

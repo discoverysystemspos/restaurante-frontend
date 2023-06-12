@@ -33,34 +33,7 @@ export class ProductoComponent implements OnInit {
   public stockP: number;
 
   public searchProduct: Product[] = [];
-  public kits: Kit[] = [];
-
-  // FORMULARIO
-  public formSubmitted = false;
-  public upProductForm = this.fb.group({
-
-    code: [''],
-    name: [''],
-    type: [''],
-    cost: [''],
-    gain: [''],
-    price: [''],
-    kit: [''],
-    wholesale: [''],
-    department: [''],
-    min: ['' || 0],
-    max: ['' || 0],
-    expiration: [''],
-    pid: [''],
-    visibility: [true],
-    comanda: [''],
-    tipo: [''],
-    description: [''],
-    tax: [],
-    taxid: [],
-    impuestoT:[],
-    valor: []
-  });
+  public kits: Kit[] = [];  
 
   constructor(  private productService: ProductService,
                 private fb:FormBuilder,
@@ -392,6 +365,33 @@ export class ProductoComponent implements OnInit {
    *   ACTUALIZAR PRODUCTO
   ==================================================================== */
   public impuesto: any[] = [];
+  // FORMULARIO
+  public formSubmitted = false;
+  public upProductForm = this.fb.group({
+
+    code: [''],
+    name: [''],
+    type: [''],
+    cost: [''],
+    gain: [''],
+    price: [''],
+    kit: [''],
+    wholesale: [''],
+    department: [''],
+    min: ['' || 0],
+    max: ['' || 0],
+    expiration: [''],
+    pid: [''],
+    visibility: [true],
+    comanda: [''],
+    tipo: [''],
+    description: [''],
+    tax: [],
+    taxid: [],
+    impuestoT:[],
+    valor: []
+  });
+
   actualizarProducto(){
         
     if (this.upProductForm.value.type !== 'Paquete' ) {

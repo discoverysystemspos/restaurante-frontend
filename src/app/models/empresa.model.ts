@@ -19,7 +19,7 @@ export class Datos{
         public nit:string,
         public printpos: boolean,
         public impuesto: boolean,
-        public moneda: string = 'COP',
+        public moneda?: string,
         public tax?: number,
         public logo?:string,
         public eid?:string,

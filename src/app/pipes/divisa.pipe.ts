@@ -9,21 +9,24 @@ export class DivisaPipe implements PipeTransform {
 
   public empresa: Datos;
   constructor(  private empresaService: EmpresaService){
-    this.empresa = this.empresaService.myEmpresa;
+    
   }
 
   transform(monto: any, moneda: 'COP' | 'USD' | 'BS' | 'none' = 'none'): any {
+       
+    this.empresa = this.empresaService.myEmpresa;
+    
+    if (monto.length === 0 || monto === 0 || !monto) {
+      monto = 0;      
+    }    
 
     if (moneda === 'none') {
-
       if(!this.empresa?.moneda){
         this.empresa.moneda = 'COP';
       }
-
-    }else{
+    }else{      
       this.empresa.moneda = moneda;
     }
-
         
     if (!this.empresa?.decimal) {
       monto =  Math.round(monto) ;      
@@ -51,6 +54,9 @@ export class DivisaPipe implements PipeTransform {
 
     return newMonto;
   }
+
+
+
 
 
 }
