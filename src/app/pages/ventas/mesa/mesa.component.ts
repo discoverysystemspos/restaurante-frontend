@@ -160,8 +160,8 @@ export class MesaComponent implements OnInit {
         
       });
 
-      // CARGAR TODAS LAS MESAS
-      this.cargarMesasAll();
+    // CARGAR TODAS LAS MESAS
+    this.cargarMesasAll();
 
     if (!this.user.cerrada) {
       this.facturar = true;
@@ -169,7 +169,9 @@ export class MesaComponent implements OnInit {
       this.facturar = false;
     }
 
-    this.loadDataDataico();
+    if (this.empresa?.electronica) {
+      this.loadDataDataico();      
+    }
 
     this.loadDepartmentAndCitys();
     
@@ -789,7 +791,11 @@ export class MesaComponent implements OnInit {
   carritoTemp( product: any, qty: number, precio: number, nota: string = '' ){
 
     this.inventarioNew = 0;
-    this.inventarioNewB = false;   
+    this.inventarioNewB = false;
+
+    if(this.comanda.length === 0){
+      this.mesa.fecha   = new Date(); 
+    }
     
     const validarItem = this.productUp.findIndex( (resp) =>{      
       if (resp.product === product.pid ) {
@@ -901,8 +907,7 @@ export class MesaComponent implements OnInit {
     }
 
     // GUARDAR LA INFORMACION DE LA COMANDA
-    this.mesa.comanda = this.comandas;
-    this.mesa.fecha   = new Date(); 
+    this.mesa.comanda = this.comandas;    
 
     this.mesasServices.updateMesa(this.mesa, this.mesaID)
         .subscribe( (resp:{ok: boolean, mesa: any}) => { 

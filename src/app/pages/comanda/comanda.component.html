@@ -35,7 +35,7 @@
 
 
                 <div style="width: 22rem;" class=" text-wrap bg-white p-3 position-relative">
-                    <h2 class="mb-2 text-center">Orden #{{i + 1}}</h2>
+                    <h2 class="mb-2 text-center">Orden # {{ mesa.fecha | date: 'H-ms' }}</h2>
                     <i [ngClass]="{'text-danger': mesa.disponible == false, 'text-success': mesa.disponible == true}" class="bi-dot position-absolute top-0 start-100 translate-middle pe-4 pt-2" style="font-size: 2.5rem;"></i>
                     <h5 class="mb-0 text-center text-wrap text-capitalize">{{ mesa.name }}</h5>
                     <h6 class="mb-0 text-center text-wrap text-capitalize fw-normal"> {{ mesa.mesero.name }} </h6>
@@ -66,7 +66,7 @@
                                             <p class="mb-0 lh-1"> <small class="lh-1 fw-bold">01 - {{item.product.name}}  </small></p>
 
                                             <ng-container *ngFor="let ingrediente of item.ingredientes">
-                                                <small *ngIf="!ingrediente.status" class="text-danger me-1 line-through"> {{ ingrediente.name }} </small>
+                                                <small *ngIf="!ingrediente.status" class="text-danger me-1"> X {{ ingrediente.name }} </small>
                                             </ng-container>
 
 
@@ -153,6 +153,7 @@
                         <div class="" *ngIf="comanda.img === 'mesa.svg'" style="color: black;">
                             <div style="width: 22rem;" class=" text-wrap">
 
+                                <h2 class="mb-2 text-center">Orden # {{ comanda?.fecha | date: 'H-ms' }}</h2>
                                 <h5 class=" mb-0 text-center text-wrap text-capitalize">{{ comanda?.name }}</h5>
                                 <h6 class=" mb-0 text-center text-wrap text-capitalize fw-normal"> {{ comanda?.mesero.name }} </h6>
                                 <p class=" mb-0 text-center"> Fecha: {{ comanda?.fecha | date: "medium" }} </p>
@@ -181,7 +182,7 @@
 
                                                         <!-- <span *ngFor="let ingrediente of item.ingredientes" class="badge rounded-pill bg-light text-primary fw-normal"> {{ ingrediente.name }} </span> -->
                                                         <ng-container *ngFor="let ingrediente of item.ingredientes">
-                                                            <small *ngIf="!ingrediente.status" class="me-1 line-through"> {{ ingrediente.name }} </small>
+                                                            <small *ngIf="!ingrediente.status" class="me-1"> X {{ ingrediente.name }} </small>
                                                         </ng-container>
 
                                                     </td>
@@ -237,6 +238,7 @@
                         <div class="" *ngIf="comanda.img === 'mesa.svg'" style="color: black;">
                             <div style="width: 22rem;" class=" text-wrap">
 
+                                <h2 class="mb-2 text-center">Orden # {{ comanda?.fecha | date: 'H-ms' }}</h2>
                                 <h5 class=" mb-0 text-center text-wrap text-capitalize">{{ comanda?.name }}</h5>
                                 <h6 class=" mb-0 text-center text-wrap text-capitalize fw-normal"> {{ comanda?.mesero.name }} </h6>
                                 <p class=" mb-0 text-center"> Fecha: {{ comanda?.fecha | date: "medium" }} </p>
@@ -319,6 +321,7 @@
                         <div class="" *ngIf="comanda.img === 'mesa.svg'" style="color: black;">
                             <div style="width: 22rem;" class=" text-wrap">
 
+                                <h2 class="mb-2 text-center">Orden # {{ comanda?.fecha | date: 'H-ms' }}</h2>
                                 <h5 class=" mb-0 text-center text-wrap text-capitalize">{{ comanda?.name }}</h5>
                                 <h6 class=" mb-0 text-center text-wrap text-capitalize fw-normal"> {{ comanda?.mesero.name }} </h6>
                                 <p class=" mb-0 text-center"> Fecha: {{ comanda?.fecha | date: "medium" }} </p>
