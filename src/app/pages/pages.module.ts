@@ -52,6 +52,7 @@ import { BancosComponent } from './configuracion/bancos/bancos.component';
 import { EliminadosComponent } from './productos/eliminados/eliminados.component';
 import { PrestamosComponent } from './configuracion/prestamos/prestamos.component';
 import { PrestamoComponent } from './configuracion/prestamos/prestamo/prestamo.component';
+import { AlquileresComponent } from './alquileres/alquileres.component';
 
 
 
@@ -95,7 +96,8 @@ import { PrestamoComponent } from './configuracion/prestamos/prestamo/prestamo.c
     BancosComponent,
     EliminadosComponent,
     PrestamosComponent,
-    PrestamoComponent
+    PrestamoComponent,
+    AlquileresComponent
   ],
   exports: [
     PagesComponent,

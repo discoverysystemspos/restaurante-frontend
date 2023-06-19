@@ -125,6 +125,16 @@
 
 
                     <div class="row mb-3" *ngIf="type.value === 'Paquete'">
+
+                        <div class="col-md-4 px-md-1">
+                            <div class="form-check mt-2">
+                                <input formControlName="bascula" class="form-check-input" type="checkbox" id="basc" #basc>
+                                <label class="form-check-label" for="basc">
+                                    Bacula
+                                </label>
+                            </div>
+                        </div>
+
                         <h6 class="text-muted">Agregar Productos</h6>
                         <hr>
 

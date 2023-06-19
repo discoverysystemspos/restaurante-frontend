@@ -523,6 +523,16 @@ export class MesaComponent implements OnInit {
               this.qtySelect = resp;
             });
       }
+    }else if(product.type === 'Paquete' && product.bascula ){
+
+      if (this.empresa.bascula) {
+
+        this.basculaService.loadPeso()
+            .subscribe( resp => {
+              this.qtySelect = resp;
+            });
+      }
+
     }
 
     this.modal.open(this.modalProductSeleted);
@@ -669,6 +679,85 @@ export class MesaComponent implements OnInit {
 
               }
               
+            }else if( product.type === 'Paquete' && product.bascula ){
+
+              if (code.slice(0,4) === this.empresa.basculacode) {
+
+                if(this.empresa.basculatype === 'precio'){
+                  cantidad = precio / product.price;
+                }
+
+                // GUARDAR AL CARRITO
+                this.searchCode.nativeElement.value = '';
+                this.searchCode.nativeElement.onFocus = true;
+                this.carritoTemp(product, cantidad, product.price);
+                // GUARDAR AL CARRITO
+                return;
+                
+              }
+
+              
+              if (this.empresa.bascula) {                
+                
+                this.basculaService.loadPeso()
+                .subscribe( resp => {
+                  cantidad = resp;
+
+                  this.searchCode.nativeElement.value = '';
+                  this.searchCode.nativeElement.onFocus = true;
+                  this.carritoTemp(product, cantidad, product.price)
+
+                  return;
+
+                });
+
+              }else {
+
+                if (this.empresa.fruver) {
+
+                  Swal.fire({
+                    title: 'Cantidad',
+                    input: 'text',
+                    inputAttributes: {
+                      autocapitalize: 'off'
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: 'Confirmar',
+                    showLoaderOnConfirm: true,
+                    preConfirm: (resp) => {
+                      
+                      return resp;
+                    }
+                  }).then((result) => {
+          
+                    if (result.value > 0) {
+                      
+                      cantidad = result.value;
+                      this.searchCode.nativeElement.value = '';
+                      this.searchCode.nativeElement.onFocus = true;
+          
+                      // GUARDAR AL CARRITO
+                      this.carritoTemp(product, cantidad, product.price);
+                      // GUARDAR AL CARRITO
+          
+                      return;
+                    }else{
+                      return;
+                    }                
+                    
+                  });
+
+                  
+                }else{
+                  this.searchCode.nativeElement.value = '';
+                  this.searchCode.nativeElement.onFocus = true;
+                  this.carritoTemp(product, cantidad, product.price);
+                  return;
+
+                }
+
+              }
+
             }else{
               this.searchCode.nativeElement.value = '';
               this.searchCode.nativeElement.onFocus = true;
@@ -1546,6 +1635,18 @@ export class MesaComponent implements OnInit {
             });        
       }
       
+    }else if(producto.type === 'Paquete' && producto.bascula ){
+
+      this.basculaService.loadPeso()
+            .subscribe( resp => {
+
+              qty = resp;
+              this.cantidad.nativeElement.value = qty;
+              
+              return;                    
+
+            }); 
+
     }else{      
       this.cantidad.nativeElement.value = qty;
     }

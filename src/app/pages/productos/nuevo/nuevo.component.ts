@@ -356,6 +356,7 @@ export class NuevoComponent implements OnInit {
     description: [''],
     tax: [false],
     taxid: '',
+    bascula: false,
   });
   
   crearProducto(){

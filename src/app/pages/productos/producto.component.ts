@@ -103,7 +103,7 @@ export class ProductoComponent implements OnInit {
           this.comprados = this.producto.bought;
           this.devueltos = this.producto.returned;
           
-          const { code, name, department, type, cost, gain, expiration, visibility, price, returned, sold,  wholesale, pid, comanda, tipo, description, tax, impuesto, taxid } = product;
+          const { code, name, department, type, cost, gain, expiration, visibility, price, returned, sold,  wholesale, pid, comanda, tipo, description, tax, impuesto, taxid, bascula } = product;
           
           // let department = '00';
           // if (this.producto.department) {
@@ -137,9 +137,9 @@ export class ProductoComponent implements OnInit {
           }
           
           if (taxid) {
-            this.upProductForm.reset({code, name, type, cost, price, visibility, wholesale, gain, department, min, max, expiration: expiracion, pid, comanda, tipo, description, tax, impuestoT, valor: valorT, taxid: taxid._id });
+            this.upProductForm.reset({code, name, type, cost, price, visibility, wholesale, gain, department, min, max, expiration: expiracion, pid, comanda, tipo, description, tax, impuestoT, valor: valorT, taxid: taxid._id, bascula });
           }else{
-            this.upProductForm.reset({code, name, type, cost, price, visibility, wholesale, gain, department, min, max, expiration: expiracion, pid, comanda, tipo, description, tax, impuestoT, valor: valorT, taxid: '' });
+            this.upProductForm.reset({code, name, type, cost, price, visibility, wholesale, gain, department, min, max, expiration: expiracion, pid, comanda, tipo, description, tax, impuestoT, valor: valorT, taxid: '', bascula });
           }
 
           // CARGAR LOGS
@@ -389,7 +389,8 @@ export class ProductoComponent implements OnInit {
     tax: [],
     taxid: [],
     impuestoT:[],
-    valor: []
+    valor: [],
+    bascula: false
   });
 
   actualizarProducto(){

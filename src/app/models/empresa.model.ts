@@ -48,6 +48,8 @@ export class Datos{
         public basculatype?: string,
         public basculacode?: string,
         public electronica?: boolean,
+        public alquileres?: boolean,
+        public fechakardex?: Date,
         public min?: number,
     ){}
 
