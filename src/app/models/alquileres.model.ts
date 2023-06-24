@@ -29,6 +29,7 @@ export class Alquiler{
         public items: _Items[],
         public payments: _Payments[],
         public number?: string,
-
+        public fechaIni?: Date,
+        public cotizacion?: boolean,
     ){}
 }

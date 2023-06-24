@@ -53,6 +53,7 @@ import { EliminadosComponent } from './productos/eliminados/eliminados.component
 import { PrestamosComponent } from './configuracion/prestamos/prestamos.component';
 import { PrestamoComponent } from './configuracion/prestamos/prestamo/prestamo.component';
 import { AlquileresComponent } from './alquileres/alquileres.component';
+import { AlquilerComponent } from './alquiler/alquiler.component';
 
 
 
@@ -97,7 +98,8 @@ import { AlquileresComponent } from './alquileres/alquileres.component';
     EliminadosComponent,
     PrestamosComponent,
     PrestamoComponent,
-    AlquileresComponent
+    AlquileresComponent,
+    AlquilerComponent
   ],
   exports: [
     PagesComponent,

@@ -36,17 +36,29 @@ export class AlquileresService {
   /** ================================================================
    *  CREATE ALQUILER
   ==================================================================== */
-  createAlquiler(formData: any){
-    
+  createAlquiler(formData: any){    
     return this.http.post<{ok: boolean, alquiler: Alquiler}>(`${base_url}/alquileres`, formData, this.headers);
-
   }
   
   /** ================================================================
    *  LOAD ALQUILERES
   ==================================================================== */
   loadAlquileres(query: any){    
-    return this.http.get<{ok: boolean, total: number, alquileres: Alquiler[]}>(`${base_url}/alquileres`, this.headers);
+    return this.http.post<{ok: boolean, total: number, alquileres: Alquiler[]}>(`${base_url}/alquileres/query`, query, this.headers);
+  }
+
+  /** ================================================================
+   *  LOAD ALQUILER ID
+  ==================================================================== */
+  loadAlquilerId(id: string){    
+    return this.http.get<{ok: boolean, alquiler: Alquiler}>(`${base_url}/alquileres/${id}`, this.headers);
+  }
+
+  /** ================================================================
+   *  UPDATE ALQUILER
+  ==================================================================== */
+  updateAlquiler(formData: any, id: string){    
+    return this.http.put<{ok: boolean, alquiler: Alquiler}>(`${base_url}/alquileres/${id}`, formData, this.headers);
   }
 
 

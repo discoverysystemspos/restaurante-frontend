@@ -44,6 +44,7 @@ import { EliminadosComponent } from './productos/eliminados/eliminados.component
 import { PrestamosComponent } from './configuracion/prestamos/prestamos.component';
 import { PrestamoComponent } from './configuracion/prestamos/prestamo/prestamo.component';
 import { AlquileresComponent } from './alquileres/alquileres.component';
+import { AlquilerComponent } from './alquiler/alquiler.component';
 
 const routes: Routes = [
     
@@ -55,6 +56,7 @@ const routes: Routes = [
     
           { path: '', component: DashboardComponent, data:{ titulo: 'Dashboard'} },
           { path: 'alquileres', component: AlquileresComponent, data:{ titulo: 'Alquileres'} },
+          { path: 'alquiler/:id', component: AlquilerComponent, data:{ titulo: 'Alquiler'} },
           { path: 'calendario', component: CalendarioComponent, data:{ titulo: 'Calendario'} },
           { path: 'clientes', component: ClientesComponent, data:{ titulo: 'Clientes'} },
           { path: 'comandas', component: ComandaComponent, data:{ titulo: 'Comandas'} },
