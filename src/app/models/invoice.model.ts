@@ -26,7 +26,8 @@ export class Invoice {
         public devolucion?: _devolucion[],
         public electronica?: boolean,
         public send?: boolean,
-        public number?: string
+        public number?: string,
+        public paymentsAlquiler?: _paymentsCredito[]
     ){}
 
 }

@@ -17,23 +17,23 @@ import { ngxPrintMarkerPosition } from 'projects/ngx-printer/src/public_api';
 import { InvoiceService } from '../../../services/invoice.service';
 import { TurnoService } from '../../../services/turno.service';
 import { EmpresaService } from '../../../services/empresa.service';
+import { ImpuestosService } from 'src/app/services/impuestos.service';
+import { UserService } from '../../../services/user.service';
+import { BancosService } from 'src/app/services/bancos.service';
+import { DataicoService } from 'src/app/services/dataico.service';
+import { ElectronicaService } from 'src/app/services/electronica.service';
 
 // MODELS
 import { Invoice } from '../../../models/invoice.model';
 import { Datos } from '../../../models/empresa.model';
+import { Banco } from 'src/app/models/bancos.model';
+import { Impuestos } from '../../../models/impuestos.model';
+import { User } from 'src/app/models/user.model';
 
 // INTERFACES
 import { LoadInvoice, _products } from '../../../interfaces/invoice.interface';
 import { _payments, Carrito, _paymentsCredito } from '../../../interfaces/carrito.interface';
 import { LoadTurno, _movements } from '../../../interfaces/load-turno.interface';
-import { ImpuestosService } from 'src/app/services/impuestos.service';
-import { Impuestos } from '../../../models/impuestos.model';
-import { User } from 'src/app/models/user.model';
-import { UserService } from '../../../services/user.service';
-import { BancosService } from 'src/app/services/bancos.service';
-import { Banco } from 'src/app/models/bancos.model';
-import { DataicoService } from 'src/app/services/dataico.service';
-import { ElectronicaService } from 'src/app/services/electronica.service';
 import { DataicoInterface } from 'src/app/interfaces/dataico.interface';
 
 @Component({
@@ -75,7 +75,7 @@ export class FacturaComponent implements OnInit {
               
                   this.$printItems = this.printerService.$printItems;
 
-                    this.user = userService.user;
+                  this.user = userService.user;
 
                 }
 
@@ -197,7 +197,7 @@ export class FacturaComponent implements OnInit {
   cargarFactura(id: string){
     
     this.invoiceService.loadInvoiceId(id)
-        .subscribe( invoice => {
+        .subscribe( invoice => {          
 
           this.factura = invoice;
           this.paymentsCredit = this.factura.paymentsCredit;
@@ -622,7 +622,13 @@ export class FacturaComponent implements OnInit {
 
     if (this.vueltos < 0) {
       this.vueltos = this.vueltos * -1;
-    }    
+    }
+
+    if (this.factura.paymentsAlquiler.length > 0) {
+      for (const pay of this.factura.paymentsAlquiler) {
+        this.totalPagos += pay.amount;
+      }
+    }
 
   }
 

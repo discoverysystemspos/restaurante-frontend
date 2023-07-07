@@ -16,8 +16,8 @@ interface _item {
     price: number;
     dias: number;
     entregado: boolean;
-    desde?: number;
-    hasta?: number;
+    desde?: Date;
+    hasta?: Date;
 }
 
 @Component({
@@ -71,7 +71,6 @@ export class AlquileresComponent implements OnInit {
 
   }
 
-
   /** ================================================================
    *   CREAR ALQUILER
   ==================================================================== */
@@ -80,12 +79,38 @@ export class AlquileresComponent implements OnInit {
     client: '',
     monto: 0,
     address: ['', [Validators.required]],
-    items: [[], [Validators.required]],
-    amount: [0, [Validators.required]],
+    items: [],
+    amount: 0,
     cotizacion: false
   });
   
   crearAlquiler(){
+
+    if (this.items.length === 0) {
+      Swal.fire('Atención', 'Debes de agregar un producto para poder crear el alquiler', 'warning');
+      return;
+    }
+
+    this.formSubmitted = true;
+
+    if (this.createForm.invalid) {
+      return;
+    }
+    
+    this.createForm.value.client = this.clientS.cid;
+    this.createForm.value.amount = this.amount;
+    this.createForm.value.items = this.items;
+
+    this.alquileresService.createAlquiler(this.createForm.value)
+        .subscribe( ({alquiler}) => {
+
+          this.cargarAlquileres();
+          Swal.fire('Estupendo', 'Se ha creado el alquiler exitosamente!', 'success');
+
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');          
+        });
     
   }
   

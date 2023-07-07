@@ -14,6 +14,7 @@ export interface _paymentsCredito {
     amount: number;
     description?: string;
     turno?: string;
+    fecha?: Date;
     _id?: string
 }
 

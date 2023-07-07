@@ -69,9 +69,7 @@ export class MesaComponent implements OnInit {
   public comanda: LoadCarrito[] = [];
   public comandaTemp: LoadCarrito[] = [];
   public mesa: Mesa;
-  public empresa: Datos;
-
-
+  
   public productUp: Carrito[] = [];
 
   public facturar: boolean;
@@ -350,6 +348,7 @@ export class MesaComponent implements OnInit {
   /** ================================================================
    *   CARGAR DATOS DE LA EMPRESA
   ==================================================================== */
+  public empresa: Datos;
   cargarDatos(){
 
     this.empresaService.getDatos()
@@ -2013,9 +2012,6 @@ export class MesaComponent implements OnInit {
                   this.electronicaService.postFacturaDataico(this.factura, this.dataico, this.impuestos)
                       .subscribe( (resp: {status, invoice, ok}) => {
 
-                        console.log(resp);
-                        
-
                         this.facturando = false;
                         
                         if (resp.status === 500) {
@@ -2312,30 +2308,30 @@ export class MesaComponent implements OnInit {
         
         return resp;
       }
-    }).then((result) => {
+      }).then((result) => {
 
-      if (result.value > 0) {
+        if (result.value > 0) {
 
-        const initial:number = result.value;
+          const initial:number = result.value;
 
-        const open = {
-          initial
-        };
+          const open = {
+            initial
+          };
 
-        this.turnoService.createCaja(open)
-            .subscribe( (resp:{ ok:boolean, turno:any}) => {
+          this.turnoService.createCaja(open)
+              .subscribe( (resp:{ ok:boolean, turno:any}) => {
 
-              this.userService.user.turno = resp.turno.tid;
-              this.userService.user.cerrada = false;
-              this.facturar = true;
+                this.userService.user.turno = resp.turno.tid;
+                this.userService.user.cerrada = false;
+                this.facturar = true;
+                
+              });  
               
-            });  
-            
-        return;
-      }else{
-        return;
-      }                
-      
+          return;
+        }else{
+          return;
+        }                
+        
     });
 
 

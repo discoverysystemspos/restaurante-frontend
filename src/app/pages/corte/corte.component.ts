@@ -186,6 +186,11 @@ export class CorteComponent implements OnInit {
   public abTransferencia: number = 0;
   public turno: LoadTurno;
   public totalDevolucion: number = 0; 
+
+  public inicial: number = 0;
+  public entradas: number = 0;
+  public salidas: number = 0;
+  public movimientos: _movements[] = [];
   cargarTurno(){  
     this.turnoService.getTurnoId(this.user.turno)
     .subscribe( (turno) => { 
@@ -239,7 +244,29 @@ export class CorteComponent implements OnInit {
 
         }
         
-      }     
+      }
+      
+    const movements = this.movimientos;
+    for (let i = 0; i < movements.length; i++) {
+      
+      switch (movements[i].type) {
+        case 'entrada':
+
+          this.entradas += movements[i].monto;
+          
+          break;
+
+        case 'salida':
+
+          this.salidas += movements[i].monto;
+          
+          break;
+      
+        default:
+          break;
+      }
+      
+    }
       
       
     });
@@ -328,48 +355,11 @@ export class CorteComponent implements OnInit {
               
             }
 
-          }          
-          
-          this.procesarInformacion();
+          } 
           
         });
   }
-
-  /** ===============================================================
-  * PROCESAR LA INFORMACION 
-  ==================================================================== */
-  public inicial: number = 0;
-  public entradas: number = 0;
-  public salidas: number = 0;
-  public movimientos: _movements[] = [];
   
-  procesarInformacion(){
-
-    // TOTALIZAR MOVIMIENTOS
-    const movements = this.movimientos;
-    for (let i = 0; i < movements.length; i++) {
-      
-      switch (movements[i].type) {
-        case 'entrada':
-
-          this.entradas += movements[i].monto;
-          
-          break;
-
-        case 'salida':
-
-          this.salidas += movements[i].monto;
-          
-          break;
-      
-        default:
-          break;
-      }
-      
-    }
-
-    // TOTALIZAR MOVIMIENTOS
-  }
 
   /** ===============================================================
   * CERRAR CAJA Y TURNO 

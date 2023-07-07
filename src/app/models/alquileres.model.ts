@@ -2,27 +2,30 @@ import { Client } from "./client.model";
 import { Product } from "./product.model";
 import { User } from "./user.model";
 
-interface _Items {
+export interface _Items {
     product: Product;
     qty: number;
     price: number;
-    desde: number;
-    hasta: number;
+    desde: Date;
     entregado: boolean;
+    dias?: number;
+    hasta?: Date;
+    _id?: string;
 }
 
-interface _Payments {
+export interface _Payments {
     type: string;
     amount: number;
     description: string;
     fecha: Date;
+    turno?: any;
 }
 
 export class Alquiler{
     constructor(
         public client: Client,
         public address: string,
-        public amount: string,
+        public amount: number,
         public fecha: string,
         public user: User,
         public status: string,
@@ -31,5 +34,8 @@ export class Alquiler{
         public number?: string,
         public fechaIni?: Date,
         public cotizacion?: boolean,
+        public alid?: string,
+        public finalizada?: boolean,
+        public _id?: string,
     ){}
 }

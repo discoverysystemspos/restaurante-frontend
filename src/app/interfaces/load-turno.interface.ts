@@ -27,6 +27,7 @@ export interface LoadTurno {
     status: boolean;
     movements?: _movements[];
     abonos?: any[];
+    alquileres?: any[];
     sales?: any[];
     tid?: string;
     montoD?: number;

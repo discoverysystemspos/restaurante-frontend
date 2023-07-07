@@ -88,6 +88,7 @@ export interface LoadInvoice {
     electronica: boolean;
     number: string;
     send: boolean;
+    paymentsAlquiler?: _paymentsCredito[];
 
 }
 

@@ -16,6 +16,7 @@ export class Client {
         public status?: string,
         public fecha?: string,
         public cid?: string,
+        public _id?: string,
         public credit?: boolean,
         public mayoreo?: boolean,
         public contratista?: boolean,

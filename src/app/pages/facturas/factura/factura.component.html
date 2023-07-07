@@ -304,6 +304,15 @@
                                         <td> {{ factura.amount | divisa }} </td>
                                     </tr>
 
+                                    <tr class="trHover" *ngFor="let payA of factura.paymentsAlquiler; let i = index">
+                                        <td>
+                                            <span *ngIf="payA.description !== ''">{{ payA.description }}</span>
+                                            <span *ngIf="payA.description === ''">Sin descripción</span>
+                                        </td>
+                                        <td>{{ payA.type }}</td>
+                                        <td>{{ payA.amount | divisa }} </td>
+                                    </tr>
+
                                     <tr class="trHover" *ngFor="let pay of payments; let i = index">
                                         <td>
                                             <span *ngIf="pay.description !== ''">{{ pay.description }}</span>
