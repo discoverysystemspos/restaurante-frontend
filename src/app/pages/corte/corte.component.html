@@ -61,6 +61,11 @@
                                 <td> {{ entradas | divisa }} </td>
                             </tr>
 
+                            <tr *ngIf="empresa?.alquileres!" style="color: black;">
+                                <td colspan="2"> <small> Efectivo Alquileres </small> </td>
+                                <td> {{ alqEfectivo | divisa }} </td>
+                            </tr>
+
                             <tr class="text-danger">
                                 <td colspan="2"> <small> Salidas </small> </td>
                                 <td> {{ salidas | divisa }} </td>
@@ -73,7 +78,7 @@
 
                             <tr class="border-top">
                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                <td class="fw-bold"> {{ (inicial + efectivo + abEfectivo + entradas + salidas) - (totalDevolucion) | divisa }} </td>
+                                <td class="fw-bold"> {{ (inicial + efectivo + abEfectivo + entradas + alqEfectivo! + salidas) - (totalDevolucion) | divisa }} </td>
                             </tr>
 
                         </tbody>
@@ -353,6 +358,54 @@
 
         </div>
 
+        <div class="col-auto p-2" *ngIf="empresa?.alquileres!">
+
+            <div class="card shadow px-2" style="width: 18rem;">
+
+                <div class="card-body">
+                    <h5 class="card-title mb-0">ALQUILERES</h5>
+                </div>
+
+                <div class="table-responsive ">
+                    <table class="table table-borderless table-hover table-sm animated fadeIn ">
+
+                        <tbody>
+
+                            <tr>
+                                <td colspan="2"> Abono con Efectivo </td>
+                                <td class="text-end">
+                                    <span class="fw-bolder">
+                                        {{ alqEfectivo | divisa }}
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <ng-container *ngIf="bancosAlquileres.length > 0">
+                                <tr *ngFor="let banco of bancosAlquileres">
+                                    <td colspan="2">
+                                        <small> {{ banco.name }} </small> </td>
+                                    <td class="text-end">
+                                        <span class="fw-bolder">
+                                            {{ banco.monto | divisa }} 
+                                        </span>
+                                    </td>
+                                </tr>
+                            </ng-container>
+
+                            <tr class="border-top">
+                                <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                <td class="fw-bold"> {{ totalAlquiler | divisa }} </td>
+                            </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
     <!-- DEVOLUCIONES -->
@@ -433,7 +486,7 @@
                         <tbody>
                             <tr style="color: black;">
                                 <td scope="row">Efectivo esperado en caja:</td>
-                                <td>{{ (inicial + efectivo + abEfectivo + entradas + salidas) | divisa }}</td>
+                                <td>{{ (inicial + efectivo + abEfectivo + entradas + alqEfectivo + salidas) | divisa }}</td>
                             </tr>
 
                             <tr style="color: black;">
@@ -447,17 +500,17 @@
 
                             <tr style="color: black;">
                                 <td scope="row"> Diferencia </td>
-                                <td [ngClass]=" {   'text-danger': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) - totalDevolucion !== 0, 
-                                                    'text-success': (inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value) - totalDevolucion > 0
+                                <td [ngClass]=" {   'text-danger': (inicial + efectivo + abEfectivo + entradas + alqEfectivo + salidas - cajaA.value) - totalDevolucion !== 0, 
+                                                    'text-success': (inicial + efectivo + abEfectivo + entradas + alqEfectivo + salidas - cajaA.value) - totalDevolucion > 0
                                 }">
-                                    {{ cajaA.value - (inicial + efectivo + abEfectivo + entradas + salidas ) - totalDevolucion | divisa}}
+                                    {{ cajaA.value - (inicial + efectivo + abEfectivo + entradas + alqEfectivo + salidas ) - totalDevolucion | divisa}}
                                 </td>
                             </tr>
                         </tbody>
                     </table>
 
-                    <p class="animated fadeIn mb-2 text-danger" *ngIf="(inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value ) - totalDevolucion !== 0 "> <i class="bi-exclamation-triangle"></i> Existe una diferencia, todo va a quedar almacenado </p>
-                    <p class="animated fadeIn mb-2 text-success" *ngIf="(inicial + efectivo + abEfectivo + entradas + salidas - cajaA.value ) - totalDevolucion === 0"> <i class="bi-check2-all"></i> Todo en orden</p>
+                    <p class="animated fadeIn mb-2 text-danger" *ngIf="(inicial + efectivo + abEfectivo + entradas + alqEfectivo + salidas - cajaA.value ) - totalDevolucion !== 0 "> <i class="bi-exclamation-triangle"></i> Existe una diferencia, todo va a quedar almacenado </p>
+                    <p class="animated fadeIn mb-2 text-success" *ngIf="(inicial + efectivo + abEfectivo + entradas + alqEfectivo + salidas - cajaA.value ) - totalDevolucion === 0"> <i class="bi-check2-all"></i> Todo en orden</p>
 
                     <button type="button" class="btn btn-primary" (click)="cerrarTurno(cajaA.value)">Hacer cierre</button>
 
@@ -551,6 +604,10 @@
                                         <td colspan="2"> <small> Abonos en efectivo </small> </td>
                                         <td> {{ abEfectivo | divisa }} </td>
                                     </tr>
+                                    <tr *ngIf="empresa?.alquileres!" style="color: black;">
+                                        <td colspan="2"> <small> Abonos de Alquileres </small> </td>
+                                        <td> {{ alqEfectivo | divisa }} </td>
+                                    </tr>
                                     <tr style="color: black;">
                                         <td colspan="2"> <small> Entradas </small> </td>
                                         <td> {{ entradas | divisa }} </td>
@@ -565,7 +622,7 @@
                                     </tr>
                                     <tr class="border-top">
                                         <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                        <td class="fw-bold"> {{ (inicial + efectivo + abEfectivo + entradas + salidas) - totalDevolucion | divisa }} </td>
+                                        <td class="fw-bold"> {{ (inicial + efectivo + abEfectivo + entradas + alqEfectivo + salidas) - totalDevolucion | divisa }} </td>
                                     </tr>
 
                                 </tbody>
@@ -782,6 +839,44 @@
                         </div>
 
                         <!-- ABONOS CREDITOS -->
+
+                        <!-- ABONOS ALQUILERES -->
+                        <div *ngIf="empresa?.alquileres!" style="color: black;" class="col-auto p-2" style="width: 18rem;">
+                            <div class="card-body">
+                                <h5 class="card-title mb-0 text-center">Abonos Alquileres</h5>
+                            </div>
+
+                            <div class="table-responsive ">
+                                <table class="table table-borderless table-hover table-sm animated fadeIn ">
+
+                                    <tbody>
+
+                                        <tr style="color: black;">
+                                            <td colspan="2"> <small> En Efectivo </small> </td>
+                                            <td> {{ alqEfectivo | divisa }} </td>
+                                        </tr>
+
+                                        <ng-container *ngIf="bancos.length > 0">
+                                            <tr *ngFor="let banco of bancosAlquileres">
+                                                <td colspan="2"> <small> {{ banco.name }} </small> </td>
+                                                <td>
+                                                    {{ banco.monto | divisa }}
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+
+                                        <tr class="border-top">
+                                            <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                            <td class="fw-bold"> {{ totalAlquiler | divisa }} </td>
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- ABONOS ALQUILERES -->
 
                     </div>
                 </div>

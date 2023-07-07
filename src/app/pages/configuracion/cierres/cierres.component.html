@@ -210,6 +210,12 @@
                                                 <td colspan="2"> <small> Entradas </small> </td>
                                                 <td> {{ entradas | divisa }} </td>
                                             </tr>
+
+                                            <tr *ngIf="empresa?.alquileres!">
+                                                <td colspan="2"> <small> Abonos Alquileres Efectivo </small> </td>
+                                                <td> {{ alqEfectivo | divisa }} </td>
+                                            </tr>
+
                                             <tr class="text-danger">
                                                 <td colspan="2"> <small> Salidas </small> </td>
                                                 <td> {{ salidas | divisa }} </td>
@@ -220,7 +226,7 @@
                                             </tr>
                                             <tr class="border-top">
                                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                                <td class="fw-bold"> {{ (inicial + efectivo + abEfectivo + entradas + salidas) + devolucion | divisa }} </td>
+                                                <td class="fw-bold"> {{ (inicial + efectivo + abEfectivo + entradas + totalAlquiler + salidas) + devolucion | divisa }} </td>
                                             </tr>
 
                                         </tbody>
@@ -432,6 +438,44 @@
                                             <tr class="border-top">
                                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
                                                 <td class="fw-bold"> {{ (abEfectivo) + (abTarjeta) + (abTransferencia) + (totalBancosAbono) | divisa }} </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div *ngIf="empresa?.alquileres!" class="col-auto p-2">
+                            <div class="card shadow px-2" style="width: 18rem;">
+
+                                <div class="card-body">
+                                    <h5 class="card-title mb-0">Abonos Alquileres</h5>
+                                </div>
+
+                                <div class="table-responsive ">
+                                    <table class="table table-borderless table-hover table-sm animated fadeIn ">
+
+                                        <tbody>
+
+                                            <tr>
+                                                <td colspan="2"> <small>Con Efectivo </small> </td>
+                                                <td> {{ alqEfectivo | divisa }}</td>
+                                            </tr>
+
+                                            <ng-container *ngIf="bancosAlquileres.length > 0">
+                                                <tr *ngFor="let bank of bancosAlquileres">
+                                                    <td colspan="2"> <small> {{ bank.name }} </small> </td>
+                                                    <td>
+                                                        {{ bank.monto | divisa }}
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+
+                                            <tr class="border-top">
+                                                <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                                <td class="fw-bold"> {{ totalAlquiler | divisa }} </td>
                                             </tr>
 
                                         </tbody>

@@ -35,6 +35,8 @@ import { EmpresaService } from 'src/app/services/empresa.service';
 import { Datos } from 'src/app/models/empresa.model';
 import { ImpuestosService } from 'src/app/services/impuestos.service';
 import { Impuesto } from 'src/app/models/impuesto.model';
+import { AlquileresService } from 'src/app/services/alquileres.service';
+import { Alquiler } from 'src/app/models/alquileres.model';
 
 @Component({
   selector: 'app-corte',
@@ -60,7 +62,8 @@ export class CorteComponent implements OnInit {
                 private empresaService: EmpresaService,
                 private invoiceService: InvoiceService,
                 private departmentService: DepartmentService,
-                private impuestosService: ImpuestosService) {
+                private impuestosService: ImpuestosService,
+                private alquileresService: AlquileresService) {
 
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
                     val => {
@@ -108,6 +111,7 @@ export class CorteComponent implements OnInit {
   ==================================================================== */
   public bancos: Banco[] = [];
   public bancosAbonos: Banco[] = [];
+  public bancosAlquileres: Banco[] = [];
   cargarBancos(){
 
     this.bancosService.loadBancos()
@@ -129,6 +133,17 @@ export class CorteComponent implements OnInit {
           });   
           
           this.bancosAbonos = bancos;
+
+    });
+
+    this.bancosService.loadBancos()
+        .subscribe( ({ bancos }) => {          
+
+          bancos.map( (banco) => {
+            banco.monto = 0;
+          });   
+          
+          this.bancosAlquileres = bancos;
 
     });
 
@@ -191,6 +206,7 @@ export class CorteComponent implements OnInit {
   public entradas: number = 0;
   public salidas: number = 0;
   public movimientos: _movements[] = [];
+
   cargarTurno(){  
     this.turnoService.getTurnoId(this.user.turno)
     .subscribe( (turno) => { 
@@ -266,6 +282,11 @@ export class CorteComponent implements OnInit {
           break;
       }
       
+    }
+
+    // SI TIENES PAGOS DE ALQUILERES
+    if (this.turno.alquileres.length > 0) {
+      this.cargarAlquileres();      
     }
       
       
@@ -360,6 +381,58 @@ export class CorteComponent implements OnInit {
         });
   }
   
+
+  /** ===============================================================
+  * CARGAR ALQUILERES
+  ==================================================================== */
+  public alquileresList: Alquiler[] = [];
+  public alqEfectivo: number = 0;
+  public totalAlquiler: number = 0;
+  
+  async cargarAlquileres(){
+
+    this.alquileresList = [];
+    this.alqEfectivo = 0;
+    this.totalAlquiler = 0;
+
+    for (const alq of this.turno.alquileres) {
+      await this.alquileresService.loadAlquilerId(alq.alquiler)
+                .subscribe( ({alquiler}) => {
+
+                  // SUMAR LOS PAGOS DE CADA BANCO
+                  for (const pago of alquiler.payments) {
+                    
+                    this.bancosAlquileres.map( (banco) => {                
+                      
+                      if (banco.name === pago.type && this.turno.tid === pago.turno) {                  
+
+                        banco.monto += pago.amount;
+                        this.totalAlquiler += pago.amount;
+
+                      }
+
+                    });
+
+                    if (pago.type === 'efectivo' && this.turno.tid === pago.turno) {
+                      this.alqEfectivo += pago.amount;
+                      this.totalAlquiler += pago.amount;
+                    }
+                    
+                  }
+
+                  console.log('Efectivo Alquiler', this.alqEfectivo);
+                  console.log('Total', this.totalAlquiler);
+                  console.log('Bancos', this.bancosAlquileres);
+                  
+
+                }, (err) => {
+                  console.log(err);
+                  
+                })
+    }
+
+  }
+
 
   /** ===============================================================
   * CERRAR CAJA Y TURNO 

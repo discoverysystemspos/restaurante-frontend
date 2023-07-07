@@ -18,6 +18,10 @@ import { BancosService } from 'src/app/services/bancos.service';
 import { Banco } from 'src/app/models/bancos.model';
 import { ImpuestosService } from 'src/app/services/impuestos.service';
 import { Impuesto } from 'src/app/models/impuesto.model';
+import { AlquileresService } from 'src/app/services/alquileres.service';
+import { Alquiler } from 'src/app/models/alquileres.model';
+import { EmpresaService } from 'src/app/services/empresa.service';
+import { Datos } from 'src/app/models/empresa.model';
 interface _departament {
   _id?: string,
   did?: string,
@@ -60,7 +64,9 @@ export class CierresComponent implements OnInit {
                 private invoiceService: InvoiceService,
                 private printerService: NgxPrinterService,
                 private departmentService: DepartmentService,
-                private impuestosService: ImpuestosService) { 
+                private impuestosService: ImpuestosService,
+                private alquileresService: AlquileresService,
+                private empresaService: EmpresaService) { 
 
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
                     val => {                
@@ -76,7 +82,11 @@ export class CierresComponent implements OnInit {
 
                 }
 
+  public empresa!: Datos;
+
   ngOnInit(): void {
+
+    this.empresaService.getDatos().subscribe( datos => this.empresa = datos );
     
     // CARGAR IMPUESTOS
     this.cargarImpuestos();
@@ -96,6 +106,7 @@ export class CierresComponent implements OnInit {
   ==================================================================== */
   public bancos: Banco[] = [];
   public bancosAbonos: Banco[] = [];
+  public bancosAlquileres: Banco[] = [];
   cargarBancos(){
 
     this.bancos = [];
@@ -120,6 +131,17 @@ export class CierresComponent implements OnInit {
           });   
           
           this.bancosAbonos = bancos;
+
+    });
+
+    this.bancosService.loadBancos()
+        .subscribe( ({ bancos }) => {          
+
+          bancos.map( (banco) => {
+            banco.monto = 0;
+          });   
+          
+          this.bancosAlquileres = bancos;
 
     });
 
@@ -337,6 +359,19 @@ export class CierresComponent implements OnInit {
       
       
       this.procesarInformacion(id);
+
+      // SI TIENES PAGOS DE ALQUILERES
+      if (turno.alquileres.length > 0) {
+        this.cargarAlquileres();      
+      }else{
+        this.alquileresList = [];
+        this.alqEfectivo = 0;
+        this.totalAlquiler = 0;
+
+        this.bancosAlquileres.map( (banco) => {
+          banco.monto = 0;
+        });
+      }
       
     });
   }
@@ -514,6 +549,51 @@ export class CierresComponent implements OnInit {
       this.montoDiferencia = this.turnoId.montoD;      
     }    
     // VERIFICAR SI TIENE DIFERENCIA
+
+  }
+
+  /** ===============================================================
+  * CARGAR ALQUILERES
+  ==================================================================== */
+  public alquileresList: Alquiler[] = [];
+  public alqEfectivo: number = 0;
+  public totalAlquiler: number = 0;
+  
+  async cargarAlquileres(){
+
+    this.alquileresList = [];
+    this.alqEfectivo = 0;
+    this.totalAlquiler = 0;
+
+    for (const alq of this.turnoId.alquileres) {
+      await this.alquileresService.loadAlquilerId(alq.alquiler)
+                .subscribe( ({alquiler}) => {
+
+                  // SUMAR LOS PAGOS DE CADA BANCO
+                  for (const pago of alquiler.payments) {
+                    
+                    this.bancosAlquileres.map( (banco) => {                
+                      
+                      if (banco.name === pago.type && this.turnoId.tid === pago.turno) {                  
+
+                        banco.monto += pago.amount;
+                        this.totalAlquiler += pago.amount;
+
+                      }
+
+                    });
+
+                    if (pago.type === 'efectivo' && this.turnoId.tid === pago.turno) {
+                      this.alqEfectivo += pago.amount;
+                      this.totalAlquiler += pago.amount;
+                    }
+                    
+                  }                  
+
+                }, (err) => {
+                  console.log(err);                  
+                })
+    }
 
   }
 
