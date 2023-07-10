@@ -34,6 +34,7 @@ import { HttpClient } from '@angular/common/http';
 import { Carrito, LoadCarrito } from 'src/app/interfaces/carrito.interface';
 import { LoadInvoice } from 'src/app/interfaces/invoice.interface';
 import { InvoiceService } from 'src/app/services/invoice.service';
+import { ProductService } from 'src/app/services/product.service';
 
 interface _Department {
   codigo: string,
@@ -70,7 +71,8 @@ export class AlquilerComponent implements OnInit {
                 private dataicoService: DataicoService,
                 private electronicaService: ElectronicaService,
                 private http: HttpClient,
-                private invoiceService: InvoiceService) { 
+                private invoiceService: InvoiceService,
+                private productService: ProductService) { 
 
                 activateRoute.params.subscribe( ({id}) => {
                   this.loadAlquiler(id);                  
@@ -413,7 +415,7 @@ export class AlquilerComponent implements OnInit {
         }else{
 
           this.alquiler.items.map( (itemM) => {
-            if (item.product === item.product) {
+            if (itemM.product === item.product) {
               itemM.entregado = true;
               itemM.hasta = new Date();
             }
@@ -432,10 +434,38 @@ export class AlquilerComponent implements OnInit {
         this.alquileresService.updateAlquiler({items: this.alquiler.items}, this.alquiler.alid)
             .subscribe( ({alquiler}) => {
 
-              this.loadAlquiler(this.alquiler.alid);
-
-              Swal.fire('Estupendo', 'Se a agregado los items que faltaron por agregar', 'success');
               
+              // RETORNAS PRODUCTOS
+              let inventario:number = Number(item.product.inventario + Number(result.value));
+              let out = false;
+              let low = false;
+
+              if (inventario <= 0) {
+                out = true;
+              }else if( inventario < item.product.min &&  inventario > 0){
+                out = false;
+                low = true;
+              }
+              
+              let update = {
+                inventario, 
+                code: item.product.code, 
+                name: item.product.name, 
+                low, 
+                out
+              }
+
+              this.productService.actualizarProducto( update, item.product._id )
+                  .subscribe( (resp) => {
+                    
+                    this.loadAlquiler(this.alquiler.alid);
+                    Swal.fire('Estupendo', 'Se a agregado los items que faltaron por agregar', 'success');
+              
+                    
+                  }, (err) => {
+                    console.log(err);
+                    
+                  })
 
             }, (err) => {
               console.log(err);
@@ -544,44 +574,101 @@ export class AlquilerComponent implements OnInit {
   /** ================================================================
    *   LIQUIDAR
   ==================================================================== */
+  public itemsReturn: _Items[] = [];
   liquidar(pago: number, typePay: string){
-    
-    this.alquiler.items.map( (itemM) => {
-      if (!itemM.entregado) {
-        itemM.entregado = true;
-        itemM.hasta = new Date();
-      }
-    });
 
-    this.alquiler.finalizada = true;
-    
-    let update: any = {
-      items: this.alquiler.items, 
-      finalizada: this.alquiler.finalizada,
+    for (const item of this.alquiler.items) {
+      this.itemsReturn.push(item);
     }
 
-    if (pago > 0) {
-      this.alquiler.payments.push({
-        type: typePay,
-        amount: pago,
-        description: '',
-        fecha: new Date()
-      });
+    this.returnProduct();
 
-      update.payments = this.alquiler.payments;
-    }
+    setTimeout( () => {
 
-
-    this.alquileresService.updateAlquiler(update, this.alquiler.alid!)
-    .subscribe( ({alquiler}) => {
-
-      this.loadAlquiler(this.alquiler.alid!);
-
-    }, (err) => {
-      console.log(err);
-      Swal.fire('Error', err.error.msg, 'error');
+      this.alquiler.items.map( (itemM) => {
+        if (!itemM.entregado) {
+          itemM.entregado = true;
+          itemM.hasta = new Date();
+        }
+      })
+  
+      this.alquiler.finalizada = true;
       
-    })
+      let update: any = {
+        items: this.alquiler.items, 
+        finalizada: this.alquiler.finalizada,
+      }
+  
+      if (pago > 0) {
+        this.alquiler.payments.push({
+          type: typePay,
+          amount: pago,
+          description: '',
+          fecha: new Date()
+        });
+        update.payments = this.alquiler.payments;
+      }
+  
+      this.alquileresService.updateAlquiler(update, this.alquiler.alid!)
+          .subscribe( ({alquiler}) => {
+            this.loadAlquiler(this.alquiler.alid!);
+        
+          }, (err) => {
+            console.log(err);
+            Swal.fire('Error', err.error.msg, 'error');
+            
+          })
+
+    }, 3000)
+
+    
+    
+  }
+
+  /** ================================================================
+   *   RETURN ITEMS
+  ==================================================================== */
+  returnProduct(){
+
+    for (const item of this.itemsReturn) {
+
+      let cant = Number(item.qty * 2);
+
+      if (!item.entregado) {
+        cant = Number(item.qty)
+      }
+
+
+      // RETORNAS PRODUCTOS
+      let inventario:number = Number(item.product.inventario + cant);
+      let out = false;
+      let low = false;
+
+      if (inventario <= 0) {
+        out = true;
+      }else if( inventario < item.product.min &&  inventario > 0){
+        out = false;
+        low = true;
+      }
+      
+      let update = {
+        inventario, 
+        code: item.product.code, 
+        name: item.product.name, 
+        low, 
+        out
+      }
+
+      this.productService.actualizarProducto( update, item.product._id )
+          .subscribe( (resp) => {      
+            
+          }, (err) => {
+            console.log(err);
+            
+          })
+    }
+    
+
   }
   
   /** ================================================================
@@ -589,7 +676,8 @@ export class AlquilerComponent implements OnInit {
   ==================================================================== */
   public factura: LoadInvoice;
   public facturando: boolean = false;
-  crearFactura(send_dian: boolean, mesa: Mesa, pago: number = 0, typePay: string){
+  crearFactura(send_dian: boolean, mesa: Mesa, pago: number = 0, typePay: string, continuar: any){
+      
 
     this.facturando = true;
     pago = Number(pago);
@@ -715,11 +803,17 @@ export class AlquilerComponent implements OnInit {
                   if (this.empresa.printpos) {              
                     // window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
                     // IMPRIMIR FACTURA
+                    if (continuar) {
+                      this.createAlquiler();
+                    }
                     setTimeout( () => {
                       this.printDiv2();                      
-                    },2000);
+                    },3000);
                     
                   }else{
+                    if (continuar) {
+                      this.createAlquiler();
+                    }
                     window.open(`./dashboard/factura/${ this.factura.iid }`, '_blank');
                     setTimeout( () => {             
                       window.location.reload();
@@ -737,11 +831,18 @@ export class AlquilerComponent implements OnInit {
             if (this.empresa.printpos) {              
               // window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
               // IMPRIMIR FACTURA
+              if (continuar) {
+                this.createAlquiler();
+              }
               setTimeout( () => {
                 this.printDiv2();                      
               },2000);
               
             }else{
+
+              if (continuar) {
+                this.createAlquiler();
+              }
               window.open(`./dashboard/factura/${ this.factura.iid }`, '_blank');
               setTimeout( () => {             
                 window.location.reload();
@@ -753,6 +854,50 @@ export class AlquilerComponent implements OnInit {
           console.log(err);
           Swal.fire('Error', err.error.msg, 'error');          
         });
+  }
+
+  /** ================================================================
+   *   CREAR NUEVO ALQUILER CON LA MISMA INFORMACION
+  ==================================================================== */
+  createAlquiler(){
+
+    let monto: number = 0;
+    let itemNew: any[] = [];
+
+    for (const item of this.alquiler.items) {
+
+      if (item.entregado === false) {
+        
+        itemNew.push({
+          product: item.product._id,
+          qty: item.qty,
+          price: item.price,
+          desde: new Date(),
+          entregado: false,
+        })
+
+        monto += ((item.price * item.qty) * 1);
+      }     
+
+    }
+
+    let alq = {
+      client: this.alquiler.client._id,
+      address: this.alquiler.address,
+      items: itemNew,
+      amount: monto
+    }
+
+    this.alquileresService.createAlquiler(alq)
+        .subscribe( ({alquiler}) => {
+
+          window.open(`./dashboard/alquiler/${ alquiler.alid }`, '_blank');
+
+        }, (err) => {
+          console.log(err);
+          
+        })
+
   }
 
   

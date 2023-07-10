@@ -8,6 +8,7 @@ import { Product } from 'src/app/models/product.model';
 
 import { AlquileresService } from 'src/app/services/alquileres.service';
 import { SearchService } from 'src/app/services/search.service';
+import { ProductService } from 'src/app/services/product.service';
 
 interface _item {
     product: string;
@@ -18,6 +19,12 @@ interface _item {
     entregado: boolean;
     desde?: Date;
     hasta?: Date;
+}
+
+interface _query{
+  desde: number;
+  hasta: number;
+  client?: string;
 }
 
 @Component({
@@ -37,7 +44,8 @@ export class AlquileresComponent implements OnInit {
 
   constructor(  private alquileresService: AlquileresService,
                 private fb: FormBuilder,
-                private searchService: SearchService) { }
+                private searchService: SearchService,
+                private productService: ProductService) { }
 
   ngOnInit(): void {
 
@@ -48,12 +56,13 @@ export class AlquileresComponent implements OnInit {
   /** ================================================================
    *   CARGAR ALQUILERES
   ==================================================================== */
-  public query = {};
+  public query: _query = {
+    desde: 0,
+    hasta: 50
+  };
   public alquileres: Alquiler[] = [];
   public alquileresTemp: Alquiler[] = [];
   public total: number = 0;
-  public desde: number = 0;
-  public hasta: number = 50;
   cargarAlquileres(){
 
     this.alquileresService.loadAlquileres(this.query)
@@ -74,17 +83,19 @@ export class AlquileresComponent implements OnInit {
   /** ================================================================
    *   CREAR ALQUILER
   ==================================================================== */
+  @ViewChild('inAddress') inAddress: ElementRef;
   public formSubmitted: boolean = false;
   public createForm = this.fb.group({
     client: '',
     monto: 0,
-    address: ['', [Validators.required]],
+    address: '',
     items: [],
-    amount: 0,
-    cotizacion: false
+    amount: 0
   });
   
   crearAlquiler(){
+
+    this.createForm.value.address = this.inAddress.nativeElement.value;
 
     if (this.items.length === 0) {
       Swal.fire('Atención', 'Debes de agregar un producto para poder crear el alquiler', 'warning');
@@ -100,9 +111,15 @@ export class AlquileresComponent implements OnInit {
     this.createForm.value.client = this.clientS.cid;
     this.createForm.value.amount = this.amount;
     this.createForm.value.items = this.items;
+    
 
     this.alquileresService.createAlquiler(this.createForm.value)
         .subscribe( ({alquiler}) => {
+
+          delete this.clientS;
+          this.amount = 0;
+
+          this.descontarInventario();
 
           this.cargarAlquileres();
           Swal.fire('Estupendo', 'Se ha creado el alquiler exitosamente!', 'success');
@@ -123,6 +140,52 @@ export class AlquileresComponent implements OnInit {
       return true;
     }else{
       return false;
+    }
+
+  }
+
+  /** ================================================================
+   *  DESCONTAR ITEMS DEL INVENTARIO
+  ==================================================================== */
+  descontarInventario(){
+
+    if (this.items.length > 0) {
+      
+      for (const item of this.items) {        
+        
+        let inventario:number = Number(item.producto.inventario - item.qty);
+        let out = false;
+        let low = false;
+
+        if (inventario <= 0) {
+          out = true;
+        }else if( inventario < item.producto.min &&  inventario > 0){
+          out = false;
+          low = true;
+        }
+        
+        let update = {
+          inventario, 
+          code: item.producto.code, 
+          name: item.producto.name, 
+          low, 
+          out
+        }
+
+        this.productService.actualizarProducto( update, item.product )
+            .subscribe( (resp) => {
+              
+              // ELIMINAMOS LOS ITEMS
+              this.eliminarItem(item);
+              
+            }, (err) => {
+              console.log(err);
+              
+            })
+
+
+      }
+
     }
 
   }
@@ -151,12 +214,57 @@ export class AlquileresComponent implements OnInit {
 
           this.listClients = resultados;
           
-
         }, (err) => {
           console.log(err);
           
         });
 
+  }
+
+  /** ================================================================
+   *   SEARCH CLIENT
+  ==================================================================== */
+  public clients: any[] = [];
+  public clientSeleted: Client;
+  buscarClient(termino: string){
+
+    this.listClients = [];
+    
+    if (termino.length < 1) {
+      this.listClients = [];
+      return;      
+    }
+    
+    this.searchService.search('clients', termino)
+    .subscribe( ({resultados}) => {      
+
+        this.clients = resultados;          
+
+      }, (err) => {
+        console.log(err);
+        
+      });
+
+  }
+
+  /** ================================================================
+   *   BUSCAR ALQUILERES DEL CLIENTE
+  ==================================================================== */
+  @ViewChild('searchCl') searchCl: ElementRef;
+  /**
+   * The function "buscarAlquilerClient" clears the search input, resets the clients array, sets the
+   * query client to the given cid, and loads the rentals.
+   * @param {string} cid - string - the client ID to search for in the rental database.
+   */
+  buscarAlquilerClient(cid: string){
+
+    this.searchCl.nativeElement.value = '';
+    this.clients = [];
+
+    this.query.client = cid;
+
+    this.cargarAlquileres();
+    
   }
 
   /** ================================================================
@@ -168,7 +276,7 @@ export class AlquileresComponent implements OnInit {
   /** ================================================================
    *   PRODUCTOS BUSCAR
   ==================================================================== */
-  // @ViewChild('searchC') searchC: ElementRef;
+  @ViewChild('searchP') searchP: ElementRef;
   public listProducts: Client[] = [];
   public items: _item[] = [];
   public productS: Product;
@@ -209,6 +317,19 @@ export class AlquileresComponent implements OnInit {
     this.items.push(item);
     this.sumarTotales();
 
+    this.searchP.nativeElement.value = '';
+    this.searchP.nativeElement.focus();
+
+  }
+
+  /** ================================================================
+   *   ELIMINAR PRODUCTOS
+  ==================================================================== */
+  eliminarItem(item: any){
+
+    this.items.splice(item, 1);
+    this.sumarTotales();
+
   }
 
   /** ================================================================
@@ -224,6 +345,37 @@ export class AlquileresComponent implements OnInit {
     }
 
   }
+
+  /** ================================================================
+   *   CANCELAR ALQUILER
+  ==================================================================== */
+  statusUpdate(alquiler: Alquiler){
+
+    let status = false;
+    if( !alquiler.status ){
+      status = true;
+    }
+
+    this.alquileresService.updateAlquiler({status}, alquiler.alid)
+        .subscribe( ({alquiler}) => {
+
+          Swal.fire('Estupendo', 'Se ha cambiado el estado del alquiler exitosamente', 'success');
+          this.alquileres.map( (alq) => {
+
+            if (alq.alid === alquiler.alid) {
+              alq.status = status;
+            }
+
+          })
+
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');          
+        })
+
+  }
+
+  
 
   // FIN DE LA CLASE
 }

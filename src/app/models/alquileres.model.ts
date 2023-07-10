@@ -28,7 +28,7 @@ export class Alquiler{
         public amount: number,
         public fecha: string,
         public user: User,
-        public status: string,
+        public status: boolean,
         public items: _Items[],
         public payments: _Payments[],
         public number?: string,

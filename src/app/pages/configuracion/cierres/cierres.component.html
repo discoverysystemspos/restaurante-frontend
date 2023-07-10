@@ -110,14 +110,14 @@
             <!-- BTN SIGUIENTE Y ANTERIOR -->
             <div class="row">
                 <div class="col col-md-4">
-                    <small class="text-muted">Total de cajas: ({{totalTurnos}})</small>
+                    <small class="text-muted">Total: ({{totalTurnos}})</small>
                     <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
                     <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + listaTurnos.length }})</small>
                 </div>
 
                 <div *ngIf="!initial.value.length" class="col d-flex justify-content-end">
-                    <button type="button" (click)="cambiarPagina(-10)" class="{{btnAtras}} btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
-                    <button type="button" (click)="cambiarPagina(10)" class="{{btnAdelante}} btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
+                    <button type="button" (click)="cambiarPagina(-10)" [disabled]="desde == 0" class="btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
+                    <button type="button" (click)="cambiarPagina(10)" [disabled]="(desde + 10) > totalTurnos" class="btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
                 </div>
             </div>
             <!-- BTN SIGUIENTE Y ANTERIOR -->
