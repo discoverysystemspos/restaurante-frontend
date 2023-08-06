@@ -98,8 +98,7 @@ export class ElectronicaService {
       delete customer.family_name;
     }else{
       delete customer.company_name;
-    }
-    
+    }    
 
     // SETEAR FECHA
     let d = new Date();
@@ -172,7 +171,7 @@ export class ElectronicaService {
     }; 
 
     let desde;
-
+    
     if(!dataico.desde || dataico.desde === 0){
       desde = 0;
     }else{

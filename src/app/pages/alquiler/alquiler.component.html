@@ -25,9 +25,14 @@
 
     <ng-container *ngIf="alquiler">
         <!-- TITLE - SUBTITLE -->
-        <div class="mt-4">
+        <div class="mt-4 ">
             <h5 class="text-dark">DETALLES DEL ALQUILER #{{ alquiler.number }}</h5>
             <p class="mb-0">Cajero: {{ alquiler.user.name }}</p>
+
+            <div class="form-check form-switch ms-2 ml-2">
+                <input class="form-check-input" #colcheck (change)="colcheck.checked =  colcheck.checked" type="checkbox" role="switch" id="ocultarcheck">
+                <label class="form-check-label" for="ocultarcheck">Ocultar Columnas</label>
+            </div>
 
         </div>
         <!-- TITLE - SUBTITLE -->
@@ -153,17 +158,17 @@
 
                                 <ng-container *ngIf="alquiler.items.length > 0">
                                     <tr *ngFor="let item of alquiler.items">
-                                        <td> {{ item.qty }} </td>
+                                        <td> <span *ngIf="!colcheck.checked"> {{ item.qty }} </span> </td>
                                         <td> {{ item.product.name }} </td>
-                                        <td> {{ item.price | currency: 'COP' }} </td>
+                                        <td> <span *ngIf="!colcheck.checked"> {{ item.price | currency: 'COP' }}</span> </td>
                                         <td>
                                             <div class="d-flex justify-content-center gap-2">
                                                 <span class="badge bg-dark" *ngIf="item.desde"> {{item.desde | date:'dd/M/y'}} </span>
                                                 <span class="badge bg-success" *ngIf="item.hasta"> {{item.hasta | date:'dd/M/y'}} </span>
                                             </div>
                                         </td>
-                                        <td class="text-center"> {{ item.dias }} </td>
-                                        <td class="text-end"> {{ (item.price * item.qty) * item.dias | currency: 'COP' }} </td>
+                                        <td class="text-center"> <span *ngIf="!colcheck.checked"> {{ item.dias }}</span> </td>
+                                        <td class="text-end"> <span *ngIf="!colcheck.checked"> {{ (item.price * item.qty) * item.dias | currency: 'COP' }}</span> </td>
 
                                         <td>
                                             <button (click)="entregaProductos(item)" *ngIf="!item.entregado" type="button" class="btn btn-link p-1 text-primary text-right"> 
@@ -180,7 +185,7 @@
                             <tfoot>
                                 <tr>
                                     <th colspan="5" class="text-end">Total</th>
-                                    <th class="text-end"> {{ amount | currency:'COP'}} </th>
+                                    <th class="text-end"> <span *ngIf="!colcheck.checked"> {{ amount | currency:'COP'}} </span> </th>
                                 </tr>
                             </tfoot>
                         </table>

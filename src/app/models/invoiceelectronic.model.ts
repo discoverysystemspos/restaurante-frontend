@@ -103,17 +103,17 @@ export interface User {
 }
 
 export interface Item {
-    "sku":                            string;
-    "taxes":                          Tax[];
-    "quantity":                       number;
-    "price":                          number;
-    "description":                    string;
-    "mandante-identification"?:      string;
-    "original-price"?:               number;
-    "discount-rate"?:                number;
-    "mandante-identification-type"?: string;
-    "retentions"?:                     ItemRetention[];
-    "measuring-unit"?:               string;
+    "sku":                              string;
+    "taxes":                            Tax[];
+    "quantity":                         number;
+    "price":                            number;
+    "description":                      string;
+    "mandante-identification"?:         string;
+    "original-price"?:                  number;
+    "discount-rate"?:                   number;
+    "mandante-identification-type"?:    string;
+    "retentions"?:                      ItemRetention[];
+    "measuring-unit"?:                  string;
 }
 
 export interface ItemRetention {

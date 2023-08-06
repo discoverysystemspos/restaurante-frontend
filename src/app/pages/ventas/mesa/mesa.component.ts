@@ -166,11 +166,7 @@ export class MesaComponent implements OnInit {
     }else{
       this.facturar = false;
     }
-
-    if (this.empresa?.electronica) {
-      this.loadDataDataico();      
-    }
-
+    
     this.loadDepartmentAndCitys();
     
   }
@@ -353,7 +349,13 @@ export class MesaComponent implements OnInit {
 
     this.empresaService.getDatos()
         .subscribe( datos => {
-          this.empresa = datos;   
+          this.empresa = datos;
+
+          if (this.empresa?.electronica) {
+            this.loadDataDataico();      
+          }
+          
+
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
   }
   
