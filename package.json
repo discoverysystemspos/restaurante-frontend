@@ -31,7 +31,6 @@
     "moment": "^2.29.1",
     "ngx-printer": "^0.9.1",
     "rxjs": "~6.6.0",
-    "serialport": "^9.0.7",
     "sweetalert2": "^10.13.0",
     "tslib": "^2.0.0",
     "uuid-generator-ts": "^1.1.0",

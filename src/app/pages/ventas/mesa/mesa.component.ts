@@ -419,8 +419,7 @@ export class MesaComponent implements OnInit {
             this.notas = this.mesa.nota;         
           }else{
             this.notas = [];
-          }
-          
+          }          
 
           this.sumarTotales();
 

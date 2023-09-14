@@ -3,8 +3,8 @@
 // The list of file replacements can be found in `angular.json`.ss
 
 /**
-  base_url: 'https://alcan.simids.com.co/api',
-  base_url: 'https://food247.discoverysystemspos.com/api',
+  base_url: 'https://tiendadiskon.simids.com.co/api',
+  base_url: 'https://superofertas.discoverysystemspos.com/api',
   base_url: 'http://localhost:3000/api',
   base_url: 'http://192.168.1.150:3000/api',
   dataico_url: 'https://api.dataico.com/dataico_api/v2'
@@ -13,7 +13,7 @@
 
 export const environment = {
   production: false,
-  base_url: 'http://192.168.0.150:3000/api',
+  base_url: 'http://localhost:3000/api',
   local_url: 'https://castitoner.com/api',
   dataico_url: 'https://api.dataico.com/dataico_api/v2'
 };
