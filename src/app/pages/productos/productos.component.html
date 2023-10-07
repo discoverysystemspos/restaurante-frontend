@@ -130,14 +130,14 @@
                                     </div>
 
                                     <div class="ms-auto text-end">
-                                        <h4 class="mb-0 text-success"> Ganancia total {{ (totalPrice - totalCost) | divisa }} </h4>
-                                        <small class="mb-0 text-muted"> Total de venta {{ totalPrice | divisa}} </small>
-                                        <small class="mb-0 text-muted"> Total de inversión {{ totalCost | divisa}} </small>
+                                        <h4 *ngIf="user.role === 'ADMIN'" class="mb-0 text-success"> Ganancia total {{ (totalPrice - totalCost) | divisa }} </h4>
+                                        <small *ngIf="user.role === 'ADMIN'" class="mb-0 text-muted"> Total de venta {{ totalPrice | divisa}} </small>
+                                        <small *ngIf="user.role === 'ADMIN'" class="mb-0 text-muted"> Total de inversión {{ totalCost | divisa}} </small>
 
                                         <div class="my-2">
                                             <button class="btn btn-info btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#updateExcel"> Actualizar Lote</button>
                                             <button class="btn btn-primary btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#ivaAll"> Cambiar Impuestos</button>
-                                            <button (click)="exportar()" class="btn btn-success btn-sm"> Exportar</button>
+                                            <button *ngIf="user.role === 'ADMIN'" (click)="exportar()" class="btn btn-success btn-sm"> Exportar</button>
                                         </div>
                                     </div>
                                 </div>

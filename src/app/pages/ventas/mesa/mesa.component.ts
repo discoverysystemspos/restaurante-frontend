@@ -898,7 +898,7 @@ export class MesaComponent implements OnInit {
 
     if (product.tax) {
 
-      ivaP = Number(product.price * qty) * Number(product.taxid?.valor / 100);      
+      ivaP = Number(precio * qty) * Number(product.taxid?.valor / 100);      
       
     }
 

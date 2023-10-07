@@ -114,7 +114,7 @@
                         </div>
                     </div>
 
-                    <div *ngIf="user.role !== 'CASHIER'" class="col-xl-3 col-md-3 mb-4">
+                    <div *ngIf="user.role === 'ADMIN'" class="col-xl-3 col-md-3 mb-4">
                         <!-- Dashboard info widget 1-->
                         <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-success h-100 bg-white">
                             <div class="card-body">
@@ -199,7 +199,7 @@
 
                         <div>
                             <button type="button" class="btn btn-outline-primary btn-sm" (click)="cargarFacturas()"> <i class="bi-arrow-clockwise"></i> Recargar </button>
-                            <button type="button" class="ml-2 btn btn-outline-success btn-sm" (click)="exportar()"> <i class="bi-file-earmark-spreadsheet"></i> Excel </button>
+                            <button *ngIf="user.role === 'ADMIN'" type="button" class="ml-2 btn btn-outline-success btn-sm" (click)="exportar()"> <i class="bi-file-earmark-spreadsheet"></i> Excel </button>
                         </div>
 
                         <div class="d-flex justify-content-end flex-wrap">
