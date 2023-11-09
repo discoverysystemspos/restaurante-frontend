@@ -145,18 +145,37 @@
 
                         <h5 class="text-muted">Configuración</h5>
 
-                        <div class="row mb-3">
 
+                        <div class="row mb-3">
                             <div class="col-md-4">
 
                                 <div class="form-check">
-                                    <input formControlName="printpos" class="form-check-input" type="checkbox" id="printpos" checked>
+                                    <input formControlName="printpos" class="form-check-input" type="checkbox" id="printpos" checked #printpos>
                                     <label class="form-check-label" for="printpos">
                                     Impresora POS
                                   </label>
                                 </div>
 
                             </div>
+
+                            <div class="col-md-12 mt-3" *ngIf="printpos.checked">
+                                <div class="form-group row">
+                                    <label for="impresora" class="col-sm-auto col-form-label">Tipo de impresora</label>
+                                    <div class="col-sm-6">
+                                        <select formControlName="impresora" id="impresora" class="custom-select custom-select-sm">
+                                            <option disabled selected>Seleccionar Impresora</option>
+                                            <option value="58" >58</option>
+                                            <option value="80" >80</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row mb-3">
+
+
 
                             <div class="col-md-4">
 

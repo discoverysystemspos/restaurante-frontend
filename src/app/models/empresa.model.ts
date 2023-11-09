@@ -51,6 +51,7 @@ export class Datos{
         public alquileres?: boolean,
         public fechakardex?: Date,
         public min?: number,
+        public impresora?: number,
     ){}
 
     /** ================================================================

@@ -1104,7 +1104,7 @@
                 </div>
 
                 <div class="d-flex justify-content-center">
-                    <div class="card border-0 pb-4" style="width: 14rem; color:black; background: white;" id="printDiv2" *ngIf="factura">
+                    <div class="card border-0 pb-4" [ngStyle]="{'width': empresa.impresora === 58 ? '14rem' : '16rem'}" style="width: 14rem; color:black; background: white;" id="printDiv2" *ngIf="factura">
 
                         <!-- EMPRESA -->
                         <div class="card-body px-1 mb-2" style="border-bottom: 2px solid black;" *ngIf="empresa">
@@ -1170,9 +1170,13 @@
                         <table class="table table-borderless table-hover table-sm">
                             <tbody style="color: black;">
                                 <tr *ngFor="let item of factura.products" class="trHover">
-                                    <td>
+                                    <td class="py-0" style="line-height: 0.8rem">
                                         <small class="text-wrap"> {{ item.qty }} x {{item.price | divisa}} </small> <br>
                                         <small class="text-wrap"> {{ item.product.name }} </small>
+                                    </td>
+                                    <td class="text-end">
+                                        <small *ngIf="item.product.tax"> {{ item.product.taxid.valor }}% </small>
+                                        <small *ngIf="!item.product.tax"> 0% </small>
                                     </td>
                                     <td> <small class="text-wrap"> {{ item.qty * item.price | divisa }} </small> </td>
                                 </tr>

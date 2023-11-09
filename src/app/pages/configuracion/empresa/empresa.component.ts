@@ -44,10 +44,10 @@ export class EmpresaComponent implements OnInit {
         .subscribe( datos => {
 
           this.empresa = datos;
-
+          
           this.comisiones = datos.comisiones || [];
           
-          const { tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas, commissions, comisiones, fruver, moneda, decimal, usd,  currencyusd, cop, currencycop, basculaimp, basculatype, basculacode, electronica, min, alquileres } = datos;
+          const { tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas, commissions, comisiones, fruver, moneda, decimal, usd,  currencyusd, cop, currencycop, basculaimp, basculatype, basculacode, electronica, min, alquileres, impresora } = datos;
 
           let tipoImpuesto = '';
 
@@ -92,7 +92,8 @@ export class EmpresaComponent implements OnInit {
               basculacode: basculacode ||'2000',
               electronica: electronica || false,
               min,
-              alquileres
+              alquileres,
+              impresora
 
             });
 
@@ -139,6 +140,7 @@ export class EmpresaComponent implements OnInit {
     electronica: false,
     min: 212000,
     alquileres: false,
+    impresora: 58,
   })
 
   actualizarDatos(){

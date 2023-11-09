@@ -10,7 +10,7 @@
 
     <div class="d-flex justify-content-center">
 
-        <div class="card border-0 pb-4" style="width: 14rem; color:black; background: white;" id="printDiv">
+        <div class="card border-0 pb-4" [ngStyle]="{'width': empresa.impresora === 58 ? '14rem' : '16rem'}" style="width: 14rem; color:black; background: white;" id="printDiv">
 
             <!-- EMPRESA -->
             <div class="card-body px-1 mb-2" style="border-bottom: 2px solid black;">
@@ -76,18 +76,22 @@
             <table class="table table-borderless table-hover table-sm">
                 <tbody style="color: black;">
                     <tr *ngFor="let item of factura?.products" class="trHover">
-                        <td>
+                        <td class="py-0" style="line-height: 0.8rem">
                             <small class="text-wrap"> {{ item.qty }} x {{item.price | divisa}} </small> <br>
                             <small class="text-wrap"> {{ item.product.name }} </small>
                         </td>
-                        <td> <small class="text-wrap"> {{ item.qty * item.price | divisa }} </small> </td>
+                        <td class="text-end">
+                            <small *ngIf="item.product.tax"> {{ item.product.taxid.valor }}% </small>
+                            <small *ngIf="!item.product.tax"> 0% </small>
+                        </td>
+                        <td class="py-0"> <small class="text-wrap"> {{ item.qty * item.price | divisa }} </small> </td>
                     </tr>
 
                     <tr class="" style="border-top: 2px solid black;">
                         <td>
                             <h6 class="mb-0 text-wrap text-left">Sub-total</h6>
                         </td>
-                        <td class="fw-bold">
+                        <td colspan="2" class="fw-bold">
                             <h6 class="mb-0 text-wrap text-rigth" *ngIf="empresa?.impuesto"> {{ factura?.base | divisa }} </h6>
                         </td>
                     </tr>
@@ -96,7 +100,7 @@
                         <td>
                             <h6 class="mb-0 text-wrap text-left">Descuento</h6>
                         </td>
-                        <td class="fw-bold">
+                        <td colspan="2" class="fw-bold">
                             <h6 class="mb-0 text-wrap text-rigth" *ngIf="factura?.descuento"> {{ (factura?.base * factura?.porcentaje)/100 | divisa }} </h6>
                         </td>
                     </tr>
@@ -107,7 +111,7 @@
                             <td>
                                 <h6 class="mb-0 text-wrap text-left">No responsable de IVA</h6>
                             </td>
-                            <td class="fw-bold">
+                            <td colspan="2" class="fw-bold">
                                 <h6 class="mb-0 text-wrap text-rigth"> 0 </h6>
                             </td>
                         </tr>
@@ -121,7 +125,7 @@
                                     <h6 class="mb-0 text-wrap text-left"> {{ impuesto.name }} </h6>
 
                                 </td>
-                                <td class="fw-bold">
+                                <td colspan="2" class="fw-bold">
                                     <h6 class="mb-0 text-wrap text-rigth"> {{ impuesto.total | divisa }} </h6>
                                 </td>
                             </tr>
@@ -134,7 +138,7 @@
                         <td>
                             <h6 class="mb-0 text-wrap text-left">Total</h6>
                         </td>
-                        <td class="fw-bold">
+                        <td colspan="2" class="fw-bold">
                             <h6 class="mb-0 text-wrap text-rigth"> {{ factura?.amount | divisa}} </h6>
                         </td>
                     </tr>
