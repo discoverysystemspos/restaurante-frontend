@@ -45,6 +45,7 @@ import { PrestamosComponent } from './configuracion/prestamos/prestamos.componen
 import { PrestamoComponent } from './configuracion/prestamos/prestamo/prestamo.component';
 import { AlquileresComponent } from './alquileres/alquileres.component';
 import { AlquilerComponent } from './alquiler/alquiler.component';
+import { ParqueaderoComponent } from './configuracion/parqueadero/parqueadero.component';
 
 const routes: Routes = [
     
@@ -73,6 +74,7 @@ const routes: Routes = [
           
           { path: 'configuracion/prestamos', component: PrestamosComponent, data:{ titulo: 'Prestamos'} },
           { path: 'configuracion/prestamo/:id', component: PrestamoComponent, data:{ titulo: 'Prestamo'} },
+          { path: 'configuracion/parqueadero', component: ParqueaderoComponent, data:{ titulo: 'Parqueadero'} },
           
           { path: 'corte', component: CorteComponent, data:{ titulo: 'Corte'} },
 

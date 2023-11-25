@@ -1,0 +1,413 @@
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<header>
+    <div class="bg-header-blue py-2 px-3 mb-2">
+        <h5 class="text-white m-0">Configuraciones / Parqueadero</h5>
+    </div>
+    <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
+
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-dark active" id="ticket1-tab"><i class="bi-gear" style="font-size: 1rem"></i> Tablero Principal</a>
+        </li>
+
+    </ul>
+</header>
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+
+<div class="container-fluid my-4">
+
+    <!-- BOTONES  -->
+    <div class="d-flex flex-wrap gap-3 mt-2 mb-3">
+        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">Categorias</button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#VehiculosModal">Vehiculos</button>
+    </div>
+    <!-- BOTONES -->
+
+    <!-- CHECKIN O CHECKOT DE VEHICULOS -->
+    <div class="d-flex flex-wrap mb-3">
+
+        <div class="w-50 px-md-3">
+            <div class="card">
+                <div class="card-body">
+
+                    <h4 class="text-center display-5">
+                        <i class="bi bi-box-arrow-in-up-right"></i>
+                        <br> Entrada
+                    </h4>
+
+                    <div class="formGroup mb-3">
+                        <input type="search" (keyup.enter)="checkin(inP.value)" #inP class="form-control" placeholder="Placa">
+                    </div>
+
+                    <div class="d-flex flex-column justify-content-center" *ngIf="vCheckin">
+
+                        <div class="mb-3" id="printDiv1" [ngStyle]="{'width': empresa.impresora === 58 ? '14rem' : '24rem'}">
+
+                            <div class="card border mx-auto">
+                                <div class="card-body">
+                                    <div class="d-flex flex-column justify-content-center" style="color: #000;">
+                                        <p class="mb-0 fs-5">Placa</p>
+                                        <h4 class="text-center display-5">
+                                            <ngx-barcode [bc-value]="vCheckin.placa" [bc-display-value]="true"></ngx-barcode>
+                                        </h4>
+                                        <p class="mb-0 fs-4"> Ingreso: {{ vCheckin.fecha | date:'short' }} </p>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div>
+                            <button (click)="printDiv('printDiv1')" type="button" class="btn btn-primary">Imprimir</button>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="w-50 px-3">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="text-center display-5">
+                        <i class="bi bi-box-arrow-up-right"></i>
+                        <br> Salida
+                    </h4>
+
+                    <div class="formGroup mb-3">
+                        <input type="search" (keyup.enter)="checkout(outP.value)" #outP class="form-control" placeholder="Placa" name="" id="">
+                    </div>
+
+                    <div class="d-flex flex-column justify-content-center" *ngIf="vCheckout">
+
+                        <div class="mb-3" id="printDiv2" [ngStyle]="{'width': empresa.impresora === 58 ? '14rem' : '24rem'}">
+
+                            <div class="card border">
+                                <div class="card-body">
+                                    <div class="d-flex flex-column justify-content-center" style="color: #000;">
+                                        <p class="mb-0 fs-5 text-center">Total</p>
+                                        <h4 class="text-center display-5">
+                                            {{ vCheckout.total | divisa }}
+                                        </h4>
+                                        <p class="mb-0 fs-4"> Ingreso: {{ vCheckout.fecha | date:'short' }} </p>
+                                        <p class="mb-0 fs-4"> Salida: {{ vCheckout.checkout | date:'short' }} </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div>
+                            <button (click)="printDiv('printDiv1')" type="button" class="btn btn-primary">Imprimir</button>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- CHECKIN O CHECKOT DE VEHICULOS -->
+
+    <!-- TABLA DE VEHICULOS PARQUEADOS -->
+    <div class="card">
+        <div class="card-body">
+
+            <div class="table-responsive ">
+                <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                    <thead class="border-bottom ">
+                        <tr>
+                            <th class="text-muted " scope="col"># Placa</th>
+                            <th class="text-muted " scope="col">Cliente</th>
+                            <th class="text-muted " scope="col">Categoria</th>
+                            <th class="text-muted " scope="col">Usuario</th>
+                            <th class="text-muted " scope="col">fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr *ngIf="parqueos.length === 0" class="text-center ">
+                            <th colspan="13" class="py-4">
+                                <h4 class="text-muted"> No hay vehiculos parqueados </h4>
+                            </th>
+                        </tr>
+
+                        <tr class="trHover" *ngFor="let parq of parqueos; let i = index">
+                            <th scope="row ">{{ parq.placa }}</th>
+                            <td>{{ parq.car.cliente }}</td>
+                            <td>{{ parq.car.typeparq.name }}</td>
+                            <td> {{ parq.user.name }} </td>
+                            <td>{{ parq.fecha | date: 'short' }}</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+    <!-- TABLA DE VEHICULOS PARQUEADOS -->
+
+</div>
+
+<!-- =========================================================================
+    NUEVA CATEGORIA 
+========================================================================= -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Categorias</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="pt-4">
+                    <div class="d-flex flex-wrap mb-3">
+                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                            Crear Categoria
+                        </button>
+                    </div>
+                    <div class="collapse border-0" id="collapseExample">
+                        <div class="card card-body">
+                            <h4 class="mb-2">Crea una categoria nueva en parqueadero</h4>
+                            <form class="row g-3" [formGroup]="newCategoryForm" (ngSubmit)="createCategory()">
+                                <div class="col-auto">
+                                    <label for="categoria" class="visually-hidden">Categoria</label>
+                                    <input formControlName="name" type="text" class="form-control" id="categoria" placeholder="Carro, Moto, Bicicleta, etc...">
+                                    <small *ngIf="validateNewCategory('name')" class="text-danger"> Le nombre de la categoria es obligatorio </small>
+                                </div>
+                                <div class="col-auto">
+                                    <label for="precio" class="visually-hidden">Precio</label>
+                                    <input formControlName="price" type="number" class="form-control" id="precio" placeholder="Precio">
+                                    <small *ngIf="validateNewCategory('price')" class="text-danger"> Le nombre de la categoria es obligatorio </small>
+                                </div>
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="d-flex justify-content-center flex-wrap gap-2">
+
+                    <div class="w-75">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Categoria</th>
+                                        <th scope="col">Precio</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr *ngIf="categories.length === 0">
+                                        <td class="text-center" colspan="3"> No existen categorias de parqueadero guardadas...</td>
+                                    </tr>
+
+                                    <tr *ngFor="let category of categories">
+                                        <th scope="row"> {{ category.name }} </th>
+                                        <td> {{ category.price | currency: 'COP': symbol:'1.0-0' }} </td>
+                                        <td>
+                                            <button type="button" class="btn btn-link p-1 text-primary">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+
+                    <div class="card">
+                        <div class="card-body">
+
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="btn btn-link text-dark ms-auto">
+                                    <i class="bi bi-x-lg"></i>
+                                </button>
+                            </div>
+
+                            <h5>Editar Categoria</h5>
+
+                            <form [formGroup]="newCategoryForm" (ngSubmit)="createCategory()">
+                                <div class="formGroup mb-3">
+                                    <label for="categoria" class="visually-hidden">Categoria</label>
+                                    <input formControlName="name" type="text" class="form-control" id="categoria" placeholder="Carro, Moto, Bicicleta, etc...">
+                                    <small *ngIf="validateNewCategory('name')" class="text-danger"> Le nombre de la categoria es obligatorio </small>
+                                </div>
+                                <div class="formGroup mb-3">
+                                    <label for="precio" class="visually-hidden">Precio</label>
+                                    <input formControlName="price" type="number" class="form-control" id="precio" placeholder="Precio">
+                                    <small *ngIf="validateNewCategory('price')" class="text-danger"> Le nombre de la categoria es obligatorio </small>
+                                </div>
+                                <div class="formGroup mb-3">
+                                    <button type="submit" class="btn btn-primary w-100">Actualizar</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =========================================================================
+    NUEVO VEHICULO 
+========================================================================= -->
+<div class="modal fade" id="VehiculosModal" tabindex="-1" aria-labelledby="VehiculosModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="VehiculosModalLabel">Vehiculos</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="pt-4">
+                    <div class="d-flex flex-wrap mb-3">
+                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                            Crear Vehiculos
+                        </button>
+                    </div>
+                    <div class="collapse border-0" id="collapseExample">
+                        <div class="card card-body">
+                            <h4 class="mb-2">Crea un nuevo vehiculo</h4>
+                            <form class="row g-3 d-flex align-items-end" [formGroup]="newCarForm" (ngSubmit)="createCar()">
+                                <div class="col-auto">
+                                    <label for="categoria" class="">Placa</label>
+                                    <input formControlName="placa" type="text" class="form-control" id="categoria" placeholder="Placa">
+                                </div>
+                                <div class="col-auto">
+                                    <label for="cliente" class="">Cliente</label>
+                                    <input formControlName="cliente" type="text" class="form-control" id="cliente" placeholder="Cliente">
+                                </div>
+
+                                <div class="col-auto">
+                                    <label for="categoriass" class="">Categorias</label>
+                                    <select formControlName="typeparq" class="form-select" aria-label="Default select example">
+                                        <option selected value="none">Seleccionar categoria</option>
+                                        <option *ngFor="let categ of categories" [value]="categ.tpid"> {{ categ.name }} </option>
+                                    </select>
+                                </div>
+
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                </div>
+                            </form>
+
+                            <small *ngIf="validateNewCar('placa')" class="text-danger"> La placa del vehiculo es obligatoria</small>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="d-flex justify-content-center flex-wrap gap-2">
+
+                    <div class="w-75">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Placa</th>
+                                        <th scope="col">Cliente</th>
+                                        <th scope="col">Categoria</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr *ngIf="cars.length === 0">
+                                        <td class="text-center" colspan="4"> No existen vehiculos registrados...</td>
+                                    </tr>
+
+                                    <tr *ngFor="let car of cars">
+                                        <th scope="row"> {{ car.placa }} </th>
+                                        <td> {{ car.cliente }} </td>
+                                        <td> {{ car.typeparq.name }} </td>
+                                        <td>
+                                            <button type="button" class="btn btn-link p-1 text-primary">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+
+                    <div class="card">
+                        <div class="card-body">
+
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="btn btn-link text-dark ms-auto">
+                                    <i class="bi bi-x-lg"></i>
+                                </button>
+                            </div>
+
+                            <h5>Editar Vehiculo</h5>
+
+                            <form [formGroup]="newCategoryForm" (ngSubmit)="createCategory()">
+                                <div class="formGroup mb-3">
+                                    <label for="categoria" class="visually-hidden">Placa</label>
+                                    <input formControlName="name" type="text" class="form-control" id="categoria" placeholder="Placa del vehiculo">
+                                    <small *ngIf="validateNewCategory('name')" class="text-danger"> La placa del vehiculo es obligatoria </small>
+                                </div>
+                                <div class="formGroup mb-3">
+                                    <label for="precio" class="visually-hidden">Cliente</label>
+                                    <input formControlName="price" type="number" class="form-control" id="precio" placeholder="Precio">
+                                    <small *ngIf="validateNewCategory('price')" class="text-danger"> El cliente es obligatorio </small>
+                                </div>
+
+                                <div class="formGroup mb-3">
+                                    <select formControlName="typeparq" class="form-select" aria-label="Default select example">
+                                        <option selected value="none">Seleccionar categoria</option>
+                                        <option *ngFor="let categ of categories" [value]="categ.tpid"> {{ categ.name }} </option>
+                                    </select>
+                                </div>
+
+                                <div class="formGroup mb-3">
+                                    <button type="submit" class="btn btn-primary w-100">Actualizar</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

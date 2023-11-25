@@ -215,6 +215,7 @@
                 <button type="button" *ngIf="mesa?.img === 'mesa.svg'" (click)="cargarMesasAll()" class="btn btn-outline-dark btn-sm m-2" data-bs-toggle="modal" data-bs-target="#cambiarMesa"><i class="bi-arrow-repeat"></i> Cambiar Mesa </button>
                 <button type="button" class="btn btn-outline-warning btn-sm m-2" data-bs-toggle="modal" data-bs-target="#descuentoModal"><i class="bi-percent"></i> Descuento </button>
                 <a [routerLink]="['/', 'dashboard', 'productos', 'kardex']" class="btn btn-outline-primary btn-sm m-2"><i class="bi-box"></i> Kardex </a>
+                <button (click)="mayoreo()" type="button" class="btn btn-outline-dark btn-sm m-2"><i class="bi-arrow-down-up"></i> Mayoreo </button>
             </div>
 
             <hr>

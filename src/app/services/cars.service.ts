@@ -1,9 +1,6 @@
-import { Injectable } from '@angular/core';
-
 import { HttpClient } from '@angular/common/http';
-
-import { delay, map, tap } from 'rxjs/operators';
-import { Alquiler } from '../models/alquileres.model';
+import { Injectable } from '@angular/core';
+import { Car } from '../models/cars.model';
 
 import { environment } from '../../environments/environment';
 const base_url = environment.base_url;
@@ -11,7 +8,7 @@ const base_url = environment.base_url;
 @Injectable({
   providedIn: 'root'
 })
-export class AlquileresService {
+export class CarsService {
 
   constructor(  private http:HttpClient) { }
 
@@ -34,33 +31,23 @@ export class AlquileresService {
   }
 
   /** ================================================================
-   *  CREATE ALQUILER
+   *  CREATE CAR
   ==================================================================== */
-  createAlquiler(formData: any){    
-    return this.http.post<{ok: boolean, alquiler: Alquiler}>(`${base_url}/alquileres`, formData, this.headers);
+  createCar(formData: any){    
+    return this.http.post<{ok: boolean, car: Car}>(`${base_url}/cars`, formData, this.headers);
   }
   
   /** ================================================================
-   *  LOAD ALQUILERES
+   *  LOAD CAR
   ==================================================================== */
-  loadAlquileres(query: any){    
-    return this.http.post<{ok: boolean, total: number, alquileres: Alquiler[]}>(`${base_url}/alquileres/query`, query, this.headers);
+  loadCars(query: any){    
+    return this.http.post<{ok: boolean, total: number, cars: Car[]}>(`${base_url}/cars/query`, query, this.headers);
   }
 
   /** ================================================================
-   *  LOAD ALQUILER ID
+   *  UPDATE CAR
   ==================================================================== */
-  loadAlquilerId(id: string){    
-    return this.http.get<{ok: boolean, alquiler: Alquiler}>(`${base_url}/alquileres/${id}`, this.headers);
+  updateCar(formData: any, id: string){    
+    return this.http.put<{ok: boolean, car: Car}>(`${base_url}/cars/${id}`, formData, this.headers);
   }
-
-  /** ================================================================
-   *  UPDATE ALQUILER
-  ==================================================================== */
-  updateAlquiler(formData: any, id: string){    
-    return this.http.put<{ok: boolean, alquiler: Alquiler}>(`${base_url}/alquileres/${id}`, formData, this.headers);
-  }
-
-
-  // FIN DE LA CLASE
 }

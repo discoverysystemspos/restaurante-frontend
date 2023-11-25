@@ -29,6 +29,7 @@
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
     "moment": "^2.29.1",
+    "ngx-barcode": "^0.3.0",
     "ngx-printer": "^0.9.1",
     "rxjs": "~6.6.0",
     "sweetalert2": "^10.13.0",

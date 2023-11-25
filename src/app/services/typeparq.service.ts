@@ -1,9 +1,6 @@
-import { Injectable } from '@angular/core';
-
 import { HttpClient } from '@angular/common/http';
-
-import { delay, map, tap } from 'rxjs/operators';
-import { Alquiler } from '../models/alquileres.model';
+import { Injectable } from '@angular/core';
+import { Typeparq } from '../models/typearq.model';
 
 import { environment } from '../../environments/environment';
 const base_url = environment.base_url;
@@ -11,7 +8,7 @@ const base_url = environment.base_url;
 @Injectable({
   providedIn: 'root'
 })
-export class AlquileresService {
+export class TypeparqService {
 
   constructor(  private http:HttpClient) { }
 
@@ -34,33 +31,24 @@ export class AlquileresService {
   }
 
   /** ================================================================
-   *  CREATE ALQUILER
+   *  CREATE TYPEPARQ
   ==================================================================== */
-  createAlquiler(formData: any){    
-    return this.http.post<{ok: boolean, alquiler: Alquiler}>(`${base_url}/alquileres`, formData, this.headers);
+  createTypeparq(formData: any){    
+    return this.http.post<{ok: boolean, typeparq: Typeparq}>(`${base_url}/typeparq`, formData, this.headers);
   }
   
   /** ================================================================
-   *  LOAD ALQUILERES
+   *  LOAD TYPEPARQ
   ==================================================================== */
-  loadAlquileres(query: any){    
-    return this.http.post<{ok: boolean, total: number, alquileres: Alquiler[]}>(`${base_url}/alquileres/query`, query, this.headers);
-  }
-
-  /** ================================================================
-   *  LOAD ALQUILER ID
-  ==================================================================== */
-  loadAlquilerId(id: string){    
-    return this.http.get<{ok: boolean, alquiler: Alquiler}>(`${base_url}/alquileres/${id}`, this.headers);
+  loadTypeparqs(query: any){    
+    return this.http.post<{ok: boolean, total: number, typeparqs: Typeparq[]}>(`${base_url}/typeparq/query`, query, this.headers);
   }
 
   /** ================================================================
    *  UPDATE ALQUILER
   ==================================================================== */
-  updateAlquiler(formData: any, id: string){    
-    return this.http.put<{ok: boolean, alquiler: Alquiler}>(`${base_url}/alquileres/${id}`, formData, this.headers);
+  updateTypeparq(formData: any, id: string){    
+    return this.http.put<{ok: boolean, typeparq: Typeparq}>(`${base_url}/typeparq/${id}`, formData, this.headers);
   }
 
-
-  // FIN DE LA CLASE
 }

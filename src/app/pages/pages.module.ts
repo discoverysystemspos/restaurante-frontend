@@ -54,6 +54,8 @@ import { PrestamosComponent } from './configuracion/prestamos/prestamos.componen
 import { PrestamoComponent } from './configuracion/prestamos/prestamo/prestamo.component';
 import { AlquileresComponent } from './alquileres/alquileres.component';
 import { AlquilerComponent } from './alquiler/alquiler.component';
+import { ParqueaderoComponent } from './configuracion/parqueadero/parqueadero.component';
+import { NgxBarcodeModule } from 'ngx-barcode';
 
 
 
@@ -99,7 +101,8 @@ import { AlquilerComponent } from './alquiler/alquiler.component';
     PrestamosComponent,
     PrestamoComponent,
     AlquileresComponent,
-    AlquilerComponent
+    AlquilerComponent,
+    ParqueaderoComponent
   ],
   exports: [
     PagesComponent,
@@ -117,6 +120,7 @@ import { AlquilerComponent } from './alquiler/alquiler.component';
     PipesModule,
     NgxPrinterModule.forRoot({printOpenWindow: true}),
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
+    NgxBarcodeModule
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA]
 })

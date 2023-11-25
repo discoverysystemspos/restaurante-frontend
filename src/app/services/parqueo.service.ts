@@ -1,17 +1,14 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { HttpClient } from '@angular/common/http';
-
-import { delay, map, tap } from 'rxjs/operators';
-import { Alquiler } from '../models/alquileres.model';
-
 import { environment } from '../../environments/environment';
+import { Parqueo } from '../models/parqueo.model';
 const base_url = environment.base_url;
 
 @Injectable({
   providedIn: 'root'
 })
-export class AlquileresService {
+export class ParqueoService {
 
   constructor(  private http:HttpClient) { }
 
@@ -34,33 +31,23 @@ export class AlquileresService {
   }
 
   /** ================================================================
-   *  CREATE ALQUILER
+   *  CREATE PARQUEO
   ==================================================================== */
-  createAlquiler(formData: any){    
-    return this.http.post<{ok: boolean, alquiler: Alquiler}>(`${base_url}/alquileres`, formData, this.headers);
+  createParqueo(formData: any){    
+    return this.http.post<{ok: boolean, parqueo: Parqueo}>(`${base_url}/parqueos`, formData, this.headers);
   }
   
   /** ================================================================
-   *  LOAD ALQUILERES
+   *  LOAD PARQUEO
   ==================================================================== */
-  loadAlquileres(query: any){    
-    return this.http.post<{ok: boolean, total: number, alquileres: Alquiler[]}>(`${base_url}/alquileres/query`, query, this.headers);
+  loadParqueos(query: any){    
+    return this.http.post<{ok: boolean, total: number, parqueos: Parqueo[]}>(`${base_url}/parqueos/query`, query, this.headers);
   }
 
   /** ================================================================
-   *  LOAD ALQUILER ID
+   *  UPDATE PARQUEO
   ==================================================================== */
-  loadAlquilerId(id: string){    
-    return this.http.get<{ok: boolean, alquiler: Alquiler}>(`${base_url}/alquileres/${id}`, this.headers);
+  updateParqueo(formData: any, id: string){    
+    return this.http.put<{ok: boolean, parqueo: Parqueo}>(`${base_url}/parqueos/${id}`, formData, this.headers);
   }
-
-  /** ================================================================
-   *  UPDATE ALQUILER
-  ==================================================================== */
-  updateAlquiler(formData: any, id: string){    
-    return this.http.put<{ok: boolean, alquiler: Alquiler}>(`${base_url}/alquileres/${id}`, formData, this.headers);
-  }
-
-
-  // FIN DE LA CLASE
 }
