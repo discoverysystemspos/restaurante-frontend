@@ -95,9 +95,7 @@ export class ParqueaderoComponent implements OnInit {
     this.parqueoService.loadParqueos({estado: 'Parqueado'})
         .subscribe( ({ parqueos }) => {
 
-          this.parqueos = parqueos;
-          console.log(parqueos);
-          
+          this.parqueos = parqueos;          
 
         }, (err) => {
           console.log(err);
@@ -134,7 +132,16 @@ export class ParqueaderoComponent implements OnInit {
 
         }, (err) => {
           console.log(err);
-          Swal.fire('Error', err.error.msg, 'error');          
+          Swal.fire('Error', err.error.msg, 'error');
+
+          if (err.error.msg === 'No existe vehiculo con esta placa') {
+            this.newCarForm.setValue({
+              placa: placa,
+              cliente: '',
+              typeparq: 'none'
+            })
+          }
+
         })
 
   }
@@ -159,6 +166,14 @@ export class ParqueaderoComponent implements OnInit {
     let diff:number =  (new Date().getTime() - parq.checkin)/ (1000*60*60);
     diff = parseFloat(diff.toFixed(2));
 
+    let total = Math.round(diff * parq.car.typeparq.price);
+
+    if (diff < 0.51) {
+      total = (parq.car.typeparq.price / 2);
+    }else if( diff > 0.50 && diff < 1){
+      total = parq.car.typeparq.price;
+    }
+
     Swal.fire({
       title: "Estas seguro del checkout de este vehiculo?",
       icon: "warning",
@@ -172,7 +187,7 @@ export class ParqueaderoComponent implements OnInit {
         
         let formData = {
           checkout: new Date().getTime(),
-          total: Math.round(diff * parq.car.typeparq.price),
+          total,
           estado: 'Finalizado',
         }
 
