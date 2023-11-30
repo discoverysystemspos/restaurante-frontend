@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Observable, Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
 // PRINTER
@@ -10,13 +11,15 @@ import { ngxPrintMarkerPosition } from 'projects/ngx-printer/src/public_api';
 import { Car } from 'src/app/models/cars.model';
 import { Parqueo } from 'src/app/models/parqueo.model';
 import { Typeparq } from 'src/app/models/typearq.model';
+import { Datos } from 'src/app/models/empresa.model';
+import { Impuestos } from 'src/app/models/impuestos.model';
 
 import { CarsService } from 'src/app/services/cars.service';
 import { ParqueoService } from 'src/app/services/parqueo.service';
 import { TypeparqService } from 'src/app/services/typeparq.service';
-import { Observable, Subscription } from 'rxjs';
 import { EmpresaService } from 'src/app/services/empresa.service';
-import { Datos } from 'src/app/models/empresa.model';
+import { ImpuestosService } from 'src/app/services/impuestos.service';
+import { SearchService } from 'src/app/services/search.service';
 
 
 
@@ -32,12 +35,12 @@ export class ParqueaderoComponent implements OnInit {
                 private typeparqService: TypeparqService,
                 private carsService: CarsService,
                 private empresaService: EmpresaService,
-                private parqueoService: ParqueoService) { 
+                private impuestosService: ImpuestosService,
+                private parqueoService: ParqueoService,
+                private searchService: SearchService) { 
 
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
-                    val => {
-                      console.log('Print window is open:', val);
-                    }
+                    val => { console.log('Print window is open:', val) }
                   );
               
                   this.$printItems = this.printerService.$printItems;
@@ -45,10 +48,25 @@ export class ParqueaderoComponent implements OnInit {
                 }
 
   ngOnInit(): void {
+    // CARGAR IMPUESTOSs
+    this.cargarImpuestos();
     this.cargarDatos();
     this.loadCategorias();
     this.loadCars();
     this.loadParqueos();
+  }
+
+  /** ================================================================
+   *   CARGAR IMPUESTOS
+  ==================================================================== */
+  public impuestos: Impuestos[] = [];
+  cargarImpuestos(){
+
+    this.impuestosService.loadImpuestos()
+        .subscribe( ({ taxes }) =>  {
+          this.impuestos = taxes;
+        });
+
   }
 
   /** ================================================================
@@ -163,17 +181,27 @@ export class ParqueaderoComponent implements OnInit {
     }
 
     // CALCULAR DIFERENCIA
-    let diff:number =  (new Date().getTime() - parq.checkin)/ (1000*60*60);
-    diff = parseFloat(diff.toFixed(2));
-
-    let total = Math.round(diff * parq.car.typeparq.price);
-
-    if (diff < 0.51) {
-      total = (parq.car.typeparq.price / 2);
-    }else if( diff > 0.50 && diff < 1){
-      total = parq.car.typeparq.price;
+    let cal = 1000*60;
+    if(parq.car.typeparq.type === 'Horas'){      
+      cal = 1000*60*60;
     }
 
+    let diff:number =  (new Date().getTime() - parq.checkin)/ cal;
+    diff = parseFloat(diff.toFixed(2));
+
+    if (diff < 1) {
+      diff = 0;
+    }
+
+    let total:number = Math.round(diff * parq.car.typeparq.price);
+    
+    if (diff >= parq.car.typeparq.tplena ) {
+      total = parq.car.typeparq.plena;
+    }
+    
+    let subtotal:number = parseFloat(((total *100)/119).toFixed(2));
+    let iva:number = parseFloat((total-subtotal).toFixed(2));
+    
     Swal.fire({
       title: "Estas seguro del checkout de este vehiculo?",
       icon: "warning",
@@ -188,15 +216,17 @@ export class ParqueaderoComponent implements OnInit {
         let formData = {
           checkout: new Date().getTime(),
           total,
+          subtotal,
+          iva,
           estado: 'Finalizado',
         }
-
+        
         this.parqueoService.updateParqueo(formData, parq.parqid)
             .subscribe( ({ parqueo }) => {
 
               this.vCheckout = parqueo;
               
-              Swal.fire(` $ ${parqueo.total} `, `Total de horas en el parqueadero son ${diff}` , 'success');
+              Swal.fire(` $ ${parqueo.total} `, `Total de tiempo en el parqueadero son ${diff}, en ${ parq.car.typeparq.type }` , 'success');
               this.loadParqueos();
               this.outP.nativeElement.value = '';
               this.inP.nativeElement.focus = true;
@@ -228,11 +258,11 @@ export class ParqueaderoComponent implements OnInit {
   public categories: Typeparq[] = [];
   public queryCat = {
     desde: 0,
-    hasta: 50
+    hasta: 50,
+    sort: {}
   }
-  loadCategorias(){
 
-    
+  loadCategorias(){    
 
     this.typeparqService.loadTypeparqs(this.queryCat)
         .subscribe( ({typeparqs}) => {
@@ -252,7 +282,11 @@ export class ParqueaderoComponent implements OnInit {
   public newCategorySubmitted: boolean = false;
   public newCategoryForm = this.fb.group({
     name: ['', [Validators.required]],
-    price: [0, [Validators.required]],
+    price: ['', [Validators.required]],
+    plena: '',
+    tplena: '',
+    type: 'Minutos',
+    tax: 'none',
   })
 
   createCategory(){
@@ -266,11 +300,13 @@ export class ParqueaderoComponent implements OnInit {
     this.typeparqService.createTypeparq(this.newCategoryForm.value)
         .subscribe( ({typeparq}) => {
 
-          typeparq.tpid = typeparq._id;
           this.categories.push(typeparq);
           Swal.fire('Estupendo', 'Se ha creado la categoria exitosamente', 'success');
           this.newCategorySubmitted = false;
-          this.newCategoryForm.reset();
+          this.newCategoryForm.reset({
+            type: 'Minutos',
+            tax: 'none',
+          });
 
         }, (err) => {
           console.log(err);
@@ -288,6 +324,78 @@ export class ParqueaderoComponent implements OnInit {
   }
 
   /** ================================================================
+   *  SELECT CATEGORY
+  ==================================================================== */
+  public categoryID: string;
+  selectCategory(category: Typeparq){
+
+    this.categoryID = category.tpid;
+
+    this.upCategoryForm.setValue({
+      name: category.name,
+      price: category.price,
+      plena: category.plena,
+      tplena: category.tplena,
+      type: category.type,
+      tax: category.tax._id,
+    });
+
+  }
+
+  /** ================================================================
+   *   UPDATE CATEGORY O TYPEPARQ
+  ==================================================================== */
+  public upCategorySubmitted: boolean = false;
+  public upCategoryForm = this.fb.group({
+    name: ['', [Validators.required]],
+    price: ['', [Validators.required]],
+    plena: '',
+    tplena: '',
+    type: 'Minutos',
+    tax: 'none',
+  })
+
+  updateCategory(){
+
+    this.upCategorySubmitted = true;
+    
+    if (this.upCategoryForm.invalid) {
+      return;
+    };
+    
+    this.typeparqService.updateTypeparq( this.upCategoryForm.value, this.categoryID )
+    .subscribe( ({typeparq}) => {
+      
+          this.categories.map( cate => {
+            if (cate.tpid === typeparq.tpid) {
+              cate.name = typeparq.name;
+              cate.price = typeparq.price;
+              cate.plena = typeparq.plena;
+              cate.tplena = typeparq.tplena;
+              cate.type = typeparq.type;
+              cate.tax = typeparq.tax;
+            }
+          });
+      
+          this.upCategorySubmitted = false;
+          Swal.fire('Estupendo', 'Se ha actualizado la categoria exitosamente!', 'success');
+
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');          
+        });
+
+  }
+
+  validateUpCategory(campo: string): boolean{
+    if (this.upCategorySubmitted && this.upCategoryForm.get(campo)?.invalid) {
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  /** ================================================================
   /** ================================================================
   /** ================================================================
   /** ================================================================
@@ -298,6 +406,7 @@ export class ParqueaderoComponent implements OnInit {
    *   LOAD VEHICULOS
   ==================================================================== */
   public cars: Car[] = [];
+  public carsTemp: Car[] = [];
   public queryCar = {
     desde: 0,
     hasta: 50
@@ -308,6 +417,7 @@ export class ParqueaderoComponent implements OnInit {
     this.carsService.loadCars(this.queryCar)
         .subscribe( ({cars}) => {
           this.cars = cars;
+          this.carsTemp = cars;
         }, (err) => {
           console.log(err);
           Swal.fire('Error', err.error.msg, 'error');          
@@ -359,6 +469,125 @@ export class ParqueaderoComponent implements OnInit {
     }else{
       return false;
     }
+  }
+
+  /** ================================================================
+   *   SELECT CAR
+  ==================================================================== */
+  public carID: string;
+  selectCar( car: Car ){    
+
+    this.carID = car.carid;
+
+    this.upCarForm.setValue({
+      placa: car.placa,
+      cliente: car.cliente,
+      typeparq: car.typeparq._id
+    })
+
+  }
+
+  /** ================================================================
+   *   UPDATE CAR
+  ==================================================================== */
+  public upCarSubmitted: boolean = false;
+  public upCarForm = this.fb.group({
+    placa: ['', [Validators.required]],
+    cliente: '',
+    typeparq: ['none', [Validators.required]],
+  });
+
+  updateCar(){
+
+    this.upCarSubmitted = true;
+
+    if (this.upCarForm.invalid) {
+      return;
+    }
+
+    if (this.upCarForm.value.typeparq === 'none') {
+      Swal.fire('Atención', 'Debes de seleccionar una categoria', 'warning');
+      return;
+    }
+
+    this.carsService.updateCar(this.upCarForm.value, this.carID)
+        .subscribe( ({car}) => {
+
+          this.cars.map( carro => {
+            if (carro.carid === car.carid) {
+              carro.placa = car.placa;
+              carro.cliente = car.cliente;
+              carro.typeparq = car.typeparq;
+            }
+          });
+
+          this.carsTemp.map( carro => {
+            if (carro.carid === car.carid) {
+              carro.placa = car.placa;
+              carro.cliente = car.cliente;
+              carro.typeparq = car.typeparq;
+            }
+          });
+
+          this.upCarSubmitted = false;
+          Swal.fire('Estupendo', 'El vehiculo se actualizo exitosamente!', 'success');
+
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');          
+        });
+
+  }
+
+  validateUpCar(campo: string): boolean{
+    if (this.upCarSubmitted && this.upCarForm.get(campo)?.invalid) {
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  /** ================================================================
+   *   SEARCH CAR
+  ==================================================================== */
+  public sinResultados: boolean = false;
+  public resultado: number = 0;
+  searchCars(termino: string){
+
+    this.sinResultados = true;
+
+    if (termino.length === 0) {
+      this.cars = this.carsTemp;
+      this.resultado = 0;
+      return;
+    }else{
+      
+      this.sinResultados = true;
+
+      let query = `hasta=20`;
+      
+      this.searchService.search('car', termino, true, query)
+          .subscribe(({total, resultados}) => {
+            
+            // COMPROBAR SI EXISTEN RESULTADOS
+            if (resultados.length === 0) {
+              this.sinResultados = false;
+              this.cars = [];
+              this.resultado = 0;
+
+              return;                
+            }
+            // COMPROBAR SI EXISTEN RESULTADOS
+
+            this.cars = resultados;
+            this.resultado = resultados.length;
+
+            
+
+          }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
+
+    }
+
   }
 
 }

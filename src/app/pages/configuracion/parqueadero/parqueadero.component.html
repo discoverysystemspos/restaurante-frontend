@@ -85,17 +85,36 @@
 
                     <div class="d-flex flex-column justify-content-center" *ngIf="vCheckout">
 
-                        <div class="mb-3" id="printDiv2" [ngStyle]="{'width': empresa.impresora === 58 ? '14rem' : '24rem'}">
+                        <div class="mb-3 pt-2" id="printDiv2" [ngStyle]="{'width': empresa.impresora === 58 ? '14rem' : '24rem'}">
 
                             <div class="card border">
-                                <div class="card-body">
+                                <div class="card-body" style="color: #000;">
+
+                                    <h4 class="card-title mb-0 text-wrap text-center"> {{ empresa?.name }} </h4>
+                                    <p class="mb-0 text-wrap fw-bolder text-center lh-sm" *ngIf="empresa?.nit">{{ empresa?.nit }}</p>
+                                    <p class="mb-0 text-center text-wrap" style="font-size: 0.7rem;"> </p>
+                                    <p class="mb-0 text-wrap text-center" *ngIf="empresa?.address">{{ empresa?.address }}</p>
+                                    <p class="mb-0 text-wrap text-center" *ngIf="empresa?.phone">{{ empresa?.phone }}</p>
+
+                                    <p *ngIf="!empresa?.impuesto" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">No responsable de IVA</p>
+
+                                    <!-- RESPONSABLE DE IVA O IMPUESTO AL CONSUMO -->
+                                    <p *ngIf="empresa?.impuesto && empresa?.responsable" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Responsable de iva</p>
+                                    <p *ngIf="empresa?.impuesto && empresa?.impuestoconsumo" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Responsable nacional al consumo</p>
+                                    <p *ngIf="empresa?.impuesto" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Resolución: {{ empresa?.resolucion }}</p>
+                                    <p *ngIf="empresa?.impuesto" class="mb-1 text-wrap text-center" style="font-size: 0.7rem;">Prefijo Pos: {{ empresa?.prefijopos }}</p>
+                                    <!-- RESPONSABLE DE IVA O IMPUESTO AL CONSUMO -->
+
                                     <div class="d-flex flex-column justify-content-center" style="color: #000;">
-                                        <p class="mb-0 fs-5 text-center">Total</p>
-                                        <h4 class="text-center display-5">
-                                            {{ vCheckout.total | divisa }}
-                                        </h4>
-                                        <p class="mb-0 fs-4"> Ingreso: {{ vCheckout.fecha | date:'short' }} </p>
-                                        <p class="mb-0 fs-4"> Salida: {{ vCheckout.checkout | date:'short' }} </p>
+                                        <p class="mb-0 fs-4"> Factura: {{ vCheckout.invoice }} </p>
+                                        <p class="mb-0 fs-3 fw-bold"> Placa: {{ vCheckout.car.placa }} </p>
+                                        <p class="mb-0 fs-4"> Fecha Ingreso: {{ vCheckout.fecha | date:'d/M/yy' }} </p>
+                                        <p class="mb-0 fs-4"> Hora Ingreso: {{ vCheckout.fecha | date:'h:mm a' }} </p>
+                                        <p class="mb-0 fs-4"> Fecha Salida: {{ vCheckout.checkout | date:'d/M/yy' }} </p>
+                                        <p class="mb-0 fs-4"> Hora Salida: {{ vCheckout.checkout | date:'h:mm a' }} </p>
+                                        <p class="mb-0 fs-4"> Sub-total: {{ vCheckout.subtotal | divisa }} </p>
+                                        <p class="mb-0 fs-4"> IVA: {{ vCheckout.iva | divisa}} </p>
+                                        <p class="mb-0 fs-5 fw-bold"> Total: {{ vCheckout.total | divisa }} </p>
                                     </div>
                                 </div>
                             </div>
@@ -103,7 +122,7 @@
                         </div>
 
                         <div>
-                            <button (click)="printDiv('printDiv1')" type="button" class="btn btn-primary">Imprimir</button>
+                            <button (click)="printDiv('printDiv2')" type="button" class="btn btn-primary">Imprimir</button>
                         </div>
                     </div>
 
@@ -180,17 +199,48 @@
                     <div class="collapse border-0" id="collapseExample">
                         <div class="card card-body">
                             <h4 class="mb-2">Crea una categoria nueva en parqueadero</h4>
-                            <form class="row g-3" [formGroup]="newCategoryForm" (ngSubmit)="createCategory()">
+                            <form class="row g-3 d-flex align-items-end" [formGroup]="newCategoryForm" (ngSubmit)="createCategory()">
                                 <div class="col-auto">
-                                    <label for="categoria" class="visually-hidden">Categoria</label>
+                                    <label for="categoria" class="">Categoria</label>
                                     <input formControlName="name" type="text" class="form-control" id="categoria" placeholder="Carro, Moto, Bicicleta, etc...">
                                     <small *ngIf="validateNewCategory('name')" class="text-danger"> Le nombre de la categoria es obligatorio </small>
                                 </div>
+
                                 <div class="col-auto">
-                                    <label for="precio" class="visually-hidden">Precio</label>
+                                    <label for="precio" class="">Tarifa</label>
                                     <input formControlName="price" type="number" class="form-control" id="precio" placeholder="Precio">
                                     <small *ngIf="validateNewCategory('price')" class="text-danger"> Le nombre de la categoria es obligatorio </small>
                                 </div>
+
+                                <div class="col-auto">
+                                    <label for="plena" class="">Tarifa Plena</label>
+                                    <input formControlName="plena" type="number" class="form-control" id="plena" placeholder="Tarifa Plena">
+                                    <small *ngIf="validateNewCategory('price')" class="text-danger"> Este campo es obligatorio </small>
+                                </div>
+
+                                <div class="col-auto">
+                                    <label for="tprecio" class="">Tiempo Plena</label>
+                                    <input formControlName="tplena" type="number" class="form-control" id="tprecio" placeholder="Tiempo Plena">
+                                    <small *ngIf="validateNewCategory('price')" class="text-danger"> Este campo es obligatorio </small>
+                                </div>
+
+                                <div class="col-auto">
+                                    <label for="categoriass" class="">Tipo</label>
+                                    <select formControlName="type" class="form-select" aria-label="Default select example">
+                                        <option value="none">Seleccionar Tipo</option>
+                                        <option value="Minutos"> Minutos</option>
+                                        <option value="Horas"> Horas</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-auto">
+                                    <label for="categoriass" class="">Impuestos</label>
+                                    <select formControlName="tax" class="form-select" aria-label="Default select example">
+                                        <option value="none">Seleccionar impuesto</option>
+                                        <option *ngFor="let impuesto of impuestos" [value]="impuesto.taxid"> {{ impuesto.name }} </option>
+                                    </select>
+                                </div>
+
                                 <div class="col-auto">
                                     <button type="submit" class="btn btn-primary">Guardar</button>
                                 </div>
@@ -209,7 +259,9 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">Categoria</th>
-                                        <th scope="col">Precio</th>
+                                        <th scope="col">Tarifa</th>
+                                        <th scope="col">Tarifa Plena</th>
+                                        <th scope="col">IVA</th>
                                         <th scope="col"></th>
                                     </tr>
                                 </thead>
@@ -222,8 +274,10 @@
                                     <tr *ngFor="let category of categories">
                                         <th scope="row"> {{ category.name }} </th>
                                         <td> {{ category.price | currency: 'COP': symbol:'1.0-0' }} </td>
+                                        <td> {{ category.plena | currency: 'COP': symbol:'1.0-0' }} </td>
+                                        <td> {{ category.tax.valor }}% </td>
                                         <td>
-                                            <button type="button" class="btn btn-link p-1 text-primary">
+                                            <button (click)="selectCategory(category)" type="button" class="btn btn-link p-1 text-primary">
                                                 <i class="bi bi-pencil"></i>
                                             </button>
                                         </td>
@@ -246,20 +300,50 @@
 
                             <h5>Editar Categoria</h5>
 
-                            <form [formGroup]="newCategoryForm" (ngSubmit)="createCategory()">
-                                <div class="formGroup mb-3">
-                                    <label for="categoria" class="visually-hidden">Categoria</label>
+                            <form [formGroup]="upCategoryForm" (ngSubmit)="updateCategory()">
+                                <div class="formGroup">
+                                    <label for="categoria" class="">Categoria</label>
                                     <input formControlName="name" type="text" class="form-control" id="categoria" placeholder="Carro, Moto, Bicicleta, etc...">
                                     <small *ngIf="validateNewCategory('name')" class="text-danger"> Le nombre de la categoria es obligatorio </small>
                                 </div>
-                                <div class="formGroup mb-3">
-                                    <label for="precio" class="visually-hidden">Precio</label>
+
+                                <div class="formGroup">
+                                    <label for="precio" class="">Tarifa</label>
                                     <input formControlName="price" type="number" class="form-control" id="precio" placeholder="Precio">
                                     <small *ngIf="validateNewCategory('price')" class="text-danger"> Le nombre de la categoria es obligatorio </small>
                                 </div>
-                                <div class="formGroup mb-3">
-                                    <button type="submit" class="btn btn-primary w-100">Actualizar</button>
+
+                                <div class="formGroup">
+                                    <label for="plena" class="">Tarifa Plena</label>
+                                    <input formControlName="plena" type="number" class="form-control" id="plena" placeholder="Tarifa Plena">
+                                    <small *ngIf="validateNewCategory('price')" class="text-danger"> Este campo es obligatorio </small>
                                 </div>
+
+                                <div class="formGroup">
+                                    <label for="tprecio" class="">Tiempo Plena</label>
+                                    <input formControlName="tplena" type="number" class="form-control" id="tprecio" placeholder="Tiempo Plena">
+                                    <small *ngIf="validateNewCategory('price')" class="text-danger"> Este campo es obligatorio </small>
+                                </div>
+
+                                <div class="formGroup">
+                                    <label for="categoriass" class="">Tipo</label>
+                                    <select formControlName="type" class="form-select" aria-label="Default select example">
+                                        <option value="none">Seleccionar Tipo</option>
+                                        <option value="Minutos"> Minutos</option>
+                                        <option value="Horas"> Horas</option>
+                                    </select>
+                                </div>
+
+                                <div class="formGroup mb-3">
+                                    <label for="categoriass" class="">Impuestos</label>
+                                    <select formControlName="tax" class="form-select" aria-label="Default select example">
+                                        <option value="none">Seleccionar impuesto</option>
+                                        <option *ngFor="let impuesto of impuestos" [value]="impuesto.taxid"> {{ impuesto.name }} </option>
+                                    </select>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary w-100">Actualizar</button>
+
                             </form>
 
                         </div>
@@ -331,6 +415,13 @@
                 <div class="d-flex justify-content-center flex-wrap gap-2">
 
                     <div class="w-75">
+
+                        <div class="form-floating mb-2">
+                            <span class="position-absolute top-50 start-90 translate-middle"><i class=" bi-search " style="font-size: 1rem "></i></span>
+                            <input type="text" class="form-control" id="floatingInput2" placeholder="Buscar Categoria" (keyup)="searchCars(search.value)" #search>
+                            <label for="floatingInput2 ">Buscar Vehiculo</label>
+                        </div>
+
                         <div class="table-responsive">
                             <table class="table table-sm table-striped">
                                 <thead>
@@ -352,7 +443,7 @@
                                         <td> {{ car.cliente }} </td>
                                         <td> {{ car.typeparq.name }} </td>
                                         <td>
-                                            <button type="button" class="btn btn-link p-1 text-primary">
+                                            <button (click)="selectCar(car)" type="button" class="btn btn-link p-1 text-primary">
                                                 <i class="bi bi-pencil"></i>
                                             </button>
                                         </td>
@@ -375,16 +466,16 @@
 
                             <h5>Editar Vehiculo</h5>
 
-                            <form [formGroup]="newCategoryForm" (ngSubmit)="createCategory()">
+                            <form [formGroup]="upCarForm" (ngSubmit)="updateCar()">
                                 <div class="formGroup mb-3">
                                     <label for="categoria" class="visually-hidden">Placa</label>
-                                    <input formControlName="name" type="text" class="form-control" id="categoria" placeholder="Placa del vehiculo">
-                                    <small *ngIf="validateNewCategory('name')" class="text-danger"> La placa del vehiculo es obligatoria </small>
+                                    <input formControlName="placa" type="text" class="form-control" id="categoria" placeholder="Placa del vehiculo">
+                                    <small *ngIf="validateUpCar('placa')" class="text-danger"> La placa del vehiculo es obligatoria </small>
                                 </div>
                                 <div class="formGroup mb-3">
-                                    <label for="precio" class="visually-hidden">Cliente</label>
-                                    <input formControlName="price" type="number" class="form-control" id="precio" placeholder="Precio">
-                                    <small *ngIf="validateNewCategory('price')" class="text-danger"> El cliente es obligatorio </small>
+                                    <label for="clienteU" class="visually-hidden">Cliente</label>
+                                    <input formControlName="cliente" type="text" class="form-control" id="clienteU" placeholder="Cliente">
+                                    <small *ngIf="validateUpCar('cliente')" class="text-danger"> El cliente es obligatorio </small>
                                 </div>
 
                                 <div class="formGroup mb-3">

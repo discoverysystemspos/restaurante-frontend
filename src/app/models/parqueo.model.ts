@@ -5,6 +5,7 @@ export class Parqueo{
 
     constructor(
         public car: Car,
+        public invoice: number,
         public placa: string,
         public checkin: number,
         public checkout: number,
@@ -13,6 +14,8 @@ export class Parqueo{
         public estado: string,
         public status: boolean,
         public fecha: Date,
+        public subtotal?: number,
+        public iva?: number,
         public parqid?: string,
         public _id?: string,
     ){}

@@ -7,5 +7,8 @@ export class Car{
         public typeparq: Typeparq,
         public status: boolean,
         public fecha: Date,
+        public _id?: string,
+        public carid?: string,
+
     ){}
 }
