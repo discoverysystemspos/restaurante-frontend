@@ -56,6 +56,7 @@ import { AlquileresComponent } from './alquileres/alquileres.component';
 import { AlquilerComponent } from './alquiler/alquiler.component';
 import { ParqueaderoComponent } from './configuracion/parqueadero/parqueadero.component';
 import { NgxBarcodeModule } from 'ngx-barcode';
+import { ReportesComponent } from './configuracion/parqueadero/reportes/reportes.component';
 
 
 
@@ -102,7 +103,8 @@ import { NgxBarcodeModule } from 'ngx-barcode';
     PrestamoComponent,
     AlquileresComponent,
     AlquilerComponent,
-    ParqueaderoComponent
+    ParqueaderoComponent,
+    ReportesComponent
   ],
   exports: [
     PagesComponent,

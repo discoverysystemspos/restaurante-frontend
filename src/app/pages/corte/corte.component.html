@@ -56,6 +56,11 @@
                                 <td> {{ efectivo | divisa }} </td>
                             </tr>
 
+                            <tr *ngIf="empresa.parqueadero" style="color: black;">
+                                <td colspan="2"> <small> Parqueadero </small> </td>
+                                <td> {{ parqueos | divisa }} </td>
+                            </tr>
+
                             <tr style="color: black;">
                                 <td colspan="2"> <small> Entradas </small> </td>
                                 <td> {{ entradas | divisa }} </td>
@@ -78,7 +83,7 @@
 
                             <tr class="border-top">
                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                <td class="fw-bold"> {{ (inicial + efectivo + abEfectivo + entradas + alqEfectivo! + salidas) - (totalDevolucion) | divisa }} </td>
+                                <td class="fw-bold"> {{ (parqueos + inicial + efectivo + abEfectivo + entradas + alqEfectivo! + salidas) - (totalDevolucion) | divisa }} </td>
                             </tr>
 
                         </tbody>
@@ -146,7 +151,7 @@
 
                 <div class="card-body text-white">
                     <h4 class="card-title mb-0 text-center">Ventas Totales</h4>
-                    <h5 class="text-center"> {{ (efectivo + credito + tarjeta + transferencia + vales + totalBancos) | divisa }} </h5>
+                    <h5 class="text-center"> {{ ( parqueos + efectivo + credito + tarjeta + transferencia + vales + totalBancos) | divisa }} </h5>
                 </div>
 
             </div>
@@ -486,7 +491,7 @@
                         <tbody>
                             <tr style="color: black;">
                                 <td scope="row">Efectivo esperado en caja:</td>
-                                <td>{{ (inicial + efectivo + abEfectivo + entradas + alqEfectivo + salidas) | divisa }}</td>
+                                <td>{{ ( parqueos + inicial + efectivo + abEfectivo + entradas + alqEfectivo + salidas) | divisa }}</td>
                             </tr>
 
                             <tr style="color: black;">
@@ -503,7 +508,7 @@
                                 <td [ngClass]=" {   'text-danger': (inicial + efectivo + abEfectivo + entradas + alqEfectivo + salidas - cajaA.value) - totalDevolucion !== 0, 
                                                     'text-success': (inicial + efectivo + abEfectivo + entradas + alqEfectivo + salidas - cajaA.value) - totalDevolucion > 0
                                 }">
-                                    {{ cajaA.value - (inicial + efectivo + abEfectivo + entradas + alqEfectivo + salidas ) - totalDevolucion | divisa}}
+                                    {{ cajaA.value - (parqueos + inicial + efectivo + abEfectivo + entradas + alqEfectivo + salidas ) - totalDevolucion | divisa}}
                                 </td>
                             </tr>
                         </tbody>
@@ -556,7 +561,7 @@
                                 </thead>
                                 <tbody>
                                     <tr style="color: black;">
-                                        <th scope="row">{{ (efectivo + credito + tarjeta + transferencia + vales + totalBancos) | divisa }} </th>
+                                        <th scope="row">{{ (parqueos + efectivo + credito + tarjeta + transferencia + vales + totalBancos) | divisa }} </th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -600,6 +605,12 @@
                                         <td colspan="2"> <small> Ventas en efectivo </small> </td>
                                         <td> {{ efectivo | divisa }} </td>
                                     </tr>
+
+                                    <tr *ngIf="empresa.parqueadero" style="color: black;">
+                                        <td colspan="2"> <small> Parqueadero </small> </td>
+                                        <td> {{ parqueos | divisa }} </td>
+                                    </tr>
+
                                     <tr style="color: black;">
                                         <td colspan="2"> <small> Abonos en efectivo </small> </td>
                                         <td> {{ abEfectivo | divisa }} </td>
@@ -622,7 +633,7 @@
                                     </tr>
                                     <tr class="border-top">
                                         <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                        <td class="fw-bold"> {{ (inicial + efectivo + abEfectivo + entradas + alqEfectivo + salidas) - totalDevolucion | divisa }} </td>
+                                        <td class="fw-bold"> {{ (parqueos + inicial + efectivo + abEfectivo + entradas + alqEfectivo + salidas) - totalDevolucion | divisa }} </td>
                                     </tr>
 
                                 </tbody>

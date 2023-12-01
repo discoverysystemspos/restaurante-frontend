@@ -20,6 +20,11 @@ import { TypeparqService } from 'src/app/services/typeparq.service';
 import { EmpresaService } from 'src/app/services/empresa.service';
 import { ImpuestosService } from 'src/app/services/impuestos.service';
 import { SearchService } from 'src/app/services/search.service';
+import { TurnoService } from 'src/app/services/turno.service';
+import { UserService } from 'src/app/services/user.service';
+import { User } from 'src/app/models/user.model';
+import { LoadTurno, _movements } from 'src/app/interfaces/load-turno.interface';
+import { EntradasService } from 'src/app/services/entradas.service';
 
 
 
@@ -30,6 +35,8 @@ import { SearchService } from 'src/app/services/search.service';
 })
 export class ParqueaderoComponent implements OnInit {
 
+  public user: User;
+
   constructor(  private fb: FormBuilder,
                 private printerService: NgxPrinterService,
                 private typeparqService: TypeparqService,
@@ -37,7 +44,12 @@ export class ParqueaderoComponent implements OnInit {
                 private empresaService: EmpresaService,
                 private impuestosService: ImpuestosService,
                 private parqueoService: ParqueoService,
-                private searchService: SearchService) { 
+                private searchService: SearchService,
+                private turnosService: TurnoService,
+                private userService: UserService,
+                private entradasService: EntradasService) { 
+
+                  this.user = userService.user;
 
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
                     val => { console.log('Print window is open:', val) }
@@ -54,6 +66,7 @@ export class ParqueaderoComponent implements OnInit {
     this.loadCategorias();
     this.loadCars();
     this.loadParqueos();
+    this.cargarTurno();
   }
 
   /** ================================================================
@@ -133,7 +146,12 @@ export class ParqueaderoComponent implements OnInit {
       return;
     }
 
-    this.parqueoService.createParqueo({placa})
+    if (this.user.cerrada) {
+      Swal.fire('Atención', 'Debes de abrir caja para poder ingresar los vehiculos al parqueadero', 'warning');
+      return;
+    }
+
+    this.parqueoService.createParqueo({placa, checkin: new Date().getTime(), turno: this.user.turno})
         .subscribe( ({parqueo}) => {
 
           this.vCheckin = parqueo;
@@ -428,6 +446,7 @@ export class ParqueaderoComponent implements OnInit {
   /** ================================================================
    *   CREATE CAR
   ==================================================================== */
+  @ViewChild('mVehiculo') mVehiculo: ElementRef;
   public newCarSubmitted: boolean = false;
   public newCarForm = this.fb.group({
     placa: ['', [Validators.required]],
@@ -436,7 +455,7 @@ export class ParqueaderoComponent implements OnInit {
   })
 
   createCar(){
-
+    
     this.newCarSubmitted = true;
 
     if (this.newCarForm.invalid) {
@@ -448,6 +467,10 @@ export class ParqueaderoComponent implements OnInit {
       return;
     }
 
+    if (this.newCarForm.value.cliente === '') {
+      this.newCarForm.value.cliente = 'Ocacional'
+    }
+
     this.carsService.createCar(this.newCarForm.value)
         .subscribe( ({car}) => {
 
@@ -455,6 +478,9 @@ export class ParqueaderoComponent implements OnInit {
           Swal.fire('Estupendo', 'Se ha creado el vehiculo exitosamente', 'success');
           this.newCarSubmitted = false;
           this.newCarForm.reset();
+
+          this.checkin(car.placa);
+          this.mVehiculo.nativeElement.click();
 
         }, (err) => {
           console.log(err);
@@ -587,6 +613,150 @@ export class ParqueaderoComponent implements OnInit {
           }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
 
     }
+
+  }
+
+  /** ================================================================
+   *   ABRIR CAJA
+  ==================================================================== */
+  abrirCaja(){
+    
+    if (!this.user.cerrada) {
+
+      Swal.fire('Ya existe una caja abierta', 'Debes de cerrar caja para poder abrir he iniciar un turno nuevo', 'warning');
+      return;
+
+    }
+    
+    Swal.fire({
+      title: 'Monto Inicial de caja',
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Confirmar',
+      showLoaderOnConfirm: true,
+      preConfirm: (resp) => {
+        
+        return resp;
+      }
+      }).then((result) => {
+
+        if (result.value > 0) {
+
+          const initial:number = result.value;
+
+          const open = {
+            initial
+          };
+
+          
+          this.turnosService.createCaja(open)
+            .subscribe( (resp:{ ok:boolean, turno:any}) => {
+                this.userService.user.turno = resp.turno.tid;
+                this.userService.user.cerrada = false;                
+                this.cargarTurno();
+            });  
+              
+          return;
+        }else{
+          return;
+        }                
+        
+    });
+
+
+  }
+
+  /** ================================================================
+   *   REGISTRAR ENTRADAS Y SALIDAS
+  ==================================================================== */
+  public turno: LoadTurno;
+  cargarTurno(){
+
+    if (this.user.cerrada === false) {
+      
+      this.turnosService.getTurnoId(this.user.turno)
+          .subscribe( (turno) => {
+            this.turno = turno;
+            this.movimientos = turno.movements;                    
+          });
+    }
+
+  }
+
+  /** ================================================================
+   *   REGISTRAR ENTRADAS Y SALIDAS
+  ==================================================================== */
+  @ViewChild('montoE') montoE: ElementRef;
+  @ViewChild('descriptionE') descriptionE: ElementRef;
+  @ViewChild('montoS') montoS: ElementRef;
+  @ViewChild('descriptionS') descriptionS: ElementRef;
+
+  public movimientos: _movements[] = [];
+
+  entradaSalida(type: string, descripcion: string, monto: number){
+
+    if (this.user.cerrada) {
+      Swal.fire('Atención', 'Debes de abrir caja para registrar entradas y salidas', 'warning');
+      return;
+    }
+
+    // COMPROBAR QUE NO VENGA VACIO
+    if ( descripcion === '' || monto === 0) {
+      Swal.fire('Error', 'Todos los campos son obligatorios', 'error');
+      return;      
+    }
+    // COMPROBAR QUE NO VENGA VACIO
+    
+    // COMPROBAR EL TIPO SALIDA
+    if (type === 'salida') {
+      monto = monto * -1;            
+    }
+    // COMPROBAR EL TIPO SALIDA
+    
+    // AGREGAR EL MOVIMIENTO AL OBJECTO
+    this.movimientos.push({
+      type,
+      descripcion,
+      monto
+    });
+
+    this.turno.movements = this.movimientos;
+    // AGREGAR EL MOVIMIENTO AL OBJECTO
+    
+    // GUARDAR ACTUALIZAR EN LA BASE DE DATOS
+    this.turnosService.updateTurno(this.turno, this.turno.tid)
+    .subscribe((resp) => {
+      
+      this.montoE.nativeElement.value = '';
+      this.descriptionE.nativeElement.value = '';
+      
+      this.montoS.nativeElement.value = '';
+      this.descriptionS.nativeElement.value = '';
+
+      let movi = {
+        monto,
+        descripcion,
+        type,
+        turno: this.user.turno,
+      }
+
+      this.entradasService.createMovimiento(movi)
+          .subscribe( ({movimiento}) => {
+
+            Swal.fire('Estupendo!', 'Se ha guardado exitosament', 'success')            
+
+          }, (err) => {
+            console.log(err);
+            Swal.fire('Error', err.error.msg, 'error');            
+          });
+
+    }, (err) =>{
+      Swal.fire('Error', err.error.msg, 'error');
+    }); 
+    // GUARDAR ACTUALIZAR EN LA BASE DE DATOS
 
   }
 

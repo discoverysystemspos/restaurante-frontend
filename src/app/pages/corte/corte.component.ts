@@ -37,6 +37,7 @@ import { ImpuestosService } from 'src/app/services/impuestos.service';
 import { Impuesto } from 'src/app/models/impuesto.model';
 import { AlquileresService } from 'src/app/services/alquileres.service';
 import { Alquiler } from 'src/app/models/alquileres.model';
+import { ParqueoService } from 'src/app/services/parqueo.service';
 
 @Component({
   selector: 'app-corte',
@@ -63,7 +64,8 @@ export class CorteComponent implements OnInit {
                 private invoiceService: InvoiceService,
                 private departmentService: DepartmentService,
                 private impuestosService: ImpuestosService,
-                private alquileresService: AlquileresService) {
+                private alquileresService: AlquileresService,
+                private parqueoService: ParqueoService) {
 
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
                     val => {
@@ -85,7 +87,14 @@ export class CorteComponent implements OnInit {
 
   ngOnInit(): void {    
 
-    this.empresaService.getDatos().subscribe( datos => this.empresa = datos );
+    this.empresaService.getDatos().subscribe( datos => {
+      this.empresa = datos 
+
+      if (this.empresa.parqueadero! && !this.user.cerrada) {
+        this.loadParqueos();
+      }
+    
+    });
 
     if (!this.user.cerrada) {
       
@@ -96,13 +105,35 @@ export class CorteComponent implements OnInit {
       this.cargarDepartamento();
 
       // BANCOS
-      this.cargarBancos();
+      this.cargarBancos();      
 
     }else{
       Swal.fire('Atención!', 'No existe un turno asignado, no puedes hacer cortes ni cierres', 'info');
       return;
     }   
     
+
+  }
+
+  /** ================================================================
+   *   LOAD PARQUEADERO
+  ==================================================================== */
+  public parqueos: number = 0;
+  loadParqueos(){
+
+    this.parqueos = 0;
+
+    this.parqueoService.loadParqueos({turno: this.user.turno, estado: 'Finalizado'})
+        .subscribe( ({parqueos}) => {
+
+          for (const parq of parqueos) {
+            this.parqueos += parq.total;
+          }
+
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');          
+        })
 
   }
 
@@ -443,7 +474,7 @@ export class CorteComponent implements OnInit {
 
   cerrarTurno(dineroCaja: number){
 
-    const totalEfectivo = (this.efectivo + this.entradas + this.inicial + this.abEfectivo + this.salidas);
+    const totalEfectivo = (this.parqueos + this.efectivo + this.entradas + this.inicial + this.abEfectivo + this.salidas);
 
     if ((Number(dineroCaja) - this.totalDevolucion) !== totalEfectivo) {
       this.turno.diferencia = true;

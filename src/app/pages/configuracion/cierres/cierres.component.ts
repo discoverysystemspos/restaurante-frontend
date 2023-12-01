@@ -22,6 +22,8 @@ import { AlquileresService } from 'src/app/services/alquileres.service';
 import { Alquiler } from 'src/app/models/alquileres.model';
 import { EmpresaService } from 'src/app/services/empresa.service';
 import { Datos } from 'src/app/models/empresa.model';
+import { ParqueoService } from 'src/app/services/parqueo.service';
+import Swal from 'sweetalert2';
 interface _departament {
   _id?: string,
   did?: string,
@@ -66,7 +68,8 @@ export class CierresComponent implements OnInit {
                 private departmentService: DepartmentService,
                 private impuestosService: ImpuestosService,
                 private alquileresService: AlquileresService,
-                private empresaService: EmpresaService) { 
+                private empresaService: EmpresaService,
+                private parqueoService: ParqueoService) { 
 
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
                     val => {                
@@ -305,7 +308,7 @@ export class CierresComponent implements OnInit {
   public abTransferencia: number = 0;
   public totalBancos: number = 0;
   public totalBancosAbono: number = 0;
-
+  
   async cargarTurnoId(id:string){
 
     this.movimientos = [];
@@ -393,6 +396,7 @@ export class CierresComponent implements OnInit {
   public montoDiferencia: number = 0;
   public movimientos: _movements[] = [];
   public totalDevolucion: number = 0; 
+  public parqueos: number = 0;
 
   public facturas: any[] = [];
   public departamento: _departament[] = [];
@@ -418,6 +422,20 @@ export class CierresComponent implements OnInit {
     });
     
     const endPoint = `?turno=${id}`;
+
+    this.parqueos = 0;
+
+    this.parqueoService.loadParqueos({turno: id, estado: 'Finalizado'})
+        .subscribe( ({parqueos}) => {
+
+          for (const parq of parqueos) {
+            this.parqueos += parq.total;
+          }
+
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');          
+        })
 
     this.invoiceService.loadInvoiceCierre(endPoint)
         .subscribe(({invoices, total, montos, devolucion, costos, efectivo, tarjeta, transferencia, credit, vales}) => {

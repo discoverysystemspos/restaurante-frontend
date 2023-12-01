@@ -152,7 +152,7 @@
                             <div class="card shadow px-2 bg-success border-0" style="width: 18rem;">
                                 <div class="card-body text-white">
                                     <h4 class="card-title mb-0 text-center">Ventas Totales</h4>
-                                    <h5 class="text-center"> {{ (efectivo + credito + tarjeta + transferencia + vales + totalBancos) | divisa }} </h5>
+                                    <h5 class="text-center"> {{ (parqueos + efectivo + credito + tarjeta + transferencia + vales + totalBancos) | divisa }} </h5>
                                 </div>
                             </div>
 
@@ -202,6 +202,10 @@
                                                 <td colspan="2"> <small> Ventas en efectivo </small> </td>
                                                 <td> {{ efectivo | divisa }} </td>
                                             </tr>
+                                            <tr *ngIf="empresa.parqueadero">
+                                                <td colspan="2"> <small> Parqueadero </small> </td>
+                                                <td> {{ parqueos | divisa }} </td>
+                                            </tr>
                                             <tr>
                                                 <td colspan="2"> <small> Abonos en efectivo </small> </td>
                                                 <td> {{ abEfectivo | divisa }} </td>
@@ -226,7 +230,7 @@
                                             </tr>
                                             <tr class="border-top">
                                                 <td colspan="2"> <small class="fw-bold"> Total </small> </td>
-                                                <td class="fw-bold"> {{ (inicial + efectivo + abEfectivo + entradas + totalAlquiler + salidas) + devolucion | divisa }} </td>
+                                                <td class="fw-bold"> {{ (parqueos + inicial + efectivo + abEfectivo + entradas + totalAlquiler + salidas) + devolucion | divisa }} </td>
                                             </tr>
 
                                         </tbody>

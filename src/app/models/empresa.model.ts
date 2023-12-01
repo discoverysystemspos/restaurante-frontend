@@ -49,6 +49,7 @@ export class Datos{
         public basculacode?: string,
         public electronica?: boolean,
         public alquileres?: boolean,
+        public parqueadero?: boolean,
         public fechakardex?: Date,
         public min?: number,
         public impresora?: number,
