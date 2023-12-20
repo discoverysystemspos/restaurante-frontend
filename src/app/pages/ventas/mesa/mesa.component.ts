@@ -879,6 +879,12 @@ export class MesaComponent implements OnInit {
 
   carritoTemp( product: any, qty: number, precio: number, nota: string = '' ){
 
+    if (this.clienteTemp) {
+      if (this.clienteTemp.mayoreo) {
+        precio = product.wholesale;
+      }
+    }
+
     this.inventarioNew = 0;
     this.inventarioNewB = false;
 
@@ -897,9 +903,7 @@ export class MesaComponent implements OnInit {
     let ivaP:number = 0;
 
     if (product.tax) {
-
-      ivaP = Number(precio * qty) * Number(product.taxid?.valor / 100);      
-      
+      ivaP = Number(precio * qty) * Number(product.taxid?.valor / 100);
     }
 
     if ( validarItem === -1 ) {
@@ -932,12 +936,19 @@ export class MesaComponent implements OnInit {
       let qtyTemp = this.productUp[validarItem].qty;
       qtyTemp += Number(qty);
 
+      
       let ivaTemp = this.productUp[validarItem].iva;
       ivaTemp += Number(ivaP);
-
+      
       this.productUp[validarItem].iva = ivaTemp;
       this.productUp[validarItem].qty = qtyTemp;
       this.comanda[validarItem].qty = qtyTemp;
+      
+      if (product.mayoreo > 0 &&  qtyTemp >= product.mayoreo) {
+        this.productUp[validarItem].price = product.wholesale;      
+      }else{
+        this.productUp[validarItem].price = precio;
+      }
 
       this.inventarioNew = product.inventario - qtyTemp;
       this.inventarioNewB = true;
@@ -1199,6 +1210,7 @@ export class MesaComponent implements OnInit {
    *  SUMAR TOTALES
   ==================================================================== */
   public totalCosto:number = 0;
+  public totalTip:number = 0;
   public iva:number = 0;
   public base:number = 0;
   sumarTotales(){
@@ -1207,6 +1219,7 @@ export class MesaComponent implements OnInit {
     this.base = 0;
     this.iva = 0;
     this.totalCosto = 0;
+    this.totalTip = 0;
 
     this.impuestos.map( (impuesto) => {
       impuesto.total = 0;
@@ -1250,6 +1263,13 @@ export class MesaComponent implements OnInit {
 
       if (this.empresa?.impuesto) {
         this.total += this.iva;
+      }
+
+      if (this.empresa.tip) {
+        this.totalTip = (this.total * this.empresa.propina) / 100;
+        console.log(this.totalTip);
+        
+        this.tipIn.nativeElement.value = this.totalTip;
       }
 
     }else {
@@ -1770,7 +1790,8 @@ export class MesaComponent implements OnInit {
     apartado: false,
     porcentaje: 0,
     fecha: new Date(),
-    descuento: false
+    descuento: false,
+    tip: 0
   })
 
   /** ================================================================
@@ -1920,10 +1941,11 @@ export class MesaComponent implements OnInit {
   /** ================================================================
    *   CREAR FACTURA
   ==================================================================== */
+  @ViewChild('tipIn') tipIn: ElementRef;
+  @ViewChild('fechCredito') fechCredito: ElementRef;
   public factura: LoadInvoice;
   public facturando: boolean = false;
   
-  @ViewChild('fechCredito') fechCredito: ElementRef;  
   crearFactura( send_dian: boolean ){
 
     this.facturando = true;
@@ -1965,13 +1987,18 @@ export class MesaComponent implements OnInit {
       apartado: this.invoiceForm.value.apartado,
       descuento: this.formDescuento.value.descuento,
       porcentaje: this.formDescuento.value.porcentaje,
-      fecha: this.invoiceForm.value.fecha || new Date()
+      fecha: this.invoiceForm.value.fecha || new Date(),
+      tip: 0,
     });
 
     if(!this.clienteTemp){
       this.invoiceForm.value.client = '';      
-    }    
+    }
 
+    if (this.empresa.tip) {
+      this.invoiceForm.value.tip = Number(this.tipIn.nativeElement.value);
+    }
+    
     try {
       
       this.invoiceService.createInvoice(this.invoiceForm.value, this.user.turno)

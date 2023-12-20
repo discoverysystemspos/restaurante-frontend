@@ -47,6 +47,7 @@ import { AlquileresComponent } from './alquileres/alquileres.component';
 import { AlquilerComponent } from './alquiler/alquiler.component';
 import { ParqueaderoComponent } from './configuracion/parqueadero/parqueadero.component';
 import { ReportesComponent } from './configuracion/parqueadero/reportes/reportes.component';
+import { DomiciliosComponent } from './domicilios/domicilios.component';
 
 const routes: Routes = [
     
@@ -59,6 +60,7 @@ const routes: Routes = [
           { path: '', component: DashboardComponent, data:{ titulo: 'Dashboard'} },
           { path: 'alquileres', component: AlquileresComponent, data:{ titulo: 'Alquileres'} },
           { path: 'alquiler/:id', component: AlquilerComponent, data:{ titulo: 'Alquiler'} },
+          { path: 'domicilios', component: DomiciliosComponent, data:{ titulo: 'Domicilios'} },
           { path: 'calendario', component: CalendarioComponent, data:{ titulo: 'Calendario'} },
           { path: 'clientes', component: ClientesComponent, data:{ titulo: 'Clientes'} },
           { path: 'comandas', component: ComandaComponent, data:{ titulo: 'Comandas'} },

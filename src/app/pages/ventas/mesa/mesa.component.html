@@ -1057,6 +1057,15 @@
                                                 </div>
                                                 <!-- AGREGAR METODO DE PAGO -->
 
+                                                <hr>
+
+                                                <div class="mb-3">
+                                                    <div class="formGroup">
+                                                        <label for="propi" class="form-label fw-bold">Propina</label>
+                                                        <input id="propi" type="number" min="0" class="form-control" placeholder="propina" #tipIn>
+                                                    </div>
+                                                </div>
+
                                                 <div class="row g-3 d-flex justify-content-center">
 
                                                     <div class="mb-3">
@@ -1249,7 +1258,7 @@
                                         <h6 class="mb-0 text-wrap text-left">Propina Sugerida del {{empresa.propina}}%</h6>
                                     </td>
                                     <td class="fw-bold">
-                                        <h6 class="mb-0 text-wrap text-rigth"> {{ (factura.amount * empresa.propina)/100 | divisa }} </h6>
+                                        <h6 class="mb-0 text-wrap text-rigth"> {{ factura.tip | divisa }} </h6>
                                     </td>
                                 </tr>
                                 <tr class="" style="border-top: 2px solid black;" *ngIf="empresa.tip">
@@ -1257,8 +1266,7 @@
                                         <h6 class="mb-0 text-wrap text-left">Total + Propina</h6>
                                     </td>
                                     <td class="fw-bold">
-                                        <h6 *ngIf="empresa.responsable" class="mb-0 text-wrap text-rigth"> {{ factura.amount+ (factura.amount * empresa.propina)/100 + (factura.amount * empresa.tax)/100 | divisa}} </h6>
-                                        <h6 *ngIf="!empresa.responsable" class="mb-0 text-wrap text-rigth"> {{ factura.amount + (factura.amount * empresa.propina)/100 | divisa }} </h6>
+                                        <h6 class="mb-0 text-wrap text-rigth"> {{ factura.tip + factura.amount | divisa}} </h6>
                                     </td>
                                 </tr>
 

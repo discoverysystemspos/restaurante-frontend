@@ -412,6 +412,18 @@
                                 </div>
 
                             </div>
+                            <div class="row mb-3" *ngIf="producto.type !== 'Paquete'">
+
+                                <div class="col-md-6 px-md-1">
+
+                                    <div class="form-floating">
+                                        <input formControlName="mayoreo" type="text" class="form-control" placeholder="Mayoreo apartir de">
+                                        <label for="floatingInput">Mayoreo apartir de</label>
+                                    </div>
+
+                                </div>
+
+                            </div>
                         </ng-container>
 
                         <div class="row mb-3">
@@ -511,7 +523,7 @@
                         <div class="d-flex align-items-center flex-wrap">
                             <div class="flex-grow-1">
                                 <div class="small font-weight-bold text-primary mb-1">Vendidos</div>
-                                <div class="h5">({{ vendidos }})</div>
+                                <div class="h5">({{ vendidos | number}})</div>
                             </div>
                             <div class="ms-2">
                                 <i class="bi bi-arrow-up text-muted" style="font-size: 1.5rem;"></i>
@@ -528,7 +540,7 @@
                         <div class="d-flex align-items-center flex-wrap">
                             <div class="flex-grow-1">
                                 <div class="small font-weight-bold text-success mb-1">Comprados</div>
-                                <div class="h5">({{ comprados }})</div>
+                                <div class="h5">({{ comprados | number }})</div>
                             </div>
                             <div class="ms-2">
                                 <i class="bi bi-truck text-muted" style="font-size: 1.5rem;"></i>
@@ -545,7 +557,7 @@
                         <div class="d-flex align-items-center flex-wrap">
                             <div class="flex-grow-1">
                                 <div class="small font-weight-bold text-warning mb-1">Devueltos</div>
-                                <div class="h5">({{ devueltos }})</div>
+                                <div class="h5">({{ devueltos | number }})</div>
                             </div>
                             <div class="ms-2">
                                 <i class="bi bi-arrow-down text-muted" style="font-size: 1.5rem;"></i>
@@ -660,9 +672,9 @@
                                         <span *ngIf="item.type === 'Devolución'" class="badge rounded-pill bg-info text-white-75">{{ item.type }}</span>
                                     </td>
 
-                                    <td class="text-center">{{ item.befored }}</td>
+                                    <td class="text-center">{{ item.befored | number }}</td>
                                     <td class="text-center">{{ item.qty }}</td>
-                                    <td class="text-center">{{ item.stock }}</td>
+                                    <td class="text-center">{{ item.stock | number }}</td>
                                     <td>{{ item.cajero.name }}</td>
                                     <td> <small class="text-wrapp"> {{ item.fecha | date:'medium'}}</small></td>
                                 </tr>

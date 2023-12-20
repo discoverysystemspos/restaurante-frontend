@@ -25,7 +25,7 @@
     <!-- BOTONES  -->
     <div class="d-flex flex-wrap gap-3 mt-2 mb-3">
         <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">Categorias</button>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#VehiculosModal">Vehiculos</button>
+        <button type="button" #btnV class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#VehiculosModal">Vehiculos</button>
         <button type="button" (click)="abrirCaja()" class="btn btn-success" *ngIf="user.cerrada">Abrir Caja</button>
         <button type="button" [routerLink]="['/dashboard', 'corte']" class="btn btn-dark" *ngIf="!user.cerrada"> Cerrar Caja </button>
         <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#entradaSalidas"><i class="bi-arrow-left-right"></i> Entradas y Salidas </button>
@@ -381,7 +381,7 @@
 
                 <div class="pt-4">
                     <div class="d-flex flex-wrap mb-3">
-                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        <button #btnVC class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                             Crear Vehiculos
                         </button>
                     </div>

@@ -50,6 +50,7 @@ export class Datos{
         public electronica?: boolean,
         public alquileres?: boolean,
         public parqueadero?: boolean,
+        public domi?: boolean,
         public fechakardex?: Date,
         public min?: number,
         public impresora?: number,

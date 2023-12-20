@@ -140,6 +140,8 @@ export class ParqueaderoComponent implements OnInit {
   ==================================================================== */
   public vCheckin: Parqueo;
   @ViewChild('inP') inP: ElementRef;
+  @ViewChild('btnV') btnV: ElementRef;
+  @ViewChild('btnVC') btnVC: ElementRef;
   checkin(placa: string){
 
     if (placa.length === 0) {
@@ -176,6 +178,9 @@ export class ParqueaderoComponent implements OnInit {
               cliente: '',
               typeparq: 'none'
             })
+
+            this.btnV.nativeElement.click();
+            this.btnVC.nativeElement.click();
           }
 
         })

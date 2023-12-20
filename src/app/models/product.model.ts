@@ -45,6 +45,7 @@ export class Product {
         public inventario?: number,
         public _id?: string,
         public kardex?: number | 0,
+        public mayoreo?: number,
     ){}
 
     /** ================================================================
