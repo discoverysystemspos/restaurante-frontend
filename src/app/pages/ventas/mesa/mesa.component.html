@@ -1062,7 +1062,7 @@
                                                 <div class="mb-3">
                                                     <div class="formGroup">
                                                         <label for="propi" class="form-label fw-bold">Propina</label>
-                                                        <input id="propi" type="number" min="0" class="form-control" placeholder="propina" #tipIn>
+                                                        <input id="propi" (keyup.enter)="changeTip(tipIn.value)" type="number" min="0" class="form-control" placeholder="propina" #tipIn>
                                                     </div>
                                                 </div>
 
@@ -1649,6 +1649,10 @@ PREFACTURA
 
                     </div>
                     <!-- EMPRESA -->
+
+                    <div *ngIf="mesa">
+                        <p class="text-center fs-4"> {{ mesa.name }} </p>
+                    </div>
 
                     <div class="table-responsive">
 

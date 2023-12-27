@@ -164,6 +164,15 @@
 
             </div>
 
+            <div *ngIf="empresa.tip" class="card shadow px-2 my-3 bg-info border-0" style="width: 18rem;">
+
+                <div class="card-body text-white">
+                    <h4 class="card-title mb-0 text-center">Propinas</h4>
+                    <h5 class="text-center"> {{ propinas | divisa }} </h5>
+                </div>
+
+            </div>
+
         </div>
 
     </div>
@@ -579,6 +588,23 @@
                                 <tbody>
                                     <tr style="color: black;">
                                         <th scope="row">{{ (efectivo + credito + tarjeta + transferencia + vales + totalBancos) - costo | divisa }} </th>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <div style="color: black;" *ngIf="empresa.tip" class="col-auto p-2" style="width: 18rem;">
+
+                            <table class="table text-center">
+                                <thead>
+                                    <tr style="color: black;">
+                                        <th scope="col">Propinas</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="color: black;">
+                                        <th scope="row">{{ propinas | divisa }} </th>
                                     </tr>
                                 </tbody>
                             </table>

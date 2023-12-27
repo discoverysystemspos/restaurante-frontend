@@ -1207,6 +1207,85 @@ export class MesaComponent implements OnInit {
   }
 
   /** ================================================================
+   *  CAMBIAR PROPINA
+  ==================================================================== */
+  changeTip(tip: any){
+    
+    tip = Number(tip);
+
+    if (tip > 0) {
+
+      this.total = 0;
+      this.base = 0;
+      this.iva = 0;
+      this.totalCosto = 0;
+      this.totalTip = 0;
+
+      this.impuestos.map( (impuesto) => {
+        impuesto.total = 0;
+      });
+
+      if (this.carrito.length > 0) {
+        
+        for (let i = 0; i < this.carrito.length; i++) {
+
+          this.total += (this.carrito[i].price * this.carrito[i].qty);
+          this.base += (this.carrito[i].price * this.carrito[i].qty);
+          this.totalCosto += (this.carrito[i].product.cost * this.carrito[i].qty);
+
+          if (this.empresa?.decimal === false) {          
+            this.total = Math.round(this.total);
+            this.base = Math.round(this.base);
+            this.totalCosto = Math.round(this.totalCosto);
+          }
+          
+
+          // SUMAR IMPUESTOS
+          if (this.empresa?.impuesto!) {          
+            this.impuestos.map( (impuesto) => {            
+              
+              if (impuesto.taxid === this.carrito[i].product.taxid) {
+                impuesto.total += this.carrito[i].iva;
+              }
+
+            })
+
+            this.iva += Math.round(this.carrito[i].iva);         
+            
+          }
+          // SUMAR IMPUESTOS
+          
+        }
+
+        if (this.mesa.descuento) {
+          this.total = this.total - Math.round((this.total * this.mesa.porcentaje)/100);
+        }
+
+        if (this.empresa?.impuesto) {
+          this.total += this.iva;
+        }
+
+        if (this.empresa.tip) {
+          this.totalTip = tip;        
+          this.tipIn.nativeElement.value = tip;        
+          this.total += tip;
+        }
+
+      }else {
+        this.productUp = [];
+        this.comanda = [];
+        this.comandas = [];
+
+        this.impuestos.map( (impuesto) => {
+          impuesto.total = 0;
+        });
+
+      }
+      
+    }
+  }
+
+  /** ================================================================
    *  SUMAR TOTALES
   ==================================================================== */
   public totalCosto:number = 0;
@@ -1266,10 +1345,9 @@ export class MesaComponent implements OnInit {
       }
 
       if (this.empresa.tip) {
-        this.totalTip = (this.total * this.empresa.propina) / 100;
-        console.log(this.totalTip);
-        
-        this.tipIn.nativeElement.value = this.totalTip;
+        this.totalTip = (this.total * this.empresa.propina) / 100;        
+        this.tipIn.nativeElement.value = this.totalTip;        
+        this.total += this.totalTip;
       }
 
     }else {

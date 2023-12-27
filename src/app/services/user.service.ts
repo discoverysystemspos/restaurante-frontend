@@ -57,7 +57,7 @@ export class UserService {
   /** ================================================================
    *   GET ROLES
   ==================================================================== */
-  get role(): 'ADMIN' | 'STAFF' | 'CASHIER' | 'WAITER' {
+  get role(): 'ADMIN' | 'STAFF' | 'CASHIER' | 'WAITER'  | 'WAITERALL' {
     return this.user.role;
   }
 

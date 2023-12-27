@@ -161,7 +161,7 @@
 
                                 <div class="table-responsive">
 
-                                    <table class="table table-sm align-middle">
+                                    <table class="table table-sm align-middle mb-1">
                                         <thead>
                                             <tr>
                                                 <th scope="col">
@@ -178,7 +178,7 @@
 
                                                 <tr style="color: black;" *ngIf="item.estado === 'pendiente'">
                                                     <td>
-                                                        <h6 class="mb-0 lh-1 text-capitalize"> <span class="lh-1">01 - {{item.product.name}}  </span></h6>
+                                                        <h6 class="mb-0 lh-1 text-capitalize fs-5" style="color: #000;"> <span class="lh-1">01 - {{item.product.name}}  </span></h6>
 
                                                         <!-- <span *ngFor="let ingrediente of item.ingredientes" class="badge rounded-pill bg-light text-primary fw-normal"> {{ ingrediente.name }} </span> -->
                                                         <ng-container *ngFor="let ingrediente of item.ingredientes">
@@ -188,10 +188,10 @@
                                                     </td>
                                                     <td>
                                                         <select class="form-select form-select-sm" aria-label=".form-select-sm example" #estadoitem>
-                                                    <option class="text-danger" value="Pendiente" [selected]="item.estado === 'Pendiente'">Pendiente</option>
-                                                    <option class="text-warning" value="Preparando" [selected]="item.estado === 'Preparando'">Preparando</option>
-                                                    <option class="text-success" value="Entregado" [selected]="item.estado === 'Entregado'">Entregado</option>
-                                                </select>
+                                                            <option class="text-danger" value="Pendiente" [selected]="item.estado === 'Pendiente'">Pendiente</option>
+                                                            <option class="text-warning" value="Preparando" [selected]="item.estado === 'Preparando'">Preparando</option>
+                                                            <option class="text-success" value="Entregado" [selected]="item.estado === 'Entregado'">Entregado</option>
+                                                        </select>
                                                     </td>
                                                 </tr>
                                             </ng-container>
@@ -199,7 +199,7 @@
                                     </table>
 
                                     <!-- NOTAS -->
-                                    <div class="col-10 border rounded py-2">
+                                    <div class="col-10">
                                         <p class="fw-bold mb-1">NOTAS:</p>
                                         <p class="mb-0 text-break" *ngFor="let nota of comanda?.nota">
                                             - {{ nota.nota }}
@@ -391,7 +391,7 @@
 
 
             <div class="modal-footer ">
-                <button type="button " class="btn btn-secondary " data-bs-dismiss="modal ">Cerrar</button>
+                <button type="button " class="btn btn-secondary " data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

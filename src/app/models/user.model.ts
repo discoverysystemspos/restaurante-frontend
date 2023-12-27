@@ -11,7 +11,7 @@ export class User {
         public usuario: string,
         public name: string,
         public password?: string,
-        public role?: 'ADMIN' | 'STAFF' | 'CASHIER' | 'WAITER',
+        public role?: 'ADMIN' | 'STAFF' | 'CASHIER' | 'WAITER' | 'WAITERALL',
         public img?: string,
         public uid?: string,
         public status?: boolean,

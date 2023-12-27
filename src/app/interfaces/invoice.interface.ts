@@ -103,6 +103,7 @@ export interface ListInvoice {
     tarjeta?: number;
     transferencia?: number;
     credit?: number;
+    propinas?: number;
     vales?: number;
     devolucion?: number;
     iva?: number;
