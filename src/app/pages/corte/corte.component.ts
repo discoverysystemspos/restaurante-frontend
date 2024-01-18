@@ -373,8 +373,7 @@ export class CorteComponent implements OnInit {
                     depart.qty = depart.qty + product.qty,
                     depart.monto = depart.monto + (product.qty * product.price);
                     
-                  }else{              
-
+                  }else{
                     depart.qty = depart.qty + product.qty,
                     this.impuestos.map( (impuesto) => {
                       if (product.product.taxid === impuesto.taxid) {

@@ -505,6 +505,10 @@
                             </ng-container>
                             <!-- IMPUESTOS -->
 
+                            <!-- PROPINA -->
+                            <p class="h6 fw-normal text-primary mb-0" *ngIf="empresa.propina">Propina {{ totalTip | divisa }}</p>
+                            <!-- PROPINA -->
+
                             <p class="h6 fw-normal text-danger mb-0" *ngIf="mesa?.descuento">Descuento {{ ((base * mesa?.porcentaje) / 100) | divisa }}</p>
                             <h4 class="fw-normal text-primary">{{ total | divisa }}</h4>
 
@@ -851,6 +855,7 @@
 
                                     <h5 *ngIf="empresa.usd" class="text-primary fw-normal">{{ (total / empresa.currencyusd ) | number : '1.2-2' }} USD</h5>
                                     <h5 *ngIf="empresa.cop" class="text-primary fw-normal">{{ (total * empresa.currencycop ) | number : '1.2-2' }} COP</h5>
+                                    <h5 *ngIf="empresa.bs" class="text-primary fw-normal">{{ (total / empresa.currencybs ) | number : '1.2-2' }} BS</h5>
                                     <!-- <h4 class="display-4 text-primary" *ngIf="empresa.responsable">{{ total + ((total * empresa.tax)/100) | divisa }}</h4> -->
 
                                     <small *ngIf="totalPagos > 0 && totalPagos < total" class="text-danger animated fadeIn">Resta</small>
@@ -880,10 +885,9 @@
 
                                                     <input type="radio" (click)="limpiarPagos()" class="btn-check" name="type" formControlName="type" id="efectivo-outlined" value="efectivo" autocomplete="off" checked>
                                                     <label class="btn btn-outline-success" for="efectivo-outlined">
-                                                    <i class="px-3 bi-cash-stack" style="font-size: 1.5rem;"></i>
-                                                    <p class="mb-0">Efectivo</p>
-    
-                                                </label>
+                                                        <i class="px-3 bi-cash-stack" style="font-size: 1.5rem;"></i>
+                                                        <p class="mb-0">Efectivo</p>        
+                                                    </label>
 
                                                 </div>
 
@@ -898,44 +902,22 @@
                                                 </div>
 
                                                 <div class="col p-2">
-
-                                                    <input type="radio" (click)="limpiarPagos()" class="btn-check" name="type" formControlName="type" id="tarjeta-outlined2" value="tarjeta" autocomplete="off">
-                                                    <label class="btn btn-outline-primary" for="tarjeta-outlined2">
-                                                        <i class="px-3 bi-credit-card" style="font-size: 1.5rem;"></i>
-                                                        <p class="mb-0">Tarjeta</p>
+                                                    <input type="radio" (click)="limpiarPagos()" class="btn-check" name="options-outlined" name="type" formControlName="type" id="mixto-outlined" value="mixto" autocomplete="off">
+                                                    <label class="btn btn-outline-dark" for="mixto-outlined">
+                                                        <i class="px-3 bi-patch-question" style="font-size: 1.5rem;"></i>
+                                                        <p class="mb-0">Mixto</p>
                                                     </label>
 
                                                 </div>
 
                                                 <div class="col p-2">
-
-                                                    <input type="radio" (click)="limpiarPagos()" class="btn-check" name="options-outlined" name="type" formControlName="type" id="vale-outlined" value="vale" autocomplete="off">
-                                                    <label class="btn btn-outline-secondary" for="vale-outlined">
-                                                    <i class="px-3 bi-card-heading" style="font-size: 1.5rem;"></i>
-                                                    <p class="mb-0">Vale</p>
-                                                </label>
-
-                                                </div>
-
-                                                <div class="col p-2">
-
-                                                    <input type="radio" (click)="limpiarPagos()" class="btn-check" name="options-outlined" name="type" formControlName="type" id="mixto-outlined" value="mixto" autocomplete="off">
-                                                    <label class="btn btn-outline-dark" for="mixto-outlined">
-                                                    <i class="px-3 bi-patch-question" style="font-size: 1.5rem;"></i>
-                                                    <p class="mb-0">Mixto</p>
-                                                </label>
-
-                                                </div>
-
-                                                <div class="col p-2">
-
                                                     <input type="radio" (click)="limpiarPagos('credito')" #tcredito class="btn-check" name="options-outlined" name="type" formControlName="type" id="credito-outlined" value="credito" autocomplete="off">
                                                     <label class="btn btn-outline-warning" for="credito-outlined">
-                                                    <i class="px-3 bi-clock-history" style="font-size: 1.5rem;"></i>
-                                                    <p class="mb-0">Credito</p>
-                                                </label>
-
+                                                        <i class="px-3 bi-clock-history" style="font-size: 1.5rem;"></i>
+                                                        <p class="mb-0">Credito</p>
+                                                    </label>
                                                 </div>
+
                                             </div>
 
                                             <div class="d-flex justify-content-center flex-row flex-wrap gap-2" *ngIf="invoiceForm.value.type === 'efectivo' || invoiceForm.value.type === 'mixto' || invoiceForm.value.type === 'credito'">
@@ -1023,10 +1005,7 @@
 
                                                         <select class="form-select" aria-label="Default select example" (change)="typeAdd.value" #typeAdd>
                                                             <option *ngIf="invoiceForm.value.type === 'efectivo' || invoiceForm.value.type === 'mixto' || invoiceForm.value.type === 'credito'" value="efectivo">Efectivo</option>
-                                                            <option *ngIf="invoiceForm.value.type === 'transferencia' || invoiceForm.value.type === 'mixto' || invoiceForm.value.type === 'credito'" value="transferencia">Transferencia</option>
-                                                            <option *ngIf="invoiceForm.value.type === 'tarjeta' || invoiceForm.value.type === 'mixto' || invoiceForm.value.type === 'credito'" value="tarjeta">Tarjeta</option>
-                                                            <option *ngIf="invoiceForm.value.type === 'vale' || invoiceForm.value.type === 'mixto' || invoiceForm.value.type === 'credito'" value="vale">Vale</option>
-                                                            
+                                                            <option *ngIf="invoiceForm.value.type === 'transferencia' || invoiceForm.value.type === 'mixto' || invoiceForm.value.type === 'credito'" value="transferencia">Transferencia</option>                                                            
                                                             <ng-container *ngIf="invoiceForm.value.type !== 'efectivo'">
                                                                 <option *ngFor="let banco of bancos" [value]="banco.name"> {{banco.name}}</option>                                                                
                                                             </ng-container>
@@ -1056,6 +1035,108 @@
 
                                                 </div>
                                                 <!-- AGREGAR METODO DE PAGO -->
+
+                                                <hr>
+                                                <div>
+                                                    <h4>Dividir Cuenta</h4>
+                                                    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                                        Ver Productos
+                                                    </button>
+
+                                                    <div class="collapse" id="collapseExample">
+                                                        <div class="card card-body">
+
+                                                            <!-- TOTAL -->
+                                                            <div class="text-center my-3" *ngIf="empresa">
+                                                                <h4 class="display-4 text-primary">{{ total | divisa }}</h4>
+
+
+                                                                <h5 *ngIf="empresa.usd" class="text-primary fw-normal">{{ (total / empresa.currencyusd ) | number : '1.2-2' }} USD</h5>
+                                                                <h5 *ngIf="empresa.cop" class="text-primary fw-normal">{{ (total * empresa.currencycop ) | number : '1.2-2' }} COP</h5>
+                                                                <!-- <h4 class="display-4 text-primary" *ngIf="empresa.responsable">{{ total + ((total * empresa.tax)/100) | divisa }}</h4> -->
+
+                                                                <small *ngIf="totalPagos > 0 && totalPagos < total" class="text-danger animated fadeIn">Resta</small>
+                                                                <small *ngIf="totalPagos > 0 && totalPagos >= total" class="text-success animated fadeIn">Vueltos</small>
+                                                                <h4 class="mb-0 fw-normal animated fadeIn" [ngClass]=" {   'text-danger': totalPagos < total, 'text-success': totalPagos >= total  }" *ngIf="totalPagos > 0">
+                                                                    {{ vueltos | divisa }}
+                                                                </h4>
+
+                                                            </div>
+                                                            <!-- TOTAL -->
+
+                                                            <div class="table-responsive">
+                                                                <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                                                                    <thead class="border-bottom ">
+                                                                        <tr>
+                                                                            <th class="text-muted text-left" scope="col " colspan="2 ">Descripción</th>
+                                                                            <th class="text-muted " scope="col ">Precio</th>
+                                                                            <th class="text-muted " scope="col ">Cantidad</th>
+                                                                            <th class="text-muted " scope="col ">Monto</th>
+                                                                            <th class="text-muted " scope="col "></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr *ngIf="carrito.length === 0" class="text-center ">
+                                                                            <th colspan="10" class="py-4">
+                                                                                <h4 class="text-muted">No has seleccionado ningun producto</h4>
+                                                                            </th>
+                                                                        </tr>
+
+                                                                        <ng-container *ngIf="carrito.length > 0 ">
+
+                                                                            <ng-container *ngFor="let item of carrito; let i = index">
+                                                                                <tr class="trHover" *ngIf="item.product">
+                                                                                    <td colspan="2">{{ item.product.name }}</td>
+                                                                                    <td>{{ item.price | divisa}}</td>
+                                                                                    <td class="text-center">
+                                                                                        <input class="w-75" min="1" type="number" #cantP (keyup)="cantP.value = cantP.value; addSaldo(item.price, cantP.value)">
+                                                                                    </td>
+                                                                                    <td>{{ item.price * cantP.value | divisa}}</td>
+                                                                                </tr>
+                                                                            </ng-container>
+
+                                                                        </ng-container>
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+
+                                                            <div class="row g-3 d-flex justify-content-center">
+
+                                                                <div class="col-auto">
+
+                                                                    <select class="form-select" aria-label="Default select example" (change)="typeAddd.value" #typeAddd>
+                                                                        <option value="efectivo">Efectivo</option>
+                                                                        <option value="transferencia">Transferencia</option>                                                            
+                                                                        <ng-container>
+                                                                            <option *ngFor="let banco of bancos" [value]="banco.name"> {{banco.name}}</option>                                                                
+                                                                        </ng-container>
+                                                                    </select>
+
+                                                                </div>
+
+                                                                <div class="col-auto">
+                                                                    <label for="Descripción" class="visually-hidden">Descripción</label>
+                                                                    <input type="text" class="form-control w100" id="Descripción" placeholder="Descripción" (keyup)="descripcionAdd.value" #descripcionAddd>
+                                                                </div>
+
+                                                                <div class="col-auto">
+                                                                    <label for="monto" class="visually-hidden">Monto</label>
+                                                                    <input type="number" class="form-control" id="monto" placeholder="Monto" (keyup)="montoAddd.value" #montoAddd>
+                                                                </div>
+
+                                                                <div class="col-auto">
+                                                                    <button type="button" [value]="saldo" class="btn btn-primary mb-3" (click)="agregarPagos(typeAddd.value, montoAddd.value, descripcionAddd.value, tcredito.checked)">Agregar Pago</button>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+
 
                                                 <hr>
 
@@ -1687,10 +1768,12 @@ PREFACTURA
                                             <p class="h6 fw-bold mb-0" *ngIf="empresa.responsable">Sub-total: {{ base - iva | divisa }}</p>
                                             <p class="h6 fw-bold mb-0" *ngIf="mesa?.descuento">Descuento: {{ (base * mesa?.porcentaje) /100 | divisa }}</p>
                                             <p class="h6 fw-bold mb-0" *ngIf="empresa.responsable">IVA: {{ iva | divisa }}</p>
-                                            <p class="fw-bold mb-0" [ngClass]="{'h4': empresa.tip === false, 'h6': empresa.tip }" *ngIf="!empresa.responsable">Total: {{ total | divisa }}</p>
-                                            <p class="fw-bold mb-0" [ngClass]="{'h4': empresa.tip === false, 'h6': empresa.tip }" *ngIf="empresa.responsable">Total: {{ total | divisa }}</p>
-                                            <p class="h6 fw-bold mb-0" *ngIf="empresa.tip"> Propina del {{empresa.propina}}%: {{ total * (empresa.propina/100) | divisa }}</p>
-                                            <p class="h4 fw-bold mb-0" *ngIf="empresa.tip"> Total + Propina: {{ total * ((empresa.propina/100) + 1) | divisa }}</p>
+                                            <p class="fw-bold mb-0" [ngClass]="{'h4': empresa.tip === false, 'h6': empresa.tip }" *ngIf="!empresa.responsable">Total: {{ (total - totalTip ) | divisa }}</p>
+                                            <p class="fw-bold mb-0" [ngClass]="{'h4': empresa.tip === false, 'h6': empresa.tip }" *ngIf="empresa.responsable">Total: {{ (total - totalTip ) | divisa }}</p>
+                                            <p class="h6 fw-bold mb-0" *ngIf="empresa.tip"> Propina del {{empresa.propina}}%: {{ totalTip | divisa }}</p>
+                                            <p class="h4 fw-bold mb-0" *ngIf="empresa.tip"> Total + Propina: {{ total | divisa }}</p>
+                                            <p class="h4 fw-bold mb-0" *ngIf="empresa.usd"> Total USD: {{ (total / empresa.currencyusd ) | number : '1.2-2' }}</p>
+                                            <p class="h4 fw-bold mb-0" *ngIf="empresa.bs"> Total BS: {{ (total / empresa.currencybs ) | number : '1.2-2' }}</p>
                                         </div>
                                     </td>
                                 </tr>

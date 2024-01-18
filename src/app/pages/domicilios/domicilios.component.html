@@ -14,3 +14,235 @@
 <!-- =========================================================================
     HEADER 
 ========================================================================= -->
+
+<div class="container-fluid my-4">
+
+    <!-- TABLA DE DOMICILIOS -->
+    <div class="card">
+        <div class="card-body">
+
+            <div class="row m-t-40">
+                <!-- TOTAL -->
+                <div class="col-md-6 col-lg-3 col-xlg-3 cursor" (click)="searchEstado('total')">
+                    <div class="card">
+                        <div class="box bg-primary text-center">
+                            <h1 class="font-light text-white"> {{ total }} </h1>
+                            <h6 class="text-white">Total</h6>
+                        </div>
+                    </div>
+                </div>
+                <!-- PENDIENTES -->
+                <div class="col-md-6 col-lg-3 col-xlg-3 cursor" (click)="searchEstado('Pendiente')">
+                    <div class="card">
+                        <div class="box bg-warning text-center">
+                            <h1 class="font-light text-white"> {{ pendientes }} </h1>
+                            <h6 class="text-white">Pendientes</h6>
+                        </div>
+                    </div>
+                </div>
+                <!-- ENVIANDO -->
+                <div class="col-md-6 col-lg-3 col-xlg-3 cursor" (click)="searchEstado('Enviando')">
+                    <div class="card">
+                        <div class="box bg-info text-center">
+                            <h1 class="font-light text-white"> {{ enviandos }} </h1>
+                            <h6 class="text-white">Enviando</h6>
+                        </div>
+                    </div>
+                </div>
+                <!-- ENTREGADOS -->
+                <div class="col-md-6 col-lg-3 col-xlg-3 cursor" (click)="searchEstado('Entregado')">
+                    <div class="card">
+                        <div class="box bg-success text-center">
+                            <h1 class="font-light text-white"> {{ entregados }} </h1>
+                            <h6 class="text-white">Entregados</h6>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column -->
+            </div>
+
+            <div class="d-flex justify-content-between flex-wrap mt-1">
+
+                <div class="my-2">
+
+                    <label for="mostrar" class="me-2">Mostrar: </label>
+                    <select name="" id="" [value]="query.hasta" #mostrar (change)="limiteChange(mostrar.value)">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="250">250</option>
+                        <option value="500">500</option>
+                    </select>
+
+                </div>
+            </div>
+
+            <div class="table-responsive ">
+                <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                    <thead class="border-bottom ">
+                        <tr>
+                            <th class="text-muted " scope="col">Cliente</th>
+                            <th class="text-muted " scope="col">Telefono</th>
+                            <th class="text-muted " scope="col">Estado</th>
+                            <th class="text-muted " scope="col">Fecha</th>
+                            <th class="text-muted " scope="col">Pago</th>
+                            <th class="text-muted " scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr *ngIf="domicilios.length === 0" class="text-center ">
+                            <th colspan="13" class="py-4">
+                                <h4 class="text-muted"> No hay registros de domicilios...</h4>
+                            </th>
+                        </tr>
+
+                        <tr class="trHover" *ngFor="let dom of domicilios; let i = index">
+                            <th scope="row ">{{ dom.nombres }}</th>
+                            <td>{{ dom.telefono}}</td>
+                            <td>{{ dom.estado }}</td>
+                            <td>{{ dom.fecha | date: 'short' }}</td>
+                            <td>
+                                <span class="badge bg-success" *ngIf="dom.pago">Pagado</span>
+                                <span class="badge bg-dark" *ngIf="!dom.pago">Sin pago</span>
+                            </td>
+                            <td>
+                                <button type="button" (click)="selectDom(dom)" class="btn btn-link p-1 text-primary" data-bs-toggle="modal" data-bs-target="#verDom">
+                                    <i class="bi bi-box-arrow-up-right"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+
+                            <td colspan="8">
+
+                                <div class="btn-group" role="group" aria-label="First group">
+                                    <button [disabled]="query.desde === 0" (click)="cambiarPagina(query.hasta * -1)" type="button" class="btn btn-dark text-white">Atras</button>
+                                    <button [disabled]="( query.desde + query.hasta ) >= total" (click)="cambiarPagina(query.hasta)" type="button" class="btn btn-dark text-white">Siguiente</button>
+                                </div>
+
+                            </td>
+                        </tr>
+                    </tfoot>
+
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+    <!-- TABLA DE DOMICILIOS -->
+
+</div>
+
+<!-- =========================================================================
+    ACTUALIZAR MESA 
+========================================================================= -->
+<div class="modal fade" id="verDom" tabindex="-1" aria-labelledby="verDomModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="verDomModal"><i class="bi-collection" style="font-size: 1rem"></i> Domicilio</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <ng-container *ngIf="domSelect">
+
+                    <ng-container>
+                        <agm-map [latitude]="domSelect.ubicacion.lat" [longitude]="domSelect.ubicacion.lng" [zoom]="17">
+                            <!-- MARKER OR POINT -->
+                            <agm-marker [latitude]="domSelect.ubicacion.lat" [longitude]="domSelect.ubicacion.lng"> </agm-marker>
+                        </agm-map>
+                    </ng-container>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-wrap justify-content-between align-item-center ">
+
+                                <div>
+                                    <p class="mb-0 fs-3"> {{ domSelect.estado }} </p>
+                                </div>
+                                <div>
+                                    <select (change)="changeEstado(sEst.value)" #sEst class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" [value]="domSelect.estado">
+                                        <option value="Pendiente">Pendiente</option>
+                                        <option value="Procesando">Procesando</option>
+                                        <option value="Enviando">Enviando</option>
+                                        <option value="Entregado">Entregado</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card card-body printableArea">
+                        <!-- <h3><b>PEDIDO</b> <span class="pull-right"># {{pedido.pedido}} </span></h3> -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="pull-right text-right">
+                                    <address>
+                                        <h3>Cliente o Razón Social,</h3>
+                                        <h4 class="font-bold"> {{ domSelect.nombres }} </h4>
+                                        <p class="m-t-30">
+                                            <b>Fecha :</b> <i class="fa fa-calendar"></i> {{ domSelect.fecha | date: 'short' }}
+                                        </p>
+                                    </address>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="table-responsive m-t-40" style="clear: both;">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">#</th>
+                                                <th>Producto</th>
+                                                <th class="text-right">Cantidad</th>
+                                                <th class="text-right">Precio</th>
+                                                <th class="text-right">Monto</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of domSelect.carrito; let i = index">
+                                                <td class="text-center"> {{ i + 1 }} </td>
+                                                <td> {{ item.product.name }} </td>
+                                                <td class="text-right"> {{ item.qty }} </td>
+                                                <td class="text-right"> {{ item.monto | currency: 'COP' }} </td>
+                                                <td class="text-right"> {{ item.monto * item.qty | currency: 'COP' }} </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="pull-right m-t-30 text-right">
+                                    <p>Sub-Total: {{ amountS | currency:'COP' }} </p>
+                                    <hr>
+                                    <h3><b>Total :</b> {{ amountS | currency:'COP' }} </h3>
+                                </div>
+                                <div class="clearfix"></div>
+                                <hr>
+                                <!-- <div class="text-right">
+                                    <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#facturar"> 
+                                        <span *ngIf="!pedido.invoice">Cobrar</span>
+                                        <span *ngIf="pedido.invoice">Factura</span>                             
+                                    </button>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+
+                </ng-container>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

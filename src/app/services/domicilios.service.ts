@@ -41,7 +41,7 @@ export class DomiciliosService {
    *  LOAD PARQUEO
   ==================================================================== */
   loadDomicilios(query: any){    
-    return this.http.post<{ok: boolean, total: number, domicilios: Domicilio[]}>(`${base_url}/domicilios/query`, query, this.headers);
+    return this.http.post<{ok: boolean, total: number, domicilios: Domicilio[], pendientes: number, enviandos: number, entregados: number}>(`${base_url}/domicilios/query`, query, this.headers);
   }
 
   /** ================================================================

@@ -64,6 +64,7 @@
                                     <tr [ngClass]=" { 'table-danger': item.estado === 'Pendiente', 'table-warning': item.estado === 'Preparando', 'table-success': item.estado === 'Entregado'}">
                                         <td>
                                             <p class="mb-0 lh-1"> <small class="lh-1 fw-bold">01 - {{item.product.name}}  </small></p>
+                                            <small> {{ item.fecha | date:'short' }} </small>
 
                                             <ng-container *ngFor="let ingrediente of item.ingredientes">
                                                 <small *ngIf="!ingrediente.status" class="text-danger me-1"> X {{ ingrediente.name }} </small>
@@ -179,7 +180,7 @@
                                                 <tr style="color: black;" *ngIf="item.estado === 'pendiente'">
                                                     <td>
                                                         <h6 class="mb-0 lh-1 text-capitalize fs-5" style="color: #000;"> <span class="lh-1">01 - {{item.product.name}}  </span></h6>
-
+                                                        <small> {{ item.fecha | date:'short' }} </small>
                                                         <!-- <span *ngFor="let ingrediente of item.ingredientes" class="badge rounded-pill bg-light text-primary fw-normal"> {{ ingrediente.name }} </span> -->
                                                         <ng-container *ngFor="let ingrediente of item.ingredientes">
                                                             <small *ngIf="!ingrediente.status" class="me-1"> X {{ ingrediente.name }} </small>
@@ -199,7 +200,7 @@
                                     </table>
 
                                     <!-- NOTAS -->
-                                    <div class="col-10">
+                                    <div class="col-10" *ngIf="comanda?.nota">
                                         <p class="fw-bold mb-1">NOTAS:</p>
                                         <p class="mb-0 text-break" *ngFor="let nota of comanda?.nota">
                                             - {{ nota.nota }}

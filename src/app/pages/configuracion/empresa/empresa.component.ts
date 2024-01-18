@@ -47,7 +47,7 @@ export class EmpresaComponent implements OnInit {
           
           this.comisiones = datos.comisiones || [];
           
-          const { tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas, commissions, comisiones, fruver, moneda, decimal, usd,  currencyusd, cop, currencycop, basculaimp, basculatype, basculacode, electronica, min, alquileres, impresora, parqueadero } = datos;
+          const { tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas, commissions, comisiones, fruver, moneda, decimal, usd,  currencyusd, cop, currencycop, basculaimp, basculatype, basculacode, electronica, min, alquileres, impresora, parqueadero, bs, currencybs } = datos;
 
           let tipoImpuesto = '';
 
@@ -86,6 +86,8 @@ export class EmpresaComponent implements OnInit {
               usd: usd || false,  
               currencyusd: currencyusd || 0, 
               cop: cop || false, 
+              bs: bs || false, 
+              currencybs: currencybs || 0,
               currencycop: currencycop || 0,
               basculaimp: basculaimp || false,
               basculatype: basculatype ||'precio',
@@ -134,7 +136,9 @@ export class EmpresaComponent implements OnInit {
     usd: false,
     currencyusd: 0,
     cop: false,
+    bs: false,
     currencycop: 0,
+    currencybs: 0,
     basculaimp: false,
     basculatype: 'precio',
     basculacode: '2000',

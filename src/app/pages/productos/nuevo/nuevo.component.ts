@@ -67,6 +67,7 @@ export class NuevoComponent implements OnInit {
   arrayBuffer:any;
   file:File;
   public totalItems: number = 0;
+  public sendExcel: boolean = false;
 
   public products: any[] = [];
 
@@ -80,6 +81,9 @@ export class NuevoComponent implements OnInit {
       Swal.fire('Atención', 'No has seleccionado ningun archivo de excel', 'info');
       return;
     }
+
+    this.sendExcel = true;
+
 
     let fileReader = new FileReader();
       fileReader.onload = (e) => {
@@ -96,95 +100,18 @@ export class NuevoComponent implements OnInit {
           var worksheet = workbook.Sheets[first_sheet_name];
           
           this.products = XLSX.utils.sheet_to_json(worksheet,{raw:true});
-
-          this.products.forEach( async product => {
-
-            this.totalItems += 1 ;
-
-            // OBTENER GANANCIA
-            let gain = 0;
-            let porcent = 0;
-            
-            porcent = ( product.cost * 100 )/product.price;
-            
-            gain = (porcent - 100) * -1;
-            gain = Math.round(gain*100)/100;
-            
-            product.gain = gain;
-            // OBTENER GANANCIA
-
-            // EXPIRATION
-            if (product.expiration) {
-              product.expiration = new Date(product.expiration);              
-            }else{
-              product.expiration = null;
-            }
-
-            // IMPUESTO
-            product.tax = false;
-            product.impuesto = [{
-              name: '',
-              valor: 0
-            }]
-            // IMPUESTO
-
-            // GUARDAR PRODUCTOS
-
-            if( this.totalItems === 200 || 
-              this.totalItems === 500 || 
-              this.totalItems === 800 ||
-              this.totalItems === 1000 ||
-              this.totalItems === 1500 ||
-              this.totalItems === 2000 ||
-              this.totalItems === 2500 ||
-              this.totalItems === 3000 ||
-              this.totalItems === 3500 ||
-              this.totalItems === 4000 ||
-              this.totalItems === 4500 ||
-              this.totalItems === 5000 
-            ){
-            setTimeout( async() => {
-
-                console.log(`Pausa de 30seg items ${this.totalItems}`);
-                Swal.fire('Pausa', `Espera cargando archivos, total cargados ${this.totalItems}`, 'info');
-
-                await this.productService.createProduct(product)
-                .subscribe( resp => {
-
-                  if( this.products.length === this.totalItems ){
-
-                    Swal.fire('Estupendo', `Se han creado un total de ${this.totalItems} articulos nuevos`, 'success');
-                    // this.router.navigateByUrl('/dashboard/productos');
-
-                  }
-                  
-
-                },(err) => { Swal.fire('Error', err.error.msg, 'error'); });
-              
-              }, 30000);
-          }else{
-
-            await this.productService.createProduct(product)
-                .subscribe( resp => {
-
-                  if( this.products.length === this.totalItems ){
-
-                    Swal.fire('Estupendo', `Se han creado un total de ${this.totalItems} articulos nuevos`, 'success');
-                    // this.router.navigateByUrl('/dashboard/productos');
-
-                  }
-                  
-
-                },(err) => { Swal.fire('Error', err.error.msg, 'error'); });
-
-          }
-
-            
-
-
-            // FIN FOREACH
-          });
           
+          this.productService.createProductExcel({products: this.products})
+              .subscribe( ({total}) => {
+
+                Swal.fire('Estupendo', `Se crearon ${total} productos exitosamente!`, 'success');                
+                this.sendExcel = false;
+
+              }, (err) => {
+                this.sendExcel = false;
+                console.log(err);
+                Swal.fire('Error', err.error.msg, 'error');                
+              })
 
       }
       
@@ -349,6 +276,7 @@ export class NuevoComponent implements OnInit {
     stock: ['' || 0],
     min: ['' || 0],
     max: ['' || 0],
+    mayoreo: ['' || 0],
     expiration: [''],
     visibility: [true],
     comanda: [false],
@@ -400,6 +328,7 @@ export class NuevoComponent implements OnInit {
               department: 0,
               stock: 0,
               min: 0,
+              mayoreo: 0,
               max: 0,
               expiration: '',
               tax: false,

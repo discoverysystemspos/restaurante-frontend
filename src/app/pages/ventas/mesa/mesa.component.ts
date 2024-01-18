@@ -1213,7 +1213,7 @@ export class MesaComponent implements OnInit {
     
     tip = Number(tip);
 
-    if (tip > 0) {
+    if (tip >= 0) {
 
       this.total = 0;
       this.base = 0;
@@ -1469,7 +1469,7 @@ export class MesaComponent implements OnInit {
     // OLD
     name: '',
     cedula: ['', [Validators.required, Validators.minLength(6)]],
-    email: ['', [Validators.email, Validators.minLength(7)]],
+    email: [''],
     phone: '',
     city: '',
     address: ''
@@ -1873,12 +1873,29 @@ export class MesaComponent implements OnInit {
   })
 
   /** ================================================================
+   *  AGREGAR SALDO
+  ==================================================================== */
+  @ViewChild('montoAddd') montoAddd: ElementRef;
+  @ViewChild('descripcionAddd') descripcionAddd: ElementRef;
+  @ViewChildren('cantP') cantP: QueryList<any>;
+  public saldo: number = 0;
+  addSaldo(price: any, qty: any){
+
+    qty = Number(qty);
+    this.saldo += price*qty;   
+
+    this.montoAddd.nativeElement.value = this.saldo;   
+
+  }
+
+  /** ================================================================
    *  AGREGAR METODO DE PAGO
   ==================================================================== */
   @ViewChild('descripcionAdd') descripcionAdd: ElementRef;
   @ViewChild('montoAdd') montoAdd: ElementRef;
   public vueltos: number = 0;
   public pago: number = 0;
+  
 
   focusMonto(){
     this.montoAdd.nativeElement.value = this.total;  
@@ -1889,6 +1906,15 @@ export class MesaComponent implements OnInit {
     
     // Setear a number
     // amount = Number(amount);    
+
+    this.saldo = 0;
+    this.descripcionAddd.nativeElement.value = '';
+    this.montoAddd.nativeElement.value = '';
+
+    this.cantP.forEach( itt => {      
+      itt.nativeElement.value = '';      
+    })
+    
 
     if (credito) {
       this.credit = true;
@@ -2075,6 +2101,7 @@ export class MesaComponent implements OnInit {
 
     if (this.empresa.tip) {
       this.invoiceForm.value.tip = Number(this.tipIn.nativeElement.value);
+      this.invoiceForm.value.amount = this.total - this.totalTip;
     }
     
     try {

@@ -224,6 +224,11 @@ export class ParqueaderoComponent implements OnInit {
     
     let subtotal:number = parseFloat(((total *100)/119).toFixed(2));
     let iva:number = parseFloat((total-subtotal).toFixed(2));
+
+    console.log('tiempo: ', diff);
+    console.log('Subtotal: ', subtotal);
+    console.log('iva: ', iva);
+    console.log('total: ', total);
     
     Swal.fire({
       title: "Estas seguro del checkout de este vehiculo?",
@@ -243,6 +248,8 @@ export class ParqueaderoComponent implements OnInit {
           iva,
           estado: 'Finalizado',
         }
+
+        return
         
         this.parqueoService.updateParqueo(formData, parq.parqid)
             .subscribe( ({ parqueo }) => {

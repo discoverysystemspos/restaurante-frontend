@@ -56,6 +56,13 @@ export class ProductService {
   }
 
   /** ================================================================
+   *   CREATE PRODUCT
+  ==================================================================== */
+  createProductExcel(formData:any){    
+    return this.http.post<{ok: boolean, total: number}>(`${base_url}/products/create/excel`, formData, this.headers);
+  }
+
+  /** ================================================================
    *   CARGAR PRODUCTOS
   ==================================================================== */
   cargarProductos(endPoitn: string){

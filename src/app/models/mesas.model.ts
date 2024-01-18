@@ -19,6 +19,7 @@ export interface _comanda {
     nota: string;
     estado: string;
     _id?: string;
+    fecha?: Date;
 }
 
 export class Mesa {    

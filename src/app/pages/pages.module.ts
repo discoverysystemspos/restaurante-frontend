@@ -58,6 +58,7 @@ import { ParqueaderoComponent } from './configuracion/parqueadero/parqueadero.co
 import { NgxBarcodeModule } from 'ngx-barcode';
 import { ReportesComponent } from './configuracion/parqueadero/reportes/reportes.component';
 import { DomiciliosComponent } from './domicilios/domicilios.component';
+import { AgmCoreModule } from '@agm/core';
 
 
 
@@ -124,7 +125,10 @@ import { DomiciliosComponent } from './domicilios/domicilios.component';
     PipesModule,
     NgxPrinterModule.forRoot({printOpenWindow: true}),
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
-    NgxBarcodeModule
+    NgxBarcodeModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyAn1G1jlkmzrY2pA1_Rd2-fsJ3Csp9dBDM'
+    })
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA]
 })

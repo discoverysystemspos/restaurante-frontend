@@ -91,19 +91,6 @@ export class ComandaComponent implements OnInit {
 
     });
 
-    // let coman = this.comanda.comanda;
-
-    // for (let i = 0; i < coman.length; i++) {
-      
-    //   if ( coman[i].estado === 'pendiente' ) {
-        
-    //     this.cambiarEstado(coman, coman[i].product, 'Preparando', this.comanda);
-
-    //   }
-      
-    // }
-
-
   }
 
   /** ================================================================
@@ -115,8 +102,7 @@ export class ComandaComponent implements OnInit {
     this.sinResultados = true;
 
     this.mesasService.loadMesasComanda()
-        .subscribe(({ total, mesas }) => {    
-
+        .subscribe(({ total, mesas }) => {
           this.totalMesas = total;
           this.listaMesas = mesas;   
         });    

@@ -77,6 +77,8 @@ export class ProductosComponent implements OnInit {
 
           this.impuestos = taxes;
 
+          
+
         });
 
   }
@@ -472,11 +474,9 @@ export class ProductosComponent implements OnInit {
   /** ================================================================
    *   ACTUALIZAR CON EXCEL TODOS
   ==================================================================== */
-
    public arrayExceltUpdate:any;
    public excelUpdate:File;
-   public totalItems: number = 0;
- 
+   public totalItems: number = 0; 
    public products: any[] = [];
  
    selectFileExcel(event: any){
