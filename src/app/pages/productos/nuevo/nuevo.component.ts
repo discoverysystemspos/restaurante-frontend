@@ -106,6 +106,7 @@ export class NuevoComponent implements OnInit {
 
                 Swal.fire('Estupendo', `Se crearon ${total} productos exitosamente!`, 'success');                
                 this.sendExcel = false;
+                location.reload();
 
               }, (err) => {
                 this.sendExcel = false;

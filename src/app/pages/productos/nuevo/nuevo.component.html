@@ -52,7 +52,14 @@
                     <input type="file" class="form-control form-control-sm" (change)="incomingfile($event)" placeholder="Importar" accept=".xlsx">
                 </div>
                 <div class="col-auto">
-                    <button type="button" class="btn btn-sm btnW btn-primary waves-effect waves-light" (click)="Upload()">Importar</button>
+                    <button type="button" [disabled]="sendExcel" class="btn btn-sm btnW btn-primary waves-effect waves-light" (click)="Upload()">
+                        <span *ngIf="!sendExcel">
+                            Importar
+                        </span>
+                        <span *ngIf="sendExcel">
+                            Cargando...
+                        </span>
+                    </button>
                 </div>
             </div>
 
