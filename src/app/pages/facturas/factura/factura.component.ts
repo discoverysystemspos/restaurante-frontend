@@ -169,8 +169,8 @@ export class FacturaComponent implements OnInit {
   /** ================================================================
    *   IMPRIMIR
   ==================================================================== */
-  printDiv() {
-    this.printerService.printDiv('printDiv');
+  printDiv(div: string) {
+    this.printerService.printDiv(div);
   }
 
   /** ================================================================

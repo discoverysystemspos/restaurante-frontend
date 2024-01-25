@@ -39,7 +39,7 @@
                     <i class="bi-printer"></i> Imprimir
                 </button>
 
-                <button *ngIf="!empresa.printpos" (click)="printDiv()" type="button" class="btn btn-outline-primary btn-sm mx-1 my-2"> 
+                <button *ngIf="!empresa.printpos" (click)="printDiv('printDiv')" type="button" class="btn btn-outline-primary btn-sm mx-1 my-2"> 
                     <i class="bi-printer"></i> Imprimir
                 </button>
             </ng-container>
@@ -266,92 +266,105 @@
 
                 <!-- TABLE PAGOS-->
                 <div class="shadow-lg p-3 mb-5 rounded bg-white" style="max-height: 400px; height: auto;">
-                    <h5 class="">
-                        Pagos
-                    </h5>
-                    <!-- CARGANDO -->
-                    <div *ngIf="cargandoAgotados">
-                        <div class="text-center p-4">
-                            <div class="spinner-grow text-secondary" role="status">
-                                <span class="visually-hidden">Loading...</span>
+                    <div class="d-flex justify-content-center">
+                        <div id="printPagos" style="color: #000;" [ngStyle]="{'max-width': empresa.impresora === 58 ? '14rem' : '24rem'}">
+                            <div class="d-flex justify-content-between">
+                                <h5 class="">
+                                    Pagos
+                                </h5>
+                                <h5 class="">
+                                    #{{ factura.invoice }}
+                                </h5>
+                            </div>
+                            <!-- CARGANDO -->
+                            <div *ngIf="cargandoAgotados">
+                                <div class="text-center p-4">
+                                    <div class="spinner-grow text-secondary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                                <small class="text-muted">cargando...</small>
+                            </div>
+                            <!-- CARGANDO -->
+
+                            <div *ngIf="!cargandoAgotados" style="max-height: 100vh">
+
+                                <div class="table-responsive " class="overflow-auto" style="max-height: 200px;">
+                                    <table class="table table-borderless table-hover table-sm animated fadeIn ">
+                                        <thead class="border-bottom ">
+                                            <tr style="color: #000;">
+                                                <th scope="col">Descripcion</th>
+                                                <th scope="col">Tipo</th>
+                                                <th scope="col">Monto</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+
+                                            <tr style="color: #000;">
+                                                <td class="fw-bold">
+                                                    Total de la factura
+                                                </td>
+                                                <td class="fw-normal">
+                                                    --
+                                                </td>
+                                                <td class="fw-bold"> {{ factura.amount | divisa }} </td>
+                                            </tr>
+
+                                            <tr class="trHover" *ngFor="let payA of factura.paymentsAlquiler; let i = index">
+                                                <td class="fw-normal">
+                                                    <span *ngIf="payA.description !== ''">{{ payA.description }}</span>
+                                                    <span *ngIf="payA.description === ''">Sin descripción</span>
+                                                </td>
+                                                <td class="fw-normal">{{ payA.type }}</td>
+                                                <td class="fw-normal">{{ payA.amount | divisa }} </td>
+                                            </tr>
+
+                                            <tr class="trHover" *ngFor="let pay of payments; let i = index" style="color: #000;">
+                                                <td class="fw-normal">
+                                                    <span *ngIf="pay.description !== ''">{{ pay.description }} </span>
+                                                    <span *ngIf="pay.description === ''">Sin descripción</span>
+                                                </td>
+                                                <td class="fw-normal">{{ pay.type }}</td>
+                                                <td class="fw-normal">{{ pay.amount | divisa }} </td>
+                                            </tr>
+
+                                            <tr class="trHover" *ngFor="let pay of paymentsCredit; let i = index" style="color: #000;">
+                                                <td class="fw-normal">
+                                                    <span *ngIf="pay.description !== ''">{{ pay.description }} {{ pay.fecha | date: 'short' }} </span>
+                                                    <span *ngIf="pay.description === ''">Sin descripción</span>
+                                                </td>
+                                                <td class="fw-normal">{{ pay.type }}</td>
+                                                <td class="fw-normal">{{ pay.amount | divisa }} </td>
+                                            </tr>
+
+                                        </tbody>
+                                        <tfoot>
+                                            <tr class="border-top" style="color: #000;">
+                                                <td colspan="2"> <span class="fw-bold"> Restante </span></td>
+                                                <td> <span class="fw-bold">{{ ( factura.amount - totalPagos) | divisa }}</span> </td>
+                                            </tr>
+                                        </tfoot>
+
+                                    </table>
+
+                                </div>
+
+                                <!-- BTN SIGUIENTE Y ANTERIOR -->
+                                <div class="row">
+                                    <div class="col" style="color: #000;">
+                                        <small>Total de pagos: ({{payments.length + paymentsCredit.length}})</small>
+                                    </div>
+                                </div>
+                                <!-- BTN SIGUIENTE Y ANTERIOR -->
+
                             </div>
                         </div>
-                        <small class="text-muted">cargando...</small>
                     </div>
-                    <!-- CARGANDO -->
 
-                    <div *ngIf="!cargandoAgotados" style="max-height: 100vh">
-
-                        <div class="table-responsive " class="overflow-auto" style="max-height: 200px;">
-                            <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
-                                <thead class="border-bottom ">
-                                    <tr>
-                                        <th class="text-muted " scope="col ">Descripcion</th>
-                                        <th class="text-muted " scope="col ">Tipo</th>
-                                        <th class="text-muted " scope="col ">Monto</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-
-                                    <tr class="text-danger">
-                                        <td>
-                                            Total de la factura
-                                        </td>
-                                        <td>
-                                            --
-                                        </td>
-                                        <td> {{ factura.amount | divisa }} </td>
-                                    </tr>
-
-                                    <tr class="trHover" *ngFor="let payA of factura.paymentsAlquiler; let i = index">
-                                        <td>
-                                            <span *ngIf="payA.description !== ''">{{ payA.description }}</span>
-                                            <span *ngIf="payA.description === ''">Sin descripción</span>
-                                        </td>
-                                        <td>{{ payA.type }}</td>
-                                        <td>{{ payA.amount | divisa }} </td>
-                                    </tr>
-
-                                    <tr class="trHover" *ngFor="let pay of payments; let i = index">
-                                        <td>
-                                            <span *ngIf="pay.description !== ''">{{ pay.description }}</span>
-                                            <span *ngIf="pay.description === ''">Sin descripción</span>
-                                        </td>
-                                        <td>{{ pay.type }}</td>
-                                        <td>{{ pay.amount | divisa }} </td>
-                                    </tr>
-
-                                    <tr class="trHover" *ngFor="let pay of paymentsCredit; let i = index">
-                                        <td>
-                                            <span *ngIf="pay.description !== ''">{{ pay.description }}</span>
-                                            <span *ngIf="pay.description === ''">Sin descripción</span>
-                                        </td>
-                                        <td>{{ pay.type }}</td>
-                                        <td>{{ pay.amount | divisa }} </td>
-                                    </tr>
-
-                                </tbody>
-                                <tfoot>
-                                    <tr class="border-top">
-                                        <td colspan="2"> <span class="fw-bold"> Restante </span></td>
-                                        <td> <span class="fw-bold">{{ ( factura.amount - totalPagos) | divisa }}</span> </td>
-                                    </tr>
-                                </tfoot>
-
-                            </table>
-
-                        </div>
-
-                        <!-- BTN SIGUIENTE Y ANTERIOR -->
-                        <div class="row">
-                            <div class="col">
-                                <small class="text-muted">Total de pagos: ({{payments.length + paymentsCredit.length}})</small>
-                            </div>
-                        </div>
-                        <!-- BTN SIGUIENTE Y ANTERIOR -->
-
-                    </div>
+                    <button (click)="printDiv('printPagos')" type="button" class="btn btn-outline-primary btn-sm w-100"> 
+                        <i class="bi-printer"></i> Imprimir
+                    </button>
                 </div>
                 <!-- TABLE PAGOS-->
 

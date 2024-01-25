@@ -2,7 +2,8 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.ss
 /**
-  base_url: 'https://mundocellparts.simids.com.co/api',
+  base_url: 'https://admin.franciastore.com/api',
+  base_url: 'https://tsodistribuidora.simids.com.co/api',
   base_url: 'https://noanoa.discoverysystemspos.com/api',
   base_url: 'http://localhost:3000/api',
   base_url: 'http://192.168.1.150:3000/api',

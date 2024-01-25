@@ -84,7 +84,10 @@
                             <small *ngIf="item.product.tax"> {{ item.product.taxid.valor }}% </small>
                             <small *ngIf="!item.product.tax"> 0% </small>
                         </td>
-                        <td class="py-0"> <small class="text-wrap"> {{ item.qty * item.price | divisa }} </small> </td>
+                        <td class="py-0">
+                            <small *ngIf="!empresa.impuesto" class="text-wrap"> {{ item.qty * item.price | divisa }} </small>
+                            <small *ngIf="empresa.impuesto" class="text-wrap"> {{ (item.qty * item.price) + ((item.qty * item.price) * (item.product.taxid.valor/100)) | divisa }} </small>
+                        </td>
                     </tr>
 
                     <tr class="" style="border-top: 2px solid black;">

@@ -154,7 +154,7 @@ export class CreditoComponent implements OnInit {
             this.totalCost += factura.cost;
             this.totalIva += factura.iva;
 
-            for (const pago of factura.payments) {              
+            for (const pago of factura.paymentsCredit) {              
               this.totalAbonado += pago.amount;
             }
 
@@ -335,11 +335,13 @@ export class CreditoComponent implements OnInit {
       impuesto.total = 0;
     });
 
-    this.searchService.search('invoice', client)
-        .subscribe( ({resultados}) => {
+    this.invoiceService.loadInvoiceCreditClient(client, true)
+        .subscribe( (invoices) => {
+
+          console.log(invoices);
 
           // COMPROBAR SI EXISTEN RESULTADOS
-          if (resultados.length === 0) {
+          if (invoices.length === 0) {
             this.sinResultados = false;
             this.cargando = false;
             this.facturas = [];
@@ -347,8 +349,8 @@ export class CreditoComponent implements OnInit {
             return;                
           }
           
-          this.facturas = resultados;
-          this.totalFacturas = resultados.length;
+          this.facturas = invoices;
+          this.totalFacturas = invoices.length;
           this.cargando = false;
 
           this.totalAbonado = 0;
@@ -358,7 +360,7 @@ export class CreditoComponent implements OnInit {
             
             this.totalAmount += factura.amount;
 
-            for (const pago of factura.payments) {              
+            for (const pago of factura.paymentsCredit) {              
               this.totalAbonado += pago.amount;
             }
 

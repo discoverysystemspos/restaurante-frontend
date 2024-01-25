@@ -127,7 +127,7 @@ export class ProductoComponent implements OnInit {
           let impuestoT = '';
           let valorT = 0;
           
-          if (expiration !==  null || expiration ) {            
+          if (expiration) {            
             expiracion = expiration.toString().slice(0,10);          
           }
 
