@@ -3,6 +3,9 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import Swal from 'sweetalert2';
 
+// EXCEL
+import * as XLSX from 'xlsx';
+
 // MODELS
 import { Client } from 'src/app/models/client.model';
 
@@ -418,7 +421,169 @@ export class ClientesComponent implements OnInit {
           this.creditos = invoices;          
 
         });
-    
+  }
+
+  /** ================================================================
+   *   IMPORTAR EXCEL
+  ==================================================================== */
+  arrayBuffer:any;
+  file:File;
+  public totalItems: number = 0;
+  public sendExcel: boolean = false;
+
+  public clients: any[] = [];
+
+  incomingfile(event: any){
+    this.file= event.target.files[0]; 
+  }
+
+  uploadExcel() {
+
+    if (!this.file) {
+      Swal.fire('Atención', 'No has seleccionado ningun archivo de excel', 'info');
+      return;
+    }
+
+    this.sendExcel = true;
+
+
+    let fileReader = new FileReader();
+      fileReader.onload = (e) => {
+
+          this.arrayBuffer = fileReader.result;
+          var data = new Uint8Array(this.arrayBuffer);
+          var arr = new Array();
+
+          for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+          
+          var bstr = arr.join("");
+          var workbook = XLSX.read(bstr, {type:"binary"});
+          var first_sheet_name = workbook.SheetNames[0];
+          var worksheet = workbook.Sheets[first_sheet_name];
+          
+          const clientsArr: any[] = XLSX.utils.sheet_to_json(worksheet,{raw:true});
+
+          for (const client of clientsArr) {
+
+            if (client.party_type === 'PERSONA_NATURAL') {
+              client.name = `${client.nombre} ${client.apellido}`;
+              client.first_name = client.nombre;
+              client.family_name = client.apellido;
+            }else if (client.party_type === 'PERSONA_JURIDICA') {
+              client.company_name = client.nombre;
+              client.name = client.nombre;
+            }
+
+            this.http.get('assets/json/ciudades.json')
+            .subscribe( (data: any) => {          
+              this.cities = data;          
+            })
+
+            let data = this.cities.find( city => client.city === city.ciudad)
+
+            client.department = data.departamento;
+            client.codigodepartamento = data['codigo departamento'];
+            client.codigociudad = data.codigo;
+
+            this.clients.push(client);
+
+          }
+          
+          this.clientService.createClientExcel({clients: this.clients})
+              .subscribe( ({total}) => {
+
+                Swal.fire('Estupendo', `Se guardaron ${total} clientes exitosamente!`, 'success');                
+                this.sendExcel = false;
+                location.reload();
+
+              }, (err) => {
+                this.sendExcel = false;
+                console.log(err);
+                Swal.fire('Error', err.error.msg, 'error');                
+              })
+
+      }
+      
+      fileReader.readAsArrayBuffer(this.file);
+  };
+
+  /** ================================================================
+   *   PLANTILLA
+  ==================================================================== */
+  plantilla(){
+
+    let products = [{
+      nombre: 'Pedro',
+      apellido: 'Perez',
+      party_type: 'PERSONA_NATURAL',
+      tax_level_code: 'NO_RESPONSABLE_DE_IVA',
+      party_identification_type: 'CC',
+      cedula: '1111111',
+      city: 'BUCARAMANGA',
+      address: 'calle 22 #35',
+      phone: '22222222',
+      email: 'pedro@gmail.com',
+      },
+      {
+        nombre: 'drogueria aaa',
+        apellido: '',
+        party_type: 'PERSONA_JURIDICA',
+        tax_level_code: 'NO_RESPONSABLE_DE_IVA',
+        party_identification_type: 'NIT',
+        cedula: '3333333333',
+        city: 'CUCUTA',
+        address: 'el bosque',
+        phone: '4444444444',
+        email: 'drogueria@gmail.com',
+      }
+    ];
+
+    /* generate a worksheet */
+    var ws = XLSX.utils.json_to_sheet(products);
+
+    /* add to workbook */
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Clientes");
+
+    /* title */
+    let title = 'clientes.xls';
+
+    /* write workbook and force a download */
+    XLSX.writeFile(wb, title);
+
+  }
+
+  /** ================================================================
+   *   EXPORT EXCEL
+  ==================================================================== */
+  exportExcel(){
+
+    let query = {
+      desde: 0,
+      hasta: 1000000,
+    }
+
+    this.clientService.loadClientsQuery(query)
+        .subscribe( ({clients }) => {
+
+          /* generate a worksheet */
+          var ws = XLSX.utils.json_to_sheet(clients);
+      
+          /* add to workbook */
+          var wb = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(wb, ws, "Clientes");
+      
+          /* title */
+          let title = 'clients.xls';
+      
+          /* write workbook and force a download */
+          XLSX.writeFile(wb, title);
+          
+
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');          
+        })
 
   }
   

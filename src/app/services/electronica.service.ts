@@ -114,10 +114,10 @@ export class ElectronicaService {
 
     let items: Item[] = [];
 
-     for (const product of invoice.products)  {
+     for (const product of invoice.products)  {      
 
       // let impuesto = impuestos.filter( tax => tax._id === product.product.taxid );
-      let impuesto = impuestos.find(imp => imp.taxid === product.product.taxid );
+      let impuesto = product.product.taxid;
 
       let tax: Tax[] = [];
 
@@ -177,6 +177,9 @@ export class ElectronicaService {
     }else{
       desde = (dataico.desde - 1);
     }
+
+    console.log(data);
+    
 
     return this.http.post(`${base_url}/electronica/${dataico.authtoken}/${invoice.iid}/${desde}`, data, this.headers)
 

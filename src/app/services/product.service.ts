@@ -142,7 +142,7 @@ export class ProductService {
    *   ACTUALIZAR PRODUCTO EXCEL
   ==================================================================== */
   actualizarProductoExcel(formData:any){
-    return this.http.put(`${base_url}/products/excel/update`, formData, this.headers);
+    return this.http.put<{ok: boolean, total: number}>(`${base_url}/products/excel/update`, formData, this.headers);
   }
 
   /** ================================================================

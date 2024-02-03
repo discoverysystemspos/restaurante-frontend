@@ -1039,7 +1039,7 @@ export class MesaComponent implements OnInit {
           }
           this.comandaTemp = this.comanda;
 
-          this.sumarTotales();          
+          this.sumarTotales();
 
           // this.cargarMesa(this.mesaID);
 
@@ -1360,6 +1360,8 @@ export class MesaComponent implements OnInit {
       });
 
     }
+
+    this.focusMonto();
 
   }
 
@@ -1899,7 +1901,7 @@ export class MesaComponent implements OnInit {
 
   focusMonto(){
     this.montoAdd.nativeElement.value = this.total;  
-    this.montoAdd.nativeElement.focus();
+    // this.montoAdd.nativeElement.focus();
   }
 
   agregarPagos(type: string, amount:number, description:string = '', credito: boolean){

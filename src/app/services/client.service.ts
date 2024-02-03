@@ -59,10 +59,22 @@ export class ClientService {
   /** ================================================================
    *   CREATE CLIENT
   ==================================================================== */
-  createClient( formData: any ){
-    
+  createClient( formData: any ){    
     return this.http.post(`${base_url}/clients`, formData, this.headers);
+  }
 
+  /** ================================================================
+   *   CREATE CLIENT EXCEL
+  ==================================================================== */
+  loadClientsQuery( formData: any ){    
+    return this.http.post<{ok: boolean, clients: Client[], total: number}>(`${base_url}/clients/query`, formData, this.headers);
+  }
+
+  /** ================================================================
+   *   CREATE CLIENT EXCEL
+  ==================================================================== */
+  createClientExcel( formData: any ){    
+    return this.http.post<{ok: boolean, total: number}>(`${base_url}/clients/create/excel`, formData, this.headers);
   }
 
   /** ================================================================

@@ -55,6 +55,17 @@
                             <label for="floatingInput ">Buscar Cliente</label>
                         </div>
                     </div>
+
+                    <div class="d-flex flex-wrap">
+
+                        <div class="ms-auto text-end">
+                            <div class="my-2">
+                                <button class="btn btn-success btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#updateExcel"> <i class="bi bi-file-earmark-excel"></i> Subir excel</button>
+                                <button (click)="exportExcel()" class="btn btn-info btn-sm mr-2"> <i class="bi bi-cloud-arrow-down"></i> Exportar excel</button>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="table-responsive ">
                         <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
                             <thead class="border-bottom ">
@@ -668,3 +679,41 @@
 <!-- =========================================================================
     LISTAR FACTURAS A CREDITOS 
 ========================================================================= -->
+
+<!-- =========================================================================
+    ACTUALIZAR TODOS LOS PRODUCTOS DESDE EL EXCEL
+========================================================================= -->
+<div class="modal fade" id="updateExcel" tabindex="-1" aria-labelledby="updateExcelModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateExcelModal"> Subir Excel de clientes</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <h4 class="text-muted">Importar Clientes <span> <a class="btn btn-sm text-primary" type="button" (click)="plantilla()" >Descargar Plantilla</a> </span></h4>
+
+                <div class="row">
+                    <div class="col-10">
+                        <input type="file" class="form-control form-control-sm" (change)="incomingfile($event)" placeholder="Importar" accept=".xlsx">
+                    </div>
+                    <div class="col-auto">
+                        <button [disabled]="sendExcel" type="button" class="btn btn-sm btnW btn-primary waves-effect waves-light mt-2" (click)="uploadExcel()">
+                            <span *ngIf="!sendExcel">
+                                Importar
+                            </span>
+                            <span *ngIf="sendExcel">
+                                Enviando...                                
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

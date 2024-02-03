@@ -478,6 +478,7 @@ export class ProductosComponent implements OnInit {
    public excelUpdate:File;
    public totalItems: number = 0; 
    public products: any[] = [];
+   public sendLote: boolean = false;
  
    selectFileExcel(event: any){
      this.excelUpdate= event.target.files[0]; 
@@ -489,6 +490,8 @@ export class ProductosComponent implements OnInit {
       Swal.fire('Atención', 'No has seleccionado ningun archivo de excel', 'info');
       return;
     }
+
+    this.sendLote = true;
 
     let fileReader = new FileReader();
       fileReader.onload = (e) => {
@@ -506,53 +509,18 @@ export class ProductosComponent implements OnInit {
           
           this.products = XLSX.utils.sheet_to_json(worksheet,{raw:true});
 
-          this.products.forEach( product => {
+          this.productService.actualizarProductoExcel({products: this.products})
+              .subscribe( ({total}) => {
 
-            this.totalItems ++;
-
-            // OBTENER GANANCIA
-            let gain = 0;
-            let porcent = 0;
-            
-            porcent = ( product.cost * 100 )/product.price;
-            
-            gain = (porcent - 100) * -1;
-            gain = Math.round(gain*100)/100;
-            
-            product.gain = gain;
-            // OBTENER GANANCIA
-
-            // EXPIRATION
-            if (product.expiration) {
-              product.expiration = new Date(product.expiration);              
-            }else{
-              product.expiration = null;
-            }
-
-            // GUARDAR PRODUCTOS
-
-            this.productService.actualizarProductoExcel(product)
-                .subscribe( resp => {
-
-                  if( this.products.length === this.totalItems ){
-
-                    Swal.fire('Estupendo', `Se han creado un total de ${this.totalItems} articulos nuevos`, 'success');
-
-                  }
-
-                  
-                  
-
-                },(err) => { 
-                  console.log(err);                  
-                  Swal.fire('Error', err.error.msg, 'error'); 
-                });
-
-
-            // FIN FOREACH
-          });
-        
-          window.location.reload();
+                Swal.fire('Estupendo', `Se actualizaron ${total} productos exitosamente!`, 'success');
+                location.reload();
+                this.sendLote = false;                
+                
+              },(err) => { 
+                this.sendLote = false;
+                console.log(err);                  
+                Swal.fire('Error', err.error.msg, 'error'); 
+              });
 
       }
       
