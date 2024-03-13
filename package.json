@@ -34,6 +34,7 @@
     "ngx-printer": "^0.9.1",
     "rxjs": "~6.6.0",
     "sweetalert2": "^10.13.0",
+    "swiper": "^8.1.4",
     "tslib": "^2.0.0",
     "uuid-generator-ts": "^1.1.0",
     "xlsx": "^0.17.4",

@@ -60,8 +60,7 @@ interface _Department {
 @Component({
   selector: 'app-mesa',
   templateUrl: './mesa.component.html',
-  styles: [
-  ]
+  styleUrls: ['./mesa.component.css']
 })
 export class MesaComponent implements OnInit {
 
@@ -478,15 +477,25 @@ export class MesaComponent implements OnInit {
 
   }
 
-  // ACTIVAR MAYOREO
+  // ACTIVAR MAYOREO O DISTRIBUIDOR
+  @ViewChild('cMayor') cMayor: ElementRef
+  @ViewChild('cDis') cDis: ElementRef
   public mayor: boolean = false;
-  mayoreoApp(){
+  mayoreoApp(mayor: boolean){
 
-    if (!this.mayor) {    
-      this.mayor = true;  
+    if (mayor) {
       this.priceProductSelected = this.productSelected.wholesale;
     }else{
-      this.mayor = false;
+      this.priceProductSelected = this.productSelected.price;
+    }
+
+  }
+
+  distribuidorApp(distribuidor: boolean){
+
+    if (distribuidor) {
+      this.priceProductSelected = this.productSelected.distribuidor;
+    }else{
       this.priceProductSelected = this.productSelected.price;
     }
 
@@ -877,12 +886,16 @@ export class MesaComponent implements OnInit {
   public inventarioNew: number = 0;
   public inventarioNewB: boolean = false;
 
-  carritoTemp( product: any, qty: number, precio: number, nota: string = '' ){
+  carritoTemp( product: any, qty: number, precio: number, nota: string = '', newPrice: boolean = false ){
 
     if (this.clienteTemp) {
       if (this.clienteTemp.mayoreo) {
         precio = product.wholesale;
       }
+    }
+    
+    if (newPrice) {
+      precio = (precio / (qty * 1000)) * 1000;
     }
 
     this.inventarioNew = 0;
@@ -2717,6 +2730,35 @@ export class MesaComponent implements OnInit {
           // this.cargarMesa(this.mesaID);
 
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
+
+  }
+
+  /** ================================================================
+   *  CONFIG SWIPER
+  ==================================================================== */  
+  public config = {
+    slidesPerView:1,
+    spaceBetween:10,
+    centeredSlides: true,
+    navigation: true,
+    pagination: { clickable: true, dynamicBullets: true },
+    breakpoints:{
+      '450': {
+        slidesPerView: 2,
+        spaceBetween: 20,
+        centeredSlides: false,
+      },
+      '640': {
+        slidesPerView: 3,
+        spaceBetween: 30,
+        centeredSlides: false,
+      },
+      '768': {
+        slidesPerView: 3,
+        spaceBetween: 40,
+        centeredSlides: false,
+      },
+    }
 
   }
   

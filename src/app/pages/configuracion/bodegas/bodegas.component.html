@@ -1,0 +1,156 @@
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<header>
+    <div class="bg-header-blue py-2 px-3 mb-2">
+        <h5 class="text-white m-0">Configuraciones / Bodegas</h5>
+    </div>
+    <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
+
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-dark active" id="ticket1-tab"><i class="bi-gear" style="font-size: 1rem"></i> Tablero Principal</a>
+        </li>
+
+    </ul>
+</header>
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+
+<div class="container-fluid my-4">
+
+    <!-- TABLE BANCOS -->
+    <div class="shadow-lg p-3 mb-5 rounded bg-white">
+
+        <!-- CARGANDO -->
+        <div *ngIf="cargando">
+            <div class="text-center p-4">
+                <div class="spinner-grow text-secondary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <small class="text-muted">cargando...</small>
+        </div>
+        <!-- CARGANDO -->
+
+        <div *ngIf="!cargando">
+
+            <!-- BTN CREAR IMPUESTO -->
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-sm btn-primary btnW waves-effect waves-ligth" data-bs-toggle="modal" data-bs-target="#nuevaBodega">Crear</button>
+            </div>
+            <!-- BTN CREAR IMPUESTO -->
+
+            <div class="table-responsive ">
+                <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                    <thead class="border-bottom ">
+                        <tr>
+                            <th class="text-muted " scope="col ">Nombre</th>
+                            <th class="text-muted " scope="col ">URL</th>
+                            <th class="text-muted " scope="col ">Estado</th>
+                            <th class="text-muted w100 " scope="col ">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="bodegas.length === 0" class="text-center ">
+                            <th colspan="4" class="py-4">
+                                <h4 class="text-muted">Sin Resultados</h4>
+                            </th>
+                        </tr>
+
+                        <tr class="trHover" *ngFor="let bodega of bodegas; let i = index">
+                            <td>{{ bodega.name }}</td>
+                            <td>{{ bodega.endpoint }}</td>
+                            <td>
+                                <button *ngIf="bodega.status" type="button" class="btn btnW waves-effect waves-ligth btn-success btn-sm">Activo</button>
+                                <button *ngIf="!bodega.status" type="button" class="btn btnW waves-effect waves-ligth btn-danger btn-sm">Desactivo</button>
+                            </td>
+                            <td class="text-center">
+                                <a routerLink="/dashboard/configuracion/bodega/{{bodega.bid}}" class="btn btn-link p-1 text-primary">
+                                    <i class="bi bi-box-arrow-up-right"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- BTN SIGUIENTE Y ANTERIOR -->
+            <div class="row">
+                <div class="col col-md-4">
+                    <small class="text-muted">Total de bodegas: ({{totalBodegas}})</small>
+                    <small *ngIf="bodegas.length !== 0" class="text-muted"> - (Resultados: {{ bodegas.length }})</small>
+                </div>
+            </div>
+            <!-- BTN SIGUIENTE Y ANTERIOR -->
+
+        </div>
+    </div>
+    <!-- TABLE BANCOS -->
+
+
+</div>
+
+<!-- =========================================================================
+    NUEVA BODEGA 
+========================================================================= -->
+<div class="modal fade" id="nuevaBodega" tabindex="-1" aria-labelledby="nuevaBodegaModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="nuevaBodegaModal"><i class="bi-collection" style="font-size: 1rem"></i> Crear bodga Nueva</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <form autocomplete="off" [formGroup]="newBodegaForm" (ngSubmit)="create()">
+
+                    <!-- =======================================================================
+                        Informacion del BANCO
+                    =========================================================================== -->
+                    <h5 class="text-muted">Informaciòn</h5>
+
+
+                    <div class="row mb-2">
+
+                        <div class="col-md-12">
+                            <label for="">Nombre</label>
+                            <div class="form-floating">
+                                <input formControlName="name" type="text" class="form-control" placeholder="Nombre de la bodega">
+                                <label for="floatingInput">Nombre de la bodega</label>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12">
+                            <label for="">URL</label>
+                            <div class="form-floating">
+                                <input formControlName="endpoint" type="text" class="form-control" placeholder="URL de la bodega">
+                                <label for="floatingInput">URL</label>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="text-danger mb-2">
+                            <p *ngIf="campoValido('name')" class="mb-1 animated fadeIn">- El nombre del impuesto es obligatorio</p>
+                            <p *ngIf="campoValido('endpoint')" class="mb-1 animated fadeIn">- El URL es obligatorio</p>
+                        </div>
+                    </div>
+
+
+                    <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary w-100">crear</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

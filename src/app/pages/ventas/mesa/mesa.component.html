@@ -1,14 +1,36 @@
 <!-- =========================================================================
     TICKET 1 
 ========================================================================= -->
-<div class="container-fluid">
+<div class="container-fluid mb-5">
 
     <div class="row">
 
         <div class="col-md-8 align-self-start animated fadeIn" *ngIf="menu">
 
-            <!-- DEPARTAMENTOS -->
-            <div class="p-2 border-bottom my-2 d-flex flex-wrap justify-content-start">
+            <!-- BOTONES -->
+            <div class="d-flex flex-wrap gap-2 my-2">
+
+                <button *ngIf="this.user.cerrada" (click)="abrirCaja()" class="btn btn-success btn-sm" type="button">Abrir caja</button>
+                <button *ngIf="!this.user.cerrada" [routerLink]="['/dashboard', 'corte']" class="btn btn-secondary btn-sm" type="button">Cerrar caja</button>
+
+                <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#buscarCliente"><i class="bi-people"></i> Crear Cliente </button>
+
+                <!-- <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="collapse" href="#productsColl" role="button" aria-expanded="false" aria-controls="collapseExample"><i class="bi-box"></i> Productos </button> -->
+                <!-- <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#buscarProducto"><i class="bi-box"></i> Productos </button> -->
+
+                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#entradaSalidas"><i class="bi-arrow-left-right"></i> Entradas y Salidas </button>
+                <button type="button" (click)="scrollToBottom()" (click)="timeCommand()" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#comandas"><i class="bi-receipt"></i> Comandas </button>
+                <button type="button" *ngIf="mesa?.img === 'mesa.svg'" (click)="cargarMesasAll()" class="btn btn-outline-dark btn-sm" data-bs-toggle="modal" data-bs-target="#cambiarMesa"><i class="bi-arrow-repeat"></i> Cambiar Mesa </button>
+                <button type="button" class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#descuentoModal"><i class="bi-percent"></i> Descuento </button>
+                <a [routerLink]="['/', 'dashboard', 'productos', 'kardex']" class="btn btn-outline-primary btn-sm"><i class="bi-box"></i> Kardex </a>
+                <!-- <button (click)="mayoreo()" type="button" class="btn btn-outline-dark btn-sm"><i class="bi-arrow-down-up"></i> Mayoreo </button> -->
+
+            </div>
+
+            <hr>
+
+            <!-- <div class="p-2 border-bottom my-2 d-flex flex-wrap justify-content-start gap-2"> -->
+            <div id="dd" class="p-2 my-2 d-flex flex-wrap justify-content-start gap-2" style="max-height: 105px; overflow-y: scroll;">
 
                 <!-- <div class="p-2">
 
@@ -21,11 +43,11 @@
 
                 <ng-container *ngFor="let departamento of departmentos">
 
-                    <div class="p-2" *ngIf="departamento.visibility && departamento.status">
+                    <div *ngIf="departamento.visibility && departamento.status">
 
-                        <button type="button" (click)="cargarProductosDepartamento(departamento.did)" class="btn bg-white btnW waves-effect waves-blue text-muted p-2"> 
-                            <img class="avatar avatar-xs" style="max-height: 50px; width: auto;" [src]="departamento.img | imagen:'department'" class="card-img-top" alt="...">
-                            <h6>{{ departamento.name }}</h6>
+                        <button style="width: auto;" type="button" (click)="cargarProductosDepartamento(departamento.did)" class="btn bg-white p-0 m-0 btnW waves-effect waves-blue text-muted d-flex align-items-center"> 
+                            <img style="width: 1.5rem; height: 1.5rem; object-fit: cover; " [src]="departamento.img | imagen:'department'" alt="...">
+                            <p class="mb-0 mx-1" style="font-size: 0.9rem">{{ departamento.name }}</p>
                         </button>
 
                     </div>
@@ -36,9 +58,9 @@
             </div>
             <!-- DEPARTAMENTOS -->
 
+            <hr>
+
             <!-- PRODUCTOS -->
-
-
             <div class="d-flex justify-content-center flex-wrap">
 
                 <div *ngIf="listaProductos.length < 1" class="py-4">
@@ -85,6 +107,28 @@
         </div>
 
         <div class="col-md-8 align-self-start animated fadeIn" *ngIf="!menu">
+
+            <!-- BOTONES -->
+            <div class="d-flex flex-wrap gap-2 my-2">
+
+                <button *ngIf="this.user.cerrada" (click)="abrirCaja()" class="btn btn-success btn-sm" type="button">Abrir caja</button>
+                <button *ngIf="!this.user.cerrada" [routerLink]="['/dashboard', 'corte']" class="btn btn-secondary btn-sm" type="button">Cerrar caja</button>
+
+                <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#buscarCliente"><i class="bi-people"></i> Crear Cliente </button>
+
+                <!-- <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="collapse" href="#productsColl" role="button" aria-expanded="false" aria-controls="collapseExample"><i class="bi-box"></i> Productos </button> -->
+                <!-- <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#buscarProducto"><i class="bi-box"></i> Productos </button> -->
+
+                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#entradaSalidas"><i class="bi-arrow-left-right"></i> Entradas y Salidas </button>
+                <button type="button" (click)="scrollToBottom()" (click)="timeCommand()" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#comandas"><i class="bi-receipt"></i> Comandas </button>
+                <button type="button" *ngIf="mesa?.img === 'mesa.svg'" (click)="cargarMesasAll()" class="btn btn-outline-dark btn-sm" data-bs-toggle="modal" data-bs-target="#cambiarMesa"><i class="bi-arrow-repeat"></i> Cambiar Mesa </button>
+                <button type="button" class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#descuentoModal"><i class="bi-percent"></i> Descuento </button>
+                <a [routerLink]="['/', 'dashboard', 'productos', 'kardex']" class="btn btn-outline-primary btn-sm"><i class="bi-box"></i> Kardex </a>
+                <!-- <button (click)="mayoreo()" type="button" class="btn btn-outline-dark btn-sm"><i class="bi-arrow-down-up"></i> Mayoreo </button> -->
+
+            </div>
+
+            <hr>
 
             <div class="card py-4 mt-3">
 
@@ -187,35 +231,19 @@
 
         <div class="col-md-4 bg-white py-4 px-2 border-start" style="min-height: 100vh;">
 
-            <div>
+            <div class="d-flex justify-content-between align-items-center">
                 <button (click)="changeMenu(menu)" type="button" class="btn btn-outline-primary">
                     <i *ngIf="!menu" class="bi bi-grid"></i>
                     <i *ngIf="menu" class="bi bi-justify"></i>
                 </button>
-            </div>
 
-            <h4 class="mb-2 text-dark text-center text-capitalize"> {{ mesa?.name }} </h4>
-
-            <div class="d-grid gap-2 mx-auto" *ngIf="this.user.role !== 'WAITER'">
-                <button *ngIf="this.user.cerrada" (click)="abrirCaja()" class="btn btn-success btn-sm" type="button">Abrir caja</button>
-                <button *ngIf="!this.user.cerrada" [routerLink]="['/dashboard', 'corte']" class="btn btn-secondary btn-sm" type="button">Cerrar caja</button>
-            </div>
-
-            <hr>
-
-            <!-- BOTONES -->
-            <div class="mb-2">
-                <button type="button" class="btn btn-outline-success btn-sm m-2" data-bs-toggle="modal" data-bs-target="#buscarCliente"><i class="bi-people"></i> Crear Cliente </button>
-
-                <!-- <button type="button" class="btn btn-outline-primary btn-sm m-2" data-bs-toggle="collapse" href="#productsColl" role="button" aria-expanded="false" aria-controls="collapseExample"><i class="bi-box"></i> Productos </button> -->
-                <!-- <button type="button" class="btn btn-outline-primary btn-sm m-2" data-bs-toggle="modal" data-bs-target="#buscarProducto"><i class="bi-box"></i> Productos </button> -->
-
-                <button type="button" class="btn btn-outline-primary btn-sm m-2" data-bs-toggle="modal" data-bs-target="#entradaSalidas"><i class="bi-arrow-left-right"></i> Entradas y Salidas </button>
-                <button type="button" (click)="scrollToBottom()" (click)="timeCommand()" class="btn btn-outline-info btn-sm m-2" data-bs-toggle="modal" data-bs-target="#comandas"><i class="bi-receipt"></i> Comandas </button>
-                <button type="button" *ngIf="mesa?.img === 'mesa.svg'" (click)="cargarMesasAll()" class="btn btn-outline-dark btn-sm m-2" data-bs-toggle="modal" data-bs-target="#cambiarMesa"><i class="bi-arrow-repeat"></i> Cambiar Mesa </button>
-                <button type="button" class="btn btn-outline-warning btn-sm m-2" data-bs-toggle="modal" data-bs-target="#descuentoModal"><i class="bi-percent"></i> Descuento </button>
-                <a [routerLink]="['/', 'dashboard', 'productos', 'kardex']" class="btn btn-outline-primary btn-sm m-2"><i class="bi-box"></i> Kardex </a>
-                <button (click)="mayoreo()" type="button" class="btn btn-outline-dark btn-sm m-2"><i class="bi-arrow-down-up"></i> Mayoreo </button>
+                <div *ngIf="mesa">
+                    <h6 class="fw-bold mb-0">
+                        <span class="text-primary text-wrap">
+                            {{ mesa.name }} - {{ mesa.mesero.name }} 
+                        </span>
+                    </h6>
+                </div>
             </div>
 
             <hr>
@@ -225,6 +253,7 @@
                 <div class="mb-3">
 
                     <div>
+                        <label for="">Buscar cliente:</label>
                         <input type="text" class="form-control" placeholder="buscar cliente" (keyup)="buscarCliente(searchClient.value)" #searchClient>
                     </div>
 
@@ -269,7 +298,7 @@
             <div>
 
                 <!-- INFORMACION DEL CLIENTE -->
-                <div class="d-flex flex-column mt-2">
+                <!-- <div class="d-flex flex-column mt-2">
 
                     <div>
                         <h6 class="fw-bold mb-0">CLIENTE / RAZON SOCIAL:</h6>
@@ -292,7 +321,7 @@
                             </span>
                         </h6>
                     </div>
-                </div>
+                </div> -->
                 <!-- INFORMACION DEL CLIENTE -->
 
                 <div *ngIf="menu" class="animated fadeIn">
@@ -425,7 +454,7 @@
                             <!-- PROPINA -->
 
                             <p class="h6 fw-normal text-danger mb-0" *ngIf="mesa?.descuento">Descuento {{ ((base * mesa?.porcentaje) / 100) | divisa }}</p>
-                            <h4 class="fw-normal display-5 text-primary">{{ total | divisa }}</h4>
+                            <h4 class="fw-normal display-6 text-primary">{{ total | divisa }}</h4>
 
                             <!-- 
                             <p class="h6 fw-normal text-primary mb-0" *ngIf="empresa.responsable">Sub-total {{ base - iva | divisa }}</p>
@@ -438,14 +467,14 @@
                 </div>
 
                 <div class="container-fluid">
-                    <div class="py-2">
+                    <div class="">
 
                         <!-- COLUMNA IZQ -->
                         <div class="col px-0 bg-white">
 
                             <div class="container-fluid">
 
-                                <ng-container *ngIf="empresa?.min">
+                                <ng-container *ngIf="empresa?.min && empresa.electronica">
                                     <div *ngIf="total >= empresa.min" class="alert alert-warning fade show" role="alert">
                                         <strong>Atención:</strong> Para montos mayores a <strong>{{ empresa.min | number }}</strong> se debe crear factura electronica
                                     </div>
@@ -477,13 +506,13 @@
                                         <!-- FORM INVOICE - FORM INVOICE -->
                                         <form autocomplete="off" [formGroup]="invoiceForm">
 
-                                            <div class="col-auto">
+                                            <!-- <div class="col-auto">
                                                 <label for="fecha" class="">Fecha</label>
                                                 <input type="datetime-local" formControlName="fecha" class="form-control" id="fecha" placeholder="Selecciona una fecha limite" #fechCredito>
-                                            </div>
+                                            </div> -->
 
-                                            <div class="row text-center">
-                                                <div class="col p-2">
+                                            <div class="d-flex flex-wrap gap-2 justify-content-center">
+                                                <div class="">
 
                                                     <input type="radio" (click)="limpiarPagos()" class="btn-check" name="type" formControlName="type" id="efectivo-outlined" value="efectivo" autocomplete="off" checked>
                                                     <label class="btn btn-outline-success" for="efectivo-outlined">
@@ -493,7 +522,7 @@
 
                                                 </div>
 
-                                                <div class="col p-2">
+                                                <div class="">
 
                                                     <input type="radio" (click)="limpiarPagos()" class="btn-check" name="type" formControlName="type" id="tarjeta-outlined" value="transferencia" autocomplete="off">
                                                     <label class="btn btn-outline-info" for="tarjeta-outlined">
@@ -503,7 +532,7 @@
 
                                                 </div>
 
-                                                <div class="col p-2">
+                                                <div class="">
                                                     <input type="radio" (click)="limpiarPagos()" class="btn-check" name="options-outlined" name="type" formControlName="type" id="mixto-outlined" value="mixto" autocomplete="off">
                                                     <label class="btn btn-outline-dark" for="mixto-outlined">
                                                         <i class="px-3 bi-patch-question" style="font-size: 1.5rem;"></i>
@@ -512,7 +541,7 @@
 
                                                 </div>
 
-                                                <div class="col p-2">
+                                                <div class="">
                                                     <input type="radio" (click)="limpiarPagos('credito')" #tcredito class="btn-check" name="options-outlined" name="type" formControlName="type" id="credito-outlined" value="credito" autocomplete="off">
                                                     <label class="btn btn-outline-warning" for="credito-outlined">
                                                         <i class="px-3 bi-clock-history" style="font-size: 1.5rem;"></i>
@@ -616,8 +645,7 @@
                                                     <div class="col-auto">
 
                                                         <select class="form-select" aria-label="Default select example" (change)="typeAdd.value" #typeAdd>
-                                                            <option *ngIf="invoiceForm.value.type === 'efectivo' || invoiceForm.value.type === 'mixto' || invoiceForm.value.type === 'credito'" value="efectivo">Efectivo</option>
-                                                            <option *ngIf="invoiceForm.value.type === 'transferencia' || invoiceForm.value.type === 'mixto' || invoiceForm.value.type === 'credito'" value="transferencia">Transferencia</option>                                                            
+                                                            <option *ngIf="invoiceForm.value.type === 'efectivo' || invoiceForm.value.type === 'mixto' || invoiceForm.value.type === 'credito'" value="efectivo">Efectivo</option>                                                     
                                                             <ng-container *ngIf="invoiceForm.value.type !== 'efectivo'">
                                                                 <option *ngFor="let banco of bancos" [value]="banco.name"> {{banco.name}}</option>                                                                
                                                             </ng-container>
@@ -755,7 +783,7 @@
 
                                                 <div class="row g-3 d-flex justify-content-center">
 
-                                                    <div class="mb-3">
+                                                    <div class="mb-5">
                                                         <label for="nota" class="form-label fw-bold">Nota</label>
                                                         <textarea formControlName="nota" class="form-control" id="nota" rows="3"></textarea>
                                                     </div>
@@ -779,23 +807,18 @@
 
                     </div>
 
-                    <div class="d-flex justify-content-end gap-2">
-                        <!-- BTN CREAR FACTURA -->
+                    <!-- <div class="d-flex justify-content-end gap-2">
                         <div class="float-end">
-                            <button type="button" [disabled]="facturando == true" (click)="crearFactura(false)" class="btn btn-outline-primary">
+                            <button type="button" [disabled]="facturando == true || user.cerrada" (click)="crearFactura(false)" class="btn btn-outline-primary">
                             Crear Factura Pos
                         </button>
                         </div>
-                        <!-- BTN CREAR FACTURA -->
-
-                        <!-- BTN CREAR FACTURA -->
                         <div class="float-end" *ngIf="empresa?.electronica">
-                            <button type="button" [disabled]="facturando == true" (click)="crearFactura(true)" class="btn btn-outline-success">
+                            <button type="button" [disabled]="facturando == true || user.cerrada" (click)="crearFactura(true)" class="btn btn-outline-success">
                             Crear Factura Electronica
                         </button>
                         </div>
-                        <!-- BTN CREAR FACTURA -->
-                    </div>
+                    </div> -->
 
 
                 </div>
@@ -846,6 +869,10 @@
                                 <small *ngIf="factura.client" class="text-wrap fw-normal"> {{ factura.client.phone }} </small>
                             </h6>
                             <h6 class="mb-0 text-wrap text-left" *ngIf="factura.client">
+                                CIUDAD <br>
+                                <small *ngIf="factura.client" class="text-wrap fw-normal"> {{ factura.client.city || '----------'}} </small>
+                            </h6>
+                            <h6 class="mb-0 text-wrap text-left" *ngIf="factura.client">
                                 DIRECCIÓN <br>
                                 <small *ngIf="factura.client" class="text-wrap fw-normal"> {{ factura.client.address || '----------'}} </small>
                             </h6>
@@ -877,7 +904,7 @@
                                     </td>
                                     <td>
                                         <small *ngIf="!empresa.impuesto" class="text-wrap"> {{ item.qty * item.price | divisa }} </small>
-                                        <small *ngIf="empresa.impuesto" class="text-wrap"> {{ (item.qty * item.price) + ((item.qty * item.price) * (item.product.taxid.valor/100)) | divisa }} </small>
+                                        <small *ngIf="empresa.impuesto" class="text-wrap"> {{ (item.qty * item.price) + ((item.qty * item.price) * (item.product.taxid?.valor/100)) | divisa }} </small>
                                     </td>
                                 </tr>
                                 <tr class="" style="border-top: 2px solid black;">
@@ -1023,6 +1050,73 @@
 <!-- =========================================================================
     TICKET 1 
 ========================================================================= -->
+
+<!-- =========================================================================
+    FOOTER
+========================================================================= -->
+<div class="fixed-bottom card rounded-0  border-end-0 border-start-0 border-bottom-0">
+
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between flex-wrap align-items-center">
+
+            <!-- CLIENT -->
+            <div>
+
+                <!-- INFORMACION DEL CLIENTE -->
+                <div class="d-flex flex-column">
+
+                    <div>
+                        <h6 class="fw-bold mb-0">CLIENTE: <small> {{ clienteTemp.name }}</small> </h6>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold mb-0">CC/Nit: <small *ngIf="clienteTemp.cedula"> {{ clienteTemp.cedula }} </small> </h6>
+                    </div>
+                </div>
+                <!-- INFORMACION DEL CLIENTE -->
+
+            </div>
+
+            <!-- AMOUNT -->
+            <div>
+                <div class="text-center" *ngIf="empresa">
+
+                    <p class="h6 fw-normal text-muted mb-0">Sub-total {{ base | divisa }} <span *ngIf="empresa.propina"> + Propina {{ totalTip | divisa }}</span> </p>
+                    <p class="h6 fw-normal text-danger mb-0" *ngIf="mesa?.descuento">Descuento {{ ((base * mesa?.porcentaje) / 100) | divisa }}</p>
+                    <h4 class="fw-normal display-7 text-primary">{{ total | divisa }}</h4>
+
+                </div>
+                <!-- TOTAL -->
+            </div>
+
+            <!-- Buttons -->
+            <div>
+
+                <div class="d-flex justify-content-end gap-2">
+                    <!-- BTN CREAR FACTURA -->
+                    <div class="float-end">
+                        <button type="button" [disabled]="facturando == true || user.cerrada" (click)="crearFactura(false)" class="btn btn-sm btn-outline-primary">
+                        Crear Factura Pos
+                    </button>
+                    </div>
+                    <!-- BTN CREAR FACTURA -->
+
+                    <!-- BTN CREAR FACTURA -->
+                    <div class="float-end" *ngIf="empresa?.electronica">
+                        <button type="button" [disabled]="facturando == true || user.cerrada" (click)="crearFactura(true)" class="btn btn-sm btn-outline-success">
+                        Crear Factura Electronica
+                    </button>
+                    </div>
+                    <!-- BTN CREAR FACTURA -->
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 <!-- =========================================================================
     MODAL CREAR CLIENTE 
@@ -1288,7 +1382,7 @@
                         </div>
 
                         <div class="form-check form-switch mt-2">
-                            <input class="form-check-input" [disabled]="user.role !== 'ADMIN' && user.role !== 'STAFF'" type="checkbox" [(ngModel)]="mayoreo.checked" #mayoreo>
+                            <input class="form-check-input" type="checkbox" [(ngModel)]="mayoreo.checked" #mayoreo>
                             <label class="form-check-label" for="mayor">Aplicar Mayoreo</label>
                         </div>
 
@@ -1717,14 +1811,19 @@ PRODUCT SELECT
 
         <div class="container">
             <div class="form-check form-switch my-2">
-                <input [disabled]="user.role !== 'ADMIN' && user.role !== 'STAFF' " (change)="mayoreoApp()" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                <input [disabled]="user.role !== 'ADMIN' && user.role !== 'STAFF' || cDis.checked" #cMayor (change)="mayoreoApp(cMayor.checked)" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
                 <label class="form-check-label" for="flexSwitchCheckDefault">Mayoreo</label>
+            </div>
+            <div class="form-check form-switch my-2">
+                <input [disabled]="user.role !== 'ADMIN' && user.role !== 'STAFF' || cMayor.checked " #cDis (change)="distribuidorApp(cDis.checked)" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefaultDistr">
+                <label class="form-check-label" for="flexSwitchCheckDefaultDistr">Distribuidor</label>
             </div>
         </div>
 
         <!-- PRICES -->
         <div>
-            <h4 class="display-4 mb-2 text-center text-success fw-bold"> {{ priceProductSelected * qtySelect | divisa }} </h4>
+            <h4 *ngIf="!newPri.checked" class="display-4 mb-2 text-center text-success fw-bold"> {{ priceProductSelected * qtySelect | divisa }} </h4>
+            <h4 *ngIf="newPri.checked" class="display-4 mb-2 text-center text-success fw-bold"> {{ ((priceProductSelected / (qtySelect * 1000)) * 1000 ) * qtySelect | divisa }} </h4>
 
         </div>
         <!-- PRICES -->
@@ -1740,6 +1839,13 @@ PRODUCT SELECT
             <button class="btn btn-primary" type="button" id="button-addon2" (click)="cambiarValor(1)"> + </button>
         </div>
 
+        <div class="container">
+            <div class="form-check form-switch my-2">
+                <input #newPri (change)="newPri.checked = newPri.checked" class="form-check-input" type="checkbox" role="switch" id="newPriceC">
+                <label class="form-check-label" for="newPriceC">Totalizar Precio </label>
+            </div>
+        </div>
+
         <label for="pricePr">Precio:</label>
         <div class="input-group">
             <input #pricePr type="number" min="0" class="form-control" placeholder="" [(ngModel)]="priceProductSelected">
@@ -1751,7 +1857,7 @@ PRODUCT SELECT
     </div>
 
     <div class="modal-footer">
-        <button [disabled]="qtySelect <= 0 || qtySelect > productSelected.inventario && productSelected.type !== 'Paquete'" type="button" class="btn btn-outline-success" (click)="carritoTemp(productSelected, qtySelect, pricePr.value)" (click)="close()">
+        <button [disabled]="qtySelect <= 0 || qtySelect > productSelected.inventario && productSelected.type !== 'Paquete'" type="button" class="btn btn-outline-success" (click)="carritoTemp(productSelected, qtySelect, pricePr.value, '',newPri.checked)" (click)="close()">
             Agregar
         </button>
     </div>

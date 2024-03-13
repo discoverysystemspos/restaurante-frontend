@@ -80,7 +80,6 @@
 
         <div class="row">
 
-
             <!-- DETALLES DE LA FACTURA -->
             <div class="col-md-8 shadow-lg p-3 mb-5 rounded bg-white">
 
@@ -265,9 +264,9 @@
             <div class="col-md-4">
 
                 <!-- TABLE PAGOS-->
-                <div class="shadow-lg p-3 mb-5 rounded bg-white" style="max-height: 400px; height: auto;">
+                <div class="shadow-lg p-3 mb-5 rounded bg-white">
                     <div class="d-flex justify-content-center">
-                        <div id="printPagos" style="color: #000;" [ngStyle]="{'max-width': empresa.impresora === 58 ? '14rem' : '24rem'}">
+                        <div id="printPagos" style="color: #000;" [ngStyle]="{'max-width': empresa.impresora === 58 ? '16rem' : '24rem'}">
                             <div class="d-flex justify-content-between">
                                 <h5 class="">
                                     Pagos
@@ -287,9 +286,9 @@
                             </div>
                             <!-- CARGANDO -->
 
-                            <div *ngIf="!cargandoAgotados" style="max-height: 100vh">
+                            <div *ngIf="!cargandoAgotados">
 
-                                <div class="table-responsive " class="overflow-auto" style="max-height: 200px;">
+                                <div class="table-responsive " class="overflow-auto">
                                     <table class="table table-borderless table-hover table-sm animated fadeIn ">
                                         <thead class="border-bottom ">
                                             <tr style="color: #000;">
@@ -332,7 +331,7 @@
                                             <tr class="trHover" *ngFor="let pay of paymentsCredit; let i = index" style="color: #000;">
                                                 <td class="fw-normal">
                                                     <span *ngIf="pay.description !== ''">{{ pay.description }} {{ pay.fecha | date: 'short' }} </span>
-                                                    <span *ngIf="pay.description === ''">Sin descripción</span>
+                                                    <span *ngIf="pay.description === ''">Sin descripción {{ pay.fecha | date: 'short' }}</span>
                                                 </td>
                                                 <td class="fw-normal">{{ pay.type }}</td>
                                                 <td class="fw-normal">{{ pay.amount | divisa }} </td>
@@ -520,26 +519,6 @@
                                                 </div>
 
                                                 <div class="col p-2">
-
-                                                    <input type="radio" (click)="limpiarPagos()" class="btn-check" name="type" formControlName="type" id="tarjeta-outlined" value="tarjeta" autocomplete="off">
-                                                    <label class="btn btn-outline-primary" for="tarjeta-outlined">
-                                                    <i class="px-3 bi-credit-card" style="font-size: 1.5rem;"></i>
-                                                    <p class="mb-0">Tarjeta</p>
-                                                </label>
-
-                                                </div>
-
-                                                <div class="col p-2">
-
-                                                    <input type="radio" (click)="limpiarPagos()" class="btn-check" name="options-outlined" name="type" formControlName="type" id="vale-outlined" value="vale" autocomplete="off">
-                                                    <label class="btn btn-outline-secondary" for="vale-outlined">
-                                                    <i class="px-3 bi-card-heading" style="font-size: 1.5rem;"></i>
-                                                    <p class="mb-0">Vale</p>
-                                                </label>
-
-                                                </div>
-
-                                                <div class="col p-2">
                                                     <input type="radio" (click)="limpiarPagos()" class="btn-check" name="options-outlined" name="type" formControlName="type" id="mixto-outlined" value="mixto" autocomplete="off">
                                                     <label class="btn btn-outline-dark" for="mixto-outlined">
                                                     <i class="px-3 bi-patch-question" style="font-size: 1.5rem;"></i>
@@ -610,9 +589,6 @@
 
                                                         <select class="form-select" aria-label="Default select example" (change)="typeAdd.value" #typeAdd>
                                                             <option *ngIf="invoiceForm.value.type === 'efectivo' || invoiceForm.value.type === 'mixto' || invoiceForm.value.type === 'credito'" value="efectivo">Efectivo</option>
-                                                            <option *ngIf="invoiceForm.value.type === 'transferencia' || invoiceForm.value.type === 'mixto' || invoiceForm.value.type === 'credito'" value="transferencia">Transferencia</option>
-                                                            <option *ngIf="invoiceForm.value.type === 'tarjeta' || invoiceForm.value.type === 'mixto' || invoiceForm.value.type === 'credito'" value="tarjeta">Tarjeta</option>
-                                                            <option *ngIf="invoiceForm.value.type === 'vale' || invoiceForm.value.type === 'mixto' || invoiceForm.value.type === 'credito'" value="vale">Vale</option>
                                                             <ng-container *ngIf="invoiceForm.value.type !== 'efectivo'">
                                                                 <option *ngFor="let banco of bancos" [value]="banco.name"> {{banco.name}}</option>                                                                
                                                             </ng-container>

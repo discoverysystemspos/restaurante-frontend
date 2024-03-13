@@ -126,7 +126,7 @@ export class ParqueaderoComponent implements OnInit {
     this.parqueoService.loadParqueos({estado: 'Parqueado'})
         .subscribe( ({ parqueos }) => {
 
-          this.parqueos = parqueos;          
+          this.parqueos = parqueos;             
 
         }, (err) => {
           console.log(err);
@@ -212,19 +212,24 @@ export class ParqueaderoComponent implements OnInit {
     let diff:number =  (new Date().getTime() - parq.checkin)/ cal;
     diff = parseFloat(diff.toFixed(2));
 
-    if (diff < 1) {
+    if (diff < 1 && parq.car.typeparq.type !== 'Horas') {
       diff = 0;
     }
 
-    let total:number = Math.round(diff * parq.car.typeparq.price);
+    let total:number = Math.round(diff * parq.car.typeparq.price);    
+
+    if (total < parq.car.typeparq.price) {
+      total = parq.car.typeparq.price;      
+    }
     
     if (diff >= parq.car.typeparq.tplena ) {
       total = parq.car.typeparq.plena;
     }
+   
     
-    let subtotal:number = parseFloat(((total *100)/119).toFixed(2));
+    let subtotal:number = parseFloat(((total *100)/(parq.car.typeparq.tax.valor + 100)).toFixed(2));
     let iva:number = parseFloat((total-subtotal).toFixed(2));
-
+    
     // console.log('tiempo: ', diff);
     // console.log('Subtotal: ', subtotal);
     // console.log('iva: ', iva);

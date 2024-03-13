@@ -338,6 +338,7 @@ export class CorteComponent implements OnInit {
   public devolucion: number = 0;
   public facturas: any[] = [];
   
+  public totalCreditos: number = 0;
   public totalBancos: number = 0;
   public totalBancosAbono: number = 0;
 
@@ -346,7 +347,7 @@ export class CorteComponent implements OnInit {
     const endPoint = `?turno=${this.user.turno}`;
 
     this.invoiceService.loadInvoiceCierre(endPoint)
-        .subscribe( ({invoices, total, devolucion, montos, costos, efectivo, tarjeta, transferencia, credit, vales, propinas}) => {
+        .subscribe( ({invoices, total, devolucion, montos, costos, efectivo, tarjeta, transferencia, credit, creditos, vales, propinas}) => {
 
           this.montos = montos;
           this.propinas = propinas;
@@ -356,6 +357,7 @@ export class CorteComponent implements OnInit {
           this.devolucion = devolucion;
           this.transferencia = transferencia;
           this.totalBancos = 0;
+          this.totalCreditos = creditos;
 
           this.facturas = invoices;
 

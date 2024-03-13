@@ -3,9 +3,10 @@ import { HttpClient } from '@angular/common/http';
 
 import { delay, map, tap } from 'rxjs/operators';
 
-import { environment } from '../../environments/environment';
 import { Banco } from '../models/bancos.model';
 import { LoadBancos } from '../interfaces/load-bancos.interface';
+
+import { environment } from '../../environments/environment';
 const base_url = environment.base_url;
 
 @Injectable({

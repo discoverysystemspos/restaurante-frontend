@@ -1,9 +1,83 @@
 <header class="bg-dark pt-2 border-bottom">
-    <div class="px-2">
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary rounded" aria-label="Eleventh navbar example">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white" routerLink="./">SIMIDS</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="bi bi-list text-white"></span>
+            </button>
+
+            <div class="navbar-collapse collapse" id="navbarsExample09" style="">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link text-white-50" routerLinkActive="activeH" aria-current="page" routerLink="./ventas"> Ventas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white-50" routerLinkActive="activeH" routerLink="./clientes"> Clientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white-50" routerLinkActive="activeH" routerLink="./facturas"> Facturas</a>
+                    </li>
+                    <li class="nav-item" *ngIf="empresa?.comandas">
+                        <a class="nav-link text-white-50" routerLinkActive="activeH" routerLink="./comandas"> Comandas</a>
+                    </li>
+                    <li class="nav-item" *ngIf="empresa?.alquileres">
+                        <a class="nav-link text-white-50" routerLinkActive="activeH" routerLink="./alquileres"> Alquileres</a>
+                    </li>
+                    <li class="nav-item" *ngIf="empresa?.parqueadero">
+                        <a class="nav-link text-white-50" routerLinkActive="activeH" routerLink="./configuracion/parqueadero"> Parqueadero</a>
+                    </li>
+                    <li class="nav-item" *ngIf="empresa?.domi">
+                        <a class="nav-link text-white-50" routerLinkActive="activeH" routerLink="./domicilios"> Domicilios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white-50" routerLinkActive="activeH" routerLink="./productos"> Productos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white-50" routerLinkActive="activeH" routerLink="./calendario"> Calendario</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white-50" routerLinkActive="activeH" routerLink="./corte"> Corte</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white-50" routerLinkActive="activeH" routerLink="./configuracion"> Configuracion</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="dropdown btn-group dropstart">
+                <button class="btn text-white" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="avatar shadow" >
+                        <img class="avatar-img img-fluid border border-2 border-light" [src]="user.getImage" >
+                    </div>
+                </button>
+
+                <ul class="dropdown-menu dropdown-menu-dark bg-dark" aria-labelledby="dropdownMenuButton">
+
+                    <h6 class="dropdown-header">
+                        <div class="avatar avatar-lg me-2">
+                            <img class="avatar-img img-fluid border border-2 border-light" [src]="user.getImage">
+                        </div>
+                        <div class="dropdown-user-details">
+                            <div class="dropdown-user-details-name">{{ user.name }}</div>
+                            <small class="dropdown-user-details-email text-center">{{ user.usuario }}</small>
+                        </div>
+                    </h6>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" routerLink="./perfil">Perfil</a></li>
+                    <li><a class="dropdown-item cursor" (click)="logout()">Salir</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- <div class="px-2">
         <div class="bg-dark clearfix">
 
             <a class="navbar-brand float-start text-white " routerLink="./"> SIMIDS </a>
-            <!-- BTN USER -->
             <div class="dropdown float-end">
                 <button class="btn text-white" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     <div class="avatar shadow" >
@@ -28,7 +102,6 @@
                     <li><a class="dropdown-item cursor" (click)="logout()">Salir</a></li>
                 </ul>
             </div>
-            <!-- BTN USER -->
         </div>
     </div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light p-0 py-3" aria-label="Eighth navbar example">
@@ -77,5 +150,5 @@
             </div>
 
         </div>
-    </nav>
+    </nav> -->
 </header>

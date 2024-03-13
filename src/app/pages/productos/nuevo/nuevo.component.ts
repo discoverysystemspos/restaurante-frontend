@@ -286,6 +286,9 @@ export class NuevoComponent implements OnInit {
     tax: [false],
     taxid: '',
     bascula: false,
+    brand: '',
+    sku: '',
+    distribuidor: 0,
   });
   
   crearProducto(){

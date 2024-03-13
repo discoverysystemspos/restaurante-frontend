@@ -103,7 +103,7 @@ export class ProductoComponent implements OnInit {
           this.comprados = this.producto.bought;
           this.devueltos = this.producto.returned;
           
-          const { code, name, department, type, cost, gain, expiration, visibility, price, returned, sold,  wholesale, pid, comanda, tipo, description, tax, impuesto, taxid, bascula, mayoreo } = product;
+          const { code, name, department, type, cost, gain, expiration, visibility, price, returned, sold,  wholesale, pid, comanda, tipo, description, tax, impuesto, taxid, bascula, mayoreo, brand, sku, distribuidor } = product;
           
           // let department = '00';
           // if (this.producto.department) {
@@ -137,9 +137,9 @@ export class ProductoComponent implements OnInit {
           }
           
           if (taxid) {
-            this.upProductForm.reset({code, name, type, cost, price, visibility, wholesale, gain, department, min, max, expiration: expiracion, pid, comanda, tipo, description, tax, impuestoT, valor: valorT, taxid: taxid._id, bascula, mayoreo });
+            this.upProductForm.reset({code, name, type, cost, price, visibility, wholesale, gain, department, min, max, expiration: expiracion, pid, comanda, tipo, description, tax, impuestoT, valor: valorT, taxid: taxid._id, bascula, mayoreo, brand, sku, distribuidor });
           }else{
-            this.upProductForm.reset({code, name, type, cost, price, visibility, wholesale, gain, department, min, max, expiration: expiracion, pid, comanda, tipo, description, tax, impuestoT, valor: valorT, taxid: '', bascula, mayoreo });
+            this.upProductForm.reset({code, name, type, cost, price, visibility, wholesale, gain, department, min, max, expiration: expiracion, pid, comanda, tipo, description, tax, impuestoT, valor: valorT, taxid: '', bascula, mayoreo, brand, sku, distribuidor });
           }
 
           // CARGAR LOGS
@@ -391,7 +391,10 @@ export class ProductoComponent implements OnInit {
     impuestoT:[],
     valor: [],
     mayoreo: 0,
-    bascula: false
+    bascula: false,
+    brand: '',
+    sku: '',
+    distribuidor: 0,
   });
 
   actualizarProducto(){

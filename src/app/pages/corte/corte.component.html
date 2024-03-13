@@ -56,7 +56,7 @@
                                 <td> {{ efectivo | divisa }} </td>
                             </tr>
 
-                            <tr *ngIf="empresa.parqueadero" style="color: black;">
+                            <tr *ngIf="empresa?.parqueadero" style="color: black;">
                                 <td colspan="2"> <small> Parqueadero </small> </td>
                                 <td> {{ parqueos | divisa }} </td>
                             </tr>
@@ -164,7 +164,16 @@
 
             </div>
 
-            <div *ngIf="empresa.tip" class="card shadow px-2 my-3 bg-info border-0" style="width: 18rem;">
+            <div class="card shadow px-2 my-3 bg-warning border-0" style="width: 18rem;">
+
+                <div class="card-body text-white">
+                    <h4 class="card-title mb-0 text-center">Ventas a Creditos</h4>
+                    <h5 class="text-center"> {{ totalCreditos | divisa }} </h5>
+                </div>
+
+            </div>
+
+            <div *ngIf="empresa?.tip" class="card shadow px-2 my-3 bg-info border-0" style="width: 18rem;">
 
                 <div class="card-body text-white">
                     <h4 class="card-title mb-0 text-center">Propinas</h4>
@@ -594,7 +603,24 @@
 
                         </div>
 
-                        <div style="color: black;" *ngIf="empresa.tip" class="col-auto p-2" style="width: 18rem;">
+                        <div style="color: black;" class="col-auto p-2" style="width: 18rem;">
+
+                            <table class="table text-center">
+                                <thead>
+                                    <tr style="color: black;">
+                                        <th scope="col">Ventas a creditos</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="color: black;">
+                                        <th scope="row">{{ totalCreditos | divisa }} </th>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <div style="color: black;" *ngIf="empresa?.tip" class="col-auto p-2" style="width: 18rem;">
 
                             <table class="table text-center">
                                 <thead>
@@ -632,7 +658,7 @@
                                         <td> {{ efectivo | divisa }} </td>
                                     </tr>
 
-                                    <tr *ngIf="empresa.parqueadero" style="color: black;">
+                                    <tr *ngIf="empresa?.parqueadero" style="color: black;">
                                         <td colspan="2"> <small> Parqueadero </small> </td>
                                         <td> {{ parqueos | divisa }} </td>
                                     </tr>

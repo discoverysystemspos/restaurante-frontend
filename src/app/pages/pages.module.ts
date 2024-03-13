@@ -59,6 +59,8 @@ import { NgxBarcodeModule } from 'ngx-barcode';
 import { ReportesComponent } from './configuracion/parqueadero/reportes/reportes.component';
 import { DomiciliosComponent } from './domicilios/domicilios.component';
 import { AgmCoreModule } from '@agm/core';
+import { BodegasComponent } from './configuracion/bodegas/bodegas.component';
+import { BodegaComponent } from './configuracion/bodega/bodega.component';
 
 
 
@@ -107,7 +109,9 @@ import { AgmCoreModule } from '@agm/core';
     AlquilerComponent,
     ParqueaderoComponent,
     ReportesComponent,
-    DomiciliosComponent
+    DomiciliosComponent,
+    BodegasComponent,
+    BodegaComponent
   ],
   exports: [
     PagesComponent,

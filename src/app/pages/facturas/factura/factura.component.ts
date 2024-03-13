@@ -197,7 +197,10 @@ export class FacturaComponent implements OnInit {
   cargarFactura(id: string){
     
     this.invoiceService.loadInvoiceId(id)
-        .subscribe( invoice => {          
+        .subscribe( invoice => {    
+          
+          console.log(invoice);
+          
 
           this.factura = invoice;
           this.paymentsCredit = this.factura.paymentsCredit;
@@ -770,6 +773,7 @@ export class FacturaComponent implements OnInit {
       docResult.save(`${new Date().toISOString()}.pdf`);
     });
   }
+
 
 
   // FIN DE LA CLASE
