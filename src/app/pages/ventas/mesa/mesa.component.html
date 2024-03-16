@@ -24,6 +24,10 @@
                 <button type="button" class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#descuentoModal"><i class="bi-percent"></i> Descuento </button>
                 <a [routerLink]="['/', 'dashboard', 'productos', 'kardex']" class="btn btn-outline-primary btn-sm"><i class="bi-box"></i> Kardex </a>
                 <!-- <button (click)="mayoreo()" type="button" class="btn btn-outline-dark btn-sm"><i class="bi-arrow-down-up"></i> Mayoreo </button> -->
+                <button (click)="changeMenu(menu)" type="button" class="btn btn-outline-primary">
+                    <i *ngIf="!menu" class="bi bi-grid"></i>
+                    <i *ngIf="menu" class="bi bi-justify"></i>
+                </button>
 
             </div>
 
@@ -125,7 +129,10 @@
                 <button type="button" class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#descuentoModal"><i class="bi-percent"></i> Descuento </button>
                 <a [routerLink]="['/', 'dashboard', 'productos', 'kardex']" class="btn btn-outline-primary btn-sm"><i class="bi-box"></i> Kardex </a>
                 <!-- <button (click)="mayoreo()" type="button" class="btn btn-outline-dark btn-sm"><i class="bi-arrow-down-up"></i> Mayoreo </button> -->
-
+                <button (click)="changeMenu(menu)" type="button" class="btn btn-outline-primary">
+                    <i *ngIf="!menu" class="bi bi-grid"></i>
+                    <i *ngIf="menu" class="bi bi-justify"></i>
+                </button>
             </div>
 
             <hr>
@@ -210,6 +217,9 @@
                                         <td colspan="2">{{ item.product.name }}</td>
                                         <td>{{ item.price | divisa}}</td>
                                         <td class="text-center">
+                                            <button *ngIf="empresa.bascula" type="button" (click)="loadBascula(i, item)" class="btn btn-link p-1 text-primary">
+                                                <i class="bi-arrow-down-square-fill" style="font-size: 1rem"></i>
+                                            </button>
                                             <input class="w-75" min="1" type="number" [value]="item.qty" (change)="changeCant(cantt.value, item)" #cantt>
                                         </td>
                                         <td>{{ item.price * item.qty | divisa}}</td>
@@ -231,29 +241,11 @@
 
         <div class="col-md-4 bg-white py-4 px-2 border-start" style="min-height: 100vh;">
 
-            <div class="d-flex justify-content-between align-items-center">
-                <button (click)="changeMenu(menu)" type="button" class="btn btn-outline-primary">
-                    <i *ngIf="!menu" class="bi bi-grid"></i>
-                    <i *ngIf="menu" class="bi bi-justify"></i>
-                </button>
-
-                <div *ngIf="mesa">
-                    <h6 class="fw-bold mb-0">
-                        <span class="text-primary text-wrap">
-                            {{ mesa.name }} - {{ mesa.mesero.name }} 
-                        </span>
-                    </h6>
-                </div>
-            </div>
-
-            <hr>
-
             <div class="d-grid">
 
                 <div class="mb-3">
 
                     <div>
-                        <label for="">Buscar cliente:</label>
                         <input type="text" class="form-control" placeholder="buscar cliente" (keyup)="buscarCliente(searchClient.value)" #searchClient>
                     </div>
 
@@ -297,40 +289,12 @@
 
             <div>
 
-                <!-- INFORMACION DEL CLIENTE -->
-                <!-- <div class="d-flex flex-column mt-2">
-
-                    <div>
-                        <h6 class="fw-bold mb-0">CLIENTE / RAZON SOCIAL:</h6>
-                        <p class="mb-0" *ngIf="clienteTemp.name">{{ clienteTemp.name }}</p>
-                    </div>
-
-                    <div>
-                        <h6 class="fw-bold mb-0">CC / Nit: <span *ngIf="clienteTemp.cedula"> <p class="mb-0 fw-normal">{{ clienteTemp.cedula }}</p> </span> </h6>
-                    </div>
-                    <div>
-                        <h6 class="fw-bold mb-0">Telefono: <span *ngIf="clienteTemp.phone"> <p class="mb-0 fw-normal">{{ clienteTemp.phone }}</p> </span> </h6>
-                    </div>
-                    <div *ngIf="clienteTemp.email">
-                        <h6 class="fw-bold mb-0">correo: <span> <p class="mb-0 fw-normal">{{ clienteTemp.email }}</p> </span> </h6>
-                    </div>
-                    <div *ngIf="mesa">
-                        <h6 class="fw-bold mb-0">
-                            <span class="text-primary text-wrap">
-                                {{ mesa.name }} - {{ mesa.mesero.name }} 
-                            </span>
-                        </h6>
-                    </div>
-                </div> -->
-                <!-- INFORMACION DEL CLIENTE -->
-
                 <div *ngIf="menu" class="animated fadeIn">
 
                     <hr class="my-2">
 
                     <!-- SEARCH PRODUCT CODE -->
                     <div>
-                        <label for="precioM">Codigo:</label>
                         <input type="text" class="form-control" placeholder="Ingrese o busca un codigo de barras" (keyup.enter)="buscarCodigo(searchCode.value)" #searchCode>
                         <p class="mb-0 text-info fadeIn" *ngIf="inventarioNewB"> Stock: {{ inventarioNew }} </p>
                     </div>
@@ -339,7 +303,6 @@
                     <hr class="my-2">
 
                     <div>
-                        <label for="precioM">Buscar Productos:</label>
                         <input type="text" class="form-control" placeholder="buscar producto" (keyup)="buscarProducto(searchProduct.value)" #searchProduct>
                     </div>
 
@@ -422,49 +385,36 @@
 
                 <hr>
 
-                <div class="py-2" style="bottom: 0;">
+                <!-- <div class="py-2" style="bottom: 0;"> -->
 
-                    <div class="d-flex justify-content-center">
+                <!-- <div class="d-flex justify-content-center"> -->
 
-                        <div class="col-4">
-                            <!-- <button *ngIf="clienteTemp.cedula === '' || carrito.length === 0 || facturar === false" type="button" class="btn disabled btn-dark btnW waves-effect waves-dark text-white"> 
-                                <h4 class="display-7">Cobrar</h4>
-                            </button> -->
+                <!-- <div class="col ms-auto text-end" *ngIf="empresa"> -->
 
-                            <!-- <button [disabled]="carrito.length === 0 || facturar === false" (click)="focusMonto()" type="button" class="btn btn-primary btnW waves-effect waves-dark text-white" data-bs-toggle="modal" data-bs-target="#facturar"> <h4 class="display-6">Cobrar</h4></button> -->
+                <!-- <p class="h6 fw-normal text-primary mb-0">Sub-total {{ base | divisa }}</p> -->
 
-                            <button (click)="timeCommand()" type="button" class="btn btn-info mt-2 btnW waves-effect waves-dark text-white" data-bs-toggle="modal" data-bs-target="#prefactura"> Prefactura </button>
+                <!-- IMPUESTOS -->
+                <!-- <ng-container *ngFor="let impuesto of impuestos"> -->
+                <!-- <p class="h6 fw-normal text-primary mb-0" *ngIf="impuesto.total > 0"> {{ impuesto.name }} {{ impuesto.total | divisa }}</p> -->
+                <!-- </ng-container> -->
+                <!-- IMPUESTOS -->
 
-                            <!-- <button (click)="crearPedido()" [disabled]="carrito.length === 0 || clienteTemp.cedula === '' || btnPedido === false" type="button" class="btn btn-info mt-2 btnW waves-effect waves-dark text-white"> Crear Pedido </button> -->
+                <!-- PROPINA -->
+                <!-- <p class="h6 fw-normal text-primary mb-0" *ngIf="empresa.propina">Propina {{ totalTip | divisa }}</p> -->
+                <!-- PROPINA -->
 
-                        </div>
+                <!-- <p class="h6 fw-normal text-danger mb-0" *ngIf="mesa?.descuento">Descuento {{ ((base * mesa?.porcentaje) / 100) | divisa }}</p> -->
+                <!-- <h4 class="fw-normal display-6 text-primary">{{ total | divisa }}</h4> -->
 
-                        <div class="col ms-auto text-end" *ngIf="empresa">
-
-                            <p class="h6 fw-normal text-primary mb-0">Sub-total {{ base | divisa }}</p>
-
-                            <!-- IMPUESTOS -->
-                            <ng-container *ngFor="let impuesto of impuestos">
-                                <p class="h6 fw-normal text-primary mb-0" *ngIf="impuesto.total > 0"> {{ impuesto.name }} {{ impuesto.total | divisa }}</p>
-                            </ng-container>
-                            <!-- IMPUESTOS -->
-
-                            <!-- PROPINA -->
-                            <p class="h6 fw-normal text-primary mb-0" *ngIf="empresa.propina">Propina {{ totalTip | divisa }}</p>
-                            <!-- PROPINA -->
-
-                            <p class="h6 fw-normal text-danger mb-0" *ngIf="mesa?.descuento">Descuento {{ ((base * mesa?.porcentaje) / 100) | divisa }}</p>
-                            <h4 class="fw-normal display-6 text-primary">{{ total | divisa }}</h4>
-
-                            <!-- 
+                <!-- 
                             <p class="h6 fw-normal text-primary mb-0" *ngIf="empresa.responsable">Sub-total {{ base - iva | divisa }}</p>
                             <h4 class="fw-normal text-primary" *ngIf="!empresa.responsable">{{ total | divisa }}</h4>
                             -->
-                        </div>
+                <!-- </div> -->
 
-                    </div>
+                <!-- </div> -->
 
-                </div>
+                <!-- </div> -->
 
                 <div class="container-fluid">
                     <div class="">
@@ -481,23 +431,22 @@
                                 </ng-container>
 
                                 <!-- TOTAL -->
-                                <div class="text-center my-3" *ngIf="empresa">
+                                <!-- <div class="text-center my-3" *ngIf="empresa"> -->
 
 
-                                    <h5 *ngIf="empresa.usd" class="text-primary fw-normal">{{ (total / empresa.currencyusd ) | number : '1.2-2' }} USD</h5>
-                                    <h5 *ngIf="empresa.cop" class="text-primary fw-normal">{{ (total * empresa.currencycop ) | number : '1.2-2' }} COP</h5>
-                                    <h5 *ngIf="empresa.bs" class="text-primary fw-normal">{{ (total / empresa.currencybs ) | number : '1.2-2' }} BS</h5>
-                                    <!-- <h4 class="display-4 text-primary" *ngIf="empresa.responsable">{{ total + ((total * empresa.tax)/100) | divisa }}</h4> -->
+                                <!-- <h5 *ngIf="empresa.usd" class="text-primary fw-normal">{{ (total / empresa.currencyusd ) | number : '1.2-2' }} USD</h5> -->
+                                <!-- <h5 *ngIf="empresa.cop" class="text-primary fw-normal">{{ (total * empresa.currencycop ) | number : '1.2-2' }} COP</h5> -->
+                                <!-- <h5 *ngIf="empresa.bs" class="text-primary fw-normal">{{ (total / empresa.currencybs ) | number : '1.2-2' }} BS</h5> -->
+                                <!-- <h4 class="display-4 text-primary" *ngIf="empresa.responsable">{{ total + ((total * empresa.tax)/100) | divisa }}</h4> -->
 
-                                    <small *ngIf="totalPagos > 0 && totalPagos < total" class="text-danger animated fadeIn">Resta</small>
-                                    <small *ngIf="totalPagos > 0 && totalPagos >= total" class="text-success animated fadeIn">Vueltos</small>
-                                    <h4 class="mb-0 fw-normal animated fadeIn" [ngClass]=" {   'text-danger': totalPagos < total, 'text-success': totalPagos >= total  }" *ngIf="totalPagos > 0">
-                                        {{ vueltos | divisa }}
-                                    </h4>
+                                <!-- <small *ngIf="totalPagos > 0 && totalPagos < total" class="text-danger animated fadeIn">Resta</small> -->
+                                <!-- <small *ngIf="totalPagos > 0 && totalPagos >= total" class="text-success animated fadeIn">Vueltos</small> -->
+                                <!-- <h4 class="mb-0 fw-normal animated fadeIn" [ngClass]=" {   'text-danger': totalPagos < total, 'text-success': totalPagos >= total  }" *ngIf="totalPagos > 0"> -->
+                                <!-- {{ vueltos | divisa }} -->
+                                <!-- </h4> -->
 
-                                </div>
+                                <!-- </div> -->
                                 <!-- TOTAL -->
-
 
                                 <div class="d-flex justify-content-center">
 
@@ -516,8 +465,8 @@
 
                                                     <input type="radio" (click)="limpiarPagos()" class="btn-check" name="type" formControlName="type" id="efectivo-outlined" value="efectivo" autocomplete="off" checked>
                                                     <label class="btn btn-outline-success" for="efectivo-outlined">
-                                                        <i class="px-3 bi-cash-stack" style="font-size: 1.5rem;"></i>
-                                                        <p class="mb-0">Efectivo</p>        
+                                                        <i class="px-2 bi-cash-stack" style="font-size: 1rem;"></i>
+                                                        <p class="mb-0" style="font-size: 0.9rem;" >Efectivo</p>        
                                                     </label>
 
                                                 </div>
@@ -526,8 +475,8 @@
 
                                                     <input type="radio" (click)="limpiarPagos()" class="btn-check" name="type" formControlName="type" id="tarjeta-outlined" value="transferencia" autocomplete="off">
                                                     <label class="btn btn-outline-info" for="tarjeta-outlined">
-                                                        <i class="px-3 bi-credit-card" style="font-size: 1.5rem;"></i>
-                                                        <p class="mb-0">Transferencia</p>
+                                                        <i class="px-2 bi-credit-card" style="font-size: 1rem;"></i>
+                                                        <p class="mb-0" style="font-size: 0.9rem;" >Bancos</p>
                                                     </label>
 
                                                 </div>
@@ -535,8 +484,8 @@
                                                 <div class="">
                                                     <input type="radio" (click)="limpiarPagos()" class="btn-check" name="options-outlined" name="type" formControlName="type" id="mixto-outlined" value="mixto" autocomplete="off">
                                                     <label class="btn btn-outline-dark" for="mixto-outlined">
-                                                        <i class="px-3 bi-patch-question" style="font-size: 1.5rem;"></i>
-                                                        <p class="mb-0">Mixto</p>
+                                                        <i class="px-2 bi-patch-question" style="font-size: 1rem;"></i>
+                                                        <p class="mb-0" style="font-size: 0.9rem;" >Mixto</p>
                                                     </label>
 
                                                 </div>
@@ -544,8 +493,8 @@
                                                 <div class="">
                                                     <input type="radio" (click)="limpiarPagos('credito')" #tcredito class="btn-check" name="options-outlined" name="type" formControlName="type" id="credito-outlined" value="credito" autocomplete="off">
                                                     <label class="btn btn-outline-warning" for="credito-outlined">
-                                                        <i class="px-3 bi-clock-history" style="font-size: 1.5rem;"></i>
-                                                        <p class="mb-0">Credito</p>
+                                                        <i class="px-2 bi-clock-history" style="font-size: 1rem;"></i>
+                                                        <p class="mb-0" style="font-size: 0.9rem;" >Credito</p>
                                                     </label>
                                                 </div>
 
@@ -555,32 +504,32 @@
 
                                                 <div>
                                                     <a type="button" (click)="agregarPagos('efectivo', 100000, '', false)">
-                                                        <img src="../../../../assets/img/billetes/100.svg" alt="" style="max-width: 100px; height: 50px;">
+                                                        <img src="../../../../assets/img/billetes/100.svg" alt="" style="max-width: 60px; height: 30px;">
                                                     </a>
                                                 </div>
                                                 <div>
                                                     <a type="button" (click)="agregarPagos('efectivo', 50000, '', false)">
-                                                        <img src="../../../../assets/img/billetes/50.svg" alt="" style="max-width: 100px; height: 50px;">
+                                                        <img src="../../../../assets/img/billetes/50.svg" alt="" style="max-width: 60px; height: 30px;">
                                                     </a>
                                                 </div>
                                                 <div>
                                                     <a type="button" (click)="agregarPagos('efectivo', 20000, '', false)">
-                                                        <img src="../../../../assets/img/billetes/20.svg" alt="" style="max-width: 100px; height: 50px;">
+                                                        <img src="../../../../assets/img/billetes/20.svg" alt="" style="max-width: 60px; height: 30px;">
                                                     </a>
                                                 </div>
                                                 <div>
                                                     <a type="button" (click)="agregarPagos('efectivo', 10000, '', false)">
-                                                        <img src="../../../../assets/img/billetes/10.svg" alt="" style="max-width: 100px; height: 50px;">
+                                                        <img src="../../../../assets/img/billetes/10.svg" alt="" style="max-width: 60px; height: 30px;">
                                                     </a>
                                                 </div>
                                                 <div>
                                                     <a type="button" (click)="agregarPagos('efectivo', 5000, '', false)">
-                                                        <img src="../../../../assets/img/billetes/5.svg" alt="" style="max-width: 100px; height: 50px;">
+                                                        <img src="../../../../assets/img/billetes/5.svg" alt="" style="max-width: 60px; height: 30px;">
                                                     </a>
                                                 </div>
                                                 <div>
                                                     <a type="button" (click)="agregarPagos('efectivo', 2000, '', false)">
-                                                        <img src="../../../../assets/img/billetes/2.svg" alt="" style="max-width: 100px; height: 50px;">
+                                                        <img src="../../../../assets/img/billetes/2.svg" alt="" style="max-width: 60px; height: 30px;">
                                                     </a>
                                                 </div>
 
@@ -1054,66 +1003,91 @@
 <!-- =========================================================================
     FOOTER
 ========================================================================= -->
-<div class="fixed-bottom card rounded-0  border-end-0 border-start-0 border-bottom-0">
+<div class="fixed-bottom rounded-0  border-end-0 border-start-0 border-bottom-0">
 
-    <div class="card-body">
+    <div class="card">
+        <div class="card-body">
 
-        <div class="d-flex justify-content-between flex-wrap align-items-center">
+            <div class="d-flex justify-content-between flex-wrap align-items-center">
 
-            <!-- CLIENT -->
-            <div>
+                <!-- CLIENT -->
+                <div>
 
-                <!-- INFORMACION DEL CLIENTE -->
-                <div class="d-flex flex-column">
-
-                    <div>
-                        <h6 class="fw-bold mb-0">CLIENTE: <small> {{ clienteTemp.name }}</small> </h6>
+                    <!-- MESA -->
+                    <div *ngIf="mesa">
+                        <h6 class="fw-bold mb-0">
+                            <span class="text-primary text-wrap">
+                            {{ mesa.name }} - {{ mesa.mesero.name }} 
+                        </span>
+                        </h6>
                     </div>
-                    <div>
-                        <h6 class="fw-bold mb-0">CC/Nit: <small *ngIf="clienteTemp.cedula"> {{ clienteTemp.cedula }} </small> </h6>
+
+                    <!-- INFORMACION DEL CLIENTE -->
+                    <div class="d-flex flex-column">
+
+                        <div>
+                            <h6 class="fw-bold mb-0">CLIENTE: <small> {{ clienteTemp.name }}</small> </h6>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-0">CC/Nit: <small *ngIf="clienteTemp.cedula"> {{ clienteTemp.cedula }} </small> </h6>
+                        </div>
                     </div>
+                    <!-- INFORMACION DEL CLIENTE -->
+
                 </div>
-                <!-- INFORMACION DEL CLIENTE -->
 
-            </div>
+                <!-- AMOUNT -->
+                <div>
+                    <div class="text-center" *ngIf="empresa">
 
-            <!-- AMOUNT -->
-            <div>
-                <div class="text-center" *ngIf="empresa">
+                        <p class="h6 fw-normal text-muted mb-0">Sub-total {{ base | divisa }} <span *ngIf="empresa.propina"> + Propina {{ totalTip | divisa }}</span> </p>
+                        <p class="h6 fw-normal text-danger mb-0" *ngIf="mesa?.descuento">Descuento {{ ((base * mesa?.porcentaje) / 100) | divisa }}</p>
+                        <h4 class="fw-normal display-7 text-primary mb-1">{{ total | divisa }}</h4>
+                        <h5 class="mb-0 fw-normal animated fadeIn" [ngClass]=" {   'text-danger': totalPagos < total, 'text-success': totalPagos >= total  }" *ngIf="totalPagos > 0">
+                            <small *ngIf="totalPagos > 0 && totalPagos < total" class="text-danger animated fadeIn">Resta:</small>
+                            <small *ngIf="totalPagos > 0 && totalPagos >= total" class="text-success animated fadeIn">Vueltos:</small> {{ vueltos | divisa }}
+                        </h5>
 
-                    <p class="h6 fw-normal text-muted mb-0">Sub-total {{ base | divisa }} <span *ngIf="empresa.propina"> + Propina {{ totalTip | divisa }}</span> </p>
-                    <p class="h6 fw-normal text-danger mb-0" *ngIf="mesa?.descuento">Descuento {{ ((base * mesa?.porcentaje) / 100) | divisa }}</p>
-                    <h4 class="fw-normal display-7 text-primary">{{ total | divisa }}</h4>
-
-                </div>
-                <!-- TOTAL -->
-            </div>
-
-            <!-- Buttons -->
-            <div>
-
-                <div class="d-flex justify-content-end gap-2">
-                    <!-- BTN CREAR FACTURA -->
-                    <div class="float-end">
-                        <button type="button" [disabled]="facturando == true || user.cerrada" (click)="crearFactura(false)" class="btn btn-sm btn-outline-primary">
-                        Crear Factura Pos
-                    </button>
                     </div>
-                    <!-- BTN CREAR FACTURA -->
+                    <!-- TOTAL -->
+                </div>
 
-                    <!-- BTN CREAR FACTURA -->
-                    <div class="float-end" *ngIf="empresa?.electronica">
-                        <button type="button" [disabled]="facturando == true || user.cerrada" (click)="crearFactura(true)" class="btn btn-sm btn-outline-success">
+                <!-- Buttons -->
+                <div>
+
+                    <div class="d-flex justify-content-end gap-2">
+
+                        <!-- <button (click)="crearPedido()" [disabled]="carrito.length === 0 || clienteTemp.cedula === '' || btnPedido === false" type="button" class="btn btn-info mt-2 btnW waves-effect waves-dark text-white"> Crear Pedido </button> -->
+                        <!-- BTN PREFACTURA -->
+                        <div class="float-end">
+                            <button type="button" (click)="timeCommand()" class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#prefactura">
+                            Prefactura
+                        </button>
+                        </div>
+                        <!-- BTN PREFACTURA -->
+
+                        <!-- BTN CREAR FACTURA -->
+                        <div class="float-end">
+                            <button type="button" [disabled]="facturando == true || user.cerrada" (click)="crearFactura(false)" class="btn btn-sm btn-outline-primary">
+                            Crear Factura Pos
+                        </button>
+                        </div>
+                        <!-- BTN CREAR FACTURA -->
+
+                        <!-- BTN CREAR FACTURA -->
+                        <div class="float-end" *ngIf="empresa?.electronica">
+                            <button type="button" [disabled]="facturando == true || user.cerrada" (click)="crearFactura(true)" class="btn btn-sm btn-outline-success">
                         Crear Factura Electronica
                     </button>
+                        </div>
+                        <!-- BTN CREAR FACTURA -->
                     </div>
-                    <!-- BTN CREAR FACTURA -->
+
                 </div>
 
             </div>
 
         </div>
-
     </div>
 
 </div>

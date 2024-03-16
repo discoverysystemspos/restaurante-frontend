@@ -1700,6 +1700,24 @@ export class MesaComponent implements OnInit {
   }
 
   /** ================================================================
+   *  LOAD BASCULA
+  ==================================================================== */
+  loadBascula(i: any, product: Product){
+
+    if (this.empresa.bascula) {        
+
+      this.basculaService.loadPeso()
+          .subscribe( resp => {
+
+            this.changeCant(resp, product);                
+
+          });        
+    }
+    
+
+  }
+
+  /** ================================================================
    *  SELECCIONAR PRODUCTO
   ==================================================================== */
   @ViewChild('cantidad') cantidad: ElementRef;
@@ -1743,9 +1761,7 @@ export class MesaComponent implements OnInit {
     let qty:number = 1;
     if (producto.type === 'Granel') {
 
-      if (this.empresa.bascula) {
-
-        
+      if (this.empresa.bascula) {        
 
         this.basculaService.loadPeso()
             .subscribe( resp => {
