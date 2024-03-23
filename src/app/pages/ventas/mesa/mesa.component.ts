@@ -120,9 +120,25 @@ export class MesaComponent implements OnInit {
               
                   this.$printItems = this.printerService.$printItems;
 
+                  
+
                 }
 
   ngOnInit(): void {
+
+    // TECLAS DE FUNCION
+    document.addEventListener('keyup', (event) => {
+            
+      // FACTURAR
+      if (event.key === 'F2' || event.key === 'F4') {
+        if (this.user.cerrada) {
+          Swal.fire('Atención', 'Debes de abrir caja primero', 'info');
+          return;
+        }
+        (event.key === 'F2')? this.crearFactura(false) : this.crearFactura(true);
+      }
+
+    });    
 
     if (!localStorage.getItem('menu')) {
       this.menu = true
@@ -505,10 +521,14 @@ export class MesaComponent implements OnInit {
    *  MODAL PRODUCTO CODE
   ==================================================================== */
   @ViewChild('modalProductSeleted', { static: true }) modalProductSeleted: TemplateRef<any>;
+  @ViewChild('btnAddPr') btnAddPr: ElementRef;
+  
   public productSelected: Product;
   public qtySelect : number = 1;
   public priceProductSelected: number = 0;
   modalProducto ( product : Product ) {
+
+    
 
     this.priceProductSelected = 0;
     this.mayor = false;
@@ -548,7 +568,7 @@ export class MesaComponent implements OnInit {
 
     // LIMPIAR INPUT
     this.searchCode.nativeElement.value = '';
-    this.searchCode.nativeElement.onFocus = true;
+    // this.searchCode.nativeElement.onFocus = true;
 
   }
 
@@ -1466,6 +1486,7 @@ export class MesaComponent implements OnInit {
   /** ================================================================
    *  CREAR CLIENTE
   ==================================================================== */
+  @ViewChild('btnCreateClient') btnCreateClient: ElementRef<any>;
   public formSubmitted: boolean = false;
   public newClientForm = this.fb.group({
     party_type: ['PERSONA_NATURAL', [Validators.required]],
@@ -2082,6 +2103,13 @@ export class MesaComponent implements OnInit {
   public facturando: boolean = false;
   
   crearFactura( send_dian: boolean ){
+
+    if (send_dian) {
+      if (!this.empresa.electronica) {
+        Swal.fire('Atención', 'Debes de configurar la facturación electronica para crear facturas electronicas', 'info');
+        return;
+      }
+    }
 
     this.facturando = true;
 

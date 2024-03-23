@@ -7,6 +7,8 @@
   base_url: 'https://noanoa.discoverysystemspos.com/api',
   base_url: 'http://localhost:3000/api',
   base_url: 'http://192.168.1.150:3000/api',
+  base_url: 'https://admin.castitoner.com/api',
+
   dataico_url: 'https://api.dataico.com/dataico_api/v2'
 */
 

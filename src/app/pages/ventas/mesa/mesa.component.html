@@ -13,7 +13,7 @@
                 <button *ngIf="this.user.cerrada" (click)="abrirCaja()" class="btn btn-success btn-sm" type="button">Abrir caja</button>
                 <button *ngIf="!this.user.cerrada" [routerLink]="['/dashboard', 'corte']" class="btn btn-secondary btn-sm" type="button">Cerrar caja</button>
 
-                <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#buscarCliente"><i class="bi-people"></i> Crear Cliente </button>
+                <button #btnCreateClient type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#buscarCliente"><i class="bi-people"></i> Crear Cliente </button>
 
                 <!-- <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="collapse" href="#productsColl" role="button" aria-expanded="false" aria-controls="collapseExample"><i class="bi-box"></i> Productos </button> -->
                 <!-- <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#buscarProducto"><i class="bi-box"></i> Productos </button> -->
@@ -1831,7 +1831,8 @@ PRODUCT SELECT
     </div>
 
     <div class="modal-footer">
-        <button [disabled]="qtySelect <= 0 || qtySelect > productSelected.inventario && productSelected.type !== 'Paquete'" type="button" class="btn btn-outline-success" (click)="carritoTemp(productSelected, qtySelect, pricePr.value, '',newPri.checked)" (click)="close()">
+        <button #btnAddPr ngbAutofocus [disabled]="qtySelect <= 0 || qtySelect > productSelected.inventario && productSelected.type !== 'Paquete'" type="button" class="btn btn-outline-success" (click)="carritoTemp(productSelected, qtySelect, pricePr.value, '',newPri.checked)"
+            (click)="close()">
             Agregar
         </button>
     </div>

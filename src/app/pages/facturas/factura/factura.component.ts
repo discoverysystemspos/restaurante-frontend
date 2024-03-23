@@ -36,6 +36,9 @@ import { _payments, Carrito, _paymentsCredito } from '../../../interfaces/carrit
 import { LoadTurno, _movements } from '../../../interfaces/load-turno.interface';
 import { DataicoInterface } from 'src/app/interfaces/dataico.interface';
 
+import { environment } from '../../../../environments/environment';
+const base_url = environment.base_url;
+
 @Component({
   selector: 'app-factura',
   templateUrl: './factura.component.html',
@@ -46,6 +49,8 @@ export class FacturaComponent implements OnInit {
 
   @ViewChild('PrintTemplate')
   private PrintTemplateTpl: TemplateRef<any>;
+
+  public pdfLink: string;
 
   title = 'ngx-printer-demo';
 
@@ -197,10 +202,9 @@ export class FacturaComponent implements OnInit {
   cargarFactura(id: string){
     
     this.invoiceService.loadInvoiceId(id)
-        .subscribe( invoice => {    
+        .subscribe( invoice => {     
           
-          console.log(invoice);
-          
+          this.pdfLink = `${base_url}/invoice/pdf/${invoice.iid}`;
 
           this.factura = invoice;
           this.paymentsCredit = this.factura.paymentsCredit;
