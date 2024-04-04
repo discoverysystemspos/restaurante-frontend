@@ -86,7 +86,8 @@ export class MenuComponent implements OnInit {
             this.productUp.push({
               product: mesa.carrito[i].product._id,
               qty: mesa.carrito[i].qty,
-              price: mesa.carrito[i].price
+              price: mesa.carrito[i].price,
+              mayor: mesa.carrito[i].mayor,
             });
             
             this.comanda.push({
@@ -312,7 +313,8 @@ export class MenuComponent implements OnInit {
         product: product.pid,
         qty,
         price: precio,
-        iva: ivaP
+        iva: ivaP,
+        mayor: false
       });
 
       // AGREGAMOS A LA COMANDA
@@ -407,7 +409,8 @@ export class MenuComponent implements OnInit {
               product: resp.mesa.carrito[i].product._id,
               qty: resp.mesa.carrito[i].qty,
               price: resp.mesa.carrito[i].price,
-              iva: resp.mesa.carrito[i].iva
+              iva: resp.mesa.carrito[i].iva,
+              mayor: resp.mesa.carrito[i].mayor
             });
             
             this.comanda.push({
@@ -476,7 +479,8 @@ export class MenuComponent implements OnInit {
                   product: resp.mesa.carrito[i].product._id,
                   qty: resp.mesa.carrito[i].qty,
                   price: resp.mesa.carrito[i].price,
-                  iva: resp.mesa.carrito[i].iva
+                  iva: resp.mesa.carrito[i].iva,
+                  mayor: resp.mesa.carrito[i].mayor
                 });
                 
                 this.comanda.push({

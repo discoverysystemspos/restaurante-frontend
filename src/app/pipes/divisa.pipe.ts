@@ -29,7 +29,8 @@ export class DivisaPipe implements PipeTransform {
     }
         
     if (!this.empresa?.decimal) {
-      monto =  Math.round(monto) ;      
+      monto =  Math.round(monto/ 100) * 100;
+      // monto =  Math.round(monto);
     }else{
       monto = Number.parseFloat(monto).toFixed(2) ;
     }

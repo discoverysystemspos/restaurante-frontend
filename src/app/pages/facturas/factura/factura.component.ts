@@ -200,13 +200,16 @@ export class FacturaComponent implements OnInit {
   public iva: number = 0;
   public totalDevolucion: number = 0;
   cargarFactura(id: string){
+
     
     this.invoiceService.loadInvoiceId(id)
-        .subscribe( invoice => {     
-          
-          this.pdfLink = `${base_url}/invoice/pdf/${invoice.iid}`;
+    .subscribe( invoice => {
 
+      
+          this.pdfLink = `${base_url}/invoice/pdf/${invoice.iid}`;
+          
           this.factura = invoice;
+          this.factura.totalItems = 0;
           this.paymentsCredit = this.factura.paymentsCredit;
           this.payments = this.factura.payments;
           this.iva = invoice.iva;
@@ -224,21 +227,20 @@ export class FacturaComponent implements OnInit {
           }
 
           
-          if( this.empresa.impuesto ){
-
-            for (const product of invoice.products) {
-
+          
+          for (const product of invoice.products) {
+            
+            if( this.empresa.impuesto ){
               this.impuestos.map( (impuesto) => {
   
-                if (impuesto.taxid === product.product.taxid) {
-                  
+                if (impuesto.taxid === product.product.taxid) {                  
                   impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
-
                 }
   
-              });
-
+              });              
             }
+
+            this.factura.totalItems += product.qty;
 
           }        
           

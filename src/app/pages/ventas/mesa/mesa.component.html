@@ -5,7 +5,7 @@
 
     <div class="row">
 
-        <div class="col-md-8 align-self-start animated fadeIn" *ngIf="menu">
+        <div class="col-md-8 align-self-start animated fadeIn mb-5" *ngIf="menu">
 
             <!-- BOTONES -->
             <div class="d-flex flex-wrap gap-2 my-2">
@@ -23,7 +23,7 @@
                 <button type="button" *ngIf="mesa?.img === 'mesa.svg'" (click)="cargarMesasAll()" class="btn btn-outline-dark btn-sm" data-bs-toggle="modal" data-bs-target="#cambiarMesa"><i class="bi-arrow-repeat"></i> Cambiar Mesa </button>
                 <button type="button" class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#descuentoModal"><i class="bi-percent"></i> Descuento </button>
                 <a [routerLink]="['/', 'dashboard', 'productos', 'kardex']" class="btn btn-outline-primary btn-sm"><i class="bi-box"></i> Kardex </a>
-                <!-- <button (click)="mayoreo()" type="button" class="btn btn-outline-dark btn-sm"><i class="bi-arrow-down-up"></i> Mayoreo </button> -->
+                <button (click)="mayoreoChange()" type="button" class="btn btn-outline-dark btn-sm"><i class="bi-arrow-down-up"></i> Mayoreo </button>
                 <button (click)="changeMenu(menu)" type="button" class="btn btn-outline-primary">
                     <i *ngIf="!menu" class="bi bi-grid"></i>
                     <i *ngIf="menu" class="bi bi-justify"></i>
@@ -65,7 +65,7 @@
             <hr>
 
             <!-- PRODUCTOS -->
-            <div class="d-flex justify-content-center flex-wrap">
+            <div class="d-flex justify-content-center flex-wrap mb-5">
 
                 <div *ngIf="listaProductos.length < 1" class="py-4">
                     <h4 class="text-muted">Sin Resultados</h4>
@@ -128,7 +128,7 @@
                 <button type="button" *ngIf="mesa?.img === 'mesa.svg'" (click)="cargarMesasAll()" class="btn btn-outline-dark btn-sm" data-bs-toggle="modal" data-bs-target="#cambiarMesa"><i class="bi-arrow-repeat"></i> Cambiar Mesa </button>
                 <button type="button" class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#descuentoModal"><i class="bi-percent"></i> Descuento </button>
                 <a [routerLink]="['/', 'dashboard', 'productos', 'kardex']" class="btn btn-outline-primary btn-sm"><i class="bi-box"></i> Kardex </a>
-                <!-- <button (click)="mayoreo()" type="button" class="btn btn-outline-dark btn-sm"><i class="bi-arrow-down-up"></i> Mayoreo </button> -->
+                <button (click)="mayoreoChange()" type="button" class="btn btn-outline-dark btn-sm"><i class="bi-arrow-down-up"></i> Mayoreo </button>
                 <button (click)="changeMenu(menu)" type="button" class="btn btn-outline-primary">
                     <i *ngIf="!menu" class="bi bi-grid"></i>
                     <i *ngIf="menu" class="bi bi-justify"></i>
@@ -146,7 +146,7 @@
                             <div class="col-md-6 mt-2">
 
                                 <input type="text" class="form-control" placeholder="Ingrese o busca un codigo de barras" (keyup.enter)="buscarCodigo(searchCode.value)" #searchCode>
-                                <p class="mb-0 text-info fadeIn" *ngIf="inventarioNewB"> Stock: {{ inventarioNew }} </p>
+                                <p class="mb-0 text-info fadeIn" *ngIf="inventarioNewB"> Stock: {{ inventarioNew | number }} </p>
                             </div>
 
                             <div class="col-md-6 mt-2">
@@ -214,7 +214,11 @@
 
                                 <ng-container *ngFor="let item of carrito; let i = index">
                                     <tr class="trHover" *ngIf="item.product">
-                                        <td colspan="2">{{ item.product.name }}</td>
+                                        <td colspan="2">
+                                            <div>
+                                                <p class="mb-0">{{ item.product.name }}<span *ngIf="item.mayor" class="badge text-bg-light text-dark">M</span></p>
+                                            </div>
+                                        </td>
                                         <td>{{ item.price | divisa}}</td>
                                         <td class="text-center">
                                             <button *ngIf="empresa.bascula" type="button" (click)="loadBascula(i, item)" class="btn btn-link p-1 text-primary">
@@ -296,7 +300,7 @@
                     <!-- SEARCH PRODUCT CODE -->
                     <div>
                         <input type="text" class="form-control" placeholder="Ingrese o busca un codigo de barras" (keyup.enter)="buscarCodigo(searchCode.value)" #searchCode>
-                        <p class="mb-0 text-info fadeIn" *ngIf="inventarioNewB"> Stock: {{ inventarioNew }} </p>
+                        <p class="mb-0 text-info fadeIn" *ngIf="inventarioNewB"> Stock: {{ inventarioNew | number }} </p>
                     </div>
                     <!-- SEARCH PRODUCT CODE -->
 
@@ -361,7 +365,9 @@
 
                                     <ng-container *ngFor="let item of carrito; let i = index">
                                         <tr class="trHover" *ngIf="item.product">
-                                            <td colspan="2">{{ item.product.name }}</td>
+                                            <td colspan="2">
+                                                <p class="mb-0">{{ item.product.name }} <span *ngIf="item.mayor" class="badge text-bg-light text-dark">M</span></p>
+                                            </td>
                                             <td>{{ item.price | divisa}}</td>
                                             <td class="text-center">
                                                 <input [readonly]="inputChange" class="w-75" min="1" type="number" [value]="item.qty" [max]="item.product.inventario" (change)="changeCant(cant.value, item)" #cant>
@@ -376,6 +382,10 @@
                                 </ng-container>
 
                             </tbody>
+                            <tfoot>
+                                <th colspan="5">ITEMS</th>
+                                <th> {{ totalItems }} </th>
+                            </tfoot>
                         </table>
                     </div>
 
@@ -845,7 +855,7 @@
                                 <tr *ngFor="let item of factura.products" class="trHover">
                                     <td class="py-0" style="line-height: 0.8rem">
                                         <small class="text-wrap"> {{ item.qty }} x {{item.price | divisa}} </small> <br>
-                                        <small class="text-wrap"> {{ item.product.name }} </small>
+                                        <small class="text-wrap"> {{ item.product.name }} <strong *ngIf="item.mayor" class="fw-bolde text-black">M</strong> </small>
                                     </td>
                                     <td class="text-end">
                                         <small *ngIf="item.product.tax"> {{ item.product.taxid.valor }}% </small>
@@ -937,6 +947,12 @@
                                 </tr>
 
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="">ITEMS</th>
+                                    <th> {{ factura.totalItems }} </th>
+                                </tr>
+                            </tfoot>
                         </table>
 
                         <hr class="my-1">
@@ -972,8 +988,10 @@
                         </div>
 
                         <hr class="my-1">
-                        <h6 *ngIf="factura.nota" class="mb-0">Nota:</h6>
-                        <p *ngIf="factura.nota" class="">- {{ factura.nota }} </p>
+
+
+                        <h6 class="mb-0">Nota:</h6>
+                        <p class="">- {{ factura.nota }} </p>
 
 
                         <hr *ngIf="factura.nota" class="my-1">

@@ -191,7 +191,7 @@
                                 <tr *ngFor="let producto of factura.products; let i = index">
                                     <th> {{ i + 1 }} </th>
                                     <td><small class="text-wrap">{{ producto.product.code }}</small></td>
-                                    <td colspan="2">{{ producto.product.name }}</td>
+                                    <td colspan="2">{{ producto.product.name }} <strong *ngIf="producto.mayor">M</strong> </td>
                                     <td>{{ producto.product.type }}</td>
                                     <td>{{ producto.price | divisa}}</td>
                                     <td class="text-center">{{ producto.qty }}</td>
@@ -207,6 +207,12 @@
                                 </tr>
 
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="7">ITEMS</th>
+                                    <th> {{ factura.totalItems || 0 }} </th>
+                                </tr>
+                            </tfoot>
                         </table>
 
                     </div>

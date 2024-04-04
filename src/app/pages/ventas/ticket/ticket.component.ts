@@ -142,7 +142,7 @@ export class TicketComponent implements OnInit {
   carritoTemp( product: Product, qty: number, precio: number ){ 
 
     const pid:any = product.pid;
-    
+    let mayor = false;
     // VALIDAR EL SI EXISTE EL PRODUCTO EN EL CARRITO
     const validarItem = this.carrito.findIndex( (resp) =>{      
       if (resp.product === pid ) {
@@ -159,7 +159,8 @@ export class TicketComponent implements OnInit {
         producto: product,
         product: product.pid,
         qty,
-        price: precio
+        price: precio,
+        mayor
       });
 
     } else {

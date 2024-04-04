@@ -108,26 +108,25 @@ export class PrintComponent implements OnInit {
         .subscribe( invoice => {
 
           this.factura = invoice;
+          this.factura.totalItems = 0;
 
           for (const pay of invoice.payments) {
             this.totalPagos = this.totalPagos + pay.amount;
           }
 
-          if( this.empresa.impuesto ){
-
-            for (const product of invoice.products) {
-
-              this.impuestos.map( (impuesto) => {
-  
-                if (impuesto.taxid === product.product.taxid) {
-                  
+          
+          for (const product of invoice.products) {
+            
+            if( this.empresa.impuesto ){
+              this.impuestos.map( (impuesto) => {  
+                if (impuesto.taxid === product.product.taxid) {                  
                   impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
-
                 }
   
               });
-
             }
+
+            this.factura.totalItems += product.qty;
 
           }
           

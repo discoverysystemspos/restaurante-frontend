@@ -82,7 +82,7 @@
                     <tr *ngFor="let item of factura?.products" class="trHover">
                         <td class="py-0" style="line-height: 0.8rem">
                             <small class="text-wrap"> {{ item.qty }} x {{item.price | divisa}} </small> <br>
-                            <small class="text-wrap"> {{ item.product.name }} </small>
+                            <small class="text-wrap"> {{ item.product.name }} <strong *ngIf="item.mayor" class="fw-bolde text-black">M</strong></small>
                         </td>
                         <td class="text-end">
                             <small *ngIf="item.product.tax"> {{ item.product.taxid.valor }}% </small>
@@ -170,6 +170,12 @@
                     </tr>
 
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="">ITEMS</th>
+                        <th> {{ factura.totalItems }} </th>
+                    </tr>
+                </tfoot>
             </table>
 
             <hr class="my-1">

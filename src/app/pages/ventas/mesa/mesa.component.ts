@@ -128,14 +128,22 @@ export class MesaComponent implements OnInit {
 
     // TECLAS DE FUNCION
     document.addEventListener('keyup', (event) => {
-            
+
       // FACTURAR
-      if (event.key === 'F2' || event.key === 'F4') {
+      if (event.key === 'F2' || event.key === 'F4' || event.key === '-') {
         if (this.user.cerrada) {
           Swal.fire('Atención', 'Debes de abrir caja primero', 'info');
           return;
         }
-        (event.key === 'F2')? this.crearFactura(false) : this.crearFactura(true);
+        (event.key === 'F2' || event.key === '-')? this.crearFactura(false) : this.crearFactura(true);
+      }
+
+      if (event.key === '/') {
+        this.searchProduct.nativeElement.focus();
+      }
+
+      if (event.key === '*') {
+        this.montoAdd.nativeElement.focus();
       }
 
     });    
@@ -414,7 +422,8 @@ export class MesaComponent implements OnInit {
               product: mesa.carrito[i].product._id,
               qty: mesa.carrito[i].qty,
               price: mesa.carrito[i].price,
-              iva: mesa.carrito[i].iva
+              iva: mesa.carrito[i].iva,
+              mayor: mesa.carrito[i].mayor
             });
             
             this.comanda.push({
@@ -908,6 +917,8 @@ export class MesaComponent implements OnInit {
 
   carritoTemp( product: any, qty: number, precio: number, nota: string = '', newPrice: boolean = false ){
 
+    let mayor = false;
+
     if (this.clienteTemp) {
       if (this.clienteTemp.mayoreo) {
         precio = product.wholesale;
@@ -916,6 +927,11 @@ export class MesaComponent implements OnInit {
     
     if (newPrice) {
       precio = (precio / (qty * 1000)) * 1000;
+    }
+
+    if(product.mayoreo > 0 && qty >= product.mayoreo){
+      precio = product.wholesale;
+      mayor = true;
     }
 
     this.inventarioNew = 0;
@@ -947,7 +963,8 @@ export class MesaComponent implements OnInit {
         product: product.pid,
         qty,
         price: precio,
-        iva: ivaP
+        iva: ivaP,
+        mayor
       });
 
       // AGREGAMOS A LA COMANDA
@@ -978,9 +995,11 @@ export class MesaComponent implements OnInit {
       this.comanda[validarItem].qty = qtyTemp;
       
       if (product.mayoreo > 0 &&  qtyTemp >= product.mayoreo) {
-        this.productUp[validarItem].price = product.wholesale;      
+        this.productUp[validarItem].price = product.wholesale;    
+        this.productUp[validarItem].mayor = true;  
       }else{
         this.productUp[validarItem].price = precio;
+        this.productUp[validarItem].mayor = false;  
       }
 
       this.inventarioNew = product.inventario - qtyTemp;
@@ -1058,7 +1077,8 @@ export class MesaComponent implements OnInit {
               product: resp.mesa.carrito[i].product._id,
               qty: resp.mesa.carrito[i].qty,
               price: resp.mesa.carrito[i].price,
-              iva: resp.mesa.carrito[i].iva
+              iva: resp.mesa.carrito[i].iva,
+              mayor: resp.mesa.carrito[i].mayor,
             });
             
             this.comanda.push({
@@ -1133,7 +1153,8 @@ export class MesaComponent implements OnInit {
               product: resp.mesa.carrito[i].product._id,
               qty: resp.mesa.carrito[i].qty,
               price: resp.mesa.carrito[i].price,
-              iva: resp.mesa.carrito[i].iva
+              iva: resp.mesa.carrito[i].iva,
+              mayor: resp.mesa.carrito[i].mayor
             });
             
             this.comanda.push({
@@ -1201,7 +1222,8 @@ export class MesaComponent implements OnInit {
                   product: resp.mesa.carrito[i].product._id,
                   qty: resp.mesa.carrito[i].qty,
                   price: resp.mesa.carrito[i].price,
-                  iva: resp.mesa.carrito[i].iva
+                  iva: resp.mesa.carrito[i].iva,
+                  mayor: resp.mesa.carrito[i].mayor
                 });
                 
                 this.comanda.push({
@@ -1232,9 +1254,70 @@ export class MesaComponent implements OnInit {
   /** ================================================================
    *  CONVERTIR AL MAYOREO LOS PRODUCTOS
   ==================================================================== */
-  mayoreo(){
+  mayoreoChange(){
 
-    console.log('mayor');
+    this.productUp = [];
+    
+    this.carrito.map((it) => {
+      
+      if (!it.mayor) {
+        it.price = it.product.wholesale;
+        it.mayor = true;
+      }
+
+      this.productUp.push({
+        qty: it.qty,
+        product: it.product._id,
+        price: it.price,
+        mayor: it.mayor
+      })
+      
+    });
+
+    this.mesa.carrito = this.productUp;
+    
+    this.mesasServices.updateMesa(this.mesa, this.mesaID)
+        .subscribe( (resp:{ok: boolean, mesa: any}) => { 
+          
+          this.carrito = resp.mesa.carrito;
+          this.mesa.carrito = resp.mesa.carrito;
+
+          this.productUp = [];
+          this.comanda = [];
+          this.comandas = [];
+
+          this.comandas = resp.mesa.comanda;
+
+          for (let i = 0; i < resp.mesa.carrito.length; i++) {
+
+            this.productUp.push({
+              product: resp.mesa.carrito[i].product._id,
+              qty: resp.mesa.carrito[i].qty,
+              price: resp.mesa.carrito[i].price,
+              iva: resp.mesa.carrito[i].iva,
+              mayor: resp.mesa.carrito[i].mayor
+            });
+            
+            this.comanda.push({
+              product:  resp.mesa.carrito[i].product.name,
+              comanda:  resp.mesa.carrito[i].product.comanda,
+              tipo:     resp.mesa.carrito[i].product.tipo,
+              qty:      resp.mesa.carrito[i].qty,
+              price:    resp.mesa.carrito[i].price
+            });
+                        
+          }
+          this.comandaTemp = this.comanda;          
+
+          this.inputChange = false;
+
+          this.sumarTotales();          
+
+          // this.cargarMesa(this.mesaID);
+
+        }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
+
+    
     
 
   }
@@ -1322,6 +1405,7 @@ export class MesaComponent implements OnInit {
    *  SUMAR TOTALES
   ==================================================================== */
   public totalCosto:number = 0;
+  public totalItems:number = 0;
   public totalTip:number = 0;
   public iva:number = 0;
   public base:number = 0;
@@ -1332,6 +1416,7 @@ export class MesaComponent implements OnInit {
     this.iva = 0;
     this.totalCosto = 0;
     this.totalTip = 0;
+    this.totalItems = 0;
 
     this.impuestos.map( (impuesto) => {
       impuesto.total = 0;
@@ -1366,6 +1451,9 @@ export class MesaComponent implements OnInit {
           
         }
         // SUMAR IMPUESTOS
+
+        // SUMAR ITEMS
+        this.totalItems += this.carrito[i].qty;
         
       }
 
@@ -1383,6 +1471,12 @@ export class MesaComponent implements OnInit {
         this.total += this.totalTip;
       }
 
+      this.total = this.redondearCent(this.total);
+      this.base = this.redondearCent(this.base);
+      this.iva = this.redondearCent(this.iva);
+      this.totalCosto = this.redondearCent(this.totalCosto);
+      this.totalTip = this.redondearCent(this.totalTip);
+
     }else {
       this.productUp = [];
       this.comanda = [];
@@ -1392,10 +1486,19 @@ export class MesaComponent implements OnInit {
         impuesto.total = 0;
       });
 
+      this.totalItems = 0;
+
     }
 
     this.focusMonto();
 
+  }
+
+  /** ================================================================
+   *  REDONDEAR CENTESIMA
+  ==================================================================== */
+  redondearCent(monto: number){
+    return Math.round(monto / 100) * 100;
   }
 
   /** ============================================================================================
@@ -2167,8 +2270,9 @@ export class MesaComponent implements OnInit {
       
       this.invoiceService.createInvoice(this.invoiceForm.value, this.user.turno)
           .subscribe( (resp:{ok: boolean, invoice: LoadInvoice } ) => {
-            
+                       
             this.factura = resp.invoice;
+            this.factura.totalItems = this.totalItems;
 
             this.invoiceForm.reset({
               type: 'efectivo',
@@ -2179,6 +2283,7 @@ export class MesaComponent implements OnInit {
             this.total = 0;
             this.iva = 0;
             this.base = 0;
+            this.totalItems = 0;
             
             this.carrito = [];
             this.payments = [];
@@ -2717,18 +2822,26 @@ export class MesaComponent implements OnInit {
 
       if(it._id === item._id){
         
-        if (cant <= 0) {
-          it.qty = 1;          
+        if (cant < 0) {
+          Swal.fire('Error', 'debes de agregar una catidad validad', 'error');      
         } else if(cant > item.product.inventario){
           it.qty = item.product.inventario;
           Swal.fire('Error', `No puedes agregar mas de ${item.product.inventario}`, 'warning');
         }else{
           it.qty = cant;          
         }
+
+        if (item.product.mayoreo > 0 && it.qty >= item.product.mayoreo) {
+          it.price = item.product.wholesale;
+          it.mayor = true;
+        }else{
+          it.price = item.product.price;
+          it.mayor = false;
+        }
         
         if (item.product.tax) {
           it.iva = ((item.price * item.product.impuesto[0].valor)/100) * item.qty ;
-        }
+        }        
 
       }
 
@@ -2753,7 +2866,8 @@ export class MesaComponent implements OnInit {
               product: resp.mesa.carrito[i].product._id,
               qty: resp.mesa.carrito[i].qty,
               price: resp.mesa.carrito[i].price,
-              iva: resp.mesa.carrito[i].iva
+              iva: resp.mesa.carrito[i].iva,
+              mayor: resp.mesa.carrito[i].mayor
             });
             
             this.comanda.push({

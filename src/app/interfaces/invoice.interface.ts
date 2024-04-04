@@ -16,6 +16,7 @@ export interface _products{
     qty: number;
     price: number;
     _id: string;
+    mayor: boolean;
 }
 
 interface _client{
@@ -89,6 +90,7 @@ export interface LoadInvoice {
     electronica: boolean;
     number: string;
     send: boolean;
+    totalItems: number;
     paymentsAlquiler?: _paymentsCredito[];
 
 }
