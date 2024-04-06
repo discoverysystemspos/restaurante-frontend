@@ -619,8 +619,80 @@
             </div>
             <div class="modal-body ">
 
-                <!-- TABLA DE FACTURAS A CREDITOS DEL CLIENTE -->
+                <div class="d-flex flex-wrap justify-content-between gap-2 mb-3">
 
+                    <div class="card shadow bg-warning border-0">
+
+                        <div class="card-body text-white">
+                            <h5 class="card-title mb-0 text-center">Credito</h5>
+                            <h6 class="text-center"> {{ totalCredito | divisa }} </h6>
+                        </div>
+
+                    </div>
+
+                    <div class="card shadow bg-primary border-0">
+
+                        <div class="card-body text-white">
+                            <h5 class="card-title mb-0 text-center">Abonado</h5>
+                            <h6 class="text-center"> {{ totalAbonado | divisa }} </h6>
+                        </div>
+
+                    </div>
+
+                    <div class="card shadow bg-dark border-0">
+
+                        <div class="card-body text-white">
+                            <h5 class="card-title mb-0 text-center">Restante</h5>
+                            <h6 class="text-center"> {{ totalCredito - totalAbonado | divisa }} </h6>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    Agregar Pagos
+                </button>
+
+                <div class="collapse mb-3" id="collapseExample">
+
+                    <!-- AGREGAR METODO DE PAGO -->
+                    <div class="row g-3 d-flex justify-content-center">
+
+                        <div class="col-auto">
+
+                            <select class="form-select" aria-label="Default select example" (change)="typeAdd.value" #typeAdd>
+                                <option value="efectivo">Efectivo</option>
+                                <ng-container *ngIf="bancos.length > 0">
+                                    <option *ngFor="let banco of bancos" [value]="banco.name"> {{banco.name}}</option>                                                                
+                                </ng-container>
+                            </select>
+
+                        </div>
+
+                        <div class="col-auto">
+                            <label for="Descripción" class="visually-hidden">Descripción</label>
+                            <input type="text" class="form-control w100" id="Descripción" placeholder="Descripción" (keyup)="descripcionAdd.value" #descripcionAdd>
+                        </div>
+
+                        <div class="col-auto">
+                            <label for="monto" class="visually-hidden">Monto</label>
+
+                            <ng-container>
+                                <input type="number" class="form-control" id="monto" placeholder="Monto" autofocus="true" (keyup)="montoAdd.value" #montoAdd>
+                            </ng-container>
+
+                        </div>
+
+                        <div class="col-auto">
+                            <button type="button" class="btn btn-primary mb-3" (click)="agregarPagos(typeAdd.value, montoAdd.value, descripcionAdd.value)">Agregar</button>
+                        </div>
+
+                    </div>
+                    <!-- AGREGAR METODO DE PAGO -->
+                </div>
+
+                <!-- TABLA DE FACTURAS A CREDITOS DEL CLIENTE -->
                 <div class="table-responsive ">
                     <table class="table table-borderless table-striped table-hover table-sm animated fadeIn overflow-auto ">
                         <thead class="border-bottom ">
@@ -630,6 +702,7 @@
                                 <th class="text-muted " scope="col ">Cedula</th>
                                 <th class="text-muted " scope="col " colspan="2 ">Ruta</th>
                                 <th class="text-muted " scope="col ">Monto</th>
+                                <th class="text-muted " scope="col ">Abonado</th>
                                 <th class="text-muted " scope="col ">Metodo</th>
                                 <th class="text-muted " scope="col ">fecha</th>
                                 <th class="text-muted " scope="col "></th>
@@ -654,10 +727,11 @@
                                     <td> {{ factura.client.cedula }} </td>
                                     <td colspan="2 "> {{ factura.mesa.name }} </td>
                                     <td> {{ factura.amount | currency: 'COP' }} </td>
+                                    <td> {{ factura.totalAbonado | currency: 'COP' }} </td>
                                     <td> {{ factura.type }} </td>
                                     <td> {{ factura.fecha | date:'medium' }} </td>
                                     <td class="text-center ">
-                                        <button type="button" [routerLink]="[ '/dashboard/factura', factura.iid] " class="btn btn-link p-1 text-primary" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-box-arrow-up-right "></i></button>
+                                        <a [routerLink]="[ '/dashboard/factura', factura.iid] " class="btn btn-link p-1 text-primary" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-box-arrow-up-right "></i></a>
                                     </td>
                                 </tr>
 

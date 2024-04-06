@@ -262,16 +262,20 @@ export class CorteComponent implements OnInit {
         // ABONOS EN BANCOS bancosAbonos
         for (const pago of factura.factura.paymentsCredit) {
 
-          this.bancosAbonos.map( (banco) => {
+          if (pago.turno === turno.tid && factura.pay === pago._id && factura.factura.status) {             
+            
+            this.bancosAbonos.map( (banco) => {
+              
+              if (banco.name === pago.type) {
+                banco.monto += pago.amount;
+                
+                this.totalBancosAbono += pago.amount;
+                
+              };
+              
+            });
 
-            if (banco.name === pago.type) {
-              banco.monto += pago.amount;
-
-              this.totalBancosAbono += pago.amount;
-
-            };
-
-          });
+          }
           
         }
            

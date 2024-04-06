@@ -517,16 +517,20 @@ export class CierresComponent implements OnInit {
             for (const factura of this.turnoId.abonos) {
 
               for (const pago of factura.factura.paymentsCredit) {
-                
-                this.bancosAbonos.map( (banco) => {
-      
-                  if (banco.name === pago.type) {
-                    banco.monto += pago.amount;      
-                    this.totalBancosAbono += pago.amount;
-      
-                  };
-      
-                });
+
+                if (pago.turno === this.turnoId.tid && factura.pay === pago._id && factura.factura.status) {  
+
+                  
+                  this.bancosAbonos.map( (banco) => {
+                    
+                    if (banco.name === pago.type) {
+                      banco.monto += pago.amount;      
+                      this.totalBancosAbono += pago.amount;
+                      
+                    };
+                    
+                  });
+                }
               }
               
             }

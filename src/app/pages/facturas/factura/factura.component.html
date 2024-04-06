@@ -519,7 +519,7 @@
                                                     <input type="radio" (click)="limpiarPagos()" class="btn-check" name="type" formControlName="type" id="transferencia-outlined" value="transferencia" autocomplete="off">
                                                     <label class="btn btn-outline-info" for="transferencia-outlined">
                                                         <i class="px-3 bi-credit-card" style="font-size: 1.5rem;"></i>
-                                                        <p class="mb-0">Transferencia</p>
+                                                        <p class="mb-0">Bancos</p>
                                                     </label>
 
                                                 </div>
@@ -588,7 +588,6 @@
                                                 <!-- TABLA -->
 
                                                 <!-- AGREGAR METODO DE PAGO -->
-
                                                 <div class="row g-3 d-flex justify-content-center">
 
                                                     <div class="col-auto">
@@ -619,11 +618,6 @@
                                                     <div class="col-auto">
                                                         <button type="button" class="btn btn-primary mb-3" (click)="agregarPagos(typeAdd.value, montoAdd.nativeElement.value, descripcionAdd.value, tcredito.checked)">Agregar</button>
                                                     </div>
-
-                                                    <!-- <div class="col-auto" *ngIf="credit">
-                                                        <label for="credi" class="visually-hidden">Fecha limite</label>
-                                                        <input type="date" formControlName="fechaCredito" class="form-control" id="credi" placeholder="Selecciona una fecha limite" #fechCredito>
-                                                    </div> -->
 
                                                 </div>
                                                 <!-- AGREGAR METODO DE PAGO -->

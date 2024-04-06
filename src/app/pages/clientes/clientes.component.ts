@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import Swal from 'sweetalert2';
@@ -14,6 +14,13 @@ import { ClientService } from '../../services/client.service';
 import { SearchService } from '../../services/search.service';
 import { InvoiceService } from '../../services/invoice.service';
 import { LoadInvoice, ListInvoice, ListCreditoCliente } from '../../interfaces/invoice.interface';
+import { BancosService } from 'src/app/services/bancos.service';
+import { Banco } from 'src/app/models/bancos.model';
+import { UserService } from 'src/app/services/user.service';
+import { User } from 'src/app/models/user.model';
+import { Invoice } from 'src/app/models/invoice.model';
+import { TurnoService } from 'src/app/services/turno.service';
+import { LoadTurno } from 'src/app/interfaces/load-turno.interface';
 
 interface _Department {
   codigo: string,
@@ -41,12 +48,17 @@ export class ClientesComponent implements OnInit {
   public btnAtras: string = '';
   public btnAdelante: string = '';
 
-  
+  public user: User;
   constructor(  private clientService: ClientService,
                 private searchService: SearchService,
                 private fb:FormBuilder,
                 private invoicesService: InvoiceService,
-                private http: HttpClient) {  }
+                private bancosService: BancosService,
+                private userService: UserService,
+                private turnoService: TurnoService,
+                private http: HttpClient) {  
+                  this.user = userService.user;
+                }
 
   ngOnInit(): void {
     
@@ -54,7 +66,173 @@ export class ClientesComponent implements OnInit {
 
     this.loadDepartmentAndCitys();
 
+    this.cargarBancos();
+
+    // CARGAR TURNO
+    this.cargarTurno();
+
   }
+
+  /** ================================================================
+   *   CARGAR BANCOS
+  ==================================================================== */
+  public bancos: Banco[] = [];
+  cargarBancos(){
+
+    this.bancosService.loadBancos()
+        .subscribe( ({bancos}) => {
+
+          this.bancos = bancos.filter( banco => banco.status === true);          
+
+        });
+
+  }
+
+  /** ================================================================
+   *  ABONOS A CREDITOS
+  ==================================================================== */
+  public turno: LoadTurno;
+  cargarTurno(){
+
+    this.turnoService.getTurnoId(this.user.turno)
+        .subscribe( (turno) => {
+          this.turno = turno;                    
+        });
+
+  }
+
+
+  /** ================================================================
+   *  ABONOS A CREDITOS
+  ==================================================================== */
+  @ViewChild ('descripcionAdd') descripcionAdd: ElementRef;
+  @ViewChild ('montoAdd') montoAdd: ElementRef;
+  agregarPagos(type: string, monto: any, description: string){
+
+    monto = Number(monto);
+
+    if (monto === 0 || monto < 1) {
+      Swal.fire('Atención', 'No has agregado un monto', 'info');
+      return;      
+    }
+
+    if (this.user.cerrada) {
+      Swal.fire('Atención', 'Debes de abrir caja primero', 'info');
+      return;    
+    }
+
+    for (let i = 0; i < this.creditos.length; i++) {
+      const factura = this.creditos[i];
+
+      console.log(monto);
+
+      if (monto <= 0) {
+        console.log('ES 0');
+        return;
+      }     
+
+      // SI EL MONTO ES MENOR A LA DEUDA DE LA FACTURA
+      if (monto < (factura.amount - factura.totalAbonado)) {
+
+        console.log('Menor');        
+
+        factura.paymentsCredit.push({
+          type,
+          amount: monto,
+          description,
+          turno: this.user.turno
+        }); 
+
+        monto = 0;
+        factura.totalAbonado += factura.paymentsCredit[factura.paymentsCredit.length - 1].amount;
+        this.totalAbonado += factura.paymentsCredit[factura.paymentsCredit.length - 1].amount;
+
+        
+
+        // this.invoicesService.updateInvoice( {paymentsCredit: factura.paymentsCredit, credito: factura.credito }, factura.iid )
+        //     .subscribe( async ( resp:{ok: boolean, invoice: Invoice } ) => {
+
+        //       this.descripcionAdd.nativeElement.value = '';
+        //       this.montoAdd.nativeElement.value = '';
+        //       Swal.fire('Estupendo', 'Se ha agregado el pago exitosamente', 'success');
+
+        //       let payTurno = {
+        //         factura: factura.iid,
+        //         pay: resp.invoice.paymentsCredit[resp.invoice.paymentsCredit.length - 1]._id,
+        //         monto: resp.invoice.paymentsCredit[factura.paymentsCredit.length - 1].amount,
+        //       }
+    
+        //       this.turno.abonos.push(payTurno);
+              
+        //       this.turnoService.updateTurno({abonos:this.turno.abonos}, this.user.turno)
+        //       .subscribe( resp => {       
+        //         }, (err) => {
+        //           console.log(err);              
+        //       })
+
+        //     }, (err) => {
+        //       console.log(err);
+        //       Swal.fire('Error', err.error.msg, 'error');
+              
+        //     })
+        
+      }else if (monto >= (factura.amount - factura.totalAbonado)) {
+
+        console.log('MAYOR');
+
+        factura.paymentsCredit.push({
+          type,
+          amount: (factura.amount - factura.totalAbonado),
+          description,
+          turno: this.user.turno
+        });
+
+        factura.credito = false;
+
+        monto -= factura.paymentsCredit[factura.paymentsCredit.length - 1].amount;
+
+        factura.totalAbonado += factura.paymentsCredit[factura.paymentsCredit.length - 1].amount;
+        this.totalAbonado += factura.paymentsCredit[factura.paymentsCredit.length - 1].amount;        
+        
+      }else{
+        console.log('RETORNO');
+        return;
+      }
+
+      console.log('Agregar pago');
+
+      this.invoicesService.updateInvoice( {paymentsCredit: factura.paymentsCredit, credito: factura.credito }, factura.iid )
+            .subscribe( ( resp:{ok: boolean, invoice: Invoice } ) => {
+
+              this.descripcionAdd.nativeElement.value = '';
+              this.montoAdd.nativeElement.value = '';
+              Swal.fire('Estupendo', 'Se ha agregado el pago exitosamente', 'success');
+
+              let payTurno = {
+                factura: resp.invoice.iid,
+                pay: resp.invoice.paymentsCredit[resp.invoice.paymentsCredit.length - 1]._id,
+                monto: resp.invoice.paymentsCredit[resp.invoice.paymentsCredit.length - 1].amount,
+              }
+    
+              this.turno.abonos.push(payTurno);
+              
+              this.turnoService.updateTurno({abonos:this.turno.abonos}, this.user.turno)
+              .subscribe( resp => {
+
+                }, (err) => {
+                  console.log(err);              
+              })
+
+            }, (err) => {
+              console.log(err);
+              Swal.fire('Error', err.error.msg, 'error');
+              
+            })
+      
+    }
+    
+  }
+
 
   /** ================================================================
    *  OBTENER DEPARTAMENTOS Y CIUDADES
@@ -410,15 +588,38 @@ export class ClientesComponent implements OnInit {
   ==================================================================== */
   public creditos: LoadInvoice[] = [];
   public clienteCredito: Client;
+  public totalAbonado: number = 0;
+  public totalCredito: number = 0;
   credito(client: Client, credito: boolean){
 
     this.creditos = [];
     this.clienteCredito = client;
+    this.totalAbonado = 0;
+    this.totalCredito = 0;
 
     this.invoicesService.loadInvoiceCreditClient(client.cid, credito)
         .subscribe( (invoices) => {
 
-          this.creditos = invoices;          
+          this.creditos = invoices;
+          
+          for (let i = 0; i < this.creditos.length; i++) {
+            const factura = this.creditos[i];
+
+            factura.totalAbonado = 0;
+
+            this.totalCredito += factura.amount;
+
+            for (const pago of factura.payments) {
+              this.totalAbonado += pago.amount;
+              factura.totalAbonado += pago.amount;
+            }
+
+            for (const pago of factura.paymentsCredit) {
+              this.totalAbonado += pago.amount;
+              factura.totalAbonado += pago.amount;
+            }            
+            
+          }
 
         });
   }

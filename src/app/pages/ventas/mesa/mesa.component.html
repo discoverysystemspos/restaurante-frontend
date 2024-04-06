@@ -216,7 +216,7 @@
                                     <tr class="trHover" *ngIf="item.product">
                                         <td colspan="2">
                                             <div>
-                                                <p class="mb-0">{{ item.product.name }}<span *ngIf="item.mayor" class="badge text-bg-light text-dark">M</span></p>
+                                                <p class="mb-0">{{ item.product.name }}<span *ngIf="item.mayor" class="badge text-bg-light text-warning">M</span></p>
                                             </div>
                                         </td>
                                         <td>{{ item.price | divisa}}</td>
@@ -366,7 +366,7 @@
                                     <ng-container *ngFor="let item of carrito; let i = index">
                                         <tr class="trHover" *ngIf="item.product">
                                             <td colspan="2">
-                                                <p class="mb-0">{{ item.product.name }} <span *ngIf="item.mayor" class="badge text-bg-light text-dark">M</span></p>
+                                                <p class="mb-0">{{ item.product.name }} <span *ngIf="item.mayor" class="badge text-bg-light text-warning">M</span></p>
                                             </td>
                                             <td>{{ item.price | divisa}}</td>
                                             <td class="text-center">

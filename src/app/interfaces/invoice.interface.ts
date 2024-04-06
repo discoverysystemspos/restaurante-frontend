@@ -65,6 +65,7 @@ export interface LoadInvoice {
     products: _products[];
     type: string;
     amount: number;
+    totalAbonado: number;
     payments: _payments[];
     credito: boolean;
     fechaCredito: Date;
