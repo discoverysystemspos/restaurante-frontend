@@ -278,6 +278,7 @@
                                             {{ factura.client?.name || 'Ocasional' }}
                                             <span *ngIf="!factura.status" class="badge rounded-pill bg-danger">Cancelada</span>
                                             <span *ngIf="factura.credito && factura.status" class="badge rounded-pill bg-warning">Credito <small *ngIf="factura.apartado">- Apartado</small> </span>
+                                            <span *ngIf="factura.mayor" class="badge rounded-pill bg-success">M </span>
                                         </td>
                                         <td> {{ factura.client?.cedula || '00000000' }} </td>
                                         <td colspan="2"> {{ factura.mesa?.name }} </td>

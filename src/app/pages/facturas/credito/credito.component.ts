@@ -161,6 +161,10 @@ export class CreditoComponent implements OnInit {
             if( this.empresa.impuesto ){
 
               for (const product of factura.products) {
+
+                if (product.mayor) {                  
+                  factura.mayor = true;
+                }
   
                 this.impuestos.map( (impuesto) => {
     
@@ -367,6 +371,10 @@ export class CreditoComponent implements OnInit {
             if( this.empresa.impuesto ){
 
               for (const product of factura.products) {
+
+                if (product.mayor) {                  
+                  factura.mayor = true;
+                }
   
                 this.impuestos.map( (impuesto) => {
     
@@ -436,6 +444,10 @@ export class CreditoComponent implements OnInit {
             if( this.empresa.impuesto ){
 
               for (const product of factura.products) {
+
+                if (product.mayor) {                  
+                  factura.mayor = true;
+                }
   
                 this.impuestos.map( (impuesto) => {
     
@@ -511,6 +523,10 @@ export class CreditoComponent implements OnInit {
             if( this.empresa.impuesto ){
 
               for (const product of factura.products) {
+
+                if (product.mayor) {                  
+                  factura.mayor = true;
+                }
   
                 this.impuestos.map( (impuesto) => {
     
@@ -595,6 +611,10 @@ export class CreditoComponent implements OnInit {
               if( this.empresa.impuesto ){
 
                 for (const product of factura.products) {
+
+                  if (product.mayor) {                  
+                    factura.mayor = true;
+                  }
     
                   this.impuestos.map( (impuesto) => {
       

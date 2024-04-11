@@ -280,6 +280,10 @@ export class TotalComponent implements OnInit {
             if( this.empresa.impuesto ){
 
               for (const product of factura.products) {
+
+                if (product.mayor) {                  
+                  factura.mayor = true;
+                }
   
                 this.impuestos.map( (impuesto) => {
     
@@ -383,6 +387,10 @@ export class TotalComponent implements OnInit {
                 }
 
                 for (const product of factura.products) {
+
+                  if (product.mayor) {                  
+                    factura.mayor = true;
+                  }
 
                   if (product.product.taxid) {
                     
@@ -548,6 +556,10 @@ export class TotalComponent implements OnInit {
             }
 
             for (const product of factura.products) {
+              
+              if (product.mayor) {                  
+                factura.mayor = true;
+              }
 
               this.impuestos.map( (impuesto) => {
   
