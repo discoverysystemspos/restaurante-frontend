@@ -608,17 +608,23 @@ export class MesaComponent implements OnInit {
     }else{
 
       // COMPROBAR SI ES CODIGO DE BARRA CON PESO O PRECIO
-      if (code.slice(0,4) === this.empresa.basculacode) {
-        codigo = code.slice(4,7);       
+      let digitos = this.empresa.basculacode.length;
+      let digCode = digitos + 3;
+      let totalCode = code.length - 3;
+      
+
+      if (code.slice(0,digitos) === this.empresa.basculacode) {
+        codigo = code.slice(digitos, digCode);       
         
         if(this.empresa.basculatype === 'peso'){
 
-          let cant = Number(code.slice(7,12))/1000;
+          let cant = Number(code.slice(digCode , totalCode))/1000;
 
           cantidad = cant.toFixed(3);
 
         }else if(this.empresa.basculatype === 'precio'){
-          precio = Number(code.slice(7,12));
+          precio = Number(code.slice(digCode , totalCode));
+          
         }
 
       }else{
@@ -636,11 +642,14 @@ export class MesaComponent implements OnInit {
               return;              
             }
 
+            let digitos = this.empresa.basculacode.length;
+            let digCode = digitos + 3;
+
             // SI ES GRANEL
             if (product.type === 'Granel') {
               // SI ESTA USANDO BASCULA
 
-              if (code.slice(0,4) === this.empresa.basculacode) {
+              if (code.slice(0,digitos) === this.empresa.basculacode) {
 
                 if(this.empresa.basculatype === 'precio'){
                   cantidad = precio / product.price;

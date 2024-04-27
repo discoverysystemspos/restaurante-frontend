@@ -185,16 +185,20 @@
                                 <td colspan="2">{{ item.name }}</td>
                                 <td class="text-center">{{ item.departamento }}</td>
                                 <td>
-                                    <a *ngIf="item.invoice" [routerLink]="['/dashboard/factura', item.invoice._id]">                            
-                                {{ item.description }}
-                            </a>
-                                    <span *ngIf="!item.invoice">
-                                {{ item.description }}                                
-                            </span>
+                                    <a *ngIf="item.invoice" [routerLink]="['/dashboard/factura', item.invoice._id]">                   
+                                        {{ item.description }}
+                                    </a>
+                                    <a *ngIf="item.compra" [routerLink]="['/dashboard/compra', item.compra]">                   
+                                        {{ item.description }}
+                                    </a>
+                                    <span *ngIf="!item.invoice && !item.compra">
+                                        {{ item.description }}                                
+                                    </span>
                                 </td>
                                 <td>
                                     <span *ngIf="item.type === 'Salida'" class="badge rounded-pill bg-danger text-white-75">{{ item.type }}</span>
                                     <span *ngIf="item.type === 'Agrego'" class="badge rounded-pill bg-success text-white-75">{{ item.type }}</span>
+                                    <span *ngIf="item.type === 'Compra'" class="badge rounded-pill bg-success text-white-75">{{ item.type }}</span>
                                     <span *ngIf="item.type === 'Elimino'" class="badge rounded-pill bg-warning text-white-75">{{ item.type }}</span>
                                     <span *ngIf="item.type === 'Devolución'" class="badge rounded-pill bg-info text-white-75">{{ item.type }}</span>
                                 </td>

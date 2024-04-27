@@ -61,6 +61,7 @@ import { DomiciliosComponent } from './domicilios/domicilios.component';
 import { AgmCoreModule } from '@agm/core';
 import { BodegasComponent } from './configuracion/bodegas/bodegas.component';
 import { BodegaComponent } from './configuracion/bodega/bodega.component';
+import { CompraComponent } from './compra/compra.component';
 
 
 
@@ -111,7 +112,8 @@ import { BodegaComponent } from './configuracion/bodega/bodega.component';
     ReportesComponent,
     DomiciliosComponent,
     BodegasComponent,
-    BodegaComponent
+    BodegaComponent,
+    CompraComponent
   ],
   exports: [
     PagesComponent,

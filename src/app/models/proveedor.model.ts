@@ -7,6 +7,8 @@ export class Proveedor {
     constructor(
         public name: string,
         public cedula: string,
+        public _id?: string,
+        public provid?: string,
         public phone?: string,
         public email?: string,
         public address?: string,

@@ -50,6 +50,7 @@ import { ReportesComponent } from './configuracion/parqueadero/reportes/reportes
 import { DomiciliosComponent } from './domicilios/domicilios.component';
 import { BodegasComponent } from './configuracion/bodegas/bodegas.component';
 import { BodegaComponent } from './configuracion/bodega/bodega.component';
+import { CompraComponent } from './compra/compra.component';
 
 const routes: Routes = [
     
@@ -66,13 +67,14 @@ const routes: Routes = [
           { path: 'calendario', component: CalendarioComponent, data:{ titulo: 'Calendario'} },
           { path: 'clientes', component: ClientesComponent, data:{ titulo: 'Clientes'} },
           { path: 'comandas', component: ComandaComponent, data:{ titulo: 'Comandas'} },
-          { path: 'compras', component: ComprasComponent, data:{ titulo: 'Compras'} },
+          { path: 'compra/:id', component: CompraComponent, data:{ titulo: 'Compra'} },
           
           { path: 'configuracion', component: ConfiguracionComponent, canActivate: [AdminGuard], data:{ titulo: 'Configuracion'} },
           { path: 'configuracion/bancos', component: BancosComponent, data:{ titulo: 'Bancos'} },
           { path: 'configuracion/bodegas', component: BodegasComponent, data:{ titulo: 'Bodegas'} },
           { path: 'configuracion/bodega/:id', component: BodegaComponent, data:{ titulo: 'Bodega'} },
           { path: 'configuracion/caja', component: CajaComponent, canActivate: [AdminGuard], data:{ titulo: 'Caja' } },
+          { path: 'configuracion/compras', component: ComprasComponent, canActivate: [AdminGuard], data:{ titulo: 'Compras' } },
           { path: 'configuracion/cierres', component: CierresComponent, canActivate: [AdminGuard], data:{ titulo: 'Cierres' } },
           { path: 'configuracion/empresa', component: EmpresaComponent, canActivate: [AdminGuard], data:{ titulo: 'Mi Empresa' } },
           { path: 'configuracion/mesas', component: MesasComponent, canActivate: [AdminGuard], data:{ titulo: 'Mesas' } },

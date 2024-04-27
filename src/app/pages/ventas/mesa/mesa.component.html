@@ -211,7 +211,6 @@
                             </tr>
 
                             <ng-container *ngIf="carrito.length > 0 ">
-
                                 <ng-container *ngFor="let item of carrito; let i = index">
                                     <tr class="trHover" *ngIf="item.product" [ngClass]="{'table-success': item.mayor}">
                                         <td colspan="2">
@@ -219,7 +218,7 @@
                                                 <p class="mb-0">{{ item.product.name }}<span *ngIf="item.mayor" class="badge text-dark">M</span></p>
                                             </div>
                                         </td>
-                                        <td>{{ item.price | dark}}</td>
+                                        <td>{{ item.price | divisa }}</td>
                                         <td class="text-center">
                                             <button *ngIf="empresa.bascula" type="button" (click)="loadBascula(i, item)" class="btn btn-link p-1 text-primary">
                                                 <i class="bi-arrow-down-square-fill" style="font-size: 1rem"></i>

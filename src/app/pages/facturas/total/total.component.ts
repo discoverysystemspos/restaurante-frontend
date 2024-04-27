@@ -277,13 +277,14 @@ export class TotalComponent implements OnInit {
               this.totalTip += factura.tip;              
             }
             
-            if( this.empresa.impuesto ){
-
-              for (const product of factura.products) {
-
-                if (product.mayor) {                  
-                  factura.mayor = true;
-                }
+            for (const product of factura.products) {
+              
+              if (product.mayor) {                  
+                factura.mayor = true;
+              }
+              
+              
+              if( this.empresa.impuesto ){
   
                 this.impuestos.map( (impuesto) => {
     
@@ -379,19 +380,19 @@ export class TotalComponent implements OnInit {
             this.totalCost = costos;
             this.totalIva = iva;
 
-            if( this.empresa.impuesto || this.empresa.tip ){
-              for (const factura of invoices) {
-
-                if (factura.tip) {
-                  this.totalTip += factura.tip;              
+            for (const factura of invoices) {
+              
+              if (factura.tip) {
+                this.totalTip += factura.tip;              
+              }
+              
+              for (const product of factura.products) {
+                
+                if (product.mayor) {                  
+                  factura.mayor = true;
                 }
-
-                for (const product of factura.products) {
-
-                  if (product.mayor) {                  
-                    factura.mayor = true;
-                  }
-
+                
+                if( this.empresa.impuesto || this.empresa.tip ){
                   if (product.product.taxid) {
                     
                     this.impuestos.map( (impuesto) => {
@@ -548,21 +549,22 @@ export class TotalComponent implements OnInit {
 
         this.comisionCalcular(this.totalAmount);
 
-        if( this.empresa.impuesto ){
-          for (const factura of invoices) {
+        for (const factura of invoices) {
+          
+          
+          if (factura.tip) {
+            this.totalTip += factura.tip;              
+          }
+          for (const product of factura.products) {
+            
 
-            if (factura.tip) {
-              this.totalTip += factura.tip;              
+            if (product.mayor) {                  
+              factura.mayor = true;                
             }
-
-            for (const product of factura.products) {
-              
-              if (product.mayor) {                  
-                factura.mayor = true;
-              }
-
+            
+            if( this.empresa.impuesto ){
               this.impuestos.map( (impuesto) => {
-  
+                
                 if (impuesto.taxid === product.product.taxid) {
                   
                   impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
