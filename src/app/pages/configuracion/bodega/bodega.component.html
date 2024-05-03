@@ -1,1 +1,180 @@
-<p>bodega works!</p>
+<div class="container-fluid my-4">
+
+    <div class="d-flex flex-wrap">
+
+        <!-- TRASLADOS -->
+        <div class="col-md-8 p-0">
+
+            <div class="shadow-lg p-3 mb-5 rounded bg-white">
+
+                <div>
+
+                    <!-- BTN CREAR IMPUESTO -->
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-sm btn-primary btnW waves-effect waves-ligth" data-bs-toggle="modal" data-bs-target="#nuevaBodega">Crear</button>
+                    </div>
+                    <!-- BTN CREAR IMPUESTO -->
+
+                    <div class="table-responsive ">
+                        <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                            <thead class="border-bottom ">
+                                <tr>
+                                    <th class="text-muted " scope="col ">Referencia</th>
+                                    <th class="text-muted " scope="col ">Estado</th>
+                                    <th class="text-muted " scope="col ">Fecha</th>
+                                    <th class="text-muted " scope="col ">Usuario</th>
+                                    <th class="text-muted w100 " scope="col ">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngIf="traslados.length === 0" class="text-center ">
+                                    <th colspan="5" class="py-4">
+                                        <h4 class="text-muted">Sin Resultados</h4>
+                                    </th>
+                                </tr>
+
+                                <tr class="trHover" *ngFor="let traslado of traslados; let i = index">
+                                    <td>{{ traslado.referencia }}</td>
+                                    <td>{{ traslado.estado }}</td>
+                                    <td>{{ traslado.fecha | date: 'short' }}</td>
+                                    <td>{{ traslado.user }}</td>
+                                    <td class="text-center">
+                                        <a routerLink="/dashboard/configuracion/bodega/{{bodega.bid}}" class="btn btn-link p-1 text-primary">
+                                            <i class="bi bi-box-arrow-up-right"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <!-- BTN SIGUIENTE Y ANTERIOR -->
+                    <div class="row">
+                        <div class="col col-md-4">
+                            <small class="text-muted">Total de bodegas: ({{traslados.length}})</small>
+                            <small *ngIf="traslados.length !== 0" class="text-muted"> - (Resultados: {{ traslados.length }})</small>
+                        </div>
+                    </div>
+                    <!-- BTN SIGUIENTE Y ANTERIOR -->
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- CREAR TRASLADOS -->
+        <div class="col-md-4">
+
+            <!-- AGREGAR PRODUCTOS -->
+            <div class="card mb-3">
+
+                <div class="card-body">
+
+                    <h4>Agregar Productos</h4>
+
+                    <div class="w-100 mb-2">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Buscar producto con codigo de barra o nombre" (keyup.enter)="searchProduct(search.value)" #search>
+
+                            <!-- LIST PRODUCTS -->
+                            <div *ngIf="listProducts.length > 0" class="shadow rounded bg-white" style="z-index: 1; position: absolute; max-height: 200px; overflow-y: auto;">
+                                <div class="w-100">
+
+                                    <p class="mb-0 text-muted pl-2"><small> resultados: {{ listProducts.length }} </small> </p>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item list-group-item-action" *ngFor="let product of listProducts">
+                                            <a class="pointer" (click)="selectProduct(product)">
+                                                <h5 class="mb-0"> {{ product.name }} </h5>
+                                                <p *ngIf="product.code" class="mb-0 text-muted"><small> <i class="ti ti-id-badge"></i>  {{ product.code }} </small> </p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AGREGAR ITEMS -->
+                    <div class="row g-3 d-flex align-items-end">
+
+                        <div class="col-md-6">
+                            <label for="codigo" class="">Codigo</label>
+                            <input #psCode readonly type="text" class="form-control" id="codigo" placeholder="Codigo">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="producto" class="">Producto</label>
+                            <input #psName readonly type="text" class="form-control" id="producto" placeholder="Producto">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="costo" class="">Costo</label>
+                            <input #psCost type="number" min="0" class="form-control" id="costo" placeholder="costo">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="Precio" class="">Precio</label>
+                            <input #psPrice type="number" min="0" class="form-control" id="Precio" placeholder="Precio">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="mayor" class="">Precio Mayor</label>
+                            <input #psWholesale type="number" min="0" class="form-control" id="mayor" placeholder="mayor">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="cantidad" class="">Cantidad</label>
+                            <input #psQty type="number" min="0" class="form-control" id="cantidad" placeholder="cantidad">
+                        </div>
+
+                        <div class="col-auto">
+                            <button type="button" (click)="agregarProducto(psQty.value)" class="btn btn-primary">Agregar</button>
+                        </div>
+
+                        <h3 class="text-center mb-1">ITEMS</h3>
+                        <div class="table-responsive" style="clear: both;">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Producto</th>
+                                        <th class="text-right">Cantidad</th>
+                                        <th class="text-right">Costo</th>
+                                        <th class="text-right">Precio</th>
+                                        <th class="text-right">Mayor</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr *ngIf="items.length === 0">
+                                        <td colspan="7" class="text-center">Aun no has seleccionado ningun producto...</td>
+                                    </tr>
+
+                                    <tr *ngFor="let item of items; let i = index">
+                                        <td>
+                                            <button type="button" (click)="deleteProduct(i)" class="btn btn-link p-1 text-danger">
+                                            <i class="text-danger bi-trash"></i>
+                                        </button> #{{i+1}}
+                                        </td>
+                                        <td> {{ item.product.name }} <br> <small>{{ item.product!.code }}</small> </td>
+                                        <td class="text-right"> {{ item.qty }} </td>
+                                        <td class="text-right"> {{ item.cost | currency : 'COP' : 'symbol' : '1.0-0' }} </td>
+                                        <td class="text-right"> {{ item.price | currency : 'COP' : 'symbol' : '1.0-0' }} </td>
+                                        <td class="text-right"> {{ item.wholesale || 0 | currency : 'COP' : 'symbol' : '1.0-0' }} </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

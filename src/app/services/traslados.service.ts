@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Traslado } from '../models/traslados.model';
 
 import { environment } from '../../environments/environment';
-import { Bodega } from '../models/bodegas.model';
 const base_url = environment.base_url;
 
 @Injectable({
   providedIn: 'root'
 })
-export class BodegasService {
+export class TrasladosService {
 
   constructor(  private http:HttpClient) { }
 
@@ -31,30 +31,37 @@ export class BodegasService {
   }
 
   /** ================================================================
-   *  CREATE BANCOS
+   *  CREATE TRASLADO
   ==================================================================== */
-  createBodega(formData: any){    
-    return this.http.post<{ok: boolean, bodega: Bodega}>(`${base_url}/bodega`, formData, this.headers);
+  createTraslado(formData: any){    
+    return this.http.post<{ok: boolean, traslado: Traslado}>(`${base_url}/traslados`, formData, this.headers);
   }
 
   /** ================================================================
-   *  LOAD BANCOS
+   *  ENVIAR TRASLADO
   ==================================================================== */
-  loadBodegas(query: any){    
-    return this.http.post<{ok: boolean, bodegas: Bodega[], total: number}>(`${base_url}/bodega/query`, query, this.headers);
+  sendTraslado(formData: any, bodega: any){    
+    return this.http.post<{ok: boolean, traslado: Traslado}>(`${bodega}/traslados`, formData, this.headers);
+  }
+  
+  /** ================================================================
+   *  LOAD TRASLADO
+  ==================================================================== */
+  loadTraslados(query: any){    
+    return this.http.post<{ok: boolean, total: number, traslados: Traslado[]}>(`${base_url}/traslados/query`, query, this.headers);
   }
 
   /** ================================================================
-   *  LOAD BANCO ID
+   *  LOAD TRASLADO
   ==================================================================== */
-  loadBodegaId( bodega: string ){
-    return this.http.get<{ok: boolean, bodega: Bodega}>(`${base_url}/bodega/${bodega}`, this.headers);
+  loadTrasladoID(traslado: any){    
+    return this.http.get<{ok: boolean, traslado: Traslado}>(`${base_url}/traslados/one/${traslado}`, this.headers);
   }
 
   /** ================================================================
-   *  UPDATE BANCO
+   *  UPDATE TRASLADO
   ==================================================================== */
-  updateBodega(formData: any, id: string){    
-    return this.http.put<{ok: boolean, bodega: Bodega}>(`${base_url}/bodega/${id}`, formData, this.headers);
+  updateTraslado(formData: any, id: string){    
+    return this.http.put<{ok: boolean, traslado: Traslado}>(`${base_url}/traslados/${id}`, formData, this.headers);
   }
 }
