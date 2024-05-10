@@ -47,14 +47,16 @@ export class EmpresaComponent implements OnInit {
           
           this.comisiones = datos.comisiones || [];
           
-          const { tax, name, address, phone, nit, eid, impuesto, printpos, responsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas, commissions, comisiones, fruver, moneda, decimal, usd,  currencyusd, cop, currencycop, basculaimp, basculatype, basculacode, electronica, min, alquileres, impresora, parqueadero, bs, currencybs } = datos;
+          const { tax, name, address, phone, nit, eid, impuesto, printpos, responsable, noresponsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas, commissions, comisiones, fruver, moneda, decimal, usd,  currencyusd, cop, currencycop, basculaimp, basculatype, basculacode, electronica, min, alquileres, impresora, parqueadero, bs, currencybs } = datos;
 
           let tipoImpuesto = '';
 
-          if(responsable === true && impuestoconsumo === false && impuesto === true){
+          if(responsable === true && impuestoconsumo === false && noresponsable === false && impuesto === true){
             tipoImpuesto = 'responsable';
-          }else if(responsable === false && impuestoconsumo === true && impuesto === true) {
+          }else if(responsable === false && impuestoconsumo === true && noresponsable === false && impuesto === true) {
             tipoImpuesto = 'consumo';
+          }else if(responsable === false && impuestoconsumo === false && noresponsable === true && impuesto === true) {
+            tipoImpuesto = 'noresponsable';
           }
 
           this.formUpdate.reset(
@@ -118,6 +120,7 @@ export class EmpresaComponent implements OnInit {
     impuesto: [''],
     printpos: [true],
     responsable: [false],
+    noresponsable: [false],
     impuestoconsumo: [false],
     resolucion: [false],
     prefijopos: [''],
@@ -160,11 +163,18 @@ export class EmpresaComponent implements OnInit {
     if(this.formUpdate.value.tipoImpuesto === 'responsable'){
       this.formUpdate.value.responsable = true;
       this.formUpdate.value.impuestoconsumo = false;
+      this.formUpdate.value.noresponsable = false;
     }else if(this.formUpdate.value.tipoImpuesto === 'consumo'){
       this.formUpdate.value.responsable = false;
       this.formUpdate.value.impuestoconsumo = true;
+      this.formUpdate.value.noresponsable = false;
+    }else if(this.formUpdate.value.tipoImpuesto === 'noresponsable'){
+      this.formUpdate.value.responsable = false;
+      this.formUpdate.value.impuestoconsumo = false;
+      this.formUpdate.value.noresponsable = true;
     }else {
       this.formUpdate.value.responsable = false;
+      this.formUpdate.value.noresponsable = false;
       this.formUpdate.value.impuestoconsumo = false;
     }
 

@@ -145,7 +145,7 @@ export class ComprasComponent implements OnInit {
         product: this.productS,
         qty,
         cost: this.psCost.nativeElement.value,
-        price: this.psCost.nativeElement.value
+        price: this.psPrice.nativeElement.value,
       })
     }
 

@@ -27,6 +27,7 @@ export class Datos{
         public status?:string,
         public pos?: boolean,
         public responsable?: boolean,
+        public noresponsable?: boolean,
         public impuestoconsumo?: boolean,
         public resolucion?: string,
         public prefijopos?: string,
