@@ -53,6 +53,18 @@
 
                 </div>
             </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <!-- ticketUpdate -->
+                        <button type="button" name="" id="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ticketUpdate">
+                            Actualizar Ticket
+                        </button>
+                    </div>
+
+                </div>
+            </div>
         </div>
         <!-- IMAGE -->
 
@@ -981,4 +993,174 @@
 </div>
 <!-- =========================================================================
     ACTUALIZAR CONFIGURACION DE FACTURACION ELECTRONICA
+========================================================================= -->
+
+<!-- =========================================================================
+    ACTUALIZAR TICKET
+========================================================================= -->
+<div class="modal fade" id="ticketUpdate" tabindex="-1" aria-labelledby="ticketUpdateModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ticketUpdateModal"><i class="bi-collection" style="font-size: 1rem"></i>Configurar Ticket</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="d-flex align-items-center justify-content-around flex-wrap gap-2">
+
+                    <!-- TICKET -->
+                    <div>
+
+                        <div class="d-flex justify-content-center">
+
+                            <div class="card border-0 pb-4" [ngStyle]="{'width': empresa?.impresora === 58 ? '14rem' : '24rem'}" style="width: 14rem; color:black; background: white;" id="printDiv">
+
+                                <!-- EMPRESA -->
+                                <div class="card-body px-1 mb-2" style="border-bottom: 2px solid black;">
+
+                                    <div class="d-flex justify-content-center">
+                                        <img *ngIf="empresa?.logo" [src]="empresa?.logo | imagen:'logo'" class="mx-auto" width="200px" alt="">
+                                    </div>
+
+                                    <h4 class="card-title mb-0 text-wrap text-center"> {{ empresa?.name }} </h4>
+                                    <p class="text-center mb-0" *ngFor="let text of ticketHeader" style="line-height: 1rem;"> {{ text }} </p>
+
+                                </div>
+                                <!-- EMPRESA -->
+
+                                <!-- CLIENTE -->
+                                <div class="pb-2" style="border-bottom: 2px solid black;">
+                                    <h6 class="mb-0 text-wrap text-left">
+                                        CLIENTE / RAZON SOCIAL <br>
+                                        <small class="text-wrap fw-normal"> Ocasional </small>
+                                    </h6>
+
+                                    <h6 class="mb-0 text-wrap text-left">
+                                        CC / NIT <br>
+                                        <small class="text-wrap fw-normal"> 00000000 </small>
+                                    </h6>
+                                    <h6 class="mb-0 text-wrap text-left">
+                                        TELEFONO <br>
+                                        <small class="text-wrap fw-normal"> {{ '--- ------' }} </small>
+                                    </h6>
+                                </div>
+                                <!-- CLIENTE -->
+
+                                <!-- FACTURA -->
+                                <div class="py-2" style="border-bottom: 2px solid black;">
+                                    <h6 *ngIf="empresa" class="mb-0 text-wrap text-left">{{ empresa.type }}: 513</h6>
+                                    <h6 class="mb-0 text-wrap text-left">Control: 513</h6>
+                                    <small class="mb-0 text-wrap text-left">Fecha: 05/06/2024</small>
+                                </div>
+                                <!-- FACTURA -->
+
+                                <table class="table table-borderless table-hover table-sm">
+                                    <tbody style="color: black;">
+                                        <tr class="trHover">
+                                            <td class="py-0" style="line-height: 0.8rem">
+                                                <small class="text-wrap"> 1 x {{5000 | divisa}} </small> <br>
+                                                <small class="text-wrap"> Item 1<strong class="fw-bolde text-black">M</strong></small>
+                                            </td>
+                                            <td class="text-end">
+                                                <small> 0% </small>
+                                            </td>
+                                            <td class="py-0">
+                                                <small *ngIf="!empresa.impuesto" class="text-wrap"> {{ 5000 | divisa }} </small>
+                                            </td>
+                                        </tr>
+
+                                        <tr class="" style="border-top: 2px solid black;">
+                                            <td>
+                                                <h6 class="mb-0 text-wrap text-left">Sub-total</h6>
+                                            </td>
+                                            <td colspan="2" class="fw-bold">
+                                                <h6 class="mb-0 text-wrap text-rigth"> {{ 5000 | divisa }} </h6>
+                                            </td>
+                                        </tr>
+
+                                        <!-- TOTAL -->
+                                        <tr class="" style="border-top: 2px solid black;">
+                                            <td>
+                                                <h6 class="mb-0 text-wrap text-left">Total</h6>
+                                            </td>
+                                            <td colspan="2" class="fw-bold">
+                                                <h6 class="mb-0 text-wrap text-rigth"> {{ 5000 | divisa}} </h6>
+                                            </td>
+                                        </tr>
+                                        <!-- TOTAL -->
+
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="">ITEMS</th>
+                                            <th> 3 </th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+
+                                <hr class="my-1">
+
+                                <h6 class="mb-0">Nota:</h6>
+                                <p class="">- Excelente </p>
+
+                                <hr class="my-1">
+
+                                <p class="text-center mb-0" *ngFor="let text of ticketfooter" style="line-height: 1rem;"> {{ text }} </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- CONFIGURACION -->
+                    <div class="d-flex justify-content-center">
+
+                        <div>
+
+                            <div class="card">
+
+                                <div class="card-body">
+
+                                    <div class="mb-3">
+                                        <label for="ttheader" class="form-label fw-bold">Header del Ticket</label>
+                                        <textarea class="form-control" (keyup)="upHeader(tHeader.value)" #tHeader id="ttheader" rows="5" [value]="empresa.header"></textarea>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="ttype" class="form-label fw-bold">Tipo de documento</label>
+                                        <input type="text" (keyup)="empresa.type = tType.value" #tType class="form-control" id="ttype" [value]="empresa.type">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="ttfooter" class="form-label fw-bold">Footer del Ticket</label>
+                                        <textarea class="form-control" (keyup)="upFooter(tFooter.value)" #tFooter id="ttfooter" rows="5" [value]="empresa.footer"></textarea>
+                                    </div>
+
+
+                                    <div class="d-grid gap-2 mt-2">
+                                        <button type="button" (click)="updateTicket()" class="btn btn-primary">
+                                            Actualizar Ticket
+                                        </button>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =========================================================================
+    ACTUALIZAR TICKET
 ========================================================================= -->

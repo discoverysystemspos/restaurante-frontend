@@ -38,12 +38,17 @@ export class EmpresaComponent implements OnInit {
   *   CARGAR DATOS DE LA EMPRESA
   ==================================================================== */
   public comisiones: comisiones[] = [];
+  public ticketHeader: any;
+  public ticketfooter: any;
   cargarDatos(){
 
     this.empresaService.getDatos()
         .subscribe( datos => {
 
           this.empresa = datos;
+
+          this.ticketHeader =  this.empresa.header.split('\n');
+          this.ticketfooter =  this.empresa.footer.split('\n');         
           
           this.comisiones = datos.comisiones || [];
           
@@ -505,6 +510,48 @@ export class EmpresaComponent implements OnInit {
     }else{
       return false;
     }
+
+  }
+
+  /** ================================================================
+  *   UPDATE HEAR
+  ==================================================================== */
+  upHeader(header: string){
+    this.ticketHeader = header.split('\n');
+    this.empresa.header = header;
+  }
+
+  /** ================================================================
+  *   UPDATE FOOTER
+  ==================================================================== */
+  upFooter(footer: string){
+    this.ticketfooter = footer.split('\n');
+    this.empresa.footer = footer;
+  }
+
+  /** ================================================================
+  *   UPDATE TICKET
+  ==================================================================== */
+  updateTicket(){
+
+    let data = {
+      header: this.empresa.header,
+      type: this.empresa.type,
+      footer: this.empresa.footer
+    }
+    
+
+    this.empresaService.updateDatos(data, this.empresa.eid)
+        .subscribe( (resp) => {
+
+          console.log(resp);
+          Swal.fire('Estupendo', 'Se ha actualizado el ticket exitosamente!', 'success');
+          
+
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');          
+        })
 
   }
 

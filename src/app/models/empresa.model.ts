@@ -10,6 +10,12 @@ export interface comisiones{
     _id?: string,
 };
 
+export interface header{
+    texto: string,
+    bold: boolean,
+    size: number
+}
+
 export class Datos{
 
     constructor(
@@ -42,6 +48,9 @@ export class Datos{
         public comandas?: boolean,
         public commissions?: boolean,
         public comisiones?: comisiones[],
+        public header?: string,
+        public footer?: string,
+        public type?: string,
         public decimal?: boolean,
         public usd?: boolean,
         public currencyusd?: number,

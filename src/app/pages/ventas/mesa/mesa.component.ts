@@ -368,11 +368,16 @@ export class MesaComponent implements OnInit {
    *   CARGAR DATOS DE LA EMPRESA
   ==================================================================== */
   public empresa: Datos;
+  public ticketHeader: any;
+  public ticketfooter: any;
   cargarDatos(){
 
     this.empresaService.getDatos()
         .subscribe( datos => {
           this.empresa = datos;
+          
+          this.ticketHeader =  this.empresa.header.split('\n');
+          this.ticketfooter =  this.empresa.footer.split('\n');
 
           if (this.empresa?.electronica) {
             this.loadDataDataico();      
