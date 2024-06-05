@@ -1330,6 +1330,16 @@ export class MesaComponent implements OnInit {
     
 
   }
+  /** ================================================================
+   *  ACTIVE DATAFON
+  ==================================================================== */
+  activeDatafon(datafon: boolean){
+
+    console.log(datafon);
+    
+
+    this.sumarTotales(datafon)
+  }
 
   /** ================================================================
    *  CAMBIAR PROPINA
@@ -1416,13 +1426,16 @@ export class MesaComponent implements OnInit {
   public totalCosto:number = 0;
   public totalItems:number = 0;
   public totalTip:number = 0;
+  public checkDatafon: boolean = false;
+  public datafon:number = 0;
   public iva:number = 0;
   public base:number = 0;
-  sumarTotales(){
+  sumarTotales( datafon: boolean = false ){
     
     this.total = 0;
     this.base = 0;
     this.iva = 0;
+    this.datafon = 0;
     this.totalCosto = 0;
     this.totalTip = 0;
     this.totalItems = 0;
@@ -1474,10 +1487,18 @@ export class MesaComponent implements OnInit {
         this.total += this.iva;
       }
 
-      if (this.empresa.tip) {
+      if (this.empresa?.tip) {
         this.totalTip = (this.total * this.empresa.propina) / 100;        
         this.tipIn.nativeElement.value = this.totalTip;        
         this.total += this.totalTip;
+      }
+
+      if (datafon) {
+        this.datafon = this.redondearCent((this.total * this.empresa.comidatafon) / 100) ;
+        this.total += this.datafon;
+      }else{
+        this.datafon = 0;
+        this.total -= this.datafon;
       }
 
       this.total = this.redondearCent(this.total);
@@ -2033,7 +2054,8 @@ export class MesaComponent implements OnInit {
     porcentaje: 0,
     fecha: new Date(),
     descuento: false,
-    tip: 0
+    tip: 0,
+    datafon: 0,
   })
 
   /** ================================================================
@@ -2210,6 +2232,7 @@ export class MesaComponent implements OnInit {
    *   CREAR FACTURA
   ==================================================================== */
   @ViewChild('tipIn') tipIn: ElementRef;
+  @ViewChild('datafIn') datafIn: ElementRef;
   @ViewChild('fechCredito') fechCredito: ElementRef;
   public factura: LoadInvoice;
   public facturando: boolean = false;
@@ -2242,6 +2265,15 @@ export class MesaComponent implements OnInit {
       }   
     }
 
+    if (this.empresa?.datafon) {
+      
+      if (Number(this.datafIn.nativeElement.value) > 0) {
+        this.datafon = Number(this.datafIn.nativeElement.value);
+      }else{
+        this.datafon = 0
+      }
+    }
+
     this.invoiceForm.setValue({
       amount: this.total,
       cost: this.totalCosto,
@@ -2264,6 +2296,7 @@ export class MesaComponent implements OnInit {
       porcentaje: this.formDescuento.value.porcentaje,
       fecha: this.invoiceForm.value.fecha || new Date(),
       tip: 0,
+      datafon: this.datafon,
     });
 
     if(!this.clienteTemp){

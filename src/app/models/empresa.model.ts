@@ -29,6 +29,8 @@ export class Datos{
         public responsable?: boolean,
         public noresponsable?: boolean,
         public impuestoconsumo?: boolean,
+        public datafon?: boolean,
+        public comidatafon?: number,
         public resolucion?: string,
         public prefijopos?: string,
         public tip?: boolean,

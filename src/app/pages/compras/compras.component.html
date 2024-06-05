@@ -19,6 +19,10 @@
 
 <div class="container-fluid my-4">
 
+    <div class="ms-auto mb-3">
+        <button *ngIf="user.cerrada" (click)="abrirCaja()" type="button" class="btn btn-sm btn-success ms-auto me-2">Abrir Caja</button>
+    </div>
+
     <div class="d-flex flex-wrap">
 
         <div class="col-md-8 p-0">
@@ -217,6 +221,12 @@
                         </div>
                     </div>
                     <!-- BUSCAR Y SELECCIONAR CLIENTE -->
+
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-body">
 
                 </div>
             </div>

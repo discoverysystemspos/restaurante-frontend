@@ -739,6 +739,30 @@
                                                     </div>
                                                 </div>
 
+                                                <div *ngIf="empresa">
+                                                    <div *ngIf="empresa!.datafon">
+
+                                                        <div class="col-md-4">
+
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" id="printpos" #datafonCheck (change)="datafonCheck.checked; activeDatafon(datafonCheck.checked)">
+                                                                <label class="form-check-label" for="printpos">
+                                                            Comisión de datafon
+                                                          </label>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="col-md-12 mt-3" *ngIf="datafonCheck.checked">
+                                                            <div class="formGroup">
+                                                                <label for="datafonCo" class="form-label fw-bold">Comision de datafon</label>
+                                                                <input id="datafonCo" (keyup.enter)="changeTip(tipIn.value)" type="number" min="0" class="form-control" placeholder="propina" #datafIn [value]="datafon">
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
                                                 <div class="row g-3 d-flex justify-content-center">
 
                                                     <div class="mb-5">
@@ -924,7 +948,7 @@
                                         <h6 class="mb-0 text-wrap text-left">Total</h6>
                                     </td>
                                     <td class="fw-bold">
-                                        <h6 class="mb-0 text-wrap text-rigth"> {{ factura.amount | divisa}} </h6>
+                                        <h6 class="mb-0 text-wrap text-rigth"> {{ factura.amount - datafon | divisa}} </h6>
                                     </td>
                                 </tr>
 
@@ -936,12 +960,22 @@
                                         <h6 class="mb-0 text-wrap text-rigth"> {{ factura.tip | divisa }} </h6>
                                     </td>
                                 </tr>
-                                <tr class="" style="border-top: 2px solid black;" *ngIf="empresa.tip">
+
+                                <tr class="" style="border-top: 2px solid black;" *ngIf="empresa.datafon && datafon > 0">
                                     <td>
-                                        <h6 class="mb-0 text-wrap text-left">Total + Propina</h6>
+                                        <h6 class="mb-0 text-wrap text-left">Datafon Comisión {{empresa.comidatafon}}%</h6>
                                     </td>
                                     <td class="fw-bold">
-                                        <h6 class="mb-0 text-wrap text-rigth"> {{ factura.tip + factura.amount | divisa}} </h6>
+                                        <h6 class="mb-0 text-wrap text-rigth"> {{ datafon | divisa }} </h6>
+                                    </td>
+                                </tr>
+
+                                <tr class="" style="border-top: 2px solid black;" *ngIf="empresa.tip">
+                                    <td>
+                                        <h6 class="mb-0 text-wrap text-left">Total + Propina <span *ngIf="empresa.datafon && datafon > 0"> + Datafon </span></h6>
+                                    </td>
+                                    <td class="fw-bold">
+                                        <h6 class="mb-0 text-wrap text-rigth"> {{ factura.tip + factura.amount + datafon | divisa}} </h6>
                                     </td>
                                 </tr>
 
@@ -1057,7 +1091,7 @@
                 <div>
                     <div class="text-center" *ngIf="empresa">
 
-                        <p class="h6 fw-normal text-muted mb-0">Sub-total {{ base | divisa }} <span *ngIf="empresa.propina"> + Propina {{ totalTip | divisa }}</span> </p>
+                        <p class="h6 fw-normal text-muted mb-0">Sub-total {{ base | divisa }} <span *ngIf="empresa.propina"> + Propina {{ totalTip | divisa }}</span> <span *ngIf="empresa.datafon && datafon > 0"> + Datafon {{ datafon | divisa }}</span> </p>
                         <p class="h6 fw-normal text-danger mb-0" *ngIf="mesa?.descuento">Descuento {{ ((base * mesa?.porcentaje) / 100) | divisa }}</p>
                         <h4 class="fw-normal display-7 text-primary mb-1">{{ total | divisa }}</h4>
                         <h5 class="mb-0 fw-normal animated fadeIn" [ngClass]=" {   'text-danger': totalPagos < total, 'text-success': totalPagos >= total  }" *ngIf="totalPagos > 0">

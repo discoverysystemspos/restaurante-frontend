@@ -74,7 +74,7 @@ const routes: Routes = [
           { path: 'configuracion/bodegas', component: BodegasComponent, data:{ titulo: 'Bodegas'} },
           { path: 'configuracion/bodega/:id', component: BodegaComponent, data:{ titulo: 'Bodega'} },
           { path: 'configuracion/caja', component: CajaComponent, canActivate: [AdminGuard], data:{ titulo: 'Caja' } },
-          { path: 'configuracion/compras', component: ComprasComponent, canActivate: [AdminGuard], data:{ titulo: 'Compras' } },
+          { path: 'configuracion/compras', component: ComprasComponent, data:{ titulo: 'Compras' } },
           { path: 'configuracion/cierres', component: CierresComponent, canActivate: [AdminGuard], data:{ titulo: 'Cierres' } },
           { path: 'configuracion/empresa', component: EmpresaComponent, canActivate: [AdminGuard], data:{ titulo: 'Mi Empresa' } },
           { path: 'configuracion/mesas', component: MesasComponent, canActivate: [AdminGuard], data:{ titulo: 'Mesas' } },

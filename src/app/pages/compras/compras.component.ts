@@ -2,9 +2,12 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { itemCompra } from 'src/app/models/compras.model';
 import { Product } from 'src/app/models/product.model';
 import { Proveedor } from 'src/app/models/proveedor.model';
+import { User } from 'src/app/models/user.model';
 import { ComprasService } from 'src/app/services/compras.service';
 import { ProveedoresService } from 'src/app/services/proveedores.service';
 import { SearchService } from 'src/app/services/search.service';
+import { TurnoService } from 'src/app/services/turno.service';
+import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -15,11 +18,68 @@ import Swal from 'sweetalert2';
 })
 export class ComprasComponent implements OnInit {
 
+  public user: User;
+
   constructor(  private searchService: SearchService,
-                private comprasService: ComprasService
-  ) { }
+                private comprasService: ComprasService,
+                private userService: UserService,
+                private turnoService: TurnoService,
+  ) { 
+    this.user = userService.user;
+  }
 
   ngOnInit(): void {
+  }
+
+  /** ================================================================
+   *   ABRIR CAJA
+  ==================================================================== */
+  abrirCaja(){
+    
+    if (!this.user.cerrada) {
+      Swal.fire('Ya existe una caja abierta', 'Debes de cerrar caja para poder abrir he iniciar un turno nuevo', 'warning');
+      return;
+    }
+    
+    Swal.fire({
+      title: 'Monto Inicial de caja',
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Confirmar',
+      showLoaderOnConfirm: true,
+      preConfirm: (resp) => {
+        
+        return resp;
+      }
+      }).then((result) => {
+
+        if (result.value > 0) {
+
+          const initial:number = result.value;
+
+          const open = {
+            initial
+          };
+
+          this.turnoService.createCaja(open)
+              .subscribe( (resp:{ ok:boolean, turno:any}) => {
+
+                this.userService.user.turno = resp.turno.tid;
+                this.userService.user.cerrada = false;
+                
+              });  
+              
+          return;
+        }else{
+          return;
+        }                
+        
+    });
+
+
   }
 
   /** ================================================================
