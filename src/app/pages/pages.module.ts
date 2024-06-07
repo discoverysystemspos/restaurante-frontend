@@ -62,6 +62,7 @@ import { AgmCoreModule } from '@agm/core';
 import { BodegasComponent } from './configuracion/bodegas/bodegas.component';
 import { BodegaComponent } from './configuracion/bodega/bodega.component';
 import { CompraComponent } from './compra/compra.component';
+import { QRCodeModule } from 'angularx-qrcode';
 
 
 
@@ -132,6 +133,7 @@ import { CompraComponent } from './compra/compra.component';
     NgxPrinterModule.forRoot({printOpenWindow: true}),
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
     NgxBarcodeModule,
+    QRCodeModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAn1G1jlkmzrY2pA1_Rd2-fsJ3Csp9dBDM'
     })

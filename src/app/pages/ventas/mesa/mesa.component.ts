@@ -10,6 +10,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import {UUID} from 'uuid-generator-ts';
 
+import { QRCodeModule } from 'angularx-qrcode';
+
 // PRINTER
 import { NgxPrinterService } from 'projects/ngx-printer/src/lib/ngx-printer.service';
 import { PrintItem } from 'projects/ngx-printer/src/lib/print-item';
@@ -1338,10 +1340,7 @@ export class MesaComponent implements OnInit {
   /** ================================================================
    *  ACTIVE DATAFON
   ==================================================================== */
-  activeDatafon(datafon: boolean){
-
-    console.log(datafon);
-    
+  activeDatafon(datafon: boolean){   
 
     this.sumarTotales(datafon)
   }
@@ -2371,6 +2370,11 @@ export class MesaComponent implements OnInit {
                         if (resp.status === 500) {
                           Swal.fire('Atención', 'No se pudo enviar la factura electronica a la DIAN, ve a la factura y vuelve a enviarla, si el problema persiste, ponte en contacto', 'warning');
                           window.open(`./dashboard/factura/${ this.factura.iid }`, '_blank');
+                        }
+
+                        if (resp.invoice.cufe) {
+                          this.factura.cufe = resp.invoice.cufe;
+                          this.factura.number = resp.invoice.number;
                         }
 
                         if (this.empresa.printpos) {              

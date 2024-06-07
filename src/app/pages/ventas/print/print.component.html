@@ -59,7 +59,7 @@
 
             <!-- FACTURA -->
             <div class="py-2" style="border-bottom: 2px solid black;">
-                <h6 class="mb-0 text-wrap text-left">{{ empresa.type }}: {{ factura?.invoice }}</h6>
+                <h6 class="mb-0 text-wrap text-left">{{ empresa?.type }}: <span *ngIf="!factura?.cufe"> {{ factura?.invoice }} </span> <span *ngIf="factura?.cufe"> {{ factura?.number }} </span> </h6>
                 <h6 class="mb-0 text-wrap text-left">Control: {{ factura?.control }}</h6>
                 <small class="mb-0 text-wrap text-left">Fecha: {{ factura?.fecha | date:'short' }}</small>
             </div>
@@ -120,7 +120,7 @@
                                     <h6 class="mb-0 text-wrap text-left"> {{ impuesto.name }} </h6>
 
                                 </td>
-                                <td colspan="2" class="fw-bold">
+                                <td class="fw-bold">
                                     <h6 class="mb-0 text-wrap text-rigth"> {{ impuesto.total | divisa }} </h6>
                                 </td>
                             </tr>
@@ -197,6 +197,19 @@
                 </table>
 
             </div>
+
+            <hr *ngIf="factura.cufe" class="my-1">
+
+            <div *ngIf="factura.cufe">
+                <h6 class="mb-0">cufe:</h6>
+                <p class="">- {{ factura.cufe }} </p>
+
+                <div class="qrcodeImage d-flex justify-content-center">
+                    <qrcode [qrdata]="'https://catalogo-vpfe.dian.gov.co/document/searchqr?documentkey='+factura.cufe" [allowEmptyString]="true" [alt]="'A custom alt attribute'" [ariaLabel]="'QR Code image with the following content...'" [cssClass]="'center'" [colorDark]="'#000'"
+                        [colorLight]="'#ffffffff'" [elementType]="'img'" [errorCorrectionLevel]="'M'" [margin]="3" [scale]="1" [title]="'A custom title attribute'" [width]="200"></qrcode>
+                </div>
+            </div>
+
             <hr class="my-1">
 
             <h6 *ngIf="factura.nota" class="mb-0">Nota:</h6>

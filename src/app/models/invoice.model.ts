@@ -19,6 +19,7 @@ export class Invoice {
         public pago?: number,
         public vueltos?: number,
         public nota?: string,
+        public cufe?: string,
         public apartado?: boolean,
         public descuento?: boolean,
         public porcentaje?: number,

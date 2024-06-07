@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 
+import { QRCodeModule } from 'angularx-qrcode';
+
 // PRINTER
 import { NgxPrinterService } from 'projects/ngx-printer/src/lib/ngx-printer.service';
 import { PrintItem } from 'projects/ngx-printer/src/lib/print-item';
@@ -23,8 +25,7 @@ import { Impuestos } from '../../../models/impuestos.model';
 @Component({
   selector: 'app-print',
   templateUrl: './print.component.html',
-  styles: [
-  ]
+  styleUrls: ['./print.component.css']
 })
 export class PrintComponent implements OnInit {
 
@@ -108,7 +109,7 @@ export class PrintComponent implements OnInit {
         .subscribe( invoice => {
 
           this.factura = invoice;
-          this.factura.totalItems = 0;
+          this.factura.totalItems = 0;          
 
           for (const pay of invoice.payments) {
             this.totalPagos = this.totalPagos + pay.amount;
@@ -118,11 +119,11 @@ export class PrintComponent implements OnInit {
           for (const product of invoice.products) {
             
             if( this.empresa.impuesto ){
+
               this.impuestos.map( (impuesto) => {  
-                if (impuesto.taxid === product.product.taxid) {                  
+                if (impuesto.taxid === product.product.taxid._id) {                  
                   impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
-                }
-  
+                }  
               });
             }
 
@@ -152,6 +153,7 @@ export class PrintComponent implements OnInit {
     this.empresaService.getDatos()
         .subscribe( datos => {
           this.empresa = datos;  
+          
 
           this.ticketHeader =  this.empresa.header.split('\n');
           this.ticketfooter =  this.empresa.footer.split('\n');
