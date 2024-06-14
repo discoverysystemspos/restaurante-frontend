@@ -68,7 +68,7 @@
                 Editar Control
             </button>
 
-            <button (click)="sendInvoice()" *ngIf="factura.electronica && !factura.send" type="button" class="btn btn-warning btn-sm mx-1 my-2"> 
+            <button (click)="sendInvoice()" *ngIf="factura.electronica && !factura.send || user.role === 'ADMIN' && !factura.send " type="button" class="btn btn-warning btn-sm mx-1 my-2"> 
                 Enviar Factura DIAN
             </button>
 
@@ -94,41 +94,40 @@
                         <!-- Informacion del Cliente -->
                         <div class="col-md-8 text-left text-muted" style="color:black">
 
-                            <div class="mb-2" *ngIf="empresa">
-                                <!-- Image Product-->
-                                <img *ngIf="empresa.logo" [src]=" empresa.logo | imagen:'logo'" class="mx-auto" width="200px" alt="">
-                            </div>
+                            <div class="d-flex flex-wrap gap-1">
 
-                            <div class="row" style="color:black">
-                                <div class="col-md-4">
-                                    <h6 class="text-wrap mb-0 text-capitalize"><strong>CLIENTE / RAZON SOCIAL:  </strong><br><small>{{ factura.client?.name || 'Ocasional' }}</small></h6>
+                                <div *ngIf="empresa">
+                                    <!-- Image Product-->
+                                    <img *ngIf="empresa.logo" [src]=" empresa.logo | imagen:'logo'" class="mx-auto" width="120px" alt="">
                                 </div>
-                                <div class="col">
-                                    <h6 class="text-wrap mb-0 text-capitalize"><strong>CC / Nit: </strong> <br><small> {{ factura.client?.cedula || '00000000' }}</small></h6>
-                                </div>
-                            </div>
 
-                            <div class="row" style="color:black">
-                                <div class="col-md-4">
-                                    <h6 class="text-wrap mb-0 text-capitalize"><strong>TELEFONO: </strong> <br><small *ngIf="factura.client?.phone"> {{ factura.client?.phone }}</small> </h6>
-                                </div>
-                                <div class="col">
-                                    <h6 class="text-wrap mb-0"><strong>CORREO: </strong> <br><small *ngIf="factura.client?.email"> {{ factura.client?.email }} </small></h6>
-                                </div>
-                            </div>
+                                <div>
+                                    <p style="font-size: 0.9rem;" class="mb-0 text-dark"> <strong>RAZON SOCIAL:</strong> <small> {{ factura.client?.name || 'Ocasional' }}</small> </p>
 
-                            <div class="row" style="color:black">
-                                <div class="col">
-                                    <h6 class="text-wrap mb-0"><strong>DIRECCIÓN: </strong> <br><small *ngIf="factura.client?.address"> {{ factura.client?.address }} <span *ngIf="factura.client?.city" > {{ factura.client?.city }} </span></small></h6>
+                                    <p style="font-size: 0.9rem;" class="mb-0 text-dark"> <strong>CC/NIT:</strong> <small> {{ factura.client?.cedula || '00000000' }}</small> </p>
+
+                                    <p style="font-size: 0.9rem;" *ngIf="factura.client?.phone" class="mb-0 text-dark"> <strong>Telefono:</strong> <small> {{ factura.client?.phone || '--- --------' }}</small> </p>
+
+                                    <p style="font-size: 0.9rem;" *ngIf="factura.client?.email" class="mb-0 text-dark"> <strong>Correo:</strong> <small> {{ factura.client?.email || ''}}</small> </p>
+
+                                    <p style="font-size: 0.9rem;" *ngIf="factura.client?.address" class="mb-0 text-dark"> <strong>Dirección:</strong> <small> {{ factura.client?.address || ''}}</small> </p>
+
+                                    <p style="font-size: 0.9rem;" class="mb-0 text-dark"> <strong>Vendedor:</strong> <small> {{ factura.mesero?.name || ''}}</small> </p>
 
                                 </div>
                             </div>
-                            <div class="row" style="color:black">
-                                <div class="col">
-                                    <h6 class="text-wrap mb-0"><strong>VENDEDOR: </strong> <br><small *ngIf="factura.mesero?.name"> {{ factura.mesero?.name }} </small></h6>
 
+                            <!-- CUFE Y QR -->
+                            <div class="d-flex flex-wrap" *ngIf="factura.cufe">
+                                <div class="qrcodeImage">
+                                    <qrcode [qrdata]="'https://catalogo-vpfe.dian.gov.co/document/searchqr?documentkey='+factura.cufe" [allowEmptyString]="true" [alt]="'A custom alt attribute'" [ariaLabel]="'QR Code image with the following content...'" [cssClass]="'center'" [colorDark]="'#000'"
+                                        [colorLight]="'#ffffffff'" [elementType]="'img'" [errorCorrectionLevel]="'M'" [margin]="3" [scale]="1" [title]="'A custom title attribute'" [width]="80"></qrcode>
+                                </div>
+                                <div class="text-wrap">
+                                    <p style="font-size: 0.8rem;" class="mb-1 text-dark text-break"> <strong>CUFE:</strong> <small>{{ factura.cufe }}</small> </p>
                                 </div>
                             </div>
+
 
                         </div>
 
@@ -137,21 +136,15 @@
                                 <!-- <div class="mb-2 d-flex justify-content-end">
                                 <img *ngIf="empresa.logo" src="{{empresa.logo | imagen:'logo'}}" class="" width="200px" alt="">
                             </div> -->
-                                <h5 class="mb-0 d-flex justify-content-end text-wrap text-end fw-bold"> {{ empresa.name }} </h5>
-                                <p class="mb-0 d-flex justify-content-end text-wrap text-end"> {{ empresa.address }} </p>
-                                <p class="mb-0 d-flex justify-content-end text-wrap text-end">Nit: {{ empresa.nit }} </p>
+                                <h6 class="mb-0 d-flex justify-content-end text-wrap text-end fw-bold"> {{ empresa.name }} </h6>
+                                <p class="mb-0 d-flex justify-content-end text-wrap text-end" *ngFor="let text of ticketHeader" style="line-height: 1rem; font-size: 0.8rem;"> {{ text }} </p>
 
-                                <small *ngIf="!empresa.impuesto" class="mb-0 d-flex justify-content-end"> No responsable de IVA </small>
+                                <p class="mb-0 mt-2 d-flex justify-content-end text-wrap text-end"> {{empresa.type}}: </p>
+                                <h6 class="mb-0 d-flex justify-content-end text-primary fw-normal">
+                                    <span *ngIf="factura.cufe"> {{ factura.number }} </span>
+                                    <span *ngIf="!factura.cufe">{{ factura.invoice }} </span>
 
-                                <!-- RESPONSABLE DE IVA O IMPUESTO AL CONSUMO -->
-                                <small *ngIf="empresa.impuesto && empresa.responsable" class="mb-0 d-flex justify-content-end"> Responsable de iva </small>
-                                <small *ngIf="empresa.impuesto && empresa.impuestoconsumo" class="mb-0 d-flex justify-content-end text-right"> Responsable nacional al consumo </small>
-
-                                <small *ngIf="empresa.impuesto" class="mb-0 d-flex justify-content-end"> Resolución: {{ empresa.resolucion }} </small>
-                                <small *ngIf="empresa.impuesto" class="mb-0 d-flex justify-content-end"> Prefijo Pos: {{ empresa.prefijopos }} </small>
-                                <!-- RESPONSABLE DE IVA O IMPUESTO AL CONSUMO -->
-
-                                <h3 class="display-5 mb-0 d-flex justify-content-end text-primary"> {{ factura.invoice }} </h3>
+                                </h6>
                                 <small class="mb-0 d-flex justify-content-end">Control: {{ factura.control || 0 }} </small>
                                 <small class="mb-0 d-flex justify-content-end"> {{ factura.fecha | date:'medium' }} </small>
                                 <small *ngIf="factura.credito" class="mb-0 d-flex justify-content-end">Vence: {{ factura.fechaCredito | date:'shortDate' }} </small>

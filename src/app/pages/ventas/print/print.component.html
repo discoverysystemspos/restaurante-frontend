@@ -202,7 +202,7 @@
 
             <div *ngIf="factura.cufe">
                 <h6 class="mb-0">cufe:</h6>
-                <p class="">- {{ factura.cufe }} </p>
+                <p class="">{{ factura.cufe }} </p>
 
                 <div class="qrcodeImage d-flex justify-content-center">
                     <qrcode [qrdata]="'https://catalogo-vpfe.dian.gov.co/document/searchqr?documentkey='+factura.cufe" [allowEmptyString]="true" [alt]="'A custom alt attribute'" [ariaLabel]="'QR Code image with the following content...'" [cssClass]="'center'" [colorDark]="'#000'"

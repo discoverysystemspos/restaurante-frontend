@@ -58,16 +58,16 @@ export class ElectronicaService {
   postFacturaDataico(invoice: LoadInvoice, dataico: DataicoInterface, impuestos: Impuestos[]) {
     
     let customer: Customer = {
-      department: '68',
-      city: '001',
+      department: dataico.department,
+      city: dataico.city,
       address_line: 'No aplica',
       party_type: 'PERSONA_NATURAL',
       tax_level_code: 'NO_RESPONSABLE_DE_IVA',
-      email: 'ivsmca90@gmail.com',
+      email: dataico.email,
       country_code: 'CO',
       first_name: 'Consumidor',
       family_name: 'Final',
-      phone: '3166078657',
+      phone: dataico.phone,
       party_identification_type: 'CC',
       company_name: '',
       regimen: 'SIMPLE',
@@ -177,9 +177,6 @@ export class ElectronicaService {
     }else{
       desde = (dataico.desde - 1);
     }
-
-    console.log(data);
-    
 
     return this.http.post(`${base_url}/electronica/${dataico.authtoken}/${invoice.iid}/${desde}`, data, this.headers)
 

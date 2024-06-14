@@ -617,11 +617,11 @@ export class MesaComponent implements OnInit {
       // COMPROBAR SI ES CODIGO DE BARRA CON PESO O PRECIO
       let digitos = this.empresa.basculacode.length;
       let digCode = digitos + 3;
-      let totalCode = code.length - 3;
+      let totalCode = code.length - 1;
       
 
       if (code.slice(0,digitos) === this.empresa.basculacode) {
-        codigo = code.slice(digitos, digCode);       
+        codigo = code.slice(digitos, digCode);        
         
         if(this.empresa.basculatype === 'peso'){
 
@@ -629,9 +629,15 @@ export class MesaComponent implements OnInit {
 
           cantidad = cant.toFixed(3);
 
+
+
         }else if(this.empresa.basculatype === 'precio'){
           precio = Number(code.slice(digCode , totalCode));
+
+          console.log(precio);
           
+
+                  
         }
 
       }else{
@@ -661,6 +667,9 @@ export class MesaComponent implements OnInit {
                 if(this.empresa.basculatype === 'precio'){
                   cantidad = precio / product.price;
                 }
+
+                console.log(cantidad);
+                
 
                 // GUARDAR AL CARRITO
                 this.searchCode.nativeElement.value = '';
@@ -1532,7 +1541,8 @@ export class MesaComponent implements OnInit {
    *  REDONDEAR CENTESIMA
   ==================================================================== */
   redondearCent(monto: number){
-    return Math.round(monto / 100) * 100;
+    // return Math.round(monto / 100) * 100;
+    return monto;
   }
 
   /** ============================================================================================

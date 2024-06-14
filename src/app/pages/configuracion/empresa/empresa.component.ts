@@ -10,6 +10,12 @@ import { Datos, comisiones } from '../../../models/empresa.model';
 import Swal from 'sweetalert2';
 import { DataicoService } from 'src/app/services/dataico.service';
 import { DataicoInterface } from 'src/app/interfaces/dataico.interface';
+import { HttpClient } from '@angular/common/http';
+
+interface _Department {
+  codigo: string,
+  departamento: string,
+}
 
 @Component({
   selector: 'app-empresa',
@@ -24,7 +30,8 @@ export class EmpresaComponent implements OnInit {
   constructor(  private empresaService: EmpresaService,
                 private fb: FormBuilder,
                 private fileUploadService: FileUploadService,
-                private dataicoService: DataicoService) { }
+                private dataicoService: DataicoService,
+                private http: HttpClient) { }
 
   ngOnInit(): void {
 
@@ -32,6 +39,8 @@ export class EmpresaComponent implements OnInit {
 
     // CARGA DATA DATAICO
     this.loadDataDataico();
+
+    this.loadDepartmentAndCitys();
   }
 
   /** ================================================================
@@ -317,11 +326,12 @@ export class EmpresaComponent implements OnInit {
   loadDataDataico(){
 
     this.dataicoService.loadDataDataico()
-        .subscribe( ({dataico}) => {
+        .subscribe(async ({dataico}) => {
 
           if (dataico) {
             this.dataDataico = true;
             this.dataico = dataico;
+            await this.searchCities(this.dataico.department);
             this.updateFormDataico();
           }          
 
@@ -348,7 +358,11 @@ export class EmpresaComponent implements OnInit {
     send_dian: [false, [Validators.required]],
     send_email: [false, [Validators.required]],
     desde: [0, [Validators.required]],
-    hasta: [0, [Validators.required]]
+    hasta: [0, [Validators.required]],
+    department: ['', [Validators.required]],
+    city: ['', [Validators.required]],
+    email: ['', [Validators.required]],
+    phone: ['', [Validators.required]],
   });
 
   createDataico(){
@@ -379,6 +393,10 @@ export class EmpresaComponent implements OnInit {
       operation: this.dataicoForm.value.operation,
       desde: this.dataicoForm.value.desde,
       hasta: this.dataicoForm.value.hasta,
+      department: this.dataicoForm.value.department,
+      city: this.dataicoForm.value.city,
+      email: this.dataicoForm.value.email,
+      phone: this.dataicoForm.value.phone
       
     }
 
@@ -389,7 +407,9 @@ export class EmpresaComponent implements OnInit {
             this.dataDataico = true;
             this.dataico = dataico;
             this.dataicoFormSubmitted = false;
+            
             this.updateFormDataico();
+
           }          
 
         }, (err) => {
@@ -428,7 +448,11 @@ export class EmpresaComponent implements OnInit {
       send_dian: this.dataico.actions.send_dian,
       send_email: this.dataico.actions.send_email,
       desde: this.dataico.desde || 0,
-      hasta: this.dataico.hasta || 0
+      hasta: this.dataico.hasta || 0,
+      department: this.dataico.department || '',
+      city: this.dataico.city || '',
+      email: this.dataico.email || '',
+      phone: this.dataico.phone || '',
     });    
     
   }
@@ -445,11 +469,15 @@ export class EmpresaComponent implements OnInit {
     prefix: ['', [Validators.required]],
     flexible: [false, [Validators.required]],
     operation: ['ESTANDAR', [Validators.required]],
-    env: ['PRUEBAS', [Validators.required]],
+    env: ['PRODUCCION', [Validators.required]],
     send_dian: [false, [Validators.required]],
     send_email: [false, [Validators.required]],
     desde: [0, [Validators.required]],
-    hasta: [0, [Validators.required]]
+    hasta: [0, [Validators.required]],
+    department: ['', [Validators.required]],
+    city: ['', [Validators.required]],
+    email: ['', [Validators.required]],
+    phone: ['', [Validators.required]],
   });
 
   updateDataico(){
@@ -480,9 +508,12 @@ export class EmpresaComponent implements OnInit {
       env: this.dataicoUpdateForm.value.env,
       operation: this.dataicoUpdateForm.value.operation,
       desde: this.dataicoUpdateForm.value.desde,
-      hasta: this.dataicoUpdateForm.value.hasta
+      hasta: this.dataicoUpdateForm.value.hasta,
+      department: this.dataicoUpdateForm.value.department,
+      city: this.dataicoUpdateForm.value.city,
+      email: this.dataicoUpdateForm.value.email,
+      phone: this.dataicoUpdateForm.value.phone
     }
-
 
     this.dataicoService.updateDataico(dataico, this.dataico.datid)
         .subscribe( ({dataico}) => {
@@ -552,6 +583,42 @@ export class EmpresaComponent implements OnInit {
           console.log(err);
           Swal.fire('Error', err.error.msg, 'error');          
         })
+
+  }
+
+  /** ================================================================
+   *  OBTENER DEPARTAMENTOS Y CIUDADES
+  ==================================================================== */
+  public departments: _Department[] = [];
+  public cities: any[] = [];
+  loadDepartmentAndCitys(){
+
+    this.http.get('assets/json/departamentos.json')
+        .subscribe( (data: any) => {          
+          this.departments = data;            
+        });
+
+    this.http.get('assets/json/ciudades.json')
+    .subscribe( (data: any) => {          
+      this.cities = data;          
+    })
+
+  }
+
+  /** ================================================================
+   *  OBTENER CIUDADES DEPENDIENDO DEL DEPARTAMENTO
+  ==================================================================== */
+  public ListCities: any[] = [];
+  searchCities(department: string){
+
+    this.ListCities = [];
+
+    if (department.length === 0 ) {
+      return;
+    }
+
+    this.ListCities = this.cities.filter( city =>  department === city['codigo departamento'] );
+    
 
   }
 

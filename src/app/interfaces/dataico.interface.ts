@@ -13,4 +13,8 @@ export interface DataicoInterface{
     datid?: string;
     desde?: number;
     hasta?: number;
+    department?: string;
+    city?: string;
+    email?: string;
+    phone?: string;
 }

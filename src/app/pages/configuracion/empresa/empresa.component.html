@@ -813,7 +813,7 @@
 
                         <!-- =======================================================================
                         Configuracion
-                    =========================================================================== -->
+                        =========================================================================== -->
                         <hr>
                         <h5 class="text-muted text-center">Informaciòn Dataico</h5>
                         <hr>
@@ -845,29 +845,6 @@
                         <hr>
 
                         <div class="row mb-2">
-
-                            <!-- TIPO DE IMPUESTO -->
-                            <!-- <div class="col-md-12 mb-3 px-md-1">
-                                <label for="taxLevel" class="col-sm-auto col-form-label">Tipo de impuesto</label>
-                                <select formcontrolname="tax_level_code" [value]="dataico?.customer.tax_level_code" class="form-select" id="taxLevel" aria-label="Floating label select example">
-                                    <option value="SIMPLIFICADO">SIMPLIFICADO</option>
-                                    <option value="RESPONSABLE_DE_IVA" >RESPONSABLE DE IVA</option>
-                                    <option value="NO_RESPONSABLE_DE_IVA" >NO RESPONSABLE DE IVA</option>
-                                    <option value="COMUN" >COMUN</option>
-                                </select>
-                            </div> -->
-
-                            <!-- REGIMEN -->
-                            <!-- <div class="col-md-12 mb-3 px-md-1">
-                                <label for="regimen" class="col-sm-auto col-form-label">Regimen</label>
-                                <select formcontrolname="regimen" [value]="dataico?.customer.regimen" class="form-select" id="regimen" aria-label="Floating label select example">
-                                    <option value="SIMPLE">SIMPLE</option>
-                                    <option value="AUTORRETENEDOR" >AUTORRETENEDOR</option>
-                                    <option value="AGENTE_RETENCION_IVA" >AGENTE RETENCION IVA</option>
-                                    <option value="ORDINARIO" >ORDINARIO</option>
-                                    <option value="GRAN_CONTRIBUYENTE" >GRAN CONTRIBUYENTE</option>
-                                </select>
-                            </div> -->
 
                             <!-- TIPO DE FACTURACION -->
                             <div class="col-md-12 mb-3 px-md-1">
@@ -932,7 +909,7 @@
                             <!-- TIPO DE OPERACION -->
                             <div class="col-md-12 mb-3 px-md-1">
                                 <label for="operationType" class="col-sm-auto col-form-label">Tipo de operación</label>
-                                <select formcontrolname="operation" [value]="dataico?.operation" class="form-select" id="operationType" aria-label="Floating label select example">
+                                <select formControlName="operation" class="form-select" id="operationType" aria-label="Floating label select example">
                                     <option value="ESTANDAR"> ESTANDAR </option>
                                     <option value="AIU"> AIU </option>
                                     <option value="MANDATO"> MANDATO </option>
@@ -950,10 +927,48 @@
                             <!-- PRUEBAS O DESARROLLO -->
                             <div class="col-md-12 mb-3 px-md-1">
                                 <label for="env" class="col-sm-auto col-form-label">Pruebas o Producción</label>
-                                <select formcontrolname="env" class="form-select" id="env" [value]="dataico?.env" aria-label="Floating label select example">
+                                <select formControlName="env" class="form-select" id="env" aria-label="Floating label select example">
                                     <option value="PRUEBAS">PRUEBAS</option>
                                     <option value="PRODUCCION" >PRODUCCION </option>
                                 </select>
+                            </div>
+
+                            <!-- DEPARTAMENTO ** -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="departamentoS" class="col-sm-auto col-form-label">Departamento</label>
+                                <select formControlName="department" class="form-select" id="departamentoS" #departmentSSUp (change)="searchCities(departmentSSUp.value)">
+                                    <option value="" >Seleccionar Departamento</option>
+                                    <option *ngFor="let department of departments" [value]="department.codigo" >{{department.departamento}}</option>
+                                </select>
+                            </div>
+
+                            <!-- CIUDAD ** -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="ciudadS" class="col-sm-auto col-form-label">Ciudad</label>
+                                <select formControlName="city" class="form-select" id="ciudadS" aria-label="Floating label select example">
+                                    <option value="" selected>Seleccionar Ciudad</option>
+                                    <option *ngFor="let city of ListCities" [value]="city.codigo" >{{city.ciudad}}</option>
+                                </select>
+                            </div>
+
+                            <!-- EMAIL -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="resolutionNumber">Correo </label>
+                                <div class="form-floating">
+                                    <input id="resolutionNumber" formControlName="email" type="text" class="form-control" placeholder="Correo">
+                                    <label for="floatingInput">Correo </label>
+                                </div>
+                                <p *ngIf="validate('email')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                            </div>
+
+                            <!-- RESOLUCION -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="resolutionNumber">Telefono </label>
+                                <div class="form-floating">
+                                    <input id="resolutionNumber" formControlName="phone" type="text" class="form-control" placeholder="Telefono">
+                                    <label for="floatingInput">Telefono </label>
+                                </div>
+                                <p *ngIf="validate('phone')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
                             </div>
 
                             <!-- ENVIAR A LA DIAN -->
@@ -1066,7 +1081,7 @@
                                                 <small> 0% </small>
                                             </td>
                                             <td class="py-0">
-                                                <small *ngIf="!empresa.impuesto" class="text-wrap"> {{ 5000 | divisa }} </small>
+                                                <small *ngIf="!empresa?.impuesto" class="text-wrap"> {{ 5000 | divisa }} </small>
                                             </td>
                                         </tr>
 
@@ -1125,17 +1140,17 @@
 
                                     <div class="mb-3">
                                         <label for="ttheader" class="form-label fw-bold">Header del Ticket</label>
-                                        <textarea class="form-control" (keyup)="upHeader(tHeader.value)" #tHeader id="ttheader" rows="5" [value]="empresa.header"></textarea>
+                                        <textarea class="form-control" (keyup)="upHeader(tHeader?.value)" #tHeader id="ttheader" rows="5" [value]="empresa?.header"></textarea>
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="ttype" class="form-label fw-bold">Tipo de documento</label>
-                                        <input type="text" (keyup)="empresa.type = tType.value" #tType class="form-control" id="ttype" [value]="empresa.type">
+                                        <input type="text" (keyup)="empresa.type = tType.value" #tType class="form-control" id="ttype" [value]="empresa?.type">
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="ttfooter" class="form-label fw-bold">Footer del Ticket</label>
-                                        <textarea class="form-control" (keyup)="upFooter(tFooter.value)" #tFooter id="ttfooter" rows="5" [value]="empresa.footer"></textarea>
+                                        <textarea class="form-control" (keyup)="upFooter(tFooter?.value)" #tFooter id="ttfooter" rows="5" [value]="empresa?.footer"></textarea>
                                     </div>
 
 

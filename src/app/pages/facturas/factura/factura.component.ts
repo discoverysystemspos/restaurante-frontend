@@ -42,8 +42,7 @@ const base_url = environment.base_url;
 @Component({
   selector: 'app-factura',
   templateUrl: './factura.component.html',
-  styles: [
-  ]
+  styleUrls: ['./factura.component.css']
 })
 export class FacturaComponent implements OnInit {
 
@@ -182,11 +181,16 @@ export class FacturaComponent implements OnInit {
    *   CARGAR DATOS DE LA EMPRESA
   ==================================================================== */
   public empresa: Datos;
+  public ticketHeader: any;
+  public ticketfooter: any;
   cargarDatos(){
 
     this.empresaService.getDatos()
         .subscribe( datos => {
           this.empresa = datos;
+
+          this.ticketHeader =  this.empresa.header.split('\n');
+          this.ticketfooter =  this.empresa.footer.split('\n');
 
           this.cargarImpuestos();
 
@@ -233,7 +237,7 @@ export class FacturaComponent implements OnInit {
             if( this.empresa.impuesto ){
               this.impuestos.map( (impuesto) => {
   
-                if (impuesto.taxid === product.product.taxid) {                  
+                if (impuesto.taxid === product.product.taxid._id) {                  
                   impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
                 }
   
