@@ -52,6 +52,7 @@ export class Datos{
         public footer?: string,
         public type?: string,
         public decimal?: boolean,
+        public cotizacion?: boolean,
         public usd?: boolean,
         public currencyusd?: number,
         public cop?: boolean,

@@ -170,6 +170,17 @@
 
                             </div>
 
+                            <div class="col-md-4">
+
+                                <div class="form-check">
+                                    <input formControlName="cotizacion" class="form-check-input" type="checkbox" id="cotizacion" checked #cotizacion>
+                                    <label class="form-check-label" for="cotizacion">
+                                    Cotizacion
+                                  </label>
+                                </div>
+
+                            </div>
+
                             <div class="col-md-12 mt-3" *ngIf="printpos.checked">
                                 <div class="form-group row">
                                     <label for="impresora" class="col-sm-auto col-form-label">Tipo de impresora</label>
@@ -628,7 +639,7 @@
                             <div class="col-md-12 mb-3 px-md-1">
                                 <label for="">Token</label>
                                 <div class="form-floating">
-                                    <input formControlName="authtoken" type="text" class="form-control text-capitalize" placeholder="Token de dataico">
+                                    <input formControlName="authtoken" type="text" class="form-control" placeholder="Token de dataico">
                                     <label for="floatingInput">Token</label>
                                 </div>
                                 <p *ngIf="validate('authtoken')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
@@ -637,7 +648,7 @@
                             <div class="col-md-12 mb-3 px-md-1">
                                 <label for="">ID Dataico </label>
                                 <div class="form-floating">
-                                    <input formControlName="dataico_account_id" type="text" class="form-control text-capitalize" placeholder="ID de dataico">
+                                    <input formControlName="dataico_account_id" type="text" class="form-control " placeholder="ID de dataico">
                                     <label for="floatingInput">ID Dataico </label>
                                 </div>
                                 <p *ngIf="validate('dataico_account_id')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
@@ -646,28 +657,10 @@
                         </div>
 
                         <hr>
-                        <h5 class="text-muted text-center">Datos de la empresa</h5>
-                        <hr>
-
-
-
-                        <hr>
                         <h5 class="text-muted text-center">Mas Información</h5>
                         <hr>
 
                         <div class="row mb-2">
-
-                            <!-- REGIMEN -->
-                            <!-- <div class="col-md-12 mb-3 px-md-1">
-                                <label for="regimen" class="col-sm-auto col-form-label">Regimen</label>
-                                <select formcontrolname="regimen" class="form-select" id="regimen" aria-label="Floating label select example">
-                                    <option value="SIMPLE" selected>SIMPLE</option>
-                                    <option value="AUTORRETENEDOR" >AUTORRETENEDOR</option>
-                                    <option value="AGENTE_RETENCION_IVA" >AGENTE RETENCION IVA</option>
-                                    <option value="ORDINARIO" >ORDINARIO</option>
-                                    <option value="GRAN_CONTRIBUYENTE" >GRAN CONTRIBUYENTE</option>
-                                </select>
-                            </div> -->
 
                             <!-- TIPO DE FACTURACION -->
                             <div class="col-md-12 mb-3 px-md-1">
@@ -732,7 +725,7 @@
                             <!-- TIPO DE OPERACION -->
                             <div class="col-md-12 mb-3 px-md-1">
                                 <label for="operationType" class="col-sm-auto col-form-label">Tipo de operación</label>
-                                <select formcontrolname="operation" class="form-select" id="operationType" aria-label="Floating label select example">
+                                <select formControlName="operation" class="form-select" id="operationType" aria-label="Floating label select example">
                                     <option value="ESTANDAR" selected> ESTANDAR </option>
                                     <option value="AIU"> AIU </option>
                                     <option value="MANDATO"> MANDATO </option>
@@ -750,10 +743,48 @@
                             <!-- PRUEBAS O DESARROLLO -->
                             <div class="col-md-12 mb-3 px-md-1">
                                 <label for="env" class="col-sm-auto col-form-label">Pruebas o Producción</label>
-                                <select formcontrolname="env" class="form-select" id="env" aria-label="Floating label select example">
+                                <select formControlName="env" class="form-select" id="env" aria-label="Floating label select example">
                                     <option value="PRUEBAS" selected>PRUEBAS</option>
                                     <option value="PRODUCCION" >PRODUCCION </option>
                                 </select>
+                            </div>
+
+                            <!-- DEPARTAMENTO ** -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="departamentoS" class="col-sm-auto col-form-label">Departamento</label>
+                                <select formControlName="department" class="form-select" id="departamentoS" #departmentSSUp (change)="searchCities(departmentSSUp.value)">
+                                    <option value="" >Seleccionar Departamento</option>
+                                    <option *ngFor="let department of departments" [value]="department.codigo" >{{department.departamento}}</option>
+                                </select>
+                            </div>
+
+                            <!-- CIUDAD ** -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="ciudadS" class="col-sm-auto col-form-label">Ciudad</label>
+                                <select formControlName="city" class="form-select" id="ciudadS" aria-label="Floating label select example">
+                                    <option value="" selected>Seleccionar Ciudad</option>
+                                    <option *ngFor="let city of ListCities" [value]="city.codigo" >{{city.ciudad}}</option>
+                                </select>
+                            </div>
+
+                            <!-- EMAIL -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="resolutionNumber">Correo </label>
+                                <div class="form-floating">
+                                    <input id="resolutionNumber" formControlName="email" type="text" class="form-control" placeholder="Correo">
+                                    <label for="floatingInput">Correo </label>
+                                </div>
+                                <p *ngIf="validate('email')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
+                            </div>
+
+                            <!-- RESOLUCION -->
+                            <div class="col-md-12 mb-3 px-md-1">
+                                <label for="resolutionNumber">Telefono </label>
+                                <div class="form-floating">
+                                    <input id="resolutionNumber" formControlName="phone" type="text" class="form-control" placeholder="Telefono">
+                                    <label for="floatingInput">Telefono </label>
+                                </div>
+                                <p *ngIf="validate('phone')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
                             </div>
 
                             <!-- ENVIAR A LA DIAN -->
@@ -823,7 +854,7 @@
                             <div class="col-md-12 mb-3 px-md-1">
                                 <label for="">Token</label>
                                 <div class="form-floating">
-                                    <input formControlName="authtoken" type="text" class="form-control text-capitalize" placeholder="Token de dataico">
+                                    <input formControlName="authtoken" type="text" class="form-control " placeholder="Token de dataico">
                                     <label for="floatingInput">Token</label>
                                 </div>
                                 <p *ngIf="validate('authtoken')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
@@ -832,7 +863,7 @@
                             <div class="col-md-12 mb-3 px-md-1">
                                 <label for="">ID Dataico </label>
                                 <div class="form-floating">
-                                    <input formControlName="dataico_account_id" type="text" class="form-control text-capitalize" placeholder="ID de dataico">
+                                    <input formControlName="dataico_account_id" type="text" class="form-control " placeholder="ID de dataico">
                                     <label for="floatingInput">ID Dataico </label>
                                 </div>
                                 <p *ngIf="validate('dataico_account_id')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
@@ -936,7 +967,7 @@
                             <!-- DEPARTAMENTO ** -->
                             <div class="col-md-12 mb-3 px-md-1">
                                 <label for="departamentoS" class="col-sm-auto col-form-label">Departamento</label>
-                                <select formControlName="department" class="form-select" id="departamentoS" #departmentSSUp (change)="searchCities(departmentSSUp.value)">
+                                <select formControlName="department" class="form-select" id="departamentoS" #departmentSSUpp (change)="searchCities(departmentSSUpp.value)">
                                     <option value="" >Seleccionar Departamento</option>
                                     <option *ngFor="let department of departments" [value]="department.codigo" >{{department.departamento}}</option>
                                 </select>

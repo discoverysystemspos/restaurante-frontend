@@ -3,6 +3,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 // PRINTER
 import { NgxPrinterService } from 'projects/ngx-printer/src/lib/ngx-printer.service';
 import { PrintItem } from 'projects/ngx-printer/src/lib/print-item';
@@ -25,6 +27,15 @@ import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user.model';
 import { LoadTurno, _movements } from 'src/app/interfaces/load-turno.interface';
 import { EntradasService } from 'src/app/services/entradas.service';
+import { BancosService } from 'src/app/services/bancos.service';
+import { Banco } from 'src/app/models/bancos.model';
+import { MesasService } from 'src/app/services/mesas.service';
+import { ProductService } from 'src/app/services/product.service';
+import { InvoiceService } from 'src/app/services/invoice.service';
+import { LoadInvoice } from 'src/app/interfaces/invoice.interface';
+import { ElectronicaService } from 'src/app/services/electronica.service';
+import { DataicoService } from 'src/app/services/dataico.service';
+import { DataicoInterface } from 'src/app/interfaces/dataico.interface';
 
 
 
@@ -47,9 +58,19 @@ export class ParqueaderoComponent implements OnInit {
                 private searchService: SearchService,
                 private turnosService: TurnoService,
                 private userService: UserService,
+                private modal: NgbModal,
+                private bancosService: BancosService,
+                private mesasService: MesasService,
+                private productService: ProductService,
+                private invoiceService: InvoiceService,
+                private electronicaService: ElectronicaService,
+                private dataicoService: DataicoService,
                 private entradasService: EntradasService) { 
 
                   this.user = userService.user;
+
+                  console.log(this.user);
+                  
 
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
                     val => { console.log('Print window is open:', val) }
@@ -62,11 +83,90 @@ export class ParqueaderoComponent implements OnInit {
   ngOnInit(): void {
     // CARGAR IMPUESTOSs
     this.cargarImpuestos();
+    this.loadDataDataico();
     this.cargarDatos();
     this.loadCategorias();
     this.loadCars();
     this.loadParqueos();
     this.cargarTurno();
+    this.cargarBancos();
+    this.loadTicket();
+    this.loadProduct();
+  }
+
+  /** ================================================================
+   *   CARGAR MESA
+  ==================================================================== */
+  public ticket: string = '';
+  loadTicket(){
+
+    this.mesasService.loadMesas(0)
+        .subscribe( ({mesas}) => {
+          
+          this.ticket = mesas[0].mid;
+
+        })
+
+  }
+
+  /** ================================================================
+   *  OBTENER DATOS DE LA FACTURA ELECTRONICA
+  ==================================================================== */
+  public dataDataico: boolean = false;
+  public dataico: DataicoInterface;
+  loadDataDataico(){
+
+    this.dataicoService.loadDataDataico()
+        .subscribe( ({dataico}) => {
+
+          delete dataico.actions._id;
+          delete dataico.actions.email;
+          delete dataico.actions.attachments;
+          delete dataico.datid;
+          delete dataico.customer;
+          delete dataico.numbering._id;
+
+          if (dataico) {
+            this.dataDataico = true;
+            this.dataico = dataico;
+          }          
+
+        }, (err) => {
+          console.log(err);
+          
+        });
+
+  }
+
+  /** ================================================================
+   *   CARGAR PRODUCTO
+  ==================================================================== */
+  public product: string = '';
+  loadProduct(){
+
+    this.productService.cargarProductoCodigo('0000000')
+        .subscribe( (product) => {
+
+          this.product = product.pid;
+          
+
+        })
+
+  }
+
+  /** ================================================================
+   *   CARGAR BANCOS
+  ==================================================================== */
+  public bancos: Banco[] = [];
+  cargarBancos(){
+
+    this.bancosService.loadBancos()
+        .subscribe( ({bancos}) => {
+
+          this.bancos = bancos.filter( banco => banco.status === true);          
+
+        });
+
   }
 
   /** ================================================================
@@ -86,11 +186,17 @@ export class ParqueaderoComponent implements OnInit {
    *   CARGAR DATOS DE LA EMPRESA
   ==================================================================== */
   public empresa: Datos;
+  public ticketHeader: any;
+  public ticketfooter: any;
   cargarDatos(){
 
     this.empresaService.getDatos()
         .subscribe( datos => {
-          this.empresa = datos;            
+          this.empresa = datos;   
+          
+          this.ticketHeader =  this.empresa.header.split('\n');
+          this.ticketfooter =  this.empresa.footer.split('\n');
+          
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
   }
 
@@ -188,11 +294,82 @@ export class ParqueaderoComponent implements OnInit {
   }
 
   /** ================================================================
+   *   NUEVO MONTO
+  ==================================================================== */
+  newMonto(monto: any){
+
+    monto = Number(monto);
+    this.total = monto;
+
+    this.subtotal = ((this.total *100)/(this.parq.car.typeparq.tax.valor + 100));
+    this.iva = (this.total-this.subtotal);
+
+  }
+
+
+  /** ================================================================
+   *   PAGOS
+  ==================================================================== */
+  @ViewChild ('montoP') montoP!: ElementRef;
+  public payments: any[] = [];
+  public restante: number = 0;
+  addPay(monto: any, type: string){
+
+    monto = Number(monto);
+    if (this.payments.length > 0 && this.restante >= 0 ) {
+      return;
+    }
+
+    if(monto > (this.restante * -1 ) && this.restante < 0){
+      monto = (this.restante * -1);
+    }
+
+    this.payments.push({
+      type,
+      amount: monto,
+      description: ''
+    });
+
+    this.restante = 0;
+    for (const pay of this.payments) {
+      this.restante = this.restante + pay.monto;
+    }
+
+    this.restante = this.restante - this.total;    
+
+  }
+
+  delPay(pay: any){    
+
+    this.payments.splice( pay, 1 );
+    this.restante = 0;
+    for (const pay of this.payments) {
+      this.restante = this.restante + pay.monto;
+    }
+
+    this.restante = this.restante - this.total;
+
+  }
+
+
+  /** ================================================================
    *   CHECKOUT PARQUEO 
   ==================================================================== */
   public vCheckout: Parqueo;
+  @ViewChild('modalCheckOut', { static: true }) modalCheckOut: TemplateRef<any>;
   @ViewChild('outP') outP: ElementRef;
+  public total: number = 0;
+  public subtotal: number = 0;
+  public iva: number = 0;
+  public parq: any;
+  public diff: any;
   checkout( placa: string ){
+    
+    this.payments = [];
+    this.total = 0;
+    this.subtotal = 0;
+    this.iva = 0;
+
 
     let parq = this.parqueos.find( (p) => {
       return p.placa === placa.trim();
@@ -203,79 +380,178 @@ export class ParqueaderoComponent implements OnInit {
       return
     }
 
+    this.parq = parq;
+
     // CALCULAR DIFERENCIA
     let cal = 1000*60;
     if(parq.car.typeparq.type === 'Horas'){      
       cal = 1000*60*60;
     }
-
-    let diff:number =  (new Date().getTime() - parq.checkin)/ cal;
-    diff = parseFloat(diff.toFixed(2));
-
-    if (diff < 1 && parq.car.typeparq.type !== 'Horas') {
-      diff = 0;
+    
+    
+    this.diff =  (new Date().getTime() - parq.checkin)/ cal;
+    this.diff = parseFloat(this.diff.toFixed(2));
+    
+    if (this.diff < 1 && parq.car.typeparq.type !== 'Horas') {
+      this.diff = 0;
     }
 
-    let total:number = Math.round(diff * parq.car.typeparq.price);    
-
-    if (total < parq.car.typeparq.price) {
-      total = parq.car.typeparq.price;      
+    this.total = this.diff * parq.car.typeparq.price;    
+    
+    if (this.total < parq.car.typeparq.price) {
+      this.total = parq.car.typeparq.price;      
     }
     
-    if (diff >= parq.car.typeparq.tplena ) {
-      total = parq.car.typeparq.plena;
+    if (this.diff >= parq.car.typeparq.tplena ) {
+      this.total = parq.car.typeparq.plena;
     }
    
     
-    let subtotal:number = parseFloat(((total *100)/(parq.car.typeparq.tax.valor + 100)).toFixed(2));
-    let iva:number = parseFloat((total-subtotal).toFixed(2));
+    this.subtotal = parseFloat(((this.total *100)/(parq.car.typeparq.tax.valor + 100)).toFixed(2));
+    this.iva = parseFloat((this.total-this.subtotal).toFixed(2));
+
+    this.modal.open(this.modalCheckOut);
+
     
-    // console.log('tiempo: ', diff);
-    // console.log('Subtotal: ', subtotal);
-    // console.log('iva: ', iva);
-    // console.log('total: ', total);
+  }
+
+  /** ================================================================
+   *   CREAR FACTURA
+  ==================================================================== */
+  public factura: LoadInvoice;
+  public facturando: boolean = false;
+  crearFactura( send_dian: boolean ){
+
+    this.facturando = true;
+
+    let formData = {
+      checkout: new Date().getTime(),
+      total: this.total,
+      subtotal: this.subtotal,
+      iva: this.iva,
+      estado: 'Finalizado',
+    }
     
-    Swal.fire({
-      title: "Estas seguro del checkout de este vehiculo?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Si",
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        
-        let formData = {
-          checkout: new Date().getTime(),
-          total,
-          subtotal,
-          iva,
-          estado: 'Finalizado',
-        }
-        
-        this.parqueoService.updateParqueo(formData, parq.parqid)
-            .subscribe( ({ parqueo }) => {
+    this.parqueoService.updateParqueo(formData, this.parq.parqid)
+        .subscribe( ({ parqueo }) => {
 
-              this.vCheckout = parqueo;
-              
-              Swal.fire(` $ ${parqueo.total} `, `Total de tiempo en el parqueadero son ${diff}, en ${ parq.car.typeparq.type }` , 'success');
-              this.loadParqueos();
-              this.outP.nativeElement.value = '';
-              this.inP.nativeElement.focus = true;
+          this.vCheckout = parqueo;
+          
+          Swal.fire(` $ ${parqueo.total} `, `Total de tiempo en el parqueadero son ${this.diff}, en ${ this.parq.car.typeparq.type }` , 'success');
+          this.loadParqueos();
+          this.outP.nativeElement.value = '';
+          this.inP.nativeElement.focus = true;
 
-              setTimeout( () => {
-                this.printDiv('printDiv2')
-              }, 1500 )
+          let data = {
+            amount: this.total,
+            cost: 0,
+            type: 'efectivo',
+            payments: this.payments, 
+            products: [{
+              product: this.product,
+              qty: 1,
+              price: this.total
+            }],
+            credito: false,
+            mesa: this.ticket,
+            mesero: this.user.uid,
+            fechaCredito: '',
+            turno: this.user.turno,
+            iva: this.iva,
+            base: this.subtotal,
+            pago: this.total,
+            vueltos: 0,
+            nota: '',
+            apartado: false,
+            descuento: false,
+            porcentaje: 0,
+            fecha: new Date(),
+            tip: 0,
+            datafon: 0,
+          }
 
-            }, (err) => {
-              console.log(err);
-              Swal.fire('Error', err.error.msg, 'error');              
-            });
+          this.invoiceService.createInvoice(data, this.user.turno)
+              .subscribe( (resp:{ok: boolean, invoice: LoadInvoice } ) => {
 
-      }
-    });
-    
+                this.factura = resp.invoice;
+
+                if (this.empresa.electronica && send_dian) {
+                  
+                  this.electronicaService.postFacturaDataico(this.factura, this.dataico, this.impuestos)
+                      .subscribe( (resp: {status, invoice, ok}) => {
+                                                
+                        if (resp.status === 500) {
+                          Swal.fire('Atención', 'No se pudo enviar la factura electronica a la DIAN, ve a la factura y vuelve a enviarla, si el problema persiste, ponte en contacto', 'warning');
+                          window.open(`./dashboard/factura/${ this.factura.iid }`, '_blank');
+                        }
+
+                        if (resp.invoice.cufe) {
+                          this.factura.cufe = resp.invoice.cufe;
+                          this.factura.number = resp.invoice.number;
+                        }
+
+                        this.payments = [];
+                        this.total = 0;
+                        this.subtotal = 0;
+                        this.iva = 0;
+                        this.modal.dismissAll('modalCheckOut');
+
+                        if (this.empresa.printpos) {              
+                          // window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
+                          // IMPRIMIR FACTURA
+                          setTimeout( () => {
+                            this.facturando = false;
+                            this.printDiv('printDiv2')
+                          }, 1500 )
+                          
+                        }else{
+                          window.open(`./dashboard/factura/${ this.factura.iid }`, '_blank');
+                          setTimeout( () => {   
+                            this.facturando = false;          
+                            window.location.reload();
+                          },1000);
+                        }
+                        
+                      }, (err) => {
+                        console.log(err);
+                        
+                      });
+                  
+                  
+                }else{
+
+                  this.payments = [];
+                  this.total = 0;
+                  this.subtotal = 0;
+                  this.iva = 0;
+                  
+                  if (this.empresa.printpos) {              
+                    // window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
+                    // IMPRIMIR FACTURA
+                    setTimeout( () => {
+                      this.facturando = false;
+                      this.modal.dismissAll('modalCheckOut');
+                      this.printDiv('printDiv2')
+                    }, 1500 )
+                    
+                  }else{
+                    window.open(`./dashboard/factura/${ this.factura.iid }`, '_blank');
+                    setTimeout( () => {             
+                      window.location.reload();
+                    },1000);
+                  }
+                }
+
+                
+
+              })
+
+
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');              
+        });
+
   }
 
   /** ================================================================

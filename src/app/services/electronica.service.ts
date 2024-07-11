@@ -177,7 +177,7 @@ export class ElectronicaService {
     }else{
       desde = (dataico.desde - 1);
     }
-
+    
     return this.http.post(`${base_url}/electronica/${dataico.authtoken}/${invoice.iid}/${desde}`, data, this.headers)
 
   }

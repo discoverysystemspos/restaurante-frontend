@@ -16,7 +16,7 @@
                 <button #btnCreateClient type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#buscarCliente"><i class="bi-people"></i> Crear Cliente </button>
 
                 <!-- <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="collapse" href="#productsColl" role="button" aria-expanded="false" aria-controls="collapseExample"><i class="bi-box"></i> Productos </button> -->
-                <!-- <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#buscarProducto"><i class="bi-box"></i> Productos </button> -->
+                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#buscarProducto"><i class="bi-box"></i> Nuevo Codigo </button>
 
                 <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#entradaSalidas"><i class="bi-arrow-left-right"></i> Entradas y Salidas </button>
                 <button type="button" (click)="scrollToBottom()" (click)="timeCommand()" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#comandas"><i class="bi-receipt"></i> Comandas </button>
@@ -121,7 +121,7 @@
                 <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#buscarCliente"><i class="bi-people"></i> Crear Cliente </button>
 
                 <!-- <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="collapse" href="#productsColl" role="button" aria-expanded="false" aria-controls="collapseExample"><i class="bi-box"></i> Productos </button> -->
-                <!-- <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#buscarProducto"><i class="bi-box"></i> Productos </button> -->
+                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#buscarProducto"><i class="bi-box"></i> Nuevo Codigo </button>
 
                 <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#entradaSalidas"><i class="bi-arrow-left-right"></i> Entradas y Salidas </button>
                 <button type="button" (click)="scrollToBottom()" (click)="timeCommand()" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#comandas"><i class="bi-receipt"></i> Comandas </button>
@@ -227,7 +227,7 @@
                                         </td>
                                         <td>{{ item.price * item.qty | divisa}}</td>
                                         <td>
-                                            <button [disabled]="user.role !== 'ADMIN' && user.role !== 'STAFF'" type="button" (click)="eliminarProductoCarrito(i, item.product)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
+                                            <button [disabled]="user.role !== 'ADMIN' && user.role !== 'STAFF' && user.role !== 'CASHIER'" type="button" (click)="eliminarProductoCarrito(i, item.product)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
                                         </td>
                                     </tr>
                                 </ng-container>
@@ -394,37 +394,6 @@
 
                 <hr>
 
-                <!-- <div class="py-2" style="bottom: 0;"> -->
-
-                <!-- <div class="d-flex justify-content-center"> -->
-
-                <!-- <div class="col ms-auto text-end" *ngIf="empresa"> -->
-
-                <!-- <p class="h6 fw-normal text-primary mb-0">Sub-total {{ base | divisa }}</p> -->
-
-                <!-- IMPUESTOS -->
-                <!-- <ng-container *ngFor="let impuesto of impuestos"> -->
-                <!-- <p class="h6 fw-normal text-primary mb-0" *ngIf="impuesto.total > 0"> {{ impuesto.name }} {{ impuesto.total | divisa }}</p> -->
-                <!-- </ng-container> -->
-                <!-- IMPUESTOS -->
-
-                <!-- PROPINA -->
-                <!-- <p class="h6 fw-normal text-primary mb-0" *ngIf="empresa.propina">Propina {{ totalTip | divisa }}</p> -->
-                <!-- PROPINA -->
-
-                <!-- <p class="h6 fw-normal text-danger mb-0" *ngIf="mesa?.descuento">Descuento {{ ((base * mesa?.porcentaje) / 100) | divisa }}</p> -->
-                <!-- <h4 class="fw-normal display-6 text-primary">{{ total | divisa }}</h4> -->
-
-                <!-- 
-                            <p class="h6 fw-normal text-primary mb-0" *ngIf="empresa.responsable">Sub-total {{ base - iva | divisa }}</p>
-                            <h4 class="fw-normal text-primary" *ngIf="!empresa.responsable">{{ total | divisa }}</h4>
-                            -->
-                <!-- </div> -->
-
-                <!-- </div> -->
-
-                <!-- </div> -->
-
                 <div class="container-fluid">
                     <div class="">
 
@@ -438,24 +407,6 @@
                                         <strong>Atención:</strong> Para montos mayores a <strong>{{ empresa.min | number }}</strong> se debe crear factura electronica
                                     </div>
                                 </ng-container>
-
-                                <!-- TOTAL -->
-                                <!-- <div class="text-center my-3" *ngIf="empresa"> -->
-
-
-                                <!-- <h5 *ngIf="empresa.usd" class="text-primary fw-normal">{{ (total / empresa.currencyusd ) | number : '1.2-2' }} USD</h5> -->
-                                <!-- <h5 *ngIf="empresa.cop" class="text-primary fw-normal">{{ (total * empresa.currencycop ) | number : '1.2-2' }} COP</h5> -->
-                                <!-- <h5 *ngIf="empresa.bs" class="text-primary fw-normal">{{ (total / empresa.currencybs ) | number : '1.2-2' }} BS</h5> -->
-                                <!-- <h4 class="display-4 text-primary" *ngIf="empresa.responsable">{{ total + ((total * empresa.tax)/100) | divisa }}</h4> -->
-
-                                <!-- <small *ngIf="totalPagos > 0 && totalPagos < total" class="text-danger animated fadeIn">Resta</small> -->
-                                <!-- <small *ngIf="totalPagos > 0 && totalPagos >= total" class="text-success animated fadeIn">Vueltos</small> -->
-                                <!-- <h4 class="mb-0 fw-normal animated fadeIn" [ngClass]=" {   'text-danger': totalPagos < total, 'text-success': totalPagos >= total  }" *ngIf="totalPagos > 0"> -->
-                                <!-- {{ vueltos | divisa }} -->
-                                <!-- </h4> -->
-
-                                <!-- </div> -->
-                                <!-- TOTAL -->
 
                                 <div class="d-flex justify-content-center">
 
@@ -1114,13 +1065,13 @@
                         </div>
                         <!-- BTN PREFACTURA -->
 
-                        <!-- BTN CREAR FACTURA -->
-                        <div class="float-end">
+                        <!-- BTN COTIZACIÓN -->
+                        <div *ngIf="empresa?.cotizacion" class="float-end">
                             <button type="button" [disabled]="facturando == true || user.cerrada" (click)="crearFactura(false)" class="btn btn-sm btn-outline-primary">
-                            Crear Factura Pos
-                        </button>
+                                Cotización
+                            </button>
                         </div>
-                        <!-- BTN CREAR FACTURA -->
+                        <!-- BTN COTIZACIÓN -->
 
                         <!-- BTN CREAR FACTURA -->
                         <div class="float-end" *ngIf="empresa?.electronica">
@@ -1224,6 +1175,7 @@
                                 <div class="form-floating">
                                     <input id="cedula" formControlName="cedula" type="text" class="form-control" placeholder="cedula">
                                     <label for="floatingInput">CC / NIT </label>
+                                    <p *ngIf="campoValido('cedula')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
                                 </div>
                             </div>
 
@@ -1233,6 +1185,7 @@
                                 <div class="form-floating">
                                     <input id="email" formControlName="email" type="text" class="form-control" placeholder="Correo electronico">
                                     <label for="floatingInput">Correo electronico </label>
+                                    <p *ngIf="campoValido('email')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
                                 </div>
                             </div>
 
@@ -1260,6 +1213,7 @@
                                 <div class="form-floating">
                                     <input id="direccion" formControlName="address" type="text" class="form-control text-capitalize" placeholder="Dirección">
                                     <label for="floatingInput">Dirección </label>
+                                    <p *ngIf="campoValido('address')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
                                 </div>
 
                             </div>
@@ -1270,6 +1224,7 @@
                                 <div class="form-floating">
                                     <input id="telefono" formControlName="phone" type="text" class="form-control" placeholder="Telefono">
                                     <label for="floatingInput">Telefono </label>
+                                    <p *ngIf="campoValido('phone')" class="mb-1 animated fadeIn text-danger"> <small>Este campo es obligatorio</small> </p>
                                 </div>
                             </div>
 
@@ -1342,73 +1297,42 @@
                     <div class="my-2">
                         <div>
                             <label for="precioM">Buscar Productos:</label>
-                            <input type="text" class="form-control" placeholder="buscar producto" (keyup.enter)="buscarProducto(searchProduct.value)" #searchProduct>
-                        </div>
-                        <div *ngIf="listaProductos.length > 0" class="bg-white px-2 shadow col-10" style="position: absolute; z-index: 1020;">
-
-                            <ul class="list-group list-group-flush overflow-auto" style="max-height: 200px;">
-
-                                <li class="list-group-item py-1">
-                                    <h6>Resultados: ({{ listaProductos.length }})</h6>
-                                </li>
-
-                                <li class="list-group-item py-1 trHover" *ngFor="let item of listaProductos">
-                                    <div class="d-flex ">
-                                        <div class="align-self-center">
-                                            <span> {{ item.name }} </span>
-                                            <span *ngIf="item.out" class="badge rounded-pill bg-danger">Agotado</span>
-                                            <span *ngIf="item.low && !item.out" class="badge rounded-pill bg-warning text-dark">Bajo</span>
-                                        </div>
-
-                                        <div class="ms-auto">
-                                            <button *ngIf="!item.out" class="btn btn-link p-1 text-success float-end" (click)="seleccionarProducto(item)"> <i class="bi-arrow-90deg-right"></i></button>
-                                            <button *ngIf="item.out" class="btn btn-link p-1 text-success float-end"> <i class="bi-arrow-90deg-right"></i></button>
-                                        </div>
-                                    </div>
-
-                                </li>
-
-                            </ul>
-
+                            <input type="text" class="form-control" placeholder="buscar producto" (keyup.enter)="buscarProductoCode(searchProductCodeN.value)" #searchProductCodeN>
                         </div>
                     </div>
 
-                    <div class="mt-4">
+                    <div *ngIf="productSelected" class="mt-4">
 
                         <div class="form-group">
                             <label for="">Codigo de barras:</label>
-                            <input readonly type="text" class="form-control" placeholder="Codigo de Barras" [value]="productTemp.code" #barcode>
+                            <input readonly type="text" class="form-control" placeholder="Codigo de Barras" [value]="productSelected.code" #barcode>
                         </div>
                         <div class="form-group">
                             <label for="">Nombre:</label>
-                            <input readonly type="text" class="form-control" placeholder="Nombre" [value]="productTemp.name">
+                            <input readonly type="text" class="form-control" placeholder="Nombre" [value]="productSelected.name">
                         </div>
 
                         <div class="row">
 
-                            <div *ngIf="!mayoreo.checked" class="form-group col-md-6">
-                                <label for="precio">Precio:</label>
-                                <input type="number" min="1" class="form-control" placeholder="Precio" [value]="productTemp.price" #precio>
-                            </div>
-
-                            <div *ngIf="mayoreo.checked" class="form-group col-md-6">
-                                <label for="precioM">Precio Al Mayor:</label>
-                                <input type="number" min="1" class="form-control" placeholder="Precio Al Mayor" [value]="productTemp.wholesale" #precioM>
-                            </div>
 
                             <div class="form-group col-md-6">
                                 <label for="cantidad">Cantidad:</label>
-                                <input type="number" min="1" class="form-control" placeholder="" value="1" #cantidad>
+                                <input readonly type="number" min="1" class="form-control" placeholder="" [value]="qtySelect" #cantidadCo>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="precio">Precio:</label>
+                                <input type="number" min="1" class="form-control" [value]="priceProductSelected" placeholder="Precio" #precioCo>
                             </div>
 
                         </div>
 
-                        <div class="form-check form-switch mt-2">
-                            <input class="form-check-input" type="checkbox" [(ngModel)]="mayoreo.checked" #mayoreo>
-                            <label class="form-check-label" for="mayor">Aplicar Mayoreo</label>
+                        <div class="form-check form-switch my-2">
+                            <input #newPriNew (change)="newPriNew.checked = newPriNew.checked" class="form-check-input" type="checkbox" role="switch" id="newPriceC">
+                            <label class="form-check-label" for="newPriceC">Totalizar Precio </label>
                         </div>
 
-                        <button type="button" (click)="evniarAlCarrito(cantidad.value, mayoreo.checked, barcode.value, true)" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>
+                        <button type="button" (click)="carritoTempBefored(productSelected, qtySelect, precioCo.value, '', newPriNew.checked)" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Agregar Producto</button>
 
                     </div>
 
@@ -1467,7 +1391,10 @@
                             </div>
 
                             <div class="col py-2">
-                                <button type="button" (click)="entradaSalida('entrada', descriptionE.value, montoE.value)" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>
+                                <button [disabled]="sendMovimiento" type="button" (click)="entradaSalida('entrada', descriptionE.value, montoE.value)" class="btn btnW waves-effect waves-ligth px-3 btn-primary">
+                                    <span *ngIf="!sendMovimiento">Guardar</span>
+                                    <span *ngIf="sendMovimiento">Guardando...</span>                                    
+                                </button>
                             </div>
 
                         </div>

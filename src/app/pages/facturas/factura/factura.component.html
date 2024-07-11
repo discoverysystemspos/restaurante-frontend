@@ -68,8 +68,9 @@
                 Editar Control
             </button>
 
-            <button (click)="sendInvoice()" *ngIf="factura.electronica && !factura.send || user.role === 'ADMIN' && !factura.send " type="button" class="btn btn-warning btn-sm mx-1 my-2"> 
-                Enviar Factura DIAN
+            <button [disabled]="enviando" (click)="sendInvoice()" *ngIf="factura.electronica && !factura.send || user.role === 'ADMIN' && !factura.send " type="button" class="btn btn-warning btn-sm mx-1 my-2"> 
+                <span *ngIf="!enviando">Enviar Factura DIAN</span>
+                <span *ngIf="enviando">Enviando...</span>                
             </button>
 
             <a *ngIf="factura.pdf_url" [href]="factura.pdf_url" target="_blank" class="btn btn-outline-danger btn-sm mx-1 my-2">

@@ -15,7 +15,7 @@ import { AuthModule } from './auth/auth.module';
 import { AppComponent } from './app.component';
 import { NopagefoundComponent } from './nopagefound/nopagefound.component';
 // import { CalendarModule, DateAdapter  } from 'angular-calendar';
-// import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+// import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';s
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MenuComponent } from './menu/menu.component';
 import { PipesModule } from './pipes/pipes.module';

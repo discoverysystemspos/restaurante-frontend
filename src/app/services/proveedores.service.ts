@@ -55,12 +55,24 @@ export class ProveedoresService {
   }
 
   /** ================================================================
+   *  LOAD PROVEEDORES QUERY
+  ==================================================================== */
+  loadProveedores(query: any){    
+    return this.http.post<{ok: boolean, proveedores: Proveedor[], total: number}>(`${base_url}/proveedores/query`, query, this.headers);
+  }
+
+  /** ================================================================
    *   CREATE PROVEEDORES
   ==================================================================== */
-  createProveedor( formData: any ){
-    
+  createProveedor( formData: any ){    
     return this.http.post(`${base_url}/proveedores`, formData, this.headers);
+  }
 
+  /** ================================================================
+   *  UPDATE PROVEEDOR
+  ==================================================================== */
+  updateProveedor(formData: any, id: string){    
+    return this.http.put<{ok: boolean, proveedor: Proveedor}>(`${base_url}/proveedores/${id}`, formData, this.headers);
   }
 
   // FIN DE LA CLASE

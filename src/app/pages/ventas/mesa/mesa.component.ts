@@ -668,9 +668,6 @@ export class MesaComponent implements OnInit {
                   cantidad = precio / product.price;
                 }
 
-                console.log(cantidad);
-                
-
                 // GUARDAR AL CARRITO
                 this.searchCode.nativeElement.value = '';
                 this.searchCode.nativeElement.onFocus = true;
@@ -930,6 +927,24 @@ export class MesaComponent implements OnInit {
 
   }
 
+
+  /** ================================================================
+   *  ANTES ALMACENAR PRODUCTO TEMPORAL EN EL CARRITO
+  ==================================================================== */
+  @ViewChild('searchProductCodeN') searchProductCodeN: ElementRef;
+  carritoTempBefored( product: any, qty: number, precio: number, nota: string = '', newPrice: boolean = false ){
+
+    this.searchProductCodeN.nativeElement.value = '';
+    delete this.productSelected;
+    delete this.qtySelect;
+    
+    setTimeout( () =>{
+      this.searchProductCodeN.nativeElement.focus();
+    }, 500);
+
+    this.carritoTemp(product, qty, precio, nota, newPrice);
+
+  }
 
   /** ================================================================
    *  ALMACENAR PRODUCTO TEMPORAL EN EL CARRITO
@@ -1652,10 +1667,10 @@ export class MesaComponent implements OnInit {
     // OLD
     name: '',
     cedula: ['', [Validators.required, Validators.minLength(6)]],
-    email: [''],
-    phone: '',
+    email: ['', [Validators.required]],
+    phone: ['', [Validators.required]],
     city: '',
-    address: ''
+    address: ['', [Validators.required]]
   });
   
 
@@ -1835,6 +1850,70 @@ export class MesaComponent implements OnInit {
 
   }
 
+
+  /** ================================================================
+   *  BUSCAR PRODUCTOS CODE NEW
+  ==================================================================== */
+  @ ViewChild('cantidadCo') cantidadCo: ElementRef;
+  @ ViewChild('precioCo') precioCo: ElementRef;
+  
+  buscarProductoCode(code: string){
+
+    let codigo = '';
+    let cantidad:any = 1;    
+
+    if (code.includes('+')) {
+      
+      let newCode = code.split('+');
+
+      codigo = newCode[1];
+      cantidad = Number(newCode[0]);
+
+    }else{
+
+      // COMPROBAR SI ES CODIGO DE BARRA CON PESO O PRECIO
+      let digitos = this.empresa.basculacode.length;
+      let digCode = digitos + 3;
+      let totalCode = code.length - 1;
+      
+
+      if (code.slice(0,digitos) === this.empresa.basculacode) {
+        codigo = code.slice(digitos, digCode);        
+        
+        if(this.empresa.basculatype === 'peso'){
+
+          let cant = Number(code.slice(digCode , totalCode))/1000;
+
+          cantidad = cant.toFixed(3);
+
+        }
+
+      }else{
+        codigo = code;
+      }
+    }
+
+    this.qtySelect = cantidad;
+
+    this.productService.cargarProductoCodigo(Number(codigo).toString())
+        .subscribe( (product) => {
+          
+
+          this.productSelected = product;
+          this.priceProductSelected = product.price;
+          setTimeout( ()=> {
+
+            this.precioCo.nativeElement.focus();
+          }, 300 )
+
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');
+          
+        }) 
+    
+
+  }
 
   /** ================================================================
    *  BUSCAR PRODUCTOS
@@ -2477,6 +2556,7 @@ export class MesaComponent implements OnInit {
   @ViewChild('descriptionS') descriptionS: ElementRef;
 
   public movimientos: _movements[] = [];
+  public sendMovimiento: boolean = false;
 
   entradaSalida(type: string, descripcion: string, monto: number){
 
@@ -2486,6 +2566,8 @@ export class MesaComponent implements OnInit {
       return;      
     }
     // COMPROBAR QUE NO VENGA VACIO
+
+    this.sendMovimiento = true;
     
     // COMPROBAR EL TIPO SALIDA
     if (type === 'salida') {
@@ -2520,6 +2602,8 @@ export class MesaComponent implements OnInit {
         turno: this.turno.tid,
       }
 
+      this.sendMovimiento = false;
+
       this.entradasService.createMovimiento(movi)
           .subscribe( ({movimiento}) => {
 
@@ -2532,6 +2616,7 @@ export class MesaComponent implements OnInit {
 
     }, (err) =>{
       Swal.fire('Error', err.error.msg, 'error');
+      this.sendMovimiento = false;
     }); 
     // GUARDAR ACTUALIZAR EN LA BASE DE DATOS
 

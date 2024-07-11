@@ -9,9 +9,6 @@
         <li class="nav-item" role="presentation">
             <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><i class="bi-people" style="font-size: 1rem"></i> Administración de proveedores </a>
         </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link text-success cursor" id="crear-tab" data-bs-toggle="modal" data-bs-target="#nuevoCliente"><i class="bi-person-plus" style="font-size: 1rem"></i> Nuevo Proveedor </a>
-        </li>
     </ul>
 </header>
 <!-- =========================================================================
@@ -63,12 +60,27 @@
                     </div>
                     <!-- BTN CREAR PROVEEDOR -->
 
+                    <div class="my-2">
+
+                        <label for="mostrar" class="me-2">Mostrar: </label>
+                        <select name="" id="" [value]="query.hasta" #mostrar (change)="limiteChange(mostrar.value)">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="250">250</option>
+                            <option value="500">500</option>
+                        </select>
+
+                    </div>
+
 
                     <div class="table-responsive ">
                         <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
                             <thead class="border-bottom ">
                                 <tr>
-                                    <th class="text-muted " scope="col ">#</th>
                                     <th class="text-muted " scope="col " colspan="2 ">Nombres</th>
                                     <th class="text-muted " scope="col ">Cedula</th>
                                     <th class="text-muted " scope="col ">Email</th>
@@ -80,14 +92,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngIf="!sinResultados" class="text-center ">
+                                <tr *ngIf="proveedores.length === 0" class="text-center ">
                                     <th colspan="10" class="py-4">
                                         <h4 class="text-muted">Sin Resultados</h4>
                                     </th>
                                 </tr>
                                 <tr class="trHover" *ngFor="let proveedor of proveedores; let i=index ">
-                                    <th *ngIf="desde===0 " scope="row ">{{ i + 1}}</th>
-                                    <th *ngIf="desde> 0" scope="row">{{ (i + 1) + desde }}</th>
                                     <td colspan="2">{{ proveedor.name }}</td>
                                     <td>{{ proveedor.cedula }}</td>
                                     <td>{{ proveedor.email }}</td>
@@ -97,8 +107,8 @@
                                     <td>{{ proveedor.zip }}</td>
                                     <td class="text-center">
 
-                                        <button type="button" (click)="actualizarCliente(proveedor)" class="btn btn-link p-1 text-primary" data-bs-toggle="modal" data-bs-target="#actualizarCLiente"><i class="bi-pen" style="font-size: 0.9rem"></i></button>
-                                        <button type="button" (click)="borrarCliente(proveedor.cid)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
+                                        <button type="button" (click)="selectedProovedor(proveedor)" class="btn btn-link p-1 text-primary" data-bs-toggle="modal" data-bs-target="#actualizarProveedor"><i class="bi-pen" style="font-size: 0.9rem"></i></button>
+
                                     </td>
                                 </tr>
                             </tbody>
@@ -110,14 +120,13 @@
                     <!-- BTN SIGUIENTE Y ANTERIOR -->
                     <div class="row">
                         <div class="col col-md-4">
-                            <small class="text-muted">Total de clientes: ({{totalClientes}})</small>
-                            <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
-                            <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + clientes.length }})</small>
+                            <small class="text-muted">Total de proveedores: ({{totalProveedores}})</small>
+                            <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ query.desde + 1}} Hasta el: {{ query.desde + proveedores.length }})</small>
                         </div>
 
                         <div *ngIf="search.value.length === 0" class="col d-flex justify-content-end">
-                            <button type="button" (click)="cambiarPagina(-10)" class="{{btnAtras}} btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
-                            <button type="button" (click)="cambiarPagina(10)" class="{{btnAdelante}} btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
+                            <button type="button" [disabled]="query.desde === 0" (click)="cambiarPagina(query.hasta * -1)" class="btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
+                            <button type="button" [disabled]="( query.desde + query.hasta ) >= totalProveedores" (click)="cambiarPagina(query.hasta)" class=" btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
                         </div>
                     </div>
                     <!-- BTN SIGUIENTE Y ANTERIOR -->
@@ -264,6 +273,131 @@
         </div>
     </div>
 </div>
+
 <!-- =========================================================================
-    NUEVO PROVEEDOR 
+    ACTUALIZR PROVEEDOR
 ========================================================================= -->
+<div class="modal fade" id="actualizarProveedor" tabindex="-1" aria-labelledby="actualizarProveedorModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="actualizarProveedorModal"><i class="bi-person-plus" style="font-size: 2rem"></i> Actualizar Proveedor</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <form id="newProveedorForm" autocomplete="off" [formGroup]="updateForm" (ngSubmit)="update()">
+
+                    <!-- =======================================================================
+                        DATOS PROVEEDOR 
+                    =========================================================================== -->
+                    <h5 class="text-muted">Datos Del Proveedor</h5>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="name" type="text" class="form-control text-capitalize" placeholder="Nombres">
+                                <label for="floatingInput">Nombres</label>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 px-md-1 ">
+
+                            <div class="form-floating">
+                                <input formControlName="cedula" type="text" class="form-control" placeholder="Cedula de ciudadania">
+                                <label for="floatingInput">Cedula de ciudadania</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+
+                        <div class="col-md-6 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="email" type="email" class="form-control" placeholder="Email">
+                                <label for="floatingInput">Email</label>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="phone" type="text" class="form-control" placeholder="Telefono">
+                                <label for="floatingInput">Telefono</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- =======================================================================
+                        DIRECCION
+                    =========================================================================== -->
+                    <h5 class="text-muted">DIRECCIÓN</h5>
+
+                    <div class="row mb-3">
+
+                        <div class="col-md-12 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="address" type="text" class="form-control" placeholder="Dirección">
+                                <label for="floatingInput">Dirección</label>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row mb-3">
+
+                        <div class="col-md-5 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="department" type="text" class="form-control" placeholder="Departamento">
+                                <label for="floatingInput">Departamento</label>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-5 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="city" type="text" class="form-control" placeholder="Ciudad">
+                                <label for="floatingInput">Ciudad</label>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-2 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="zip" type="text" class="form-control" placeholder="ZIP">
+                                <label for="floatingInput">ZIP</label>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="text-danger mb-2">
+                            <p *ngIf="campoValido('name')" class="mb-1 animated fadeIn">- El nombre es obligatorio</p>
+                            <p *ngIf="campoValido('cedula')" class="mb-1 animated fadeIn">-El NIT o La CC es obligatoria</p>
+
+                        </div>
+                    </div>
+
+
+                    <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

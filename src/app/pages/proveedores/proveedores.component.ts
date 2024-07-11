@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 
 // MODEL
@@ -18,17 +18,6 @@ import Swal from 'sweetalert2';
 })
 export class ProveedoresComponent implements OnInit {
 
-  public totalProveedores: number = 0;
-  public resultado: number = 0;
-  public proveedores: Proveedor[] = [];
-  public proveedoresTemp: Proveedor[] = [];
-  public desde: number = 0;
-  public cargando: boolean = true;
-  public sinResultados: boolean = true;
-
-  public btnAtras: string = '';
-  public btnAdelante: string = '';
-
   constructor(  private proveedoresService: ProveedoresService,
                 private searchService: SearchService,
                 private fb:FormBuilder,
@@ -37,51 +26,82 @@ export class ProveedoresComponent implements OnInit {
   ngOnInit(): void {
 
     // CARGAR PROVEEDORES
-    this.cargarClientes();
+    this.cargarProveedores();
   }
 
   /** ================================================================
-   *   CARGAR CLIENTES
+   *   CARGAR PROVEEDORES
   ==================================================================== */
-  cargarClientes(){
+  public cargando: boolean = true;
+  public totalProveedores: number = 0;
+  public proveedores: Proveedor[] = [];
+  public proveedoresTemp: Proveedor[] = [];
+  public bodegas: Proveedor[] = [];
+  public query: any = {
+    desde: 0,
+    hasta: 50
+  }
+
+  cargarProveedores(){
     this.cargando = true;
-    this.sinResultados = true;
-    this.proveedoresService.cargarProveedores(this.desde)
+    this.proveedoresService.loadProveedores(this.query)
     .subscribe(({total, proveedores}) => {        
         
-        // COMPROBAR SI EXISTEN RESULTADOS
-        if (proveedores.length === 0) {
-          this.sinResultados = false;
-          this.proveedores = [];
-          this.resultado = 0;
-          this.cargando = false;
-          return;                
-        }
-        // COMPROBAR SI EXISTEN RESULTADOS
-      
-        this.totalProveedores = total;
-        this.proveedores = proveedores;
-        this.proveedoresTemp = proveedores;
-        this.resultado = 0;
-        this.cargando = false;
-
-        // BOTONOS DE ADELANTE Y ATRAS          
-        if (this.desde === 0 && this.totalProveedores > 10) {
-          this.btnAtras = 'disabled';
-          this.btnAdelante = '';
-        }else if(this.desde === 0 && this.totalProveedores < 11){
-          this.btnAtras = 'disabled';
-          this.btnAdelante = 'disabled';
-        }else if((this.desde + 10) >= this.totalProveedores){
-          this.btnAtras = '';
-          this.btnAdelante = 'disabled';
-        }else{
-          this.btnAtras = '';
-          this.btnAdelante = '';
-        }   
-        // BOTONOS DE ADELANTE Y ATRAS
+      this.proveedores = proveedores;
+      this.proveedoresTemp = proveedores;
+      this.totalProveedores = total;
+      this.cargando = false;
           
       });
+  }
+
+  /** ================================================================
+   *   CAMBIAR PAGINA
+  ==================================================================== */
+  @ViewChild('mostrar') mostrar: ElementRef;
+  cambiarPagina (valor: number){
+    
+    this.query.desde += valor;
+
+    if (this.query.desde < 0) {
+      this.query.desde = 0;
+    }
+    
+    this.cargarProveedores();
+    
+  }
+
+  /** ================================================================
+   *   CHANGE LIMITE
+  ==================================================================== */
+  limiteChange( cantidad: any ){  
+
+    this.query.hasta = Number(cantidad);    
+    this.cargarProveedores();
+
+  }
+
+  /** ======================================================================
+   * SEARCH
+  ====================================================================== */
+  public resultados: number = 0;
+  buscar( termino:string ){
+
+    let query = `desde=${this.query.desde}&hasta=${this.query.hasta}`;
+
+    if (termino.length === 0) {
+      this.proveedores = this.proveedoresTemp;
+      this.resultados = 0;
+      return;
+    }
+    
+    this.searchService.search('proveedores', termino, false, query)
+        .subscribe( ({resultados}) => {
+
+          this.proveedores = resultados;
+
+        });   
+
   }
 
   /** ================================================================
@@ -112,7 +132,7 @@ export class ProveedoresComponent implements OnInit {
         .subscribe((resp: any) => {
 
           Swal.fire('Estupendo', 'Se ha creado el cliente exitosamente!', 'success');
-          this.cargarClientes();
+          this.cargarProveedores();
 
           this.formSubmitted = false;
           this.newProveedorForm.reset();          
@@ -132,6 +152,88 @@ export class ProveedoresComponent implements OnInit {
       return false;
     }
   
+  }
+
+  /** ================================================================
+   *   SELECT PROVEEDOR
+  ==================================================================== */
+  public proveedorS: string;
+  selectedProovedor( proveedor: Proveedor ){
+
+    this.proveedorS = proveedor.provid;
+
+    this.updateForm.setValue({
+      name: proveedor.name,
+      cedula: proveedor.cedula,
+      phone: proveedor.phone,
+      email: proveedor.email,
+      address: proveedor.address,
+      city: proveedor.city,
+      department: proveedor.department,
+      zip: proveedor.zip,
+    })
+
+  }
+
+  /** ================================================================
+   *   UPDATE PROVEEDOR
+  ==================================================================== */
+  public updateFormSubmitted: boolean = true;
+  public updateForm = this.fb.group({
+    name: ['', Validators.required],
+    cedula: ['', Validators.required],
+    phone: '',
+    email: '',
+    address: '',
+    city: '',
+    department: '',
+    zip: '',
+  })
+
+  update(){
+
+    this.updateFormSubmitted = true;
+
+    if (this.updateForm.invalid) {
+      return;
+    }
+
+    this.proveedoresService.updateProveedor(this.updateForm.value, this.proveedorS )
+        .subscribe( ({ proveedor }) => {          
+
+          this.proveedores.map( (prov) => {
+            if (prov.provid === proveedor.provid) {
+              prov.name = proveedor.name;
+              prov.cedula = proveedor.cedula;
+              prov.phone = proveedor.phone;
+              prov.email = proveedor.email;
+              prov.address = proveedor.address;
+              prov.city = proveedor.city;
+              prov.department = proveedor.department;
+              prov.zip = proveedor.zip;
+            }
+          });
+
+          Swal.fire('Estupendo', 'Se ha actualizado el proveedor exitosamente', 'success');
+
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');          
+        })
+
+  }
+
+  /** ================================================================
+   *   VALIDATOR UPDATE
+  ==================================================================== */
+  validateUp(campo: string): boolean{
+
+    if (this.updateForm.get(campo).invalid && this.updateFormSubmitted ) {
+      return true;      
+    }else{
+      return false;
+    }
+
   }
 
 

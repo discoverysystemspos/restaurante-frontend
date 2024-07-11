@@ -181,12 +181,7 @@ export class ComprasComponent implements OnInit {
       return;
     }
 
-    if(Number(this.psCost.nativeElement.value) <= 0 ){
-      Swal.fire('Atención', 'debes de agregar un precio de costo valido', 'warning');
-      return;
-    }
-
-    if(Number(this.psCost.nativeElement.value) <= 0 ){
+    if(Number(this.psPrice.nativeElement.value) <= 0 ){
       Swal.fire('Atención', 'debes de agregar un precio de venta valido', 'warning');
       return;
     }

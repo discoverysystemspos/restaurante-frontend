@@ -96,20 +96,12 @@
                             <div class="card border">
                                 <div class="card-body" style="color: #000;">
 
+                                    <div class="d-flex justify-content-center">
+                                        <img *ngIf="empresa?.logo" [src]="empresa?.logo | imagen:'logo'" class="mx-auto" width="200px" alt="">
+                                    </div>
+
                                     <h4 class="card-title mb-0 text-wrap text-center"> {{ empresa?.name }} </h4>
-                                    <p class="mb-0 text-wrap fw-bolder text-center lh-sm" *ngIf="empresa?.nit">{{ empresa?.nit }}</p>
-                                    <p class="mb-0 text-center text-wrap" style="font-size: 0.7rem;"> </p>
-                                    <p class="mb-0 text-wrap text-center" *ngIf="empresa?.address">{{ empresa?.address }}</p>
-                                    <p class="mb-0 text-wrap text-center" *ngIf="empresa?.phone">{{ empresa?.phone }}</p>
-
-                                    <p *ngIf="!empresa?.impuesto" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">No responsable de IVA</p>
-
-                                    <!-- RESPONSABLE DE IVA O IMPUESTO AL CONSUMO -->
-                                    <p *ngIf="empresa?.impuesto && empresa?.responsable" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Responsable de iva</p>
-                                    <p *ngIf="empresa?.impuesto && empresa?.impuestoconsumo" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Responsable nacional al consumo</p>
-                                    <p *ngIf="empresa?.impuesto" class="mb-0 text-wrap text-center" style="font-size: 0.7rem;">Resolución: {{ empresa?.resolucion }}</p>
-                                    <p *ngIf="empresa?.impuesto" class="mb-1 text-wrap text-center" style="font-size: 0.7rem;">Prefijo Pos: {{ empresa?.prefijopos }}</p>
-                                    <!-- RESPONSABLE DE IVA O IMPUESTO AL CONSUMO -->
+                                    <p class="text-center mb-0" *ngFor="let text of ticketHeader" style="line-height: 1rem;"> {{ text }} </p>
 
                                     <div class="d-flex flex-column justify-content-center" style="color: #000; line-height: 150%;">
                                         <p class="mb-0 fs-4"> Factura: {{ vCheckout.invoice }} </p>
@@ -122,6 +114,9 @@
                                         <p class="mb-0 fs-4"> IVA: {{ vCheckout.iva | divisa}} </p>
                                         <p class="mb-0 fs-5 fw-bold"> Total: {{ vCheckout.total | divisa }} </p>
                                     </div>
+
+                                    <p class="text-center mb-0" *ngFor="let text of ticketfooter" style="line-height: 1rem;"> {{ text }} </p>
+
                                 </div>
                             </div>
 
@@ -587,3 +582,117 @@
         </div>
     </div>
 </div>
+
+<!-- =========================================================================
+PRODUCT SELECT
+========================================================================= -->
+
+<ng-template #modalCheckOut let-close="close">
+
+    <div class="modal-header">
+        <h5 class="modal-title">Salida</h5>
+        <button type="button" class="close" (click)="close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+
+        <!-- SUBTOTALES -->
+        <div class="">
+            <p class="mb-1 text-center text-break"> Subtotal: {{ subtotal | currency:'COP' : 'symbol' : '1.0-0' }} </p>
+            <p class="mb-1 text-center text-break">IVA: {{ iva | currency:'COP' : 'symbol' : '1.0-0' }} </p>
+        </div>
+
+        <!-- TOTALES -->
+        <div class="pb-2">
+            <p class="mb-0 text-center fw-bold">TOTAL</p>
+            <h4 class="mb-3 display-5 text-center text-break fw-bold"> {{ total | currency:'COP' : 'symbol' : '1.0-0' }} </h4>
+            <p class="mb-2 text-center" *ngIf="payments.length > 0" [ngClass]="{'text-success': restante === 0, 'text-danger': restante < total || restante > total}"> Restante {{ restante | currency:'COP' : 'symbol' : '1.0-0' }} </p>
+            <div class="d-flex justify-content-center">
+                <a class="text-decoration-none mx-auto" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    Editar Monto
+                </a>
+            </div>
+        </div>
+
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+
+                <div class="row g-3 d-flex justify-content-center align-items-end">
+                    <div class="col-auto">
+                        <label for="categoria" class="">Nuevo Monto</label>
+                        <input type="text" class="form-control" id="categoria" placeholder="Monto" #nMonto>
+                    </div>
+
+                    <div class="col-auto">
+                        <button type="button" (click)="newMonto(nMonto.value)" class="btn btn-primary">Actualizar</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- PAGOS -->
+        <div>
+            <h4 class="mb-3 text-center"> Agregar Pagos </h4>
+
+            <!-- TIPO DE PAGO -->
+            <div class="form-group">
+                <label class="control-label">Metodo de pago</label>
+                <select class="form-select" aria-label="Default select example" #typeAdd>
+                    <option value="efectivo">Efectivo</option>   
+                    <option *ngFor="let banco of bancos" [value]="banco.name"> {{banco.name}}</option>   
+                </select>
+            </div>
+
+            <!-- MONTO -->
+            <div class="form-group">
+                <label class="control-label">Monto</label>
+                <input id="montoP" type="number" min="0" class="form-control" placeholder="Agrega un monto" (keyup)="montoP.value" #montoP>
+            </div>
+
+            <button (click)="addPay(montoP.value, typeAdd.value)" type="button" class="btn btn-primary w-100">Agregar</button>
+
+        </div>
+
+        <!-- LISTA DE PAGOS -->
+        <div *ngIf="payments.length > 0 " class="table-responsive" style="clear: both;">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Metodo</th>
+                        <th class="text-right">Monto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let pay of payments; let i = index">
+                        <td>
+                            <button type="button" (click)="delPay(i)" class="btn btn-link p-1 text-danger text-right"><i class="bi-trash"></i></button>
+                        </td>
+                        <td> {{ pay.type }} </td>
+                        <td class="text-right"> {{ pay.amount }} </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+
+    <div class="modal-footer">
+        <button type="button" [disabled]="facturando == true || user.cerrada || restante < 0" class="btn btn-sm btn-outline-primary" (click)="crearFactura(false)">
+            <span *ngIf="facturando">Facturando...</span>
+            <span *ngIf="!facturando">Crear tirilla pos</span>
+            
+        </button>
+
+        <button type="button" [disabled]="facturando == true || user.cerrada || restante < 0" (click)="crearFactura(true)" class="btn btn-sm btn-outline-success">
+            <span *ngIf="facturando">Facturando...</span>
+            <span *ngIf="!facturando">Crear Factura Electronica</span>
+            
+        </button>
+    </div>
+
+</ng-template>

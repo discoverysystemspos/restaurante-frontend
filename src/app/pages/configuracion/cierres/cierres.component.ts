@@ -436,6 +436,8 @@ export class CierresComponent implements OnInit {
             this.parqueos += parq.total;
           }
 
+          this.parqueos = 0;
+
         }, (err) => {
           console.log(err);
           Swal.fire('Error', err.error.msg, 'error');          

@@ -123,18 +123,6 @@ export class CorteComponent implements OnInit {
 
     this.parqueos = 0;
 
-    this.parqueoService.loadParqueos({turno: this.user.turno, estado: 'Finalizado'})
-        .subscribe( ({parqueos}) => {
-
-          for (const parq of parqueos) {
-            this.parqueos += parq.total;
-          }
-
-        }, (err) => {
-          console.log(err);
-          Swal.fire('Error', err.error.msg, 'error');          
-        })
-
   }
 
   /** ================================================================
@@ -362,7 +350,7 @@ export class CorteComponent implements OnInit {
           this.transferencia = transferencia;
           this.totalBancos = 0;
           this.totalCreditos = creditos;
-
+          
           this.facturas = invoices;
 
           for (const factura of this.facturas) {
@@ -455,10 +443,6 @@ export class CorteComponent implements OnInit {
                     }
                     
                   }
-
-                  console.log('Efectivo Alquiler', this.alqEfectivo);
-                  console.log('Total', this.totalAlquiler);
-                  console.log('Bancos', this.bancosAlquileres);
                   
 
                 }, (err) => {

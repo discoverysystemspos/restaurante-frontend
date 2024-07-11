@@ -61,7 +61,7 @@ export class EmpresaComponent implements OnInit {
           
           this.comisiones = datos.comisiones || [];
           
-          const { tax, name, address, phone, nit, eid, impuesto, printpos, responsable, noresponsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas, commissions, comisiones, fruver, moneda, decimal, usd,  currencyusd, cop, currencycop, basculaimp, basculatype, basculacode, electronica, min, alquileres, impresora, parqueadero, bs, currencybs, datafon, comidatafon } = datos;
+          const { tax, name, address, phone, nit, eid, impuesto, printpos, responsable, noresponsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas, commissions, comisiones, fruver, moneda, decimal, usd,  currencyusd, cop, currencycop, basculaimp, basculatype, basculacode, electronica, min, alquileres, impresora, parqueadero, bs, currencybs, datafon, comidatafon, cotizacion } = datos;
 
           let tipoImpuesto = '';
 
@@ -114,7 +114,8 @@ export class EmpresaComponent implements OnInit {
               parqueadero,
               impresora,
               datafon,
-              comidatafon
+              comidatafon,
+              cotizacion
 
             });
 
@@ -167,7 +168,8 @@ export class EmpresaComponent implements OnInit {
     parqueadero: false,
     impresora: 58,
     datafon: false,
-    comidatafon: 0
+    comidatafon: 0,
+    cotizacion: true
   })
 
   actualizarDatos(){
@@ -331,7 +333,7 @@ export class EmpresaComponent implements OnInit {
           if (dataico) {
             this.dataDataico = true;
             this.dataico = dataico;
-            await this.searchCities(this.dataico.department);
+            await this.searchCities(this.dataico.department || '11');
             this.updateFormDataico();
           }          
 
@@ -400,6 +402,8 @@ export class EmpresaComponent implements OnInit {
       
     }
 
+    Swal.fire('Estupendo', 'Se ha guardado exitosamente la información para facturacion electronica', 'success');
+
     this.dataicoService.postDataico(dataico)
         .subscribe( ({dataico}) => {
           
@@ -449,8 +453,8 @@ export class EmpresaComponent implements OnInit {
       send_email: this.dataico.actions.send_email,
       desde: this.dataico.desde || 0,
       hasta: this.dataico.hasta || 0,
-      department: this.dataico.department || '',
-      city: this.dataico.city || '',
+      department: this.dataico.department || '11',
+      city: this.dataico.city || '001',
       email: this.dataico.email || '',
       phone: this.dataico.phone || '',
     });    

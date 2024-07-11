@@ -732,24 +732,34 @@ export class FacturaComponent implements OnInit {
   /** ================================================================
    *   PDF
   ==================================================================== */
+  public enviando: boolean = false;
   sendInvoice(){
+
+    this.enviando = true;
 
     this.electronicaService.postFacturaDataico(this.factura, this.dataico, this.impuestos)
         .subscribe( (resp: {status, invoice, ok}) => {
-
+          
           if (resp.status === 500) {
             Swal.fire('Atención', 'No se pudo enviar la factura electronica a la DIAN, si el problema persiste, ponte en contacto', 'warning');
+            this.enviando = false;
             return;
           }
 
           Swal.fire('Estupendo', 'Se ha enviado la factura exitosamente', 'success');
+
+
+          return
+          
           setTimeout( () => {
+            this.enviando = false;
             window.location.reload();
           }, 2000)
 
 
         }, (err) => {
-          console.log(err);          
+          console.log(err);
+          this.enviando = false;       
         });
 
   }
