@@ -77,8 +77,7 @@ export class TotalComponent implements OnInit {
 
     // IMPUESTOS
     this.cargarImpuestos();
-
-
+    
   }
 
   /** ================================================================
@@ -356,11 +355,17 @@ export class TotalComponent implements OnInit {
 
       // SET HOURS      
       inicial = new Date(inicial);      
-      const initial = new Date(inicial.getTime() + 1000 * 60 * 60 * 5);
+      let initial = new Date(inicial.getTime() + 1000 * 60 * 60 * 5);
 
       final = new Date(final);
-      const end = new Date(final.getTime() + 1000 * 60 * 60 * 5);      
+      let end = new Date(final.getTime() + 1000 * 60 * 60 * 5);      
       // SET HOURS 
+
+      let url = document.URL.split(':');
+      if (url[0] === 'https') {
+        initial = new Date(inicial.getTime() + 1000 * 60 * 60 - 7200000); 
+        end = new Date(final.getTime() + 1000 * 60 * 60 - 3600000);        
+      }      
                
       this.sinResultados = true;
       this.invoiceService.loadInvoicesDate(initial, end, cajeros, estado, credito)

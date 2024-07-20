@@ -449,7 +449,7 @@ export class CierresComponent implements OnInit {
           this.montos = montos;
           this.propinas = propinas;
           this.costo = costos;
-          this.efectivo = efectivo;
+          
           this.tarjeta = tarjeta;
           this.transferencia = transferencia;
           this.credito = credit;
@@ -459,6 +459,7 @@ export class CierresComponent implements OnInit {
 
           this.facturas = invoices;
 
+          
           for (const factura of this.facturas) {
             
             for (const product of factura.products) {
@@ -545,8 +546,7 @@ export class CierresComponent implements OnInit {
 
           }
 
-          
-
+          this.efectivo = this.montos - this.totalBancos;
 
         });
 

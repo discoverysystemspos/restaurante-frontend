@@ -36,8 +36,14 @@ import { LoadInvoice } from 'src/app/interfaces/invoice.interface';
 import { ElectronicaService } from 'src/app/services/electronica.service';
 import { DataicoService } from 'src/app/services/dataico.service';
 import { DataicoInterface } from 'src/app/interfaces/dataico.interface';
+import { ClientService } from 'src/app/services/client.service';
+import { Client } from 'src/app/models/client.model';
+import { HttpClient } from '@angular/common/http';
 
-
+interface _Department {
+  codigo: string,
+  departamento: string,
+}
 
 @Component({
   selector: 'app-parqueadero',
@@ -65,6 +71,8 @@ export class ParqueaderoComponent implements OnInit {
                 private invoiceService: InvoiceService,
                 private electronicaService: ElectronicaService,
                 private dataicoService: DataicoService,
+                private clientService: ClientService,
+                private http: HttpClient,
                 private entradasService: EntradasService) { 
 
                   this.user = userService.user;
@@ -92,6 +100,7 @@ export class ParqueaderoComponent implements OnInit {
     this.cargarBancos();
     this.loadTicket();
     this.loadProduct();
+    this.loadDepartmentAndCitys();
   }
 
   /** ================================================================
@@ -442,7 +451,7 @@ export class ParqueaderoComponent implements OnInit {
           this.outP.nativeElement.value = '';
           this.inP.nativeElement.focus = true;
 
-          let data = {
+          let data: any = {
             amount: this.total,
             cost: 0,
             type: 'efectivo',
@@ -450,7 +459,7 @@ export class ParqueaderoComponent implements OnInit {
             products: [{
               product: this.product,
               qty: 1,
-              price: this.total
+              price: this.subtotal
             }],
             credito: false,
             mesa: this.ticket,
@@ -470,10 +479,16 @@ export class ParqueaderoComponent implements OnInit {
             datafon: 0,
           }
 
+          if (this.clienteTemp) {
+            data.client = this.clienteTemp.cid;
+          }
+
           this.invoiceService.createInvoice(data, this.user.turno)
               .subscribe( (resp:{ok: boolean, invoice: LoadInvoice } ) => {
 
                 this.factura = resp.invoice;
+
+                delete this.clienteTemp;
 
                 if (this.empresa.electronica && send_dian) {
                   
@@ -1049,6 +1064,187 @@ export class ParqueaderoComponent implements OnInit {
     }); 
     // GUARDAR ACTUALIZAR EN LA BASE DE DATOS
 
+  }
+
+  /** ================================================================
+   *  OBTENER DEPARTAMENTOS Y CIUDADES
+  ==================================================================== */
+  public departments: _Department[] = [];
+  public cities: any[] = [];
+  loadDepartmentAndCitys(){
+
+    this.http.get('assets/json/departamentos.json')
+        .subscribe( (data: any) => {          
+          this.departments = data;            
+        });
+
+    this.http.get('assets/json/ciudades.json')
+    .subscribe( (data: any) => {          
+      this.cities = data;          
+    })
+
+  }
+
+    /** ================================================================
+   *  OBTENER CIUDADES DEPENDIENDO DEL DEPARTAMENTO
+  ==================================================================== */
+  public ListCities: any[] = [];
+  searchCities(department: string){
+
+    this.ListCities = [];
+
+    if (department.length === 0 ) {
+      return;
+    }
+
+    this.ListCities = this.cities.filter( city =>  department === city.departamento );
+
+  }
+
+  /** ============================================================================================
+   * =============================================================================================
+   * =============================================================================================
+   * =============================================================================================
+   * =============================================================================================
+   * =============================================================================================
+   * CLIENTES - CLIENTES - CLIENTES - CLIENTES  
+  ==================================================================== */
+  public listaClientes: Client[] = [];
+  public listaClientesTemp: Client[] = [];
+  public totalClientes: number = 0;
+  public clienteTemp: Client;
+
+  /** ================================================================
+   *  BUSCAR CLIENTE
+  ==================================================================== */
+  public sinResultadosClientes: boolean = false;
+  public cargandoCliente: boolean = true;
+
+  buscarCliente(termino: string){
+    
+    this.cargandoCliente = false;
+    this.sinResultadosClientes = false;
+
+    if (termino.length === 0) {
+      this.listaClientes = this.listaClientesTemp;
+      this.sinResultadosClientes = true;
+      this.cargandoCliente = true;
+      return;
+    }else{
+    
+      this.searchService.search('clients', termino)
+          .subscribe(({total, resultados}) => {   
+            
+          this.cargandoCliente = false;
+          
+          // COMPROBAR SI EXISTEN RESULTADOS
+          if (resultados.length === 0) {
+            this.listaClientes = [];
+            this.totalClientes = 0;
+            this.sinResultadosClientes = true;
+            return;                
+          }
+          // COMPROBAR SI EXISTEN RESULTADOS
+          
+          this.listaClientes = resultados;
+          this.totalClientes = total;
+
+        });
+    }
+
+  }
+
+  /** ================================================================
+   *  SELECCIONAR CLIENTE searchClient
+  ==================================================================== */
+  @ViewChild('searchClient') searchClient: ElementRef;
+  seleccionarCliente(cliente: Client){
+    
+    this.clienteTemp = cliente;
+
+    this.listaClientes = [];
+    this.totalClientes = 0;
+    this.cargandoCliente = true;
+    this.sinResultadosClientes = false;    
+        
+  }
+
+  /** ================================================================
+   *  CREAR CLIENTE
+  ==================================================================== */
+  @ViewChild('btnCreateClient') btnCreateClient: ElementRef<any>;
+  public formSubmitted: boolean = false;
+  public newClientForm = this.fb.group({
+    party_type: ['PERSONA_NATURAL', [Validators.required]],
+    tax_level_code: ['NO_RESPONSABLE_DE_IVA', [Validators.required]],
+    party_identification_type: ['CC', [Validators.required]],
+    company_name: '',
+    first_name: '',
+    family_name: '',
+    department: '',
+    address_line: '',
+    regimen: ['SIMPLE',],
+    party_identification: '',
+    codigodepartamento: '',
+    codigociudad: '',
+    sendemail: false,
+    // OLD
+    name: '',
+    cedula: ['', [Validators.required, Validators.minLength(6)]],
+    email: ['', [Validators.required]],
+    phone: ['', [Validators.required]],
+    city: '',
+    address: ['', [Validators.required]]
+  });
+  
+
+  async crearCliente(){    
+
+    this.formSubmitted = true;
+
+    if (this.newClientForm.invalid) {
+      return;
+    }
+
+    // OBTENER CODIGO DEL DEPARTAMENTO Y CIUDAD
+    let codigoD = await this.departments.find( departamento => this.newClientForm.value.department === departamento.departamento );
+    let codigoC = await this.cities.find( city => this.newClientForm.value.city === city.ciudad );
+    this.newClientForm.value.codigodepartamento  = codigoD.codigo;
+    this.newClientForm.value.codigociudad  = codigoC.codigo;
+
+    if (this.newClientForm.value.party_type === 'PERSONA_NATURAL') {      
+      this.newClientForm.value.name = `${this.newClientForm.value.first_name} ${this.newClientForm.value.family_name}`
+    }else{
+      this.newClientForm.value.name = this.newClientForm.value.company_name;
+    }
+
+    this.newClientForm.value.party_identification = this.newClientForm.value.cedula;
+
+    this.clientService.createClient(this.newClientForm.value)
+        .subscribe((resp: any) => {
+
+          Swal.fire('Estupendo', 'Se ha creado el cliente exitosamente!', 'success');
+
+          this.formSubmitted = false;
+          this.newClientForm.reset();          
+          
+        }, (err) =>{
+          Swal.fire('Error', err.error.msg, 'error');
+        });
+
+  }
+
+  /** ================================================================
+   *  CAMPO VALIDO
+  ==================================================================== */
+  campoValido(campo: string): boolean{
+
+    if (this.formSubmitted && this.newClientForm.get(campo).invalid) {
+      return true;
+    }else{
+      return false;
+    }
+  
   }
 
 }

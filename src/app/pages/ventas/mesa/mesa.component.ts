@@ -1431,7 +1431,7 @@ export class MesaComponent implements OnInit {
         if (this.empresa.tip) {
           this.totalTip = tip;        
           this.tipIn.nativeElement.value = tip;        
-          this.total += tip;
+          // this.total += tip;
         }
 
       }else {
@@ -1518,7 +1518,7 @@ export class MesaComponent implements OnInit {
       if (this.empresa?.tip) {
         this.totalTip = (this.total * this.empresa.propina) / 100;        
         this.tipIn.nativeElement.value = this.totalTip;        
-        this.total += this.totalTip;
+        // this.total += this.totalTip;
       }
 
       if (datafon) {

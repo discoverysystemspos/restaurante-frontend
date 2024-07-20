@@ -19,7 +19,7 @@
 <!-- =========================================================================
     BODY
 ========================================================================= -->
-<div class="container-fluid mb-5">
+<div *ngIf="user.privilegios[0].cierre || !user.privilegios" class="container-fluid mb-5">
 
     <div class="my-4">
         <h5 class="text-dark">Realizar Cierre de caja</h5>
@@ -42,47 +42,47 @@
                         <tbody>
 
                             <tr style="color: black;">
-                                <td colspan="2"> <small> Fondo Caja </small> </td>
+                                <td colspan="2"> Fondo Caja </td>
                                 <td> {{ inicial | divisa }}</td>
                             </tr>
 
                             <tr style="color: black;">
-                                <td colspan="2"> <small> Abonos Creditos Efectivo </small> </td>
+                                <td colspan="2"> Abonos Creditos Efectivo </td>
                                 <td> {{ abEfectivo | divisa }}</td>
                             </tr>
 
                             <tr style="color: black;">
-                                <td colspan="2"> <small> Ventas en efectivo </small> </td>
+                                <td colspan="2"> Ventas en efectivo </td>
                                 <td> {{ efectivo | divisa }} </td>
                             </tr>
 
                             <tr *ngIf="empresa?.parqueadero" style="color: black;">
-                                <td colspan="2"> <small> Parqueadero </small> </td>
+                                <td colspan="2"> Parqueadero </td>
                                 <td> {{ parqueos | divisa }} </td>
                             </tr>
 
                             <tr style="color: black;">
-                                <td colspan="2"> <small> Entradas </small> </td>
+                                <td colspan="2"> Entradas </td>
                                 <td> {{ entradas | divisa }} </td>
                             </tr>
 
                             <tr *ngIf="empresa?.alquileres!" style="color: black;">
-                                <td colspan="2"> <small> Efectivo Alquileres </small> </td>
+                                <td colspan="2"> Efectivo Alquileres </td>
                                 <td> {{ alqEfectivo | divisa }} </td>
                             </tr>
 
-                            <tr class="text-danger">
-                                <td colspan="2"> <small> Salidas </small> </td>
-                                <td> {{ salidas | divisa }} </td>
+                            <tr style="color: black;">
+                                <td colspan="2"> Salidas </td>
+                                <td> -{{ salidas | divisa }} </td>
                             </tr>
 
-                            <tr class="text-danger">
-                                <td colspan="2"> <small> devolucion </small> </td>
-                                <td> {{ totalDevolucion | divisa }} </td>
+                            <tr style="color: black;">
+                                <td colspan="2"> devolucion </td>
+                                <td> -{{ totalDevolucion | divisa }} </td>
                             </tr>
 
                             <tr class="border-top">
-                                <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                <td colspan="2"> Total </td>
                                 <td class="fw-bold"> {{ (parqueos + inicial + efectivo + abEfectivo + entradas + alqEfectivo! + salidas) - (totalDevolucion) | divisa }} </td>
                             </tr>
 
@@ -107,32 +107,32 @@
                         <tbody>
 
                             <tr style="color: black;">
-                                <td colspan="2"> <small> En Efectivo </small> </td>
+                                <td colspan="2"> En Efectivo </td>
                                 <td> {{ efectivo | divisa }} </td>
                             </tr>
                             <tr style="color: black;">
-                                <td colspan="2"> <small> Con tarjeta </small> </td>
+                                <td colspan="2"> Con tarjeta </td>
                                 <td> {{ tarjeta | divisa }} </td>
                             </tr>
                             <tr style="color: black;">
-                                <td colspan="2"> <small> Con Transferencia </small> </td>
+                                <td colspan="2"> Con Transferencia </td>
                                 <td> {{ transferencia | divisa }} </td>
                             </tr>
 
                             <ng-container *ngIf="bancos.length > 0">
                                 <tr *ngFor="let banco of bancos">
-                                    <td colspan="2"> <small> {{ banco.name }} </small> </td>
+                                    <td colspan="2"> {{ banco.name }} </td>
                                     <td> {{ banco.monto | divisa }} </td>
                                 </tr>
                             </ng-container>
 
-                            <tr class="text-danger">
-                                <td colspan="2"> <small> devolucion </small> </td>
-                                <td> {{ devolucion | divisa }} </td>
+                            <tr style="color: black;">
+                                <td colspan="2"> devolucion </td>
+                                <td> -{{ devolucion | divisa }} </td>
                             </tr>
 
                             <tr class="border-top">
-                                <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                <td colspan="2"> Total </td>
                                 <td class="fw-bold"> {{ (efectivo + tarjeta + transferencia + totalBancos ) - totalDevolucion | divisa }} </td>
                             </tr>
 
@@ -205,7 +205,7 @@
 
                                 <tr *ngIf="movimiento.type === 'salida'">
 
-                                    <td colspan="2"> <small> {{ movimiento.descripcion }} </small> </td>
+                                    <td colspan="2"> {{ movimiento.descripcion }} </td>
                                     <td [ngClass]="{ 'text-danger':  movimiento.type == 'salida'}">
                                         {{ movimiento.monto | divisa }}
                                     </td>
@@ -216,7 +216,7 @@
 
 
                             <tr class="border-top">
-                                <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                <td colspan="2"> Total </td>
                                 <td class="fw-bold"> {{ salidas | divisa }} </td>
                             </tr>
 
@@ -245,7 +245,7 @@
 
                                 <tr *ngIf="movimiento.type === 'entrada'">
 
-                                    <td colspan="2"> <small> {{ movimiento.descripcion }} </small> </td>
+                                    <td colspan="2"> {{ movimiento.descripcion }} </td>
                                     <td [ngClass]="{ 'text-danger':  movimiento.type == 'salida'}">
                                         {{ movimiento.monto | divisa }}
                                     </td>
@@ -254,7 +254,7 @@
                             </ng-container>
 
                             <tr class="border-top">
-                                <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                <td colspan="2"> Total </td>
                                 <td class="fw-bold"> {{ entradas | divisa }} </td>
                             </tr>
 
@@ -358,7 +358,7 @@
                             <ng-container *ngIf="bancosAbonos.length > 0">
                                 <tr *ngFor="let banco of bancosAbonos">
                                     <td colspan="2">
-                                        <small> {{ banco.name }} </small> </td>
+                                        {{ banco.name }} </td>
                                     <td class="text-end">
                                         <span class="fw-bolder">
                                             {{ banco.monto | divisa }} 
@@ -368,7 +368,7 @@
                             </ng-container>
 
                             <tr class="border-top">
-                                <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                <td colspan="2"> Total </td>
                                 <td class="fw-bold"> {{ abEfectivo + abTarjeta + abTransferencia + totalBancosAbono | divisa }} </td>
                             </tr>
 
@@ -406,7 +406,7 @@
                             <ng-container *ngIf="bancosAlquileres.length > 0">
                                 <tr *ngFor="let banco of bancosAlquileres">
                                     <td colspan="2">
-                                        <small> {{ banco.name }} </small> </td>
+                                        {{ banco.name }} </td>
                                     <td class="text-end">
                                         <span class="fw-bolder">
                                             {{ banco.monto | divisa }} 
@@ -416,7 +416,7 @@
                             </ng-container>
 
                             <tr class="border-top">
-                                <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                <td colspan="2"> Total </td>
                                 <td class="fw-bold"> {{ totalAlquiler | divisa }} </td>
                             </tr>
 
@@ -468,7 +468,7 @@
                         </tr>
 
                         <tr class="border-top">
-                            <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                            <td colspan="2"> Total </td>
                             <td class="fw-bold"> {{ totalDevolucion | divisa }} </td>
                         </tr>
 
@@ -485,6 +485,19 @@
 
 </div>
 
+<!-- CIERRE CIEGO -->
+<div *ngIf="!user.privilegios[0].cierre" class="container my-5">
+    <div class="bg-body-tertiary p-5 rounded">
+        <div class="col-sm-8 py-5 mx-auto">
+            <h1 class="display-5 fw-normal">Cerrar Caja</h1>
+            <p>Asegurate de asignar el valor correcto del efectivo que tienes en caja</p>
+            <p>
+                <button (click)="corte()" type="button" class="btn btn-primary" role="button">Hacer Cierre</button>
+            </p>
+        </div>
+    </div>
+</div>
+
 <!-- =========================================================================
     BODY
 ========================================================================= -->
@@ -492,7 +505,6 @@
 <!-- =========================================================================
     MODAL CIERRE DE CAJA
 ========================================================================= -->
-
 <div class="modal fade" id="cierre" tabindex="-1" aria-labelledby="cierreModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
@@ -650,41 +662,41 @@
                                 <tbody style="color: black;">
 
                                     <tr style="color: black;">
-                                        <td colspan="2"> <small> Fondo Caja </small> </td>
+                                        <td colspan="2"> Fondo Caja </td>
                                         <td> {{ inicial | divisa }}</td>
                                     </tr>
                                     <tr style="color: black;">
-                                        <td colspan="2"> <small> Ventas en efectivo </small> </td>
+                                        <td colspan="2"> Ventas en efectivo </td>
                                         <td> {{ efectivo | divisa }} </td>
                                     </tr>
 
                                     <tr *ngIf="empresa?.parqueadero" style="color: black;">
-                                        <td colspan="2"> <small> Parqueadero </small> </td>
+                                        <td colspan="2"> Parqueadero </td>
                                         <td> {{ parqueos | divisa }} </td>
                                     </tr>
 
                                     <tr style="color: black;">
-                                        <td colspan="2"> <small> Abonos en efectivo </small> </td>
+                                        <td colspan="2"> Abonos en efectivo </td>
                                         <td> {{ abEfectivo | divisa }} </td>
                                     </tr>
                                     <tr *ngIf="empresa?.alquileres!" style="color: black;">
-                                        <td colspan="2"> <small> Abonos de Alquileres </small> </td>
+                                        <td colspan="2"> Abonos de Alquileres </td>
                                         <td> {{ alqEfectivo | divisa }} </td>
                                     </tr>
                                     <tr style="color: black;">
-                                        <td colspan="2"> <small> Entradas </small> </td>
+                                        <td colspan="2"> Entradas </td>
                                         <td> {{ entradas | divisa }} </td>
                                     </tr>
-                                    <tr class="text-danger">
-                                        <td colspan="2"> <small> Salidas </small> </td>
-                                        <td> {{ salidas | divisa }} </td>
+                                    <tr style="color: black;">
+                                        <td colspan="2"> Salidas </td>
+                                        <td> -{{ salidas | divisa }} </td>
                                     </tr>
-                                    <tr class="text-danger">
-                                        <td colspan="2"> <small> devolucion </small> </td>
-                                        <td> {{ devolucion | divisa }} </td>
+                                    <tr style="color: black;">
+                                        <td colspan="2"> devolucion </td>
+                                        <td> -{{ devolucion | divisa }} </td>
                                     </tr>
                                     <tr class="border-top">
-                                        <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                        <td colspan="2"> Total </td>
                                         <td class="fw-bold"> {{ (parqueos + inicial + efectivo + abEfectivo + entradas + alqEfectivo + salidas) - totalDevolucion | divisa }} </td>
                                     </tr>
 
@@ -706,32 +718,32 @@
                                     <tbody>
 
                                         <tr style="color: black;">
-                                            <td colspan="2"> <small> En Efectivo </small> </td>
+                                            <td colspan="2"> En Efectivo </td>
                                             <td> {{ efectivo | divisa }} </td>
                                         </tr>
                                         <tr style="color: black;">
-                                            <td colspan="2"> <small> Con tarjeta </small> </td>
+                                            <td colspan="2"> Con tarjeta </td>
                                             <td> {{ tarjeta | divisa }} </td>
                                         </tr>
                                         <tr style="color: black;">
-                                            <td colspan="2"> <small> Con Transferencia </small> </td>
+                                            <td colspan="2"> Con Transferencia </td>
                                             <td> {{ transferencia | divisa }} </td>
                                         </tr>
 
                                         <ng-container *ngIf="bancos.length > 0">
-                                            <tr *ngFor="let banco of bancos">
-                                                <td colspan="2"> <small> {{ banco.name }} </small> </td>
+                                            <tr style="color: black;" *ngFor="let banco of bancos">
+                                                <td colspan="2"> {{ banco.name }} </td>
                                                 <td> {{ banco.monto | divisa }} </td>
                                             </tr>
                                         </ng-container>
 
-                                        <tr class="text-danger">
-                                            <td colspan="2"> <small> devolucion </small> </td>
-                                            <td> {{ devolucion | divisa }} </td>
+                                        <tr style="color: black;">
+                                            <td colspan="2"> devolucion </td>
+                                            <td> -{{ devolucion | divisa }} </td>
                                         </tr>
 
-                                        <tr class="border-top">
-                                            <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                        <tr style="color: black;" class="border-top">
+                                            <td colspan="2"> Total </td>
                                             <td class="fw-bold"> {{ (efectivo + tarjeta + transferencia + totalBancos + credito + vales) - totalDevolucion | divisa }} </td>
                                         </tr>
 
@@ -756,18 +768,18 @@
 
                                         <ng-container *ngFor="let movimiento of movimientos">
 
-                                            <tr *ngIf="movimiento.type === 'entrada'">
+                                            <tr style="color: black;" *ngIf="movimiento.type === 'entrada'">
 
-                                                <td colspan="2"> <small> {{ movimiento.descripcion }} </small> </td>
-                                                <td [ngClass]="{ 'text-danger':  movimiento.type == 'salida'}">
-                                                    {{ movimiento.monto | divisa }}
+                                                <td colspan="2"> {{ movimiento.descripcion }} </td>
+                                                <td>
+                                                    <span *ngIf=" movimiento.type === 'salida'">-</span> {{ movimiento.monto | divisa }}
                                                 </td>
                                             </tr>
 
                                         </ng-container>
 
                                         <tr class="border-top">
-                                            <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                            <td colspan="2"> Total </td>
                                             <td class="fw-bold"> {{ entradas | divisa }} </td>
                                         </tr>
 
@@ -794,7 +806,7 @@
 
                                             <tr *ngIf="movimiento.type === 'salida'">
 
-                                                <td colspan="2"> <small> {{ movimiento.descripcion }} </small> </td>
+                                                <td colspan="2"> {{ movimiento.descripcion }} </td>
                                                 <td [ngClass]="{ 'text-danger':  movimiento.type == 'salida'}">
                                                     {{ movimiento.monto | divisa }}
                                                 </td>
@@ -803,7 +815,7 @@
                                         </ng-container>
 
                                         <tr class="border-top">
-                                            <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                            <td colspan="2"> Total </td>
                                             <td class="fw-bold"> {{ salidas | divisa }} </td>
                                         </tr>
 
@@ -834,7 +846,7 @@
 
                                         <ng-container *ngFor="let deparment of departamento">
 
-                                            <tr *ngIf="deparment.qty > 0">
+                                            <tr style="color: black;" *ngIf="deparment.qty > 0">
 
                                                 <td class="text-start text-break"> {{ deparment.name }} </td>
                                                 <td class="text-center">
@@ -869,29 +881,29 @@
                                     <tbody>
 
                                         <tr style="color: black;">
-                                            <td colspan="2"> <small> En Efectivo </small> </td>
+                                            <td colspan="2"> En Efectivo </td>
                                             <td> {{ abEfectivo | divisa }} </td>
                                         </tr>
                                         <tr style="color: black;">
-                                            <td colspan="2"> <small> Con tarjeta </small> </td>
+                                            <td colspan="2"> Con tarjeta </td>
                                             <td> {{ abTarjeta | divisa }} </td>
                                         </tr>
                                         <tr style="color: black;">
-                                            <td colspan="2"> <small> Con Transferencia </small> </td>
+                                            <td colspan="2"> Con Transferencia </td>
                                             <td> {{ abTransferencia | divisa }} </td>
                                         </tr>
 
                                         <ng-container *ngIf="bancos.length > 0">
-                                            <tr *ngFor="let banco of bancosAbonos">
-                                                <td colspan="2"> <small> {{ banco.name }} </small> </td>
+                                            <tr style="color: black;" *ngFor="let banco of bancosAbonos">
+                                                <td colspan="2"> {{ banco.name }} </td>
                                                 <td>
                                                     {{ banco.monto | divisa }}
                                                 </td>
                                             </tr>
                                         </ng-container>
 
-                                        <tr class="border-top">
-                                            <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                        <tr style="color: black;" class="border-top">
+                                            <td colspan="2"> Total </td>
                                             <td class="fw-bold"> {{ (abEfectivo) + (abTarjeta) + (abTransferencia) + (totalBancosAbono) | divisa }} </td>
                                         </tr>
 
@@ -915,21 +927,21 @@
                                     <tbody>
 
                                         <tr style="color: black;">
-                                            <td colspan="2"> <small> En Efectivo </small> </td>
+                                            <td colspan="2"> En Efectivo </td>
                                             <td> {{ alqEfectivo | divisa }} </td>
                                         </tr>
 
                                         <ng-container *ngIf="bancos.length > 0">
-                                            <tr *ngFor="let banco of bancosAlquileres">
-                                                <td colspan="2"> <small> {{ banco.name }} </small> </td>
+                                            <tr style="color: black;" *ngFor="let banco of bancosAlquileres">
+                                                <td colspan="2"> {{ banco.name }} </td>
                                                 <td>
                                                     {{ banco.monto | divisa }}
                                                 </td>
                                             </tr>
                                         </ng-container>
 
-                                        <tr class="border-top">
-                                            <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                        <tr style="color: black;" class="border-top">
+                                            <td colspan="2"> Total </td>
                                             <td class="fw-bold"> {{ totalAlquiler | divisa }} </td>
                                         </tr>
 
@@ -1035,27 +1047,27 @@
                                         <tbody>
 
                                             <tr style="color: black;">
-                                                <td colspan="2"> <small> Fondo Caja </small> </td>
+                                                <td colspan="2"> Fondo Caja  </td>
                                                 <td> {{ inicial| divisa }}</td>
                                             </tr>
                                             <tr style="color: black;">
-                                                <td colspan="2"> <small> Ventas en efectivo </small> </td>
+                                                <td colspan="2"> Ventas en efectivo  </td>
                                                 <td> {{ efectivo| divisa }} </td>
                                             </tr>
                                             <tr style="color: black;">
-                                                <td colspan="2"> <small> Abonos en efectivo </small> </td>
+                                                <td colspan="2"> Abonos en efectivo  </td>
                                                 <td> {{ abEfectivo| divisa }} </td>
                                             </tr>
                                             <tr style="color: black;">
-                                                <td colspan="2"> <small> Entradas </small> </td>
+                                                <td colspan="2"> Entradas  </td>
                                                 <td> {{ entradas| divisa }} </td>
                                             </tr>
-                                            <tr class="text-danger">
-                                                <td colspan="2"> <small> Salidas </small> </td>
+                                            <tr style="color: black;">
+                                                <td colspan="2"> Salidas  </td>
                                                 <td> {{ salidas| divisa }} </td>
                                             </tr>
                                             <tr class="border-top">
-                                                <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                                <td colspan="2"> Total  </td>
                                                 <td class="fw-bold"> {{ inicial + efectivo + abEfectivo + entradas + salidas| divisa }} </td>
                                             </tr>
 
@@ -1079,19 +1091,19 @@
                                         <tbody>
 
                                             <tr style="color: black;">
-                                                <td colspan="2"> <small> En Efectivo </small> </td>
+                                                <td colspan="2"> En Efectivo  </td>
                                                 <td> {{ efectivo| divisa }} </td>
                                             </tr>
                                             <tr style="color: black;">
-                                                <td colspan="2"> <small> Con tarjeta </small> </td>
+                                                <td colspan="2"> Con tarjeta  </td>
                                                 <td> {{ tarjeta| divisa }} </td>
                                             </tr>
                                             <tr style="color: black;">
-                                                <td colspan="2"> <small> Con Transferencia </small> </td>
+                                                <td colspan="2"> Con Transferencia  </td>
                                                 <td> {{ transferencia| divisa }} </td>
                                             </tr>
                                             <tr class="border-top">
-                                                <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                                <td colspan="2"> Total  </td>
                                                 <td class="fw-bold"> {{ montos| divisa }} </td>
                                             </tr>
 
@@ -1120,7 +1132,7 @@
 
                                                 <tr *ngIf="movimiento.type === 'salida'">
 
-                                                    <td colspan="2"> <small> {{ movimiento.descripcion }} </small> </td>
+                                                    <td colspan="2"> {{ movimiento.descripcion }}  </td>
                                                     <td [ngClass]="{ 'text-danger':  movimiento.type == 'salida'}">
                                                         {{ movimiento.monto| divisa }}
                                                     </td>
@@ -1129,7 +1141,7 @@
                                             </ng-container>
 
                                             <tr class="border-top">
-                                                <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                                <td colspan="2"> Total  </td>
                                                 <td class="fw-bold"> {{ salidas| divisa }} </td>
                                             </tr>
 
@@ -1156,7 +1168,7 @@
 
                                                 <tr *ngIf="movimiento.type === 'entrada'">
 
-                                                    <td colspan="2"> <small> {{ movimiento.descripcion }} </small> </td>
+                                                    <td colspan="2"> {{ movimiento.descripcion }}  </td>
                                                     <td [ngClass]="{ 'text-danger':  movimiento.type == 'salida'}">
                                                         {{ movimiento.monto| divisa }}
                                                     </td>
@@ -1165,7 +1177,7 @@
                                             </ng-container>
 
                                             <tr class="border-top">
-                                                <td colspan="2"> <small class="fw-bold"> Total </small> </td>
+                                                <td colspan="2"> Total  </td>
                                                 <td class="fw-bold"> {{ entradas| divisa }} </td>
                                             </tr>
 

@@ -70,7 +70,13 @@ export class CorteComponent implements OnInit {
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
                     val => {
 
-                      this.user = this.userService.user;                      
+                      this.user = this.userService.user;
+                      
+                      if (!this.user.privilegios[0].cierre) {
+
+                        this.corte();
+                        
+                      }
 
                       if (val) {
                         window.location.reload();                        
@@ -401,6 +407,8 @@ export class CorteComponent implements OnInit {
             }
 
           } 
+
+          this.efectivo = this.montos - this.totalBancos;
           
         });
   }
@@ -503,6 +511,48 @@ export class CorteComponent implements OnInit {
     //       localStorage.removeItem('turno');          
           
     //     }, (err) => { Swal.fire('Error', err.error.msg, 'error') });
+
+  }
+
+  /** ================================================================
+   *   ABRIR CAJA
+  ==================================================================== */
+  corte(){
+    
+    if (!this.user.cerrada) {
+
+      Swal.fire({
+        title: 'Cuanto efectivo existe en caja',
+        input: 'number',
+        inputAttributes: {
+          autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Cerrar Caja',
+        cancelButtonText: 'Cancelar',
+        showLoaderOnConfirm: true,
+        preConfirm: (resp) => {
+          
+          return resp;
+        }
+        }).then((result) => {
+  
+          if (result.value > 0) {
+  
+            const monto:number = result.value;
+
+            this.cerrarTurno(monto)
+  
+           
+            return;
+          }else{
+            return;
+          }                
+          
+      });
+    }
+    
+
 
   }
 

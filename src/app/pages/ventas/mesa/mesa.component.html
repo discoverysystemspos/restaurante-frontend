@@ -227,7 +227,7 @@
                                         </td>
                                         <td>{{ item.price * item.qty | divisa}}</td>
                                         <td>
-                                            <button [disabled]="user.role !== 'ADMIN' && user.role !== 'STAFF' && user.role !== 'CASHIER'" type="button" (click)="eliminarProductoCarrito(i, item.product)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
+                                            <button type="button" (click)="eliminarProductoCarrito(i, item.product)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
                                         </td>
                                     </tr>
                                 </ng-container>
@@ -373,7 +373,7 @@
                                             </td>
                                             <td>{{ item.price * item.qty | divisa}}</td>
                                             <td>
-                                                <button [disabled]="user.role !== 'ADMIN' && user.role !== 'STAFF'" type="button" (click)="eliminarProductoCarrito(i, item.product)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
+                                                <button type="button" (click)="eliminarProductoCarrito(i, item.product)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
                                             </td>
                                         </tr>
                                     </ng-container>
@@ -573,7 +573,7 @@
                                                     </div>
 
                                                     <div class="col-auto">
-                                                        <button type="button" class="btn btn-primary mb-3" (click)="agregarPagos(typeAdd.value, montoAdd.value, descripcionAdd.value, tcredito.checked)">Agregar</button>
+                                                        <button [disabled]="vueltos >= 0 && this.payments.length > 0 " type="button" class="btn btn-primary mb-3" (click)="agregarPagos(typeAdd.value, montoAdd.value, descripcionAdd.value, tcredito.checked)">Agregar</button>
                                                     </div>
 
                                                 </div>
