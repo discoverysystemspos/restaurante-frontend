@@ -53,6 +53,7 @@ import { LoadInvoice } from '../../../interfaces/invoice.interface';
 import { LoadTurno, _movements } from '../../../interfaces/load-turno.interface';
 import { LoadMesaId } from '../../../interfaces/load-mesas.interface';
 import { DataicoInterface } from 'src/app/interfaces/dataico.interface';
+import { Entradas } from 'src/app/models/entradas.model';
 
 interface _Department {
   codigo: string,
@@ -1518,7 +1519,7 @@ export class MesaComponent implements OnInit {
       if (this.empresa?.tip) {
         this.totalTip = (this.total * this.empresa.propina) / 100;        
         this.tipIn.nativeElement.value = this.totalTip;        
-        // this.total += this.totalTip;
+        this.total += this.totalTip;
       }
 
       if (datafon) {
@@ -1677,10 +1678,14 @@ export class MesaComponent implements OnInit {
   async crearCliente(){
 
     // OBTENER CODIGO DEL DEPARTAMENTO Y CIUDAD
-    let codigoD = await this.departments.find( departamento => this.newClientForm.value.department === departamento.departamento );
-    let codigoC = await this.cities.find( city => this.newClientForm.value.city === city.ciudad );
-    this.newClientForm.value.codigodepartamento  = codigoD.codigo;
-    this.newClientForm.value.codigociudad  = codigoC.codigo;
+    let ciudaQ = await this.cities.find( city =>  {
+      if ( this.newClientForm.value.city === city.ciudad && this.newClientForm.value.department === city.departamento) {
+        return city
+      }
+    });
+    
+    this.newClientForm.value.codigodepartamento  = ciudaQ['codigo departamento'];
+    this.newClientForm.value.codigociudad  = ciudaQ['codigo'];
 
     this.formSubmitted = true;
 
@@ -2557,6 +2562,7 @@ export class MesaComponent implements OnInit {
 
   public movimientos: _movements[] = [];
   public sendMovimiento: boolean = false;
+  public movimiento: Entradas;
 
   entradaSalida(type: string, descripcion: string, monto: number){
 
@@ -2607,7 +2613,15 @@ export class MesaComponent implements OnInit {
       this.entradasService.createMovimiento(movi)
           .subscribe( ({movimiento}) => {
 
-            Swal.fire('Estupendo!', 'Se ha guardado exitosament', 'success')            
+            Swal.fire('Estupendo!', 'Se ha guardado exitosament', 'success');
+            
+            if (type === 'salida') {
+              this.movimiento = movimiento;
+              
+              setTimeout( () => {
+                this.printerService.printDiv('printDiv4');                   
+              },2000);
+            }
 
           }, (err) => {
             console.log(err);

@@ -307,7 +307,7 @@
                                                 <td class="fw-normal">
                                                     --
                                                 </td>
-                                                <td class="fw-bold"> {{ factura.amount | divisa }} </td>
+                                                <td class="fw-bold"> {{ factura.amount + factura.tip || 0 | divisa }} </td>
                                             </tr>
 
                                             <tr class="trHover" *ngFor="let payA of factura.paymentsAlquiler; let i = index">
@@ -341,7 +341,7 @@
                                         <tfoot>
                                             <tr class="border-top" style="color: #000;">
                                                 <td colspan="2"> <span class="fw-bold"> Restante </span></td>
-                                                <td> <span class="fw-bold">{{ ( factura.amount - totalPagos) | divisa }}</span> </td>
+                                                <td> <span class="fw-bold">{{ ( (factura.amount + factura.tip || 0) - totalPagos) | divisa }}</span> </td>
                                             </tr>
                                         </tfoot>
 

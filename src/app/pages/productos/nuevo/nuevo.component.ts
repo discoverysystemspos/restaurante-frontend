@@ -126,7 +126,9 @@ export class NuevoComponent implements OnInit {
 
     let products = [{
       code: '123456',
+      sku: 'SKU',
       name: 'Producto 1',
+      brand: 'Marca',
       type: 'Unidad',
       cost: 1000,
       price: 1500,
@@ -146,10 +148,7 @@ export class NuevoComponent implements OnInit {
 
     /* write workbook and force a download */
     XLSX.writeFile(wb, title);
-
-
-  }
-  
+  } 
   
   /** ================================================================
    *   BUSCAR PRODUCTOS PARA EL PAQUETE O KIT
@@ -267,17 +266,17 @@ export class NuevoComponent implements OnInit {
   public productoForm = this.fb.group({
     code: ['', [Validators.required, Validators.minLength(2)]],
     name: ['', [Validators.required, Validators.minLength(3)]],
-    type: ['' || '0', [Validators.required, Validators.minLength(3)]],
-    cost: ['' || 0, [Validators.required]],
-    gain: ['' || 20],
-    price: ['' || 0, [Validators.required]],
+    type: ['', [Validators.required, Validators.minLength(3)]],
+    cost: [0, [Validators.required]],
+    gain: [20],
+    price: [0, [Validators.required]],
     kit: [''],
-    wholesale: ['' || 0],
-    department: ['' || 0],
-    stock: ['' || 0],
-    min: ['' || 0],
-    max: ['' || 0],
-    mayoreo: ['' || 0],
+    wholesale: [0],
+    department: [0],
+    stock: [0],
+    min: [0],
+    max: [0],
+    mayoreo: [0],
     expiration: [''],
     visibility: [true],
     comanda: [false],

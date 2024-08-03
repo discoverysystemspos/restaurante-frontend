@@ -1,7 +1,7 @@
 export class Entradas {
 
     constructor(
-        public user: string,
+        public user: any,
         public monto: number,
         public descripcion: string,
         public type: string,

@@ -740,16 +740,15 @@ export class FacturaComponent implements OnInit {
     this.electronicaService.postFacturaDataico(this.factura, this.dataico, this.impuestos)
         .subscribe( (resp: {status, invoice, ok}) => {
           
+          
           if (resp.status === 500) {
-            Swal.fire('Atención', 'No se pudo enviar la factura electronica a la DIAN, si el problema persiste, ponte en contacto', 'warning');
+            console.log(resp);            
+            Swal.fire('Atención', resp.invoice.errors[0].error, 'warning');
             this.enviando = false;
             return;
           }
 
           Swal.fire('Estupendo', 'Se ha enviado la factura exitosamente', 'success');
-
-
-          return
           
           setTimeout( () => {
             this.enviando = false;

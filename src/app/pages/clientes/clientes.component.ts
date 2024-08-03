@@ -303,10 +303,14 @@ export class ClientesComponent implements OnInit {
   async crearCliente(){
 
     // OBTENER CODIGO DEL DEPARTAMENTO Y CIUDAD
-    let codigoD = await this.departments.find( departamento => this.newClientForm.value.department === departamento.departamento );
-    let codigoC = await this.cities.find( city => this.newClientForm.value.city === city.ciudad );
-    this.newClientForm.value.codigodepartamento  = codigoD.codigo;
-    this.newClientForm.value.codigociudad  = codigoC.codigo;
+    let ciudaQ = await this.cities.find( city =>  {
+      if ( this.newClientForm.value.city === city.ciudad && this.newClientForm.value.department === city.departamento) {
+        return city
+      }
+    });
+    
+    this.newClientForm.value.codigodepartamento  = ciudaQ['codigo departamento'];
+    this.newClientForm.value.codigociudad  = ciudaQ['codigo'];
 
     this.formSubmitted = true;
 
@@ -533,10 +537,14 @@ export class ClientesComponent implements OnInit {
   async updateCLiente(){
 
     // OBTENER CODIGO DEL DEPARTAMENTO Y CIUDAD
-    let codigoD = await this.departments.find( departamento => this.upClientForm.value.department === departamento.departamento );
-    let codigoC = await this.cities.find( city => this.upClientForm.value.city === city.ciudad );
-    this.upClientForm.value.codigodepartamento  = codigoD.codigo;
-    this.upClientForm.value.codigociudad  = codigoC.codigo;
+    let ciudaQ = await this.cities.find( city =>  {
+      if ( this.upClientForm.value.city === city.ciudad && this.upClientForm.value.department === city.departamento) {
+        return city
+      }
+    });
+
+    this.upClientForm.value.codigodepartamento  = ciudaQ['codigo departamento'];
+    this.upClientForm.value.codigociudad  = ciudaQ['codigo'];
 
     this.formSubmittedUp = true;
 

@@ -597,36 +597,51 @@ export class TotalComponent implements OnInit {
 
     let invoices = [];
 
+    console.log(this.facturas);
+    
+
     for (const invoi of this.facturas) {
 
-      let cliente = `${invoi.client?.name || 'Ocasional'} - ${invoi.client?.cedula || '0000000'}`;
+      let clienteName = `${invoi.client?.name || 'CONSUMIDOR FINAL'}`;
+      let clienteCedula = `${invoi.client?.cedula || '0000000'}`;
       let usuario = `${invoi.user.name}`;
+      let number: any = invoi.invoice;
       
-      let { invoice, amount, cost, base, type, iva, fecha } = invoi;
+      if (invoi.cufe) {
+        number = invoi.number;        
+      }
+      
 
-      invoices.push({
-        invoice, 
-        cliente,
-        type, 
-        cost,
-        base, 
-        iva, 
-        amount, 
-        fecha,
-        usuario
-      })
+      for (const item of invoi.products) {
+
+        let porc = 0;
+        if (item.product.tax) {
+          porc = item.product.taxid.valor;
+          
+        }
+        
+        invoices.push({
+          fecha: invoi.fecha,
+          invoice: number, 
+          "razón social": clienteName,
+          "Tipo de Documento": invoi.client?.party_identification_type || 'CC',
+          "Identificación": clienteCedula,
+          "Tipo de persona": invoi.client?.party_type || 'PERSONA_NATURAL',
+          "Tipo de regimen": invoi.client?.tax_level_code || 'NO_RESPONSABLE_DE_IVA',
+          Codigo: item.product.code,
+          Producto: item.product.name,
+          Cantidad: item.qty,
+          "Valor Sin IVA": item.price,
+          "IVA": ((item.price * porc)/100).toFixed(2),
+          "Porcentaje de IVA": porc,
+          "Total": ((item.price+((item.price * porc)/100)) * item.qty).toFixed(2),
+          usuario
+        })
+      }
+      
+
 
     }
-
-    let datos = [
-      {
-        total: this.totalAmount + this.totalIva,
-        ganancias: this.totalAmount - this.totalCost,
-        iva: this.totalIva
-      }
-    ]
-
-    invoices = invoices.concat(datos)
 
     /* generate a worksheet */
     var ws = XLSX.utils.json_to_sheet(invoices);

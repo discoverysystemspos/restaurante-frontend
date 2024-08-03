@@ -159,7 +159,7 @@
 
                 <div class="card-body text-white">
                     <h4 class="card-title mb-0 text-center">Ganancia Total</h4>
-                    <h5 class="text-center"> {{ (efectivo + credito + tarjeta + transferencia + vales + totalBancos) - costo | divisa }} </h5>
+                    <h5 class="text-center"> {{ (efectivo + tarjeta + transferencia + vales + totalBancos) - costo | divisa }} </h5>
                 </div>
 
             </div>
@@ -492,7 +492,7 @@
             <h1 class="display-5 fw-normal">Cerrar Caja</h1>
             <p>Asegurate de asignar el valor correcto del efectivo que tienes en caja</p>
             <p>
-                <button (click)="corte()" type="button" class="btn btn-primary" role="button">Hacer Cierre</button>
+                <button [disabled]="user.cerrada" (click)="corte()" type="button" class="btn btn-primary" role="button">Hacer Cierre</button>
             </p>
         </div>
     </div>
@@ -608,7 +608,7 @@
                                 </thead>
                                 <tbody>
                                     <tr style="color: black;">
-                                        <th scope="row">{{ (efectivo + credito + tarjeta + transferencia + vales + totalBancos) - costo | divisa }} </th>
+                                        <th scope="row">{{ (efectivo + tarjeta + transferencia + vales + totalBancos) - costo | divisa }} </th>
                                     </tr>
                                 </tbody>
                             </table>

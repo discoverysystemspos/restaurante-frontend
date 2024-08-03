@@ -45,6 +45,9 @@ export class EmpresaService {
     return this.http.get(`${base_url}/datos`, this.headers)
                 .pipe(
                   map( (resp: {ok: boolean, datos: Datos}) => { 
+
+                    console.log(resp);
+                    
                     
                     if (!resp.datos.comandas) {
                       resp.datos.comandas = false;

@@ -144,7 +144,7 @@
                             <h6 class="mb-0 text-wrap text-left">Propina Sugerida del {{empresa?.propina}}%</h6>
                         </td>
                         <td class="fw-bold">
-                            <h6 class="mb-0 text-wrap text-rigth"> {{ (factura?.amount * empresa?.propina)/100 | divisa }} </h6>
+                            <h6 class="mb-0 text-wrap text-rigth"> {{ factura?.tip | divisa }} </h6>
                         </td>
                     </tr>
                     <tr class="" style="border-top: 2px solid black;" *ngIf="empresa?.tip">
@@ -152,8 +152,8 @@
                             <h6 class="mb-0 text-wrap text-left">Total + Propina</h6>
                         </td>
                         <td class="fw-bold">
-                            <h6 *ngIf="empresa?.responsable" class="mb-0 text-wrap text-rigth"> {{ factura?.amount+ (factura?.amount * empresa?.propina)/100 + (factura?.amount * empresa?.tax)/100 | divisa}} </h6>
-                            <h6 *ngIf="!empresa?.responsable" class="mb-0 text-wrap text-rigth"> {{ factura?.amount + (factura?.amount * empresa?.propina)/100 | divisa }} </h6>
+                            <!-- <h6 class="mb-0 text-wrap text-rigth"> {{ (factura?.amount+ factura?.tip) + (factura?.amount * empresa?.tax)/100 | divisa}} </h6> -->
+                            <h6 class="mb-0 text-wrap text-rigth"> {{ factura?.amount + factura?.tip | divisa }} </h6>
                         </td>
                     </tr>
 

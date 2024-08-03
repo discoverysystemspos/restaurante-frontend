@@ -227,7 +227,7 @@
                                         </td>
                                         <td>{{ item.price * item.qty | divisa}}</td>
                                         <td>
-                                            <button type="button" (click)="eliminarProductoCarrito(i, item.product)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
+                                            <button type="button" [disabled]="user.role !== 'ADMIN' && user.role !== 'STAFF' && user.role !== 'CASHIER'" (click)="eliminarProductoCarrito(i, item.product)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
                                         </td>
                                     </tr>
                                 </ng-container>
@@ -373,7 +373,7 @@
                                             </td>
                                             <td>{{ item.price * item.qty | divisa}}</td>
                                             <td>
-                                                <button type="button" (click)="eliminarProductoCarrito(i, item.product)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
+                                                <button type="button" [disabled]="user.role !== 'ADMIN' && user.role !== 'STAFF' && user.role !== 'CASHIER'" (click)="eliminarProductoCarrito(i, item.product)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
                                             </td>
                                         </tr>
                                     </ng-container>
@@ -1422,6 +1422,19 @@
                             </div>
 
                         </div>
+
+                        <ng-container *ngIf="empresa && movimiento">
+                            <div [ngStyle]="{'width': empresa.impresora === 58 ? '14rem' : '24rem'}" style="width: 14rem; color:black; background: white;" id="printDiv4">
+                                <div class="card">
+                                    <div class="text-center" style="color: #000;">
+                                        <h4 class="mb-0 fw-normal">Salida</h4>
+                                        <h2 class="fw-bold"> {{ movimiento.monto | divisa}} </h2>
+                                        <p class="mb-0"> {{ movimiento.user.name }} </p>
+                                        <p> {{ movimiento.fecha | date: 'short' }} </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
 
                     </div>
                     <!-- SALIDAS - SALIDAS - SALIDAS -->
