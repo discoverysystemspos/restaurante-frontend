@@ -151,15 +151,34 @@
 
                 <div class="card-body text-white">
                     <h4 class="card-title mb-0 text-center">Ventas Totales</h4>
-                    <h5 class="text-center"> {{ ( parqueos + efectivo + credito + tarjeta + transferencia + vales + totalBancos) | divisa }} </h5>
+                    <h5 class="text-center"> {{ montos | divisa }} </h5>
                 </div>
 
             </div>
+
+            <div *ngIf="empresa?.tip" class="card shadow px-2 my-3 bg-info border-0" style="width: 18rem;">
+
+                <div class="card-body text-white">
+                    <h4 class="card-title mb-0 text-center">Propinas</h4>
+                    <h5 class="text-center"> {{ propinas | divisa }} </h5>
+                </div>
+
+            </div>
+
+            <div *ngIf="empresa?.tip" class="card shadow px-2 my-3 bg-success border-0" style="width: 18rem;">
+
+                <div class="card-body text-white">
+                    <h4 class="card-title mb-0 text-center">Ventas totales + Propinas</h4>
+                    <h5 class="text-center"> {{ montos + propinas | divisa }} </h5>
+                </div>
+
+            </div>
+
             <div *ngIf="user.privilegios[0].cierre !== false && user.role !== 'CASHIER'" class="card shadow px-2 my-3 bg-dark border-0" style="width: 18rem;">
 
                 <div class="card-body text-white">
                     <h4 class="card-title mb-0 text-center">Ganancia Total</h4>
-                    <h5 class="text-center"> {{ (efectivo + tarjeta + transferencia + vales + totalBancos) - costo | divisa }} </h5>
+                    <h5 class="text-center"> {{ (montos) - costo | divisa }} </h5>
                 </div>
 
             </div>
@@ -173,14 +192,7 @@
 
             </div>
 
-            <div *ngIf="empresa?.tip" class="card shadow px-2 my-3 bg-info border-0" style="width: 18rem;">
 
-                <div class="card-body text-white">
-                    <h4 class="card-title mb-0 text-center">Propinas</h4>
-                    <h5 class="text-center"> {{ propinas | divisa }} </h5>
-                </div>
-
-            </div>
 
         </div>
 

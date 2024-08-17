@@ -5,7 +5,6 @@ import { tap } from 'rxjs/operators';
 
 // SERVICES
 import { UserService } from '../services/user.service';
-import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'

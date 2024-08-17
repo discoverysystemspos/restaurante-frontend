@@ -45,14 +45,11 @@ export class ComandaComponent implements OnInit {
 
                     let ruta = window.location.href;
                     let rutaArray = ruta.split('/');
-                                       
                   
-                    if (rutaArray.length > 5 ) {
+                    if (rutaArray[rutaArray.length - 1] !== 'comandas' ) {
                       clearInterval(reloadMesa);
-                    }else if (rutaArray[5] === 'comandas'){                      
-                      this.cargarMesas();          
                     }else{
-                      clearInterval(reloadMesa);
+                      this.cargarMesas();
                     }
             
                   }, 5000);
@@ -97,7 +94,7 @@ export class ComandaComponent implements OnInit {
    *   CARGAR MESAS
   ==================================================================== */
   cargarMesas(){
-
+    
     this.cargando = true;
     this.sinResultados = true;
 

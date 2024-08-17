@@ -449,7 +449,7 @@ export class CierresComponent implements OnInit {
           this.montos = montos;
           this.propinas = propinas;
           this.costo = costos;
-          
+          this.efectivo = efectivo;          
           this.tarjeta = tarjeta;
           this.transferencia = transferencia;
           this.credito = credit;
@@ -546,7 +546,7 @@ export class CierresComponent implements OnInit {
 
           }
 
-          this.efectivo = this.montos - this.totalBancos;
+          // this.efectivo = this.montos - this.totalBancos;
 
         });
 

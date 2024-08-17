@@ -120,7 +120,7 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor=" let producto of productos " class="align-middle" style="border-bottom: 1px #000 solid;">
-                                    <td class="text-center fw-bold"> {{ producto.inventario }} </td>
+                                    <td class="text-center fw-bold"> {{ producto.inventario | number}} </td>
                                     <td style="color: #000"> {{ producto.name }} </td>
                                     <td class="text-center fw-bold"> {{ producto.kardex || 0 }} </td>
                                 </tr>

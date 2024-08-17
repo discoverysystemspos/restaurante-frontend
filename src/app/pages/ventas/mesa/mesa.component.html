@@ -10,20 +10,20 @@
             <!-- BOTONES -->
             <div class="d-flex flex-wrap gap-2 my-2">
 
-                <button *ngIf="this.user.cerrada" (click)="abrirCaja()" class="btn btn-success btn-sm" type="button">Abrir caja</button>
-                <button *ngIf="!this.user.cerrada" [routerLink]="['/dashboard', 'corte']" class="btn btn-secondary btn-sm" type="button">Cerrar caja</button>
+                <button *ngIf="this.user.cerrada" [disabled]="user.role === 'WAITERALL' || user.role === 'WAITER'" (click)="abrirCaja()" class="btn btn-success btn-sm" type="button">Abrir caja</button>
+                <button *ngIf="!this.user.cerrada" [disabled]="user.role === 'WAITERALL' || user.role === 'WAITER'" [routerLink]="['/dashboard', 'corte']" class="btn btn-secondary btn-sm" type="button">Cerrar caja</button>
 
-                <button #btnCreateClient type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#buscarCliente"><i class="bi-people"></i> Crear Cliente </button>
+                <button *ngIf="user.role !== 'WAITERALL' && user.role !== 'WAITER'" #btnCreateClient type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#buscarCliente"><i class="bi-people"></i> Crear Cliente </button>
 
                 <!-- <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="collapse" href="#productsColl" role="button" aria-expanded="false" aria-controls="collapseExample"><i class="bi-box"></i> Productos </button> -->
-                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#buscarProducto"><i class="bi-box"></i> Nuevo Codigo </button>
+                <button *ngIf="user.role !== 'WAITERALL' && user.role !== 'WAITER'" type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#buscarProducto"><i class="bi-box"></i> Nuevo Codigo </button>
 
-                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#entradaSalidas"><i class="bi-arrow-left-right"></i> Entradas y Salidas </button>
+                <button *ngIf="user.role !== 'WAITERALL' && user.role !== 'WAITER'" type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#entradaSalidas"><i class="bi-arrow-left-right"></i> Entradas y Salidas </button>
                 <button type="button" (click)="scrollToBottom()" (click)="timeCommand()" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#comandas"><i class="bi-receipt"></i> Comandas </button>
                 <button type="button" *ngIf="mesa?.img === 'mesa.svg'" (click)="cargarMesasAll()" class="btn btn-outline-dark btn-sm" data-bs-toggle="modal" data-bs-target="#cambiarMesa"><i class="bi-arrow-repeat"></i> Cambiar Mesa </button>
-                <button type="button" class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#descuentoModal"><i class="bi-percent"></i> Descuento </button>
-                <a [routerLink]="['/', 'dashboard', 'productos', 'kardex']" class="btn btn-outline-primary btn-sm"><i class="bi-box"></i> Kardex </a>
-                <button (click)="mayoreoChange()" type="button" class="btn btn-outline-dark btn-sm"><i class="bi-arrow-down-up"></i> Mayoreo </button>
+                <button *ngIf="user.role !== 'WAITERALL' && user.role !== 'WAITER'" type="button" class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#descuentoModal"><i class="bi-percent"></i> Descuento </button>
+                <a *ngIf="user.role !== 'WAITERALL' && user.role !== 'WAITER'" [routerLink]="['/', 'dashboard', 'productos', 'kardex']" class="btn btn-outline-primary btn-sm"><i class="bi-box"></i> Kardex </a>
+                <button *ngIf="user.role !== 'WAITERALL' && user.role !== 'WAITER'" (click)="mayoreoChange()" type="button" class="btn btn-outline-dark btn-sm"><i class="bi-arrow-down-up"></i> Mayoreo </button>
                 <button (click)="changeMenu(menu)" type="button" class="btn btn-outline-primary">
                     <i *ngIf="!menu" class="bi bi-grid"></i>
                     <i *ngIf="menu" class="bi bi-justify"></i>
@@ -118,17 +118,17 @@
                 <button *ngIf="this.user.cerrada" (click)="abrirCaja()" class="btn btn-success btn-sm" type="button">Abrir caja</button>
                 <button *ngIf="!this.user.cerrada" [routerLink]="['/dashboard', 'corte']" class="btn btn-secondary btn-sm" type="button">Cerrar caja</button>
 
-                <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#buscarCliente"><i class="bi-people"></i> Crear Cliente </button>
+                <button *ngIf="user.role !== 'WAITERALL' && user.role !== 'WAITER'" type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#buscarCliente"><i class="bi-people"></i> Crear Cliente </button>
 
-                <!-- <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="collapse" href="#productsColl" role="button" aria-expanded="false" aria-controls="collapseExample"><i class="bi-box"></i> Productos </button> -->
-                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#buscarProducto"><i class="bi-box"></i> Nuevo Codigo </button>
+                <!-- <button *ngIf="user.role !== 'WAITERALL' && user.role !== 'WAITER'"  type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="collapse" href="#productsColl" role="button" aria-expanded="false" aria-controls="collapseExample"><i class="bi-box"></i> Productos </button> -->
+                <button *ngIf="user.role !== 'WAITERALL' && user.role !== 'WAITER'" type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#buscarProducto"><i class="bi-box"></i> Nuevo Codigo </button>
 
-                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#entradaSalidas"><i class="bi-arrow-left-right"></i> Entradas y Salidas </button>
+                <button *ngIf="user.role !== 'WAITERALL' && user.role !== 'WAITER'" type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#entradaSalidas"><i class="bi-arrow-left-right"></i> Entradas y Salidas </button>
                 <button type="button" (click)="scrollToBottom()" (click)="timeCommand()" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#comandas"><i class="bi-receipt"></i> Comandas </button>
                 <button type="button" *ngIf="mesa?.img === 'mesa.svg'" (click)="cargarMesasAll()" class="btn btn-outline-dark btn-sm" data-bs-toggle="modal" data-bs-target="#cambiarMesa"><i class="bi-arrow-repeat"></i> Cambiar Mesa </button>
-                <button type="button" class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#descuentoModal"><i class="bi-percent"></i> Descuento </button>
-                <a [routerLink]="['/', 'dashboard', 'productos', 'kardex']" class="btn btn-outline-primary btn-sm"><i class="bi-box"></i> Kardex </a>
-                <button (click)="mayoreoChange()" type="button" class="btn btn-outline-dark btn-sm"><i class="bi-arrow-down-up"></i> Mayoreo </button>
+                <button *ngIf="user.role !== 'WAITERALL' && user.role !== 'WAITER'" type="button" class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#descuentoModal"><i class="bi-percent"></i> Descuento </button>
+                <a *ngIf="user.role !== 'WAITERALL' && user.role !== 'WAITER'" [routerLink]="['/', 'dashboard', 'productos', 'kardex']" class="btn btn-outline-primary btn-sm"><i class="bi-box"></i> Kardex </a>
+                <button *ngIf="user.role !== 'WAITERALL' && user.role !== 'WAITER'" (click)="mayoreoChange()" type="button" class="btn btn-outline-dark btn-sm"><i class="bi-arrow-down-up"></i> Mayoreo </button>
                 <button (click)="changeMenu(menu)" type="button" class="btn btn-outline-primary">
                     <i *ngIf="!menu" class="bi bi-grid"></i>
                     <i *ngIf="menu" class="bi bi-justify"></i>

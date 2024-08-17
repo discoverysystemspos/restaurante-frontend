@@ -408,7 +408,7 @@ export class CorteComponent implements OnInit {
 
           } 
 
-          this.efectivo = this.montos - this.totalBancos;
+          // this.efectivo = this.montos - this.totalBancos;
           
         });
   }

@@ -51,6 +51,7 @@ import { DomiciliosComponent } from './domicilios/domicilios.component';
 import { BodegasComponent } from './configuracion/bodegas/bodegas.component';
 import { BodegaComponent } from './configuracion/bodega/bodega.component';
 import { CompraComponent } from './compra/compra.component';
+import { WaiterGuardPrivate } from '../guards/waiterPrivate.guard';
 
 const routes: Routes = [
     
@@ -61,55 +62,55 @@ const routes: Routes = [
         children: [
     
           { path: '', component: DashboardComponent, data:{ titulo: 'Dashboard'} },
-          { path: 'alquileres', component: AlquileresComponent, data:{ titulo: 'Alquileres'} },
-          { path: 'alquiler/:id', component: AlquilerComponent, data:{ titulo: 'Alquiler'} },
-          { path: 'domicilios', component: DomiciliosComponent, data:{ titulo: 'Domicilios'} },
-          { path: 'calendario', component: CalendarioComponent, data:{ titulo: 'Calendario'} },
-          { path: 'clientes', component: ClientesComponent, data:{ titulo: 'Clientes'} },
-          { path: 'comandas', component: ComandaComponent, data:{ titulo: 'Comandas'} },
-          { path: 'compra/:id', component: CompraComponent, data:{ titulo: 'Compra'} },
+          { path: 'alquileres', component: AlquileresComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Alquileres'} },
+          { path: 'alquiler/:id', component: AlquilerComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Alquiler'} },
+          { path: 'domicilios', component: DomiciliosComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Domicilios'} },
+          { path: 'calendario', component: CalendarioComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Calendario'} },
+          { path: 'clientes', component: ClientesComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Clientes'} },
+          { path: 'comandas', component: ComandaComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Comandas'} },
+          { path: 'compra/:id', component: CompraComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Compra'} },
           
           { path: 'configuracion', component: ConfiguracionComponent, canActivate: [AdminGuard], data:{ titulo: 'Configuracion'} },
-          { path: 'configuracion/bancos', component: BancosComponent, data:{ titulo: 'Bancos'} },
-          { path: 'configuracion/bodegas', component: BodegasComponent, data:{ titulo: 'Bodegas'} },
-          { path: 'configuracion/bodega/:id', component: BodegaComponent, data:{ titulo: 'Bodega'} },
+          { path: 'configuracion/bancos', component: BancosComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Bancos'} },
+          { path: 'configuracion/bodegas', component: BodegasComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Bodegas'} },
+          { path: 'configuracion/bodega/:id', component: BodegaComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Bodega'} },
           { path: 'configuracion/caja', component: CajaComponent, canActivate: [AdminGuard], data:{ titulo: 'Caja' } },
-          { path: 'configuracion/compras', component: ComprasComponent, data:{ titulo: 'Compras' } },
-          { path: 'configuracion/cierres', component: CierresComponent, canActivate: [AdminGuard], data:{ titulo: 'Cierres' } },
-          { path: 'configuracion/empresa', component: EmpresaComponent, canActivate: [AdminGuard], data:{ titulo: 'Mi Empresa' } },
+          { path: 'configuracion/compras', component: ComprasComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Compras' } },
+          { path: 'configuracion/cierres', component: CierresComponent, canActivate: [AdminGuard, WaiterGuardPrivate], data:{ titulo: 'Cierres' } },
+          { path: 'configuracion/empresa', component: EmpresaComponent, canActivate: [AdminGuard, WaiterGuardPrivate], data:{ titulo: 'Mi Empresa' } },
           { path: 'configuracion/mesas', component: MesasComponent, canActivate: [AdminGuard], data:{ titulo: 'Mesas' } },
-          { path: 'configuracion/usuarios', component: UsuariosComponent, canActivate: [AdminGuard], data:{ titulo: 'Usuarios' } },
-          { path: 'configuracion/impuestos', component: ImpuestosComponent,  canActivate: [AdminGuard], data:{ titulo: 'Impuestos'} },
+          { path: 'configuracion/usuarios', component: UsuariosComponent, canActivate: [AdminGuard, WaiterGuardPrivate], data:{ titulo: 'Usuarios' } },
+          { path: 'configuracion/impuestos', component: ImpuestosComponent,  canActivate: [AdminGuard, WaiterGuardPrivate], data:{ titulo: 'Impuestos'} },
           
-          { path: 'configuracion/prestamos', component: PrestamosComponent, data:{ titulo: 'Prestamos'} },
-          { path: 'configuracion/prestamo/:id', component: PrestamoComponent, data:{ titulo: 'Prestamo'} },
-          { path: 'configuracion/parqueadero', component: ParqueaderoComponent, data:{ titulo: 'Parqueadero'} },
-          { path: 'parqueadero/reportes', component: ReportesComponent, data:{ titulo: 'Reportes'} },
+          { path: 'configuracion/prestamos', component: PrestamosComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Prestamos'} },
+          { path: 'configuracion/prestamo/:id', component: PrestamoComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Prestamo'} },
+          { path: 'configuracion/parqueadero', component: ParqueaderoComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Parqueadero'} },
+          { path: 'parqueadero/reportes', component: ReportesComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Reportes'} },
           
-          { path: 'corte', component: CorteComponent, data:{ titulo: 'Corte'} },
+          { path: 'corte', component: CorteComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Corte'} },
 
 
-          { path: 'facturas', component: FacturasComponent, data:{ titulo: 'Facturas'} },
-          { path: 'factura/:id', component: FacturaComponent, data:{ titulo: 'Detalles de factura' } },
+          { path: 'facturas', component: FacturasComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Facturas'} },
+          { path: 'factura/:id', component: FacturaComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Detalles de factura' } },
 
-          { path: 'inventario', component: InventarioComponent,  canActivate: [AdminGuard], data:{ titulo: 'Inventario'} },
+          { path: 'inventario', component: InventarioComponent,  canActivate: [AdminGuard, WaiterGuardPrivate], data:{ titulo: 'Inventario'} },
           { path: 'perfil', component: PerfilComponent, data:{ titulo: 'Perfil'} },
 
-          { path: 'entradas-salidas', component: EntradasSalidasComponent, data:{ titulo: 'Entradas y Salidas'} },
+          { path: 'entradas-salidas', component: EntradasSalidasComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Entradas y Salidas'} },
 
-          { path: 'pedido/:id', component: PedidoComponent, data:{ titulo: 'Pedido'} },
-          { path: 'pedidos', component: PedidosComponent, data:{ titulo: 'Pedidos'} },
+          { path: 'pedido/:id', component: PedidoComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Pedido'} },
+          { path: 'pedidos', component: PedidosComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Pedidos'} },
 
-          { path: 'productos', component: ProductosComponent,  canActivate: [AdminGuard], data:{ titulo: 'Productos'} },
-          { path: 'producto/:id', component: ProductoComponent,  canActivate: [AdminGuard], data:{ titulo: 'Producto'} },
-          { path: 'productos/movimientos', component: MovimientosComponent,  canActivate: [AdminGuard], data:{ titulo: 'Movimientos'} },
-          { path: 'productos/nuevo', component: NuevoComponent,  canActivate: [AdminGuard], data:{ titulo: 'Crear Producto Nuevo'} },
-          { path: 'productos/departamento', component: DepartamentosComponent,  canActivate: [AdminGuard], data:{ titulo: 'Departamentos'} },
-          { path: 'productos/categorias', component: CategoriasComponent,  canActivate: [AdminGuard], data:{ titulo: 'Categorias'} },
-          { path: 'productos/kardex', component: KardexComponent,  data:{ titulo: 'Kardex'} },
-          { path: 'productos/eliminados', component: EliminadosComponent,  canActivate: [AdminGuard],  data:{ titulo: 'Kardex'} },
+          { path: 'productos', component: ProductosComponent,  canActivate: [AdminGuard, WaiterGuardPrivate], data:{ titulo: 'Productos'} },
+          { path: 'producto/:id', component: ProductoComponent,  canActivate: [AdminGuard, WaiterGuardPrivate], data:{ titulo: 'Producto'} },
+          { path: 'productos/movimientos', component: MovimientosComponent,  canActivate: [AdminGuard, WaiterGuardPrivate], data:{ titulo: 'Movimientos'} },
+          { path: 'productos/nuevo', component: NuevoComponent,  canActivate: [AdminGuard, WaiterGuardPrivate], data:{ titulo: 'Crear Producto Nuevo'} },
+          { path: 'productos/departamento', component: DepartamentosComponent,  canActivate: [AdminGuard, WaiterGuardPrivate], data:{ titulo: 'Departamentos'} },
+          { path: 'productos/categorias', component: CategoriasComponent,  canActivate: [AdminGuard, WaiterGuardPrivate], data:{ titulo: 'Categorias'} },
+          { path: 'productos/kardex', component: KardexComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Kardex'} },
+          { path: 'productos/eliminados', component: EliminadosComponent,  canActivate: [AdminGuard, WaiterGuardPrivate],  data:{ titulo: 'Kardex'} },
           
-          { path: 'proveedores', component: ProveedoresComponent,  canActivate: [AdminGuard], data:{ titulo: 'Kardex'} },
+          { path: 'proveedores', component: ProveedoresComponent,  canActivate: [AdminGuard, AdminGuard], data:{ titulo: 'Kardex'} },
           
           { path: 'ventas', component: VentasComponent,  canActivate: [WaiterGuard], data:{ titulo: 'Ventas'} },
           { path: 'ventas/mesa/:id', component: MesaComponent,  canActivate: [WaiterGuard], data:{ titulo: 'Mesa'} },

@@ -630,15 +630,8 @@ export class MesaComponent implements OnInit {
 
           cantidad = cant.toFixed(3);
 
-
-
         }else if(this.empresa.basculatype === 'precio'){
           precio = Number(code.slice(digCode , totalCode));
-
-          console.log(precio);
-          
-
-                  
         }
 
       }else{
@@ -956,15 +949,241 @@ export class MesaComponent implements OnInit {
   public inventarioNew: number = 0;
   public inventarioNewB: boolean = false;
 
+  sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   carritoTemp( product: any, qty: number, precio: number, nota: string = '', newPrice: boolean = false ){
 
-    let mayor = false;
+    // SI ES UNA MESA
+    if (this.mesa.img === 'mesa.svg') {
+      
+      this.carrito = [];
+      this.comanda = [];
+
+    this.mesasServices.loadMesaId(this.mesaID)
+        .subscribe( (mesa: any) => {
+
+          this.carrito = mesa.carrito;
+          this.mesa = mesa;
+          
+          this.comandas = mesa.comanda;
+
+          for (let i = 0; i < mesa.carrito.length; i++) {
+            
+            this.comanda.push({
+              product: mesa.carrito[i].product.name,
+              tipo: mesa.carrito[i].product.tipo,
+              comanda: mesa.carrito[i].product.comanda,
+              qty: mesa.carrito[i].qty,
+              price: mesa.carrito[i].price
+            });
+                        
+          }
+
+          this.comandaTemp = this.comanda;  
+
+          this.sumarTotales();
+
+          /** ===================================
+           * 
+           */
+
+          let mayor = false;
+
+          if (this.clienteTemp) {
+            if (this.clienteTemp.mayoreo) {
+              precio = product.wholesale;
+            }
+          }
+
+          if (newPrice) {
+            precio = (precio / (qty * 1000)) * 1000;
+          }
+      
+          if(product.mayoreo > 0 && qty >= product.mayoreo){
+            precio = product.wholesale;
+            mayor = true;
+          }
+      
+          this.inventarioNew = 0;
+          this.inventarioNewB = false;
+      
+          if(this.comanda.length === 0){
+            this.mesa.fecha   = new Date(); 
+          }
+          
+          const validarItem = this.productUp.findIndex( (resp) =>{      
+            if (resp.product === product.pid ) {
+              return true;
+            }else {
+              return false;
+            }
+          });
+
+          let ivaP:number = 0;
+
+    if (product.tax) {
+      ivaP = Number(precio * qty) * Number(product.taxid?.valor / 100);
+    }
+
+    if ( validarItem === -1 ) {
+
+
+      // AGREGAMOS EL PRODUCTO
+      this.productUp.push({
+        product: product.pid,
+        qty,
+        price: precio,
+        iva: ivaP,
+        mayor
+      });
+
+      // AGREGAMOS A LA COMANDA
+      this.comanda.push({
+        product: product.name,
+        comanda: product.comanda,
+        tipo: product.tipo,
+        qty,  
+        price: precio
+      });
+
+      
+      this.inventarioNew = product.inventario - qty;
+      this.inventarioNewB = true;
+            
+
+    }else{
+      
+      let qtyTemp = this.productUp[validarItem].qty;
+      qtyTemp += Number(qty);
+
+      
+      let ivaTemp = this.productUp[validarItem].iva;
+      ivaTemp += Number(ivaP);
+      
+      this.productUp[validarItem].iva = ivaTemp;
+      this.productUp[validarItem].qty = qtyTemp;
+      this.comanda[validarItem].qty = qtyTemp;
+      
+      if (product.mayoreo > 0 &&  qtyTemp >= product.mayoreo) {
+        this.productUp[validarItem].price = product.wholesale;    
+        this.productUp[validarItem].mayor = true;  
+      }else{
+        this.productUp[validarItem].price = precio;
+        this.productUp[validarItem].mayor = false;  
+      }
+
+      this.inventarioNew = product.inventario - qtyTemp;
+      this.inventarioNewB = true;
+      
+      setTimeout( () => {
+        this.inventarioNewB = false;        
+      }, 2500);
+      
+    }
+
+    this.mesa.carrito =  this.productUp;
+
+    // COMANDA NUEVA
+    this.ingredientes = [];
+    
+    if (this.mesa.img === 'mesa.svg') {
+      
+      // AGREGAR LOS INGREDIENTES
+      for (let i = 0; i < product.kit.length; i++) {
+        
+        this.ingredientes.push({
+
+          name: product.kit[i].product.name,
+          qty: product.kit[i].qty,
+          status: true
+
+        });
+        
+      }
+      
+      if (qty > 1) {
+
+        for (let i = 0; i < qty; i++) {
+          this.comandas.push({
+            product: product.pid,
+            ingredientes: this.ingredientes,
+            qty: 1,
+            nota: nota,
+            estado: 'pendiente'
+          });
+          
+        }
+        
+      }else{
+
+        this.comandas.push({
+          product: product.pid,
+          ingredientes: this.ingredientes,
+          qty: 1,
+          nota: nota,
+          estado: 'pendiente'
+        });
+
+      }
+
+    }
+
+    // GUARDAR LA INFORMACION DE LA COMANDA
+    this.mesa.comanda = this.comandas;    
+
+    this.mesasServices.updateMesa(this.mesa, this.mesaID)
+        .subscribe( (resp:{ok: boolean, mesa: any}) => { 
+          
+          this.carrito = resp.mesa.carrito;
+          this.productUp = [];
+          this.comanda = [];
+          this.comandas = [];
+
+          this.comandas = resp.mesa.comanda;
+
+          for (let i = 0; i < resp.mesa.carrito.length; i++) {
+
+            this.productUp.push({
+              product: resp.mesa.carrito[i].product._id,
+              qty: resp.mesa.carrito[i].qty,
+              price: resp.mesa.carrito[i].price,
+              iva: resp.mesa.carrito[i].iva,
+              mayor: resp.mesa.carrito[i].mayor,
+            });
+            
+            this.comanda.push({
+              product:  resp.mesa.carrito[i].product.name,
+              comanda:  resp.mesa.carrito[i].product.comanda,
+              tipo:     resp.mesa.carrito[i].product.tipo,
+              qty:      resp.mesa.carrito[i].qty,
+              price:    resp.mesa.carrito[i].price
+            });
+                        
+          }
+          this.comandaTemp = this.comanda;
+
+          this.sumarTotales();
+
+          // this.cargarMesa(this.mesaID);
+
+        }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
+          
+
+    });
+          
+    }else{
+
+
+      let mayor = false;
 
     if (this.clienteTemp) {
       if (this.clienteTemp.mayoreo) {
         precio = product.wholesale;
       }
     }
+
     
     if (newPrice) {
       precio = (precio / (qty * 1000)) * 1000;
@@ -1138,6 +1357,10 @@ export class MesaComponent implements OnInit {
           // this.cargarMesa(this.mesaID);
 
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
+
+    }
+
+    
     
 
   }
@@ -1432,7 +1655,7 @@ export class MesaComponent implements OnInit {
         if (this.empresa.tip) {
           this.totalTip = tip;        
           this.tipIn.nativeElement.value = tip;        
-          // this.total += tip;
+          this.total += tip;
         }
 
       }else {
