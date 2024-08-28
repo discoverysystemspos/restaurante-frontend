@@ -223,7 +223,7 @@
                                             <button *ngIf="empresa.bascula" type="button" (click)="loadBascula(i, item)" class="btn btn-link p-1 text-primary">
                                                 <i class="bi-arrow-down-square-fill" style="font-size: 1rem"></i>
                                             </button>
-                                            <input class="w-75" min="1" type="number" [value]="item.qty" (change)="changeCant(cantt.value, item)" #cantt>
+                                            <input [readonly]="user.role === 'WAITER' || user.role === 'WAITERALL'" class="w-75" min="1" type="number" [value]="item.qty" (change)="changeCant(cantt.value, item)" #cantt>
                                         </td>
                                         <td>{{ item.price * item.qty | divisa}}</td>
                                         <td>
@@ -369,7 +369,7 @@
                                             </td>
                                             <td>{{ item.price | divisa}}</td>
                                             <td class="text-center">
-                                                <input [readonly]="inputChange" class="w-75" min="1" type="number" [value]="item.qty" [max]="item.product.inventario" (change)="changeCant(cant.value, item)" #cant>
+                                                <input [readonly]="inputChange || user.role === 'WAITER' || user.role === 'WAITERALL'" class="w-75" min="1" type="number" [value]="item.qty" [max]="item.product.inventario" (change)="changeCant(cant.value, item)" #cant>
                                             </td>
                                             <td>{{ item.price * item.qty | divisa}}</td>
                                             <td>
@@ -383,7 +383,7 @@
                             </tbody>
                             <tfoot>
                                 <th colspan="5">ITEMS</th>
-                                <th> {{ totalItems }} </th>
+                                <th> {{ totalItems | number }} </th>
                             </tfoot>
                         </table>
                     </div>
@@ -777,13 +777,13 @@
                             <h6 class="mb-0 text-wrap text-left">
                                 CLIENTE / RAZON SOCIAL <br>
                                 <small *ngIf="factura.client" class="text-wrap fw-normal"> {{ factura.client.name }} </small>
-                                <small *ngIf="!factura.client" class="text-wrap fw-normal"> ocasional </small>
+                                <small *ngIf="!factura.client" class="text-wrap fw-normal"> Consumidor Final </small>
                             </h6>
 
                             <h6 class="mb-0 text-wrap text-left">
                                 CC / NIT <br>
                                 <small *ngIf="factura.client" class="text-wrap fw-normal"> {{ factura.client.cedula }} </small>
-                                <small *ngIf="!factura.client" class="text-wrap fw-normal"> 00000000 </small>
+                                <small *ngIf="!factura.client" class="text-wrap fw-normal"> 222222222222 </small>
                             </h6>
                             <h6 class="mb-0 text-wrap text-left">
                                 TELEFONO <br>
@@ -922,7 +922,7 @@
                             <tfoot>
                                 <tr>
                                     <th colspan="">ITEMS</th>
-                                    <th> {{ factura.totalItems }} </th>
+                                    <th> {{ factura.totalItems | number }} </th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -1756,7 +1756,7 @@ PRODUCT SELECT
         <p class="mb-0">Codigo: <small> {{productSelected.code}} </small></p>
         <h4 class="mb-0 text-break"> {{ productSelected.name }} </h4>
         <p class="mb-0" *ngIf="productSelected.inventario <= productSelected.min &&  productSelected.type !== 'Paquete'"><span class="badge bg-warning text-dark">Inventario Bajo</span></p>
-        <p class="mb-3">stock: {{ productSelected.inventario }} </p>
+        <p class="mb-3">stock: {{ productSelected.inventario | number }} </p>
 
         <div class="container">
             <div class="form-check form-switch my-2">

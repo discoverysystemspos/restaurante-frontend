@@ -30,13 +30,13 @@
                 <h6 class="mb-0 text-wrap text-left">
                     CLIENTE / RAZON SOCIAL <br>
                     <small *ngIf="factura?.client" class="text-wrap fw-normal"> {{ factura?.client.name }} </small>
-                    <small *ngIf="!factura?.client" class="text-wrap fw-normal"> Ocasional </small>
+                    <small *ngIf="!factura?.client" class="text-wrap fw-normal"> Consumidor Final </small>
                 </h6>
 
                 <h6 class="mb-0 text-wrap text-left">
                     CC / NIT <br>
                     <small *ngIf="factura?.client" class="text-wrap fw-normal"> {{ factura?.client.cedula }} </small>
-                    <small *ngIf="!factura?.client" class="text-wrap fw-normal"> 00000000 </small>
+                    <small *ngIf="!factura?.client" class="text-wrap fw-normal"> 222222222222 </small>
                 </h6>
                 <h6 class="mb-0 text-wrap text-left">
                     TELEFONO <br>
@@ -161,7 +161,7 @@
                 <tfoot>
                     <tr>
                         <th colspan="">ITEMS</th>
-                        <th> {{ factura.totalItems }} </th>
+                        <th> {{ factura.totalItems | number}} </th>
                     </tr>
                 </tfoot>
             </table>

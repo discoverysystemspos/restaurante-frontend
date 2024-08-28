@@ -103,9 +103,9 @@
                                 </div>
 
                                 <div>
-                                    <p style="font-size: 0.9rem;" class="mb-0 text-dark"> <strong>RAZON SOCIAL:</strong> <small> {{ factura.client?.name || 'Ocasional' }}</small> </p>
+                                    <p style="font-size: 0.9rem;" class="mb-0 text-dark"> <strong>RAZON SOCIAL:</strong> <small> {{ factura.client?.name || 'Consumidor Final' }}</small> </p>
 
-                                    <p style="font-size: 0.9rem;" class="mb-0 text-dark"> <strong>CC/NIT:</strong> <small> {{ factura.client?.cedula || '00000000' }}</small> </p>
+                                    <p style="font-size: 0.9rem;" class="mb-0 text-dark"> <strong>CC/NIT:</strong> <small> {{ factura.client?.cedula || '222222222222' }}</small> </p>
 
                                     <p style="font-size: 0.9rem;" *ngIf="factura.client?.phone" class="mb-0 text-dark"> <strong>Telefono:</strong> <small> {{ factura.client?.phone || '--- --------' }}</small> </p>
 
@@ -204,7 +204,7 @@
                             <tfoot>
                                 <tr>
                                     <th colspan="7">ITEMS</th>
-                                    <th> {{ factura.totalItems || 0 }} </th>
+                                    <th> {{ factura.totalItems || 0 | number}} </th>
                                 </tr>
                             </tfoot>
                         </table>

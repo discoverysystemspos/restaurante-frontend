@@ -37,8 +37,7 @@ export class LoginComponent {
 
                       if (resp === false) {
                         Swal.fire('Atención', 'Credenciales incorrectas, porfavor verificar el usuario o contraseña', 'warning')
-                      }
-                      
+                      }                      
 
                       if ( this.loginForm.get('remember').value ) {
                         localStorage.setItem('usuario', this.loginForm.get('usuario').value);

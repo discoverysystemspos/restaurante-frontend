@@ -271,16 +271,19 @@
 
                                     <tr class="trHover" tabindex="0" data-bs-toggle="tooltip" title="Cajero: {{ factura.user?.name }}">
                                         <th>
-                                            <span *ngIf="factura.electronica && !factura.send" class="text-warning"><i class="bi bi-exclamation-triangle"></i></span> {{ factura.invoice }}
+                                            <span *ngIf="factura.electronica && !factura.send" class="text-warning"><i class="bi bi-exclamation-triangle"></i></span>
+                                            <span *ngIf="!factura.cufe">{{ factura.invoice }}</span>
+                                            <span *ngIf="factura.cufe">{{factura.number }} </span>
+
                                         </th>
                                         <th>{{ factura.control }}</th>
                                         <td colspan="2">
-                                            {{ factura.client?.name || 'Ocasional' }}
+                                            {{ factura.client?.name || 'Consumidor Final' }}
                                             <span *ngIf="!factura.status" class="badge rounded-pill bg-danger">Cancelada</span>
                                             <span *ngIf="factura.credito && factura.status" class="badge rounded-pill bg-warning">Credito <small *ngIf="factura.apartado">- Apartado</small> </span>
                                             <span *ngIf="factura.mayor" class="badge rounded-pill bg-success">M </span>
                                         </td>
-                                        <td> {{ factura.client?.cedula || '00000000' }} </td>
+                                        <td> {{ factura.client?.cedula || '222222222222' }} </td>
                                         <td colspan="2"> {{ factura.mesa?.name }} </td>
                                         <td> {{ factura.amount | divisa }} </td>
                                         <td> {{ factura.type }} </td>
