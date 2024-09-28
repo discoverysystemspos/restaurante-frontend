@@ -3,12 +3,12 @@ import { HttpClient } from '@angular/common/http';
 
 import { delay, map, tap } from 'rxjs/operators'
 
-import { environment } from '../../environments/environment';
 
 // MODEL
 import { Proveedor } from '../models/proveedor.model';
 import { LoadProveedores } from '../interfaces/load-proveedor.interface';
 
+import { environment } from '../../environments/environment';
 const base_url = environment.base_url;
 
 @Injectable({

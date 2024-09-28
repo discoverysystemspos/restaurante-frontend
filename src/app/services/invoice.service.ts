@@ -114,10 +114,7 @@ export class InvoiceService {
    *   LOAD INVOICE ID
   ==================================================================== */
   loadInvoiceId( id: string ){
-    return this.http.get(`${base_url}/invoice/${id}`, this.headers)
-                    .pipe(
-                      map( (resp: {ok: boolean, invoice: LoadInvoice} ) => resp.invoice)
-                    );
+    return this.http.get<{ok: boolean, invoice: LoadInvoice}>(`${base_url}/invoice/${id}`, this.headers);
 
   }
 

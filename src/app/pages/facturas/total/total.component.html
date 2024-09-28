@@ -84,6 +84,15 @@
                     </div>
                 </div>
 
+                <ng-container *ngIf="empresa">
+                    <div *ngIf="empresa.placa" class="col-12">
+                        <h6 class="text-muted">Placa</h6>
+                        <div>
+                            <input type="text" class="form-control" placeholder="buscar por placa" (keyup.enter)="buscarPlaca(searchPlaca.value)" #searchPlaca>
+                        </div>
+                    </div>
+                </ng-container>
+
             </div>
 
         </div>

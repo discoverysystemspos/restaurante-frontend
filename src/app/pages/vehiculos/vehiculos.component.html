@@ -1,0 +1,398 @@
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<header>
+    <div class="bg-header-dark py-2 px-3 mb-2">
+        <h5 class="text-white m-0">Vehiculos</h5>
+    </div>
+    <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><i class="bi-people" style="font-size: 1rem"></i> Administración de vehiculos </a>
+        </li>
+    </ul>
+</header>
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+
+<!-- =========================================================================
+    BODY 
+========================================================================= -->
+<div class="tab-content mt-4 bg-light2" id="myTabContent">
+
+    <!-- TAB 1 -->
+    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+        <div class="px-3">
+            <!-- TITLE - SUBTITLE -->
+            <div>
+                <h5 class="text-dark">ADMINISTRACIÓN DE VEHICULOS</h5>
+            </div>
+            <!-- TITLE - SUBTITLE -->
+
+            <!-- TABLE CLIENTS -->
+            <div class="shadow-lg p-3 mb-5 rounded bg-white">
+
+                <!-- CARGANDO -->
+                <div *ngIf="cargando">
+                    <div class="text-center p-4">
+                        <div class="spinner-grow text-secondary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <small class="text-muted">cargando...</small>
+                </div>
+                <!-- CARGANDO -->
+
+                <div *ngIf="!cargando">
+
+                    <div>
+                        <div class="form-floating mb-2">
+                            <span class="position-absolute top-50 start-90 translate-middle"><i class=" bi-search " style="font-size: 1rem "></i></span>
+                            <input type="text" class="form-control" id="floatingInput" placeholder="Buscar Cliente" (keyup)="buscar(search.value)" #search>
+                            <label for="floatingInput ">Buscar Vehiculo</label>
+                        </div>
+                    </div>
+
+                    <!-- BTN CREAR VEHICULO -->
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-sm btn-primary btnW waves-effect waves-ligth" data-bs-toggle="modal" data-bs-target="#nuevoVehiculo">Crear Vehiculo</button>
+                    </div>
+                    <!-- BTN CREAR VEHICULO -->
+
+                    <div class="my-2">
+
+                        <label for="mostrar" class="me-2">Mostrar: </label>
+                        <select name="" id="" [value]="query.hasta" #mostrar (change)="limiteChange(mostrar.value)">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="250">250</option>
+                            <option value="500">500</option>
+                        </select>
+
+                    </div>
+
+
+                    <div class="table-responsive ">
+                        <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                            <thead class="border-bottom ">
+                                <tr>
+                                    <th class="text-muted " scope="col ">Placa</th>
+                                    <th class="text-muted " scope="col ">Modelo</th>
+                                    <th class="text-muted " scope="col ">Marca</th>
+                                    <th class="text-muted " scope="col ">Año</th>
+                                    <th class="text-muted " scope="col ">Cliente</th>
+                                    <th class="text-muted w100 " scope="col ">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngIf="vehiculos.length === 0" class="text-center ">
+                                    <th colspan="10" class="py-4">
+                                        <h4 class="text-muted">Sin Resultados</h4>
+                                    </th>
+                                </tr>
+                                <tr class="trHover" *ngFor="let vehiculo of vehiculos; let i=index ">
+                                    <td>{{ vehiculo.placa }}</td>
+                                    <td>{{ vehiculo.model }}</td>
+                                    <td>{{ vehiculo.brand }}</td>
+                                    <td>{{ vehiculo.year }}</td>
+                                    <td>{{ vehiculo.client.name }} <span *ngIf="vehiculo.client.phone">| {{ vehiculo.client.phone }} </span> </td>
+                                    <td class="text-center">
+                                        <button type="button" (click)="selectedProovedor(vehiculo)" class="btn btn-link p-1 text-primary" data-bs-toggle="modal" data-bs-target="#actualizarVehiculo"><i class="bi-pen" style="font-size: 0.9rem"></i></button>
+                                        <button type="button" (click)="loadFacturas(vehiculo)" class="btn btn-link p-1 text-warning" data-bs-toggle="modal" data-bs-target="#facturas"><i class="bi-calendar-event" style="font-size: 0.9rem"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <!-- BTN SIGUIENTE Y ANTERIOR -->
+                    <div class="row">
+                        <div class="col col-md-4">
+                            <small class="text-muted">Total de vehiculos: ({{totalVehiculos}})</small>
+                            <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ query.desde + 1}} Hasta el: {{ query.desde + vehiculos.length }})</small>
+                        </div>
+
+                        <div *ngIf="search.value.length === 0" class="col d-flex justify-content-end">
+                            <button type="button" [disabled]="query.desde === 0" (click)="cambiarPagina(query.hasta * -1)" class="btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
+                            <button type="button" [disabled]="( query.desde + query.hasta ) >= totalVehiculos" (click)="cambiarPagina(query.hasta)" class=" btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
+                        </div>
+                    </div>
+                    <!-- BTN SIGUIENTE Y ANTERIOR -->
+
+                </div>
+            </div>
+            <!-- TABLE CLIENTS -->
+
+
+
+        </div>
+    </div>
+    <!-- TAB 1 -->
+
+</div>
+<!-- =========================================================================
+    BODY 
+========================================================================= -->
+
+<!-- =========================================================================
+    NUEVO VEHICULO
+========================================================================= -->
+<div class="modal fade" id="nuevoVehiculo" tabindex="-1" aria-labelledby="nuevoVehiculoModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="nuevoVehiculoModal"> Nuevo Vehiculo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <h5 class="text-muted">Buscar Cliente</h5>
+
+                <div class="col-md-12 mt-2 px-md-1">
+
+                    <input type="text" class="form-control" placeholder="buscar cliente" (keyup)="buscarClient(searchClient.value)" #searchClient>
+
+                    <div *ngIf="listClients.length > 0 && searchClient.value.length !== 0" class="bg-white px-2 shadow col-auto" style="position: absolute; z-index: 1020;">
+
+                        <ul class="list-group list-group-flush overflow-auto" style="max-height: 150px;">
+
+                            <li class="list-group-item py-1">
+                                <h6>Resultados: ({{ listClients.length }})</h6>
+                            </li>
+
+                            <li class="list-group-item py-1" *ngFor="let cliente of listClients">
+                                <button [disabled]="!cliente.status" class="border-0 bg-white w-100 text-start" (click)="clientS = cliente; listClients = [] " type="button">
+                                    <div class="d-flex">
+                                        <div class="align-self-center">
+                                            <span> {{ cliente.name }} </span>
+                                            <span> {{ cliente.cedula }} </span>
+                                            <span> {{ cliente.phone }} </span>
+                                            <span *ngIf="!cliente.status" class="badge rounded-pill bg-danger">Eliminado</span>
+                                        </div>
+                                    </div>
+                                </button>
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- CLIENTE SELECCIONADO -->
+                <div *ngIf="clientS">
+
+                    <h5 class="text-muted">Informacion del Cliente</h5>
+
+                    <div class="form-group">
+
+                        <div class="form-floating">
+                            <input id="Nombre" readonly class="form-control text-capitalize" [value]="clientS.name">
+                            <label for="Nombre">Nombre</label>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+
+                        <div class="form-floating">
+                            <input id="cedula" readonly type="text" class="form-control text-capitalize" [value]="clientS.cedula">
+                            <label for="cedula">Cedula</label>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="newProveedorForm" autocomplete="off" [formGroup]="newForm" (ngSubmit)="create()">
+
+                    <h5 class="text-muted">Informacion del vehiculo nuevo</h5>
+
+                    <div class="form-group">
+                        <div class="form-floating">
+                            <input id="placa" formControlName="placa" type="text" class="form-control text-capitalize" placeholder="Placa">
+                            <label for="placa">Placa</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <div class="form-floating">
+                            <input id="marca" formControlName="brand" type="text" class="form-control" placeholder="Marca">
+                            <label for="marca">Marca</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-floating">
+                            <input id="modelo" formControlName="model" type="text" class="form-control text-capitalize" placeholder="Modeo">
+                            <label for="modelo">Modeo</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-floating">
+                            <input id="año" formControlName="year" type="text" class="form-control" placeholder="Año">
+                            <label for="año">Año</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-floating">
+                            <textarea id="descripcion" formControlName="description" placeholder="Descripción" class="form-control" name="" id="" cols="30" rows="10"></textarea>
+                            <label for="descripcion">Descripción</label>
+                        </div>
+                    </div>
+
+
+                    <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =========================================================================
+    ACTUALIZR VEHICULO
+========================================================================= -->
+<div class="modal fade" id="actualizarVehiculo" tabindex="-1" aria-labelledby="actualizarVehiculo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="actualizarVehiculo">Actualizar Vehiculo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <form id="newProveedorForm" autocomplete="off" [formGroup]="updateForm" (ngSubmit)="update()">
+
+                    <h5 class="text-muted">Informacion del vehiculo</h5>
+
+                    <div class="form-group">
+                        <div class="form-floating">
+                            <input id="placa" formControlName="placa" type="text" class="form-control text-capitalize" placeholder="Placa">
+                            <label for="placa">Placa</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <div class="form-floating">
+                            <input id="marca" formControlName="brand" type="text" class="form-control" placeholder="Marca">
+                            <label for="marca">Marca</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-floating">
+                            <input id="modelo" formControlName="model" type="text" class="form-control text-capitalize" placeholder="Modeo">
+                            <label for="modelo">Modeo</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-floating">
+                            <input id="año" formControlName="year" type="text" class="form-control" placeholder="Año">
+                            <label for="año">Año</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-floating">
+                            <textarea id="descripcion" formControlName="description" placeholder="Descripción" class="form-control" name="" id="" cols="30" rows="10"></textarea>
+                            <label for="descripcion">Descripción</label>
+                        </div>
+                    </div>
+
+
+                    <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Actualizar</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =========================================================================
+    CAARGAR FACTURAS VEHICULO
+========================================================================= -->
+<div class="modal fade" id="facturas" tabindex="-1" aria-labelledby="facturasModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="facturasModal"> Facturas del Vehiculo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div>
+
+                    <!-- TABLA DE FACTURAS A CREDITOS DEL CLIENTE -->
+                    <div class="table-responsive ">
+                        <table class="table table-borderless table-striped table-hover table-sm animated fadeIn overflow-auto ">
+                            <thead class="border-bottom ">
+                                <tr>
+                                    <th class="text-muted " scope="col ">#</th>
+                                    <th class="text-muted " scope="col " colspan="2 ">Cliente</th>
+                                    <th class="text-muted " scope="col ">Cedula</th>
+                                    <th class="text-muted " scope="col " colspan="2 ">Ruta</th>
+                                    <th class="text-muted " scope="col ">Monto</th>
+                                    <th class="text-muted " scope="col ">Abonado</th>
+                                    <th class="text-muted " scope="col ">Metodo</th>
+                                    <th class="text-muted " scope="col ">fecha</th>
+                                    <th class="text-muted " scope="col "></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngIf="facturas.length===0 " class="text-center ">
+                                    <th colspan="10 " class="py-4 ">
+                                        <h4 class="text-muted ">Este vehiculo no tiene facturas</h4>
+                                    </th>
+                                </tr>
+
+                                <ng-container *ngFor="let factura of facturas; let i=index ">
+
+                                    <tr class="trHover " tabindex="0 " data-bs-toggle="tooltip " title="Cajero: {{ factura.user.name }} ">
+                                        <th>{{ factura.invoice }}</th>
+                                        <td colspan="2 ">
+                                            {{ factura.client.name }}
+                                            <span *ngIf="!factura.status " class="badge rounded-pill bg-danger ">Cancelada</span>
+                                            <span *ngIf="factura.credito && factura.status " class="badge rounded-pill bg-warning ">Credito <span *ngIf="factura.apartado" >- Apartado </span> </span>
+                                        </td>
+                                        <td> {{ factura.client.cedula }} </td>
+                                        <td colspan="2 "> {{ factura.mesa.name }} </td>
+                                        <td> {{ factura.amount | currency: 'COP' }} </td>
+                                        <td> {{ factura.totalAbonado | currency: 'COP' }} </td>
+                                        <td> {{ factura.type }} </td>
+                                        <td> {{ factura.fecha | date:'medium' }} </td>
+                                        <td class="text-center ">
+                                            <a [routerLink]="[ '/dashboard/factura', factura.iid] " class="btn btn-link p-1 text-primary" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-box-arrow-up-right "></i></a>
+                                        </td>
+                                    </tr>
+
+                                </ng-container>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- TABLA DE FACTURAS A CREDITOS DEL CLIENTE -->
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

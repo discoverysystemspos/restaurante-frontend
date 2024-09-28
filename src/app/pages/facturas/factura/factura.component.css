@@ -16,3 +16,24 @@
     flex: 1;
     justify-content: center;
 }
+
+.tabla-con-marca {
+    position: relative;
+    width: 100%;
+    z-index: 2;
+}
+
+.tabla-con-marca::before {
+    content: "CANCELADO";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    color: rgba(0, 0, 0, 0.2);
+    /* Color rojo con transparencia */
+    white-space: nowrap;
+    z-index: 1;
+    pointer-events: none;
+    /* Evita que interfiera con el contenido */
+}

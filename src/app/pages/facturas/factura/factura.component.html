@@ -77,6 +77,11 @@
                 <i class="bi bi-file-pdf"></i> Factura Electronica
             </a>
 
+            <ng-container *ngIf="empresa">
+                <button *ngIf="empresa.taller" type="button" class="btn btn-primary btn-sm mx-1 my-2" data-bs-toggle="modal" data-bs-target="#imgUp"> 
+                    Imagenes
+                </button>
+            </ng-container>
         </div>
 
         <div class="row">
@@ -114,6 +119,7 @@
                                     <p style="font-size: 0.9rem;" *ngIf="factura.client?.address" class="mb-0 text-dark"> <strong>Dirección:</strong> <small> {{ factura.client?.address || ''}}</small> </p>
 
                                     <p style="font-size: 0.9rem;" class="mb-0 text-dark"> <strong>Vendedor:</strong> <small> {{ factura.mesero?.name || ''}}</small> </p>
+                                    <p *ngIf="factura.placa" style="font-size: 0.9rem;" class="mb-0 text-dark"> <strong>Placa:</strong> <small> {{ factura.placa || ''}}</small> </p>
 
                                 </div>
                             </div>
@@ -163,11 +169,9 @@
                         <h4 *ngIf="!factura.status" class="text-center text-danger"> CANCELADA </h4>
                     </ng-container>
 
-
-
                     <div class=" table-responsive ">
 
-                        <table class="table table-borderless table-striped table-sm ">
+                        <table class="table table-borderless table-striped table-sm " [ngClass]=" {'tabla-con-marca': empresa.marca && !factura.credito}">
                             <thead class="border-bottom">
                                 <tr>
                                     <th scope="col">#</th>
@@ -717,3 +721,51 @@
 <!-- =========================================================================
     MODAL EDITAR CONTROL 
 ========================================================================= -->
+<!-- =========================================================================
+UO IMGS
+========================================================================= -->
+<div class="modal fade" id="imgUp" tabindex="-1" aria-labelledby="imgUp" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imgUp">
+                    <i class="bi-reciept" style="font-size: 1rem"></i> Imagenes </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <div *ngIf="factura" class="card">
+
+                    <div class="card-body">
+
+                        <div>
+                            <h4>Imagenes</h4>
+                            <p *ngIf="factura.images.length === 0">No se han cargado las imagenes</p>
+                        </div>
+
+                        <!-- IMGS -->
+                        <div *ngIf="factura.images.length > 0" class="mt-4 d-flex flex-wrap gap-2">
+
+                            <div *ngFor="let file of factura.images">
+                                <div style="background-image: url('{{ file.img | imagen }}');width: 150px; height: 150px; background-repeat: no-repeat; background-size: cover; background-position: center center;">
+
+                                </div>
+                                <small class="gallery-item-caption"> {{ file.date | date:'medium' }} </small>
+                                <!-- <div class="w-100 text-danger">
+                                    <a class="text-decoration-none text-danger cursor fs-sm" (click)="deleImg(file.img)">
+                                        <i class="ti ti-trash"></i> Eliminar
+                                    </a>
+                                </div> -->
+                            </div>
+
+                        </div>
+                        <!-- IMGS -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

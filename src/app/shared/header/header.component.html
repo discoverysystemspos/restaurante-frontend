@@ -24,6 +24,9 @@
                     <li class="nav-item" *ngIf="empresa?.alquileres">
                         <a class="nav-link text-white-50" routerLinkActive="activeH" routerLink="./alquileres"> Alquileres</a>
                     </li>
+                    <li class="nav-item" *ngIf="empresa?.taller">
+                        <a class="nav-link text-white-50" routerLinkActive="activeH" routerLink="./vehiculos"> Vehiculos</a>
+                    </li>
                     <li class="nav-item" *ngIf="empresa?.parqueadero">
                         <a class="nav-link text-white-50" routerLinkActive="activeH" routerLink="./configuracion/parqueadero"> Parqueadero</a>
                     </li>

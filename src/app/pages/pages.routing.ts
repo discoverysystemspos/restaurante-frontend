@@ -52,6 +52,7 @@ import { BodegasComponent } from './configuracion/bodegas/bodegas.component';
 import { BodegaComponent } from './configuracion/bodega/bodega.component';
 import { CompraComponent } from './compra/compra.component';
 import { WaiterGuardPrivate } from '../guards/waiterPrivate.guard';
+import { VehiculosComponent } from './vehiculos/vehiculos.component';
 
 const routes: Routes = [
     
@@ -112,6 +113,7 @@ const routes: Routes = [
           
           { path: 'proveedores', component: ProveedoresComponent,  canActivate: [AdminGuard, AdminGuard], data:{ titulo: 'Kardex'} },
           
+          { path: 'vehiculos', component: VehiculosComponent,  canActivate: [AdminGuard], data:{ titulo: 'Vehiculos'} },
           { path: 'ventas', component: VentasComponent,  canActivate: [WaiterGuard], data:{ titulo: 'Ventas'} },
           { path: 'ventas/mesa/:id', component: MesaComponent,  canActivate: [WaiterGuard], data:{ titulo: 'Mesa'} },
           { path: 'ventas/print/:id', component: PrintComponent,  canActivate: [WaiterGuard], data:{ titulo: 'Imprimir Factura'} }

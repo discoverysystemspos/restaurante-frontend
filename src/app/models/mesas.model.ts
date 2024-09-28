@@ -1,5 +1,11 @@
 import { Carrito, _notas } from '../interfaces/carrito.interface';
 
+interface _images{
+    img: string;
+    date: Date;
+    _id: string;
+}
+
 interface _mesero{
     name: string;
     _id: string;
@@ -38,8 +44,11 @@ export class Mesa {
         public comanda?: _comanda[],
         public menu?: boolean,
         public ingredientes?: _ingredientes[],
+        public images?: _images[],
         public descuento?: boolean,
         public porcentaje?: number,
+        public notaf?: string,
+        public placa?: string,
         public deleteClient?: boolean
     ){}
 

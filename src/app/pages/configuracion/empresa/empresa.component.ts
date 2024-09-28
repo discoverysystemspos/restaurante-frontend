@@ -61,7 +61,7 @@ export class EmpresaComponent implements OnInit {
           
           this.comisiones = datos.comisiones || [];
           
-          const { tax, name, address, phone, nit, eid, impuesto, printpos, responsable, noresponsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas, commissions, comisiones, fruver, moneda, decimal, usd,  currencyusd, cop, currencycop, basculaimp, basculatype, basculacode, electronica, min, alquileres, impresora, parqueadero, bs, currencybs, datafon, comidatafon, cotizacion } = datos;
+          const { tax, name, address, phone, nit, eid, impuesto, printpos, responsable, noresponsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas, commissions, comisiones, fruver, moneda, decimal, usd,  currencyusd, cop, currencycop, basculaimp, basculatype, basculacode, electronica, min, alquileres, impresora, parqueadero, bs, currencybs, datafon, marca, comidatafon, cotizacion, placa, taller } = datos;
 
           let tipoImpuesto = '';
 
@@ -115,7 +115,10 @@ export class EmpresaComponent implements OnInit {
               impresora,
               datafon,
               comidatafon,
-              cotizacion
+              cotizacion,
+              marca: marca || false,
+              placa: placa || false,
+              taller: taller || false,
 
             });
 
@@ -169,7 +172,10 @@ export class EmpresaComponent implements OnInit {
     impresora: 58,
     datafon: false,
     comidatafon: 0,
-    cotizacion: true
+    cotizacion: true,
+    marca: false,
+    placa: false,
+    taller: false,
   })
 
   actualizarDatos(){

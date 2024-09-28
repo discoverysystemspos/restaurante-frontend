@@ -9,6 +9,7 @@ import { User } from '../models/user.model';
 import { Product } from '../models/product.model';
 import { Impuesto } from '../models/impuesto.model';
 import { _devolucion } from './load-turno.interface';
+import { _images } from '../models/invoice.model';
 
 // INTERFACES INVOICE
 export interface _products{
@@ -95,6 +96,9 @@ export interface LoadInvoice {
     send: boolean;
     totalItems: number;
     paymentsAlquiler?: _paymentsCredito[];
+    _id?:string;
+    placa?:string;
+    images?:_images[];
 
 }
 

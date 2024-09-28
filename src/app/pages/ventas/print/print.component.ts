@@ -59,9 +59,7 @@ export class PrintComponent implements OnInit {
   ngOnInit(): void {
 
     // CARGAR DATOS
-    this.cargarDatos();
-
-      
+    this.cargarDatos();      
 
   }
 
@@ -103,13 +101,14 @@ export class PrintComponent implements OnInit {
    *   CARGAR FACTURA
   ==================================================================== */
   public totalPagos: number = 0;
+  public totalItems: number = 0;
   cargarFactura(id: string){
     
     this.invoiceService.loadInvoiceId(id)
-        .subscribe( invoice => {
+        .subscribe( ({invoice}) => {
 
           this.factura = invoice;
-          this.factura.totalItems = 0;          
+          this.totalItems = 0;      
 
           for (const pay of invoice.payments) {
             this.totalPagos = this.totalPagos + pay.amount;
@@ -120,14 +119,18 @@ export class PrintComponent implements OnInit {
             
             if( this.empresa.impuesto ){
 
-              this.impuestos.map( (impuesto) => {  
-                if (impuesto.taxid === product.product.taxid._id) {                  
-                  impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
-                }  
-              });
-            }
+              if (product.product.taxid) {
+                
+                this.impuestos.map( (impuesto) => {  
+                  if (impuesto.taxid === product.product.taxid._id) {                  
+                    impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
+                  }  
+                });
+              }
 
-            this.factura.totalItems += product.qty;
+            }            
+
+            this.totalItems += product.qty;
 
           }
           
@@ -152,9 +155,7 @@ export class PrintComponent implements OnInit {
 
     this.empresaService.getDatos()
         .subscribe( datos => {
-          this.empresa = datos;  
-          
-
+          this.empresa = datos;
           this.ticketHeader =  this.empresa.header.split('\n');
           this.ticketfooter =  this.empresa.footer.split('\n');
 

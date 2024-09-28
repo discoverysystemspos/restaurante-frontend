@@ -207,9 +207,8 @@ export class FacturaComponent implements OnInit {
 
     
     this.invoiceService.loadInvoiceId(id)
-    .subscribe( invoice => {
-
-      
+    .subscribe( ({invoice}) => {
+                
           this.pdfLink = `${base_url}/invoice/pdf/${invoice.iid}`;
           
           this.factura = invoice;
@@ -228,20 +227,23 @@ export class FacturaComponent implements OnInit {
               this.totalDevolucion += devolucion.monto;
             });
 
-          }
-
-          
+          }         
           
           for (const product of invoice.products) {
             
             if( this.empresa.impuesto ){
-              this.impuestos.map( (impuesto) => {
-  
-                if (impuesto.taxid === product.product.taxid._id) {                  
-                  impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
-                }
-  
-              });              
+
+              if(product.product.taxid){
+
+                this.impuestos.map( (impuesto) => {
+    
+                  if (impuesto.taxid === product.product.taxid._id) {                  
+                    impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
+                  }
+    
+                });              
+              }
+
             }
 
             this.factura.totalItems += product.qty;

@@ -521,6 +521,76 @@ export class TotalComponent implements OnInit {
   }
 
   /** ================================================================
+   *   BUSCAR POR PLACA
+  ==================================================================== */
+  buscarPlaca(placa: any){
+
+    this.totalAmount = 0;    
+    this.totalCost = 0;    
+    this.totalIva = 0;    
+    this.totalTip = 0;    
+    this.sinResultados = true;
+
+    this.impuestos.map( impuesto => {
+      impuesto.total = 0;
+    });
+
+    this.invoiceService.postQueryInvoice({placa})
+      .subscribe(({total, invoices, montos, costos, iva}) => {
+
+        // COMPROBAR SI EXISTEN RESULTADOS
+        if (invoices.length === 0) {
+          this.sinResultados = false;
+          this.facturas = [];
+          this.resultado = 0;
+          return;                
+        }
+        // COMPROBAR SI EXISTEN RESULTADOS
+        this.facturas = invoices; 
+        this.resultado = invoices.length; 
+        this.totalAmount = montos;
+        this.totalCost = costos;
+        this.totalIva = iva;
+
+        this.comisionCalcular(this.totalAmount);
+
+        for (const factura of invoices) {
+          
+          
+          if (factura.tip) {
+            this.totalTip += factura.tip;              
+          }
+          for (const product of factura.products) {
+            
+
+            if (product.mayor) {                  
+              factura.mayor = true;                
+            }
+            
+            if( this.empresa.impuesto ){
+              this.impuestos.map( (impuesto) => {
+                
+                if (impuesto.taxid === product.product.taxid) {
+                  
+                  impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
+
+                }
+  
+              });
+
+            }
+
+          }
+        }
+        
+
+      }, (err) => {
+          console.log(err);          
+        });
+
+  }
+
+  /** ================================================================
    *   BUSCAR POR CONTROL
   ==================================================================== */
   buscarControl(control: any){

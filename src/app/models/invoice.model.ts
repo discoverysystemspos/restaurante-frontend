@@ -2,6 +2,12 @@
 import { Carrito, _payments, _paymentsCredito } from '../interfaces/carrito.interface';
 import { _devolucion } from '../interfaces/load-turno.interface';
 
+export interface _images{
+    img: string;
+    date: Date;
+    _id: string;
+}
+
 export class Invoice {
     
     constructor(
@@ -16,7 +22,9 @@ export class Invoice {
         public invoice?: number,
         public control?: number,
         public iid?: string,
+        public placa?: string,
         public pago?: number,
+        public images?: _images[],
         public vueltos?: number,
         public nota?: string,
         public cufe?: string,

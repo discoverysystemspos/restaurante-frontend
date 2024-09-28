@@ -54,6 +54,8 @@ import { LoadTurno, _movements } from '../../../interfaces/load-turno.interface'
 import { LoadMesaId } from '../../../interfaces/load-mesas.interface';
 import { DataicoInterface } from 'src/app/interfaces/dataico.interface';
 import { Entradas } from 'src/app/models/entradas.model';
+import { Vehiculo } from 'src/app/models/vehiculos.model';
+import { FileUploadService } from 'src/app/services/file-upload.service';
 
 interface _Department {
   codigo: string,
@@ -112,7 +114,8 @@ export class MesaComponent implements OnInit {
                 private bancosService: BancosService,
                 private dataicoService: DataicoService,
                 private electronicaService: ElectronicaService,
-                private http: HttpClient) {
+                private http: HttpClient,
+                private fileUploadService: FileUploadService) {
 
                   // CARGAR INFORMACION DEL USUARIO
                   this.user = this.userService.user;                  
@@ -403,7 +406,6 @@ export class MesaComponent implements OnInit {
 
     this.mesasServices.loadMesaId(id)
         .subscribe( (mesa: any) => {
-
           this.mesaID = mesa.mid;
           this.carrito = mesa.carrito;
           this.mesa = mesa;
@@ -447,11 +449,20 @@ export class MesaComponent implements OnInit {
           this.comandaTemp = this.comanda;
 
           // OBTENER NOTAS DE LA COMANDAS
-          if (this.mesa.nota.length > 0) {
-            this.notas = this.mesa.nota;         
-          }else{
-            this.notas = [];
-          }          
+          if (this.mesa.nota) {            
+            if (this.mesa.nota.length > 0) {
+              this.notas = this.mesa.nota;         
+            }else{
+              this.notas = [];
+            }          
+          }
+
+          this.invoiceForm.reset({
+            type: 'efectivo',
+            nota: mesa.notaf || '',
+            placa: mesa.placa || '',
+            images: mesa.images || [],
+          });
 
           this.sumarTotales();
 
@@ -1780,8 +1791,8 @@ export class MesaComponent implements OnInit {
    *  REDONDEAR CENTESIMA
   ==================================================================== */
   redondearCent(monto: number){
-    // return Math.round(monto / 100) * 100;
-    return monto;
+    return Math.round(monto / 100) * 100;
+    // return monto;
   }
 
   /** ============================================================================================
@@ -2377,6 +2388,9 @@ export class MesaComponent implements OnInit {
     descuento: false,
     tip: 0,
     datafon: 0,
+    electronica: false,
+    placa: '',
+    images: [],
   })
 
   /** ================================================================
@@ -2558,7 +2572,7 @@ export class MesaComponent implements OnInit {
   public factura: LoadInvoice;
   public facturando: boolean = false;
   
-  crearFactura( send_dian: boolean ){
+  crearFactura( send_dian: boolean  = false){
 
     if (send_dian) {
       if (!this.empresa.electronica) {
@@ -2583,7 +2597,12 @@ export class MesaComponent implements OnInit {
         this.facturando = false;
         Swal.fire('Importante', 'Debe de asignar una fecha de caducida a la factura a credito', 'warning');
         return;      
-      }   
+      }
+
+      if (!this.clienteTemp.cedula) {
+        Swal.fire('Importante', 'Debe de asignar un cliente a la factura a credito', 'warning');
+        return;      
+      }
     }
 
     if (this.empresa?.datafon) {
@@ -2618,6 +2637,9 @@ export class MesaComponent implements OnInit {
       fecha: this.invoiceForm.value.fecha || new Date(),
       tip: 0,
       datafon: this.datafon,
+      electronica: send_dian,
+      placa: this.invoiceForm.value.placa,
+      images: this.mesa.images || [],
     });
 
     if(!this.clienteTemp){
@@ -2628,7 +2650,7 @@ export class MesaComponent implements OnInit {
       this.invoiceForm.value.tip = Number(this.tipIn.nativeElement.value);
       this.invoiceForm.value.amount = this.total - this.totalTip;
     }
-    
+
     try {
       
       this.invoiceService.createInvoice(this.invoiceForm.value, this.user.turno)
@@ -2666,6 +2688,7 @@ export class MesaComponent implements OnInit {
 
             // LIMPIAMOS LA MESA
             this.mesa.carrito = [];
+            this.mesa.images = [];
 
             // LIMPIAMOS LAS NOTAS DE LAS COMANDA
             this.mesa.nota = [];
@@ -2684,6 +2707,7 @@ export class MesaComponent implements OnInit {
 
                         this.facturando = false;
                         
+                        // TODO: OLD 
                         if (resp.status === 500) {
                           Swal.fire('Atención', 'No se pudo enviar la factura electronica a la DIAN, ve a la factura y vuelve a enviarla, si el problema persiste, ponte en contacto', 'warning');
                           window.open(`./dashboard/factura/${ this.factura.iid }`, '_blank');
@@ -2712,6 +2736,23 @@ export class MesaComponent implements OnInit {
                         console.log(err);
                         
                       });
+                      // TODO: OLD
+
+                  // TODO: PRUEBAS 
+                  // if (this.empresa.printpos) {              
+                  //   // window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
+                  //   // IMPRIMIR FACTURA
+                  //   setTimeout( () => {
+                  //     this.printDiv2();                      
+                  //   },2000);
+                    
+                  // }else{
+                  //   window.open(`./dashboard/factura/${ this.factura.iid }`, '_blank');
+                  //   setTimeout( () => {             
+                  //     window.location.reload();
+                  //   },1000);
+                  // }
+                  // TODO: PRUEBAS 
                   
                   
                 }else{
@@ -3274,6 +3315,32 @@ export class MesaComponent implements OnInit {
 
   }
 
+  /** ============================================================================================
+   * GUARDAR NOTA
+  ============================================================================================== */
+  saveNota(notaf: string){
+
+    this.mesasServices.updateMesa({notaf}, this.mesaID)
+        .subscribe( resp => {
+          this.mesa.notaf = notaf;
+        }, (err) => {
+          console.log(err);          
+        })
+  }
+
+  /** ============================================================================================
+   * GUARDAR PLACA
+  ============================================================================================== */
+  savePlaca(placa: string){
+
+    this.mesasServices.updateMesa({placa}, this.mesaID)
+        .subscribe( resp => {
+          this.mesa.placa = placa;
+        }, (err) => {
+          console.log(err);          
+        })
+  }
+
   /** ================================================================
    *  CONFIG SWIPER
   ==================================================================== */  
@@ -3300,6 +3367,105 @@ export class MesaComponent implements OnInit {
         centeredSlides: false,
       },
     }
+
+  }
+
+  /** ======================================================================
+   * SEARCH VEHICULO
+  ====================================================================== */
+  public vehiculos: Vehiculo[] = [];
+  public resultados: number = 0;
+  buscarV( termino:string ){
+
+    let query = `desde=${0}&hasta=${20}`;
+
+    if (termino.length === 0) {
+      this.vehiculos = [];
+      this.resultados = 0;
+      return;
+    }
+    
+    this.searchService.search('vehiculo', termino, false, query)
+        .subscribe( ({resultados}) => {
+
+          this.vehiculos = resultados;          
+
+        });   
+
+  }
+
+  /** ======================================================================
+   * SELECT VEHICULO
+  ====================================================================== */
+  @ViewChild ('searchV') searchV: ElementRef;
+  @ViewChild ('placaIn') placaIn: ElementRef;
+  selectV(vehiculo: Vehiculo){
+
+    vehiculo.client.cid = vehiculo.client._id;
+    this.placaIn.nativeElement.value = vehiculo.placa
+    
+    this.seleccionarCliente(vehiculo.client);
+    this.savePlaca(vehiculo.placa);
+    this.vehiculos = [];
+    this.searchV.nativeElement.value = '';
+
+  }
+
+  /** ================================================================
+   *   ACTUALIZAR IMAGEN
+  ==================================================================== */
+  public imgTempP: any = null;
+  public subirImagen!: any;
+  cambiarImage(file: any): any{  
+    
+    this.subirImagen = file.target.files[0];
+    
+    if (!this.subirImagen) { return this.imgTempP = null }    
+    
+    const reader = new FileReader();
+    const url64 = reader.readAsDataURL(file.target.files[0]);
+        
+    reader.onloadend = () => {
+      this.imgTempP = reader.result;      
+    }
+
+  }
+
+  /** ================================================================
+   *  SUBIR IMAGEN
+  ==================================================================== */
+  @ViewChild('fileImg') fileImg!: ElementRef;
+  public imgPerfil: string = 'no-image';
+  subirImg(){
+    
+    this.fileUploadService.updateImage( this.subirImagen, 'taller', this.mesaID)
+    .then( 
+      (resp:{ date: Date, nombreArchivo: string, ok: boolean }) => {
+        
+        this.cargarMesa(this.mesaID);
+      }
+    );
+    
+    this.fileImg.nativeElement.value = '';
+    this.imgTempP = null;
+    
+  }
+
+  /** ================================================================
+   *  ELIMINAR IMAGEN
+  ==================================================================== */
+  deleImg(img: string){
+
+    this.fileUploadService.deleteFile(img, this.mesaID, 'mesa')
+        .subscribe( (resp: {mesa: Mesa}) => {
+          
+          this.mesa.images = resp.mesa.images;
+          Swal.fire('Estupendo', 'Se ha eliminado la imagen exitosamente!', 'success');
+          
+        }, (err)  => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');          
+        });
 
   }
   

@@ -120,44 +120,13 @@ export class VentasComponent implements OnInit {
     this.sinResultados = true;
 
     this.mesasService.loadMesas(this.desde)
-        .subscribe(({ total, mesas }) => {          
-
-          // COMPROBAR SI EXISTEN RESULTADOS
-          if (mesas.length === 0) {
-            this.sinResultados = false;
-            this.cargando = false;
-            this.listaMesas = [];
-            this.resultado = 0;
-            this.btnAtras = 'disabled';
-            this.btnAdelante = 'disabled';
-            return;                
-          }
-          // COMPROBAR SI EXISTEN RESULTADOS          
-
+        .subscribe(({ total, mesas }) => {
+          
           this.totalMesas = total;
           this.listaMesas = mesas;
           this.listaMesasTemp = mesas;
           this.resultado = 0;
-          this.cargando = false;          
-
-          // BOTONOS DE ADELANTE Y ATRAS          
-          if (this.desde === 0 && this.totalMesas > 10) {
-            this.btnAtras = 'disabled';
-            this.btnAdelante = '';
-          }else if(this.desde === 0 && this.totalMesas < 11){
-            this.btnAtras = 'disabled';
-            this.btnAdelante = 'disabled';
-          }else if(this.desde > this.listaMesas.length){
-            this.btnAtras = '';
-            this.btnAdelante = 'disabled';
-          }else if((this.desde + 10) >= this.totalMesas){
-            this.btnAtras = '';
-            this.btnAdelante = 'disabled';
-          }else{
-            this.btnAtras = '';
-            this.btnAdelante = '';
-          }   
-          // BOTONOS DE ADELANTE Y ATRAS  
+          this.cargando = false;
 
         });
     

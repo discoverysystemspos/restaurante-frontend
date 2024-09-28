@@ -10,7 +10,7 @@ const local_url = environment.local_url;
 })
 export class ImagenPipe implements PipeTransform {
 
-  transform(img: string, tipo: 'products' | 'logo' | 'user' | 'department'): string {
+  transform(img: string, tipo: 'products' | 'logo' | 'user' | 'department' | 'taller' = 'taller'): string {
     if (img) {            
         return `${base_url}/uploads/${tipo}/${img}`;
     }else{

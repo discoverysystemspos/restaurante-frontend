@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { environment } from '../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 const base_url = environment.base_url;
 const local_url = environment.local_url;
@@ -10,7 +11,7 @@ const local_url = environment.local_url;
 })
 export class FileUploadService {
 
-  constructor() { }
+  constructor(  private http: HttpClient) { }
 
   /** ================================================================
    *   GET TOKEN
@@ -35,7 +36,7 @@ export class FileUploadService {
   ==================================================================== */
   async updateImage(
     archivo: File,
-    type: 'products' | 'logo' | 'user' | 'department' | 'categoria',
+    type: 'products' | 'logo' | 'user' | 'department' | 'categoria' | 'taller',
     id: string
   ){
 
@@ -68,6 +69,17 @@ export class FileUploadService {
       return false;
     }
 
+  }
+
+  /** ================================================================
+   *   DELETE IMAGES
+  ==================================================================== */
+  deleteFile(
+    img: string, 
+    id: string,
+    type: 'mesa',
+    ){
+    return this.http.delete<any>(`${base_url}/uploads/delete/${type}/${img}/${id}`, this.headers);
   }
 
 }
