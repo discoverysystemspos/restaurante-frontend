@@ -1791,7 +1791,9 @@ export class MesaComponent implements OnInit {
    *  REDONDEAR CENTESIMA
   ==================================================================== */
   redondearCent(monto: number){
-    return Math.round(monto / 100) * 100;
+
+    return monto;
+    // return Math.round(monto / 100) * 100;
     // return monto;
   }
 
@@ -2600,6 +2602,7 @@ export class MesaComponent implements OnInit {
       }
 
       if (!this.clienteTemp.cedula) {
+        this.facturando = false;
         Swal.fire('Importante', 'Debe de asignar un cliente a la factura a credito', 'warning');
         return;      
       }
@@ -2692,6 +2695,8 @@ export class MesaComponent implements OnInit {
 
             // LIMPIAMOS LAS NOTAS DE LAS COMANDA
             this.mesa.nota = [];
+            this.mesa.notaf = '';
+            this.mesa.placa = '';
             this.mesa.descuento = false;
             this.mesa.porcentaje = 0;
 

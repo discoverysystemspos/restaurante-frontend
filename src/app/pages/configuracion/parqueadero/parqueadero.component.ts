@@ -268,7 +268,12 @@ export class ParqueaderoComponent implements OnInit {
       return;
     }
 
-    this.parqueoService.createParqueo({placa, checkin: new Date().getTime(), turno: this.user.turno})
+    let now = new Date();
+    now.setSeconds(0, 0); // Establece los segundos y milisegundos a 0
+
+    let timestamp = now.getTime(); // Obtiene el tiempo en milisegundos desde el 1 de enero de 1970
+
+    this.parqueoService.createParqueo({placa, checkin: timestamp, turno: this.user.turno})
         .subscribe( ({parqueo}) => {
 
           this.vCheckin = parqueo;
@@ -397,12 +402,18 @@ export class ParqueaderoComponent implements OnInit {
       cal = 1000*60*60;
     }
     
-    
     this.diff =  (new Date().getTime() - parq.checkin)/ cal;
     this.diff = parseFloat(this.diff.toFixed(2));
     
     if (this.diff < 1 && parq.car.typeparq.type !== 'Horas') {
       this.diff = 0;
+    }
+
+    // REDONDEAR AL NUMERO MENOR SI SON MINUTOS
+    if(parq.car.typeparq.type === 'Minutos'){      
+      if (this.diff > 0) {        
+        this.diff = Math.floor(this.diff);
+      }      
     }
 
     this.total = this.diff * parq.car.typeparq.price;    

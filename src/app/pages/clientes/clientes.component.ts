@@ -496,9 +496,13 @@ export class ClientesComponent implements OnInit {
   });
 
   // OBTENER LA INFORMACION DEL CLIENTE
-  actualizarCliente(cliente: Client){
+  async actualizarCliente(cliente: Client){
+
+    await this.searchCities(cliente.department);
+
 
     this.upClientForm.reset();
+
 
     this.upClientForm.setValue({
 
@@ -567,7 +571,6 @@ export class ClientesComponent implements OnInit {
             this.cargarClientes();
   
             this.formSubmittedUp = false;
-            this.upClientForm.reset();
 
           }, (err) => {
             Swal.fire('Error', err.error.msg, 'error');

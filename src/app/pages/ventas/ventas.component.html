@@ -85,7 +85,7 @@
                             <i [ngClass]="{'text-danger': mesa.disponible == false, 'text-success': mesa.disponible == true}" class="bi-dot position-absolute top-0 start-100 translate-middle pe-4 pt-2" style="font-size: 2.5rem;"></i>
                             <h5 class="mb-0 text-wrap">{{ mesa.name }}</h5>                    
                             <img src="../../../assets/img/icons/{{ mesa.img || 'ticket.svg' }}" alt="" style="max-height: 100px;">
-                            <h6 class="mb-0 text-wrap fw-normal"> {{ mesa.mesero.name }} </h6>
+                            <h6 *ngIf="mesa.mesero" class="mb-0 text-wrap fw-normal"> {{ mesa.mesero.name }} </h6>
                             <hr *ngIf="!mesa.disponible" class="mb-2">
                             <small *ngIf="!mesa.disponible" class="mb-0 text-muted lh-1"> {{ mesa.cliente?.name }} </small>                    
                         </button>

@@ -169,7 +169,8 @@ export class VehiculosComponent implements OnInit {
 
 
         }, (err) => {
-          console.log(err);          
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');    
         })
     
 

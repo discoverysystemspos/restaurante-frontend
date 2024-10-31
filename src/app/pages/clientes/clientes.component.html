@@ -102,7 +102,7 @@
                                     <td>{{ cliente.zip }}</td>
                                     <td class="text-center">
                                         <button type="button" (click)="credito(cliente, true)" class="btn btn-link p-1 text-warning" data-bs-toggle="modal" data-bs-target="#credito"><i class="bi-calendar-event" style="font-size: 0.9rem"></i></button>
-                                        <button type="button" (click)="actualizarCliente(cliente)" class="btn btn-link p-1 text-primary" data-bs-toggle="modal" data-bs-target="#actualizarCLiente"><i class="bi-pen" style="font-size: 0.9rem"></i></button>
+                                        <button type="button" (click)="actualizarCliente(cliente)" class="btn btn-link p-1 text-primary" data-bs-toggle="modal" data-bs-target="#actualizarCLienteM"><i class="bi-pen" style="font-size: 0.9rem"></i></button>
                                         <button type="button" (click)="borrarCliente(cliente.cid)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
                                     </td>
                                 </tr>
@@ -367,11 +367,11 @@
 <!-- =========================================================================
     ACTUALIZAR CLIENTE
 ========================================================================= -->
-<div class="modal fade" id="actualizarCLiente" tabindex="-1" aria-labelledby="actualizarCLienteModal" aria-hidden="true">
+<div class="modal fade" id="actualizarCLienteM" tabindex="-1" aria-labelledby="actualizarCLienteMModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="actualizarCLienteModal"><i class="bi-pencil" style="font-size: 1rem"></i> Actualizar Cliente</h5>
+                <h5 class="modal-title" id="actualizarCLienteMModal"><i class="bi-pencil" style="font-size: 1rem"></i> Actualizar Cliente</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -589,7 +589,7 @@
 
             </div>
             <div class="modal-footer ">
-                <button type="button " class="btn btn-secondary" data-bs-dismiss="modal ">Cerrar</button>
+                <button type="button " class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
