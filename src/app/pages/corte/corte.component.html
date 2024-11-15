@@ -533,7 +533,8 @@
                         <tbody>
                             <tr style="color: black;">
                                 <td scope="row">Efectivo esperado en caja:</td>
-                                <td>{{ ( parqueos + inicial + efectivo + abEfectivo + entradas + alqEfectivo + salidas) | divisa }}</td>
+                                <td>{{ (parqueos + inicial + efectivo + abEfectivo + entradas + alqEfectivo! + salidas) - (totalDevolucion) | divisa }}</td>
+                                <td>{{ (parqueos + inicial + efectivo + abEfectivo + entradas + alqEfectivo! + salidas) - (totalDevolucion) | divisa }}</td>
                             </tr>
 
                             <tr style="color: black;">
@@ -709,7 +710,7 @@
                                     </tr>
                                     <tr class="border-top">
                                         <td colspan="2"> Total </td>
-                                        <td class="fw-bold"> {{ (parqueos + inicial + efectivo + abEfectivo + entradas + alqEfectivo + salidas) - totalDevolucion | divisa }} </td>
+                                        <td class="fw-bold"> {{ (parqueos + inicial + efectivo + abEfectivo + entradas + alqEfectivo! + salidas) - (totalDevolucion) | divisa }}</td>
                                     </tr>
 
                                 </tbody>

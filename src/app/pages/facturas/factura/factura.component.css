@@ -24,7 +24,7 @@
 }
 
 .tabla-con-marca::before {
-    content: "CANCELADO";
+    content: "PAGADO";
     position: absolute;
     top: 50%;
     left: 50%;

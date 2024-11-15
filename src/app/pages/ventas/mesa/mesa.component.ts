@@ -120,9 +120,8 @@ export class MesaComponent implements OnInit {
                   // CARGAR INFORMACION DEL USUARIO
                   this.user = this.userService.user;                  
 
-                  this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
-                    val => {}
-                  );
+                  this.printWindowSubscription = this.printerService.$printWindowOpen
+                  .subscribe(val => {});
               
                   this.$printItems = this.printerService.$printItems;
 
@@ -2388,6 +2387,7 @@ export class MesaComponent implements OnInit {
     porcentaje: 0,
     fecha: new Date(),
     descuento: false,
+    marca: false,
     tip: 0,
     datafon: 0,
     electronica: false,
@@ -2635,6 +2635,7 @@ export class MesaComponent implements OnInit {
       vueltos: this.vueltos,
       nota: this.invoiceForm.value.nota,
       apartado: this.invoiceForm.value.apartado,
+      marca: this.invoiceForm.value.marca,
       descuento: this.formDescuento.value.descuento,
       porcentaje: this.formDescuento.value.porcentaje,
       fecha: this.invoiceForm.value.fecha || new Date(),
@@ -2665,6 +2666,7 @@ export class MesaComponent implements OnInit {
             this.invoiceForm.reset({
               type: 'efectivo',
               descuento: false,
+              marca: this.factura.marca,
               porcentaje: 0
             });
 
@@ -3002,8 +3004,18 @@ export class MesaComponent implements OnInit {
   /** ================================================================
    *   IMPRIMIR
   ==================================================================== */
+  // @ViewChild ('printComandaC') printComandaC: ElementRef;
+  public printComandaC: boolean = false;
   printDiv2() {
     this.printerService.printDiv('printDiv2');
+
+    
+    if (this.printComandaC) {
+      setTimeout( () => {
+        this.printerService.printDiv('printComanda');
+      }, 2500)
+    }
+
     setTimeout( () => {
       // Swal.fire('Success', `Se ha creado la factura <strong> #${ this.factura.invoice }</strong>, exitosamente`, 'success');
       Swal.fire({

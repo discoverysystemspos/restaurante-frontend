@@ -73,7 +73,7 @@ export class TotalComponent implements OnInit {
     this.cargarVendedore();
 
     // CARGAR FACTURAS
-    this.cargarFacturas();
+    this.loadQueryInvoices();
 
     // IMPUESTOS
     this.cargarImpuestos();
@@ -223,7 +223,7 @@ export class TotalComponent implements OnInit {
     this.userService.loadUsers()
     .subscribe( ({users}) => {
       
-      this.vendedores = users;          
+      this.vendedores = users;
       
     }, (err) => { Swal.fire('Error', 'No se pueden cargar los vendedores', 'error') });
     
@@ -429,16 +429,26 @@ export class TotalComponent implements OnInit {
   /** ================================================================
    *   CAMBIAR PAGINA
   ==================================================================== */
+  @ViewChild('mostrar') mostrar!: ElementRef;
   cambiarPagina (valor: number){
-    this.desde += valor;
+    
+    this.query.desde += valor;
 
-    if (this.desde < 0) {
-      this.desde = 0;
-    }else if( this.desde > this.totalFacturas ){
-      this.desde -= valor;
+    if (this.query.desde < 0) {
+      this.query.desde = 0;
     }
+    
+    this.loadQueryInvoices();
+    
+  }
 
-    this.cargarFacturas();
+  /** ================================================================
+   *   CHANGE LIMITE
+  ==================================================================== */
+  limiteChange( cantidad: any ){  
+
+    this.query.hasta = Number(cantidad);    
+    this.loadQueryInvoices();
 
   }
 
@@ -537,6 +547,9 @@ export class TotalComponent implements OnInit {
 
     this.invoiceService.postQueryInvoice({placa})
       .subscribe(({total, invoices, montos, costos, iva}) => {
+
+        console.log(invoices);
+        
 
         // COMPROBAR SI EXISTEN RESULTADOS
         if (invoices.length === 0) {
@@ -726,6 +739,215 @@ export class TotalComponent implements OnInit {
     /* write workbook and force a download */
     XLSX.writeFile(wb, title);
 
+
+  }
+
+  /** ================================================================
+   *   RECARGAR
+  ==================================================================== */
+  recargar(){
+    this.query ={
+      desde: 0,
+      hasta: 50,
+      sort: {invoice: -1}
+    }
+
+    this.loadQueryInvoices();
+  }
+
+  /** ================================================================
+   *   BUSCAR QUERY
+  ==================================================================== */
+  public total: number = 0;
+  public query: any = {
+    desde: 0,
+    hasta: 50,
+    sort: {invoice: -1}
+  }
+
+  loadQueryInvoices(){
+
+    this.totalAmount = 0;    
+    this.totalCost = 0;    
+    this.totalIva = 0;    
+    this.totalTip = 0;
+    this.totalAbonado = 0;
+    this.cargando = true;
+
+    this.impuestos.map( impuesto => {
+      impuesto.total = 0;
+    });
+
+    this.invoiceService.postQueryInvoice(this.query)
+        .subscribe( ({total, invoices, montos, costos, iva}) => {
+
+          console.log(total);
+          
+
+        this.total = total;
+        this.cargando = false;
+        this.facturas = invoices; 
+        this.resultado = invoices.length; 
+        this.totalAmount = montos;
+        this.totalCost = costos;
+        this.totalIva = iva;
+
+        this.comisionCalcular(this.totalAmount);
+
+        for (const factura of invoices) {
+
+          if (this.query.credito) {
+            for (const pago of factura.paymentsCredit) {              
+              this.totalAbonado += pago.amount;
+            }            
+          }
+          
+          
+          if (factura.tip) {
+            this.totalTip += factura.tip;              
+          }
+          for (const product of factura.products) {
+            
+
+            if (product.mayor) {                  
+              factura.mayor = true;                
+            }
+            
+            if( this.empresa.impuesto ){
+              this.impuestos.map( (impuesto) => {
+                
+                if (impuesto.taxid === product.product.taxid) {
+                  
+                  impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
+
+                }
+  
+              });
+
+            }
+
+          }
+        }
+          
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');          
+        })
+
+  }
+
+  /** ================================================================
+   *   SELECT VENDEDOR
+  ==================================================================== */
+  seletV(mesero: string) {
+
+    if(mesero === 'none'){
+      delete this.query.mesero;
+    }else{
+      this.query.mesero = mesero;
+    }
+
+    this.loadQueryInvoices();
+  }
+
+  /** ================================================================
+   *   SELECT CLIENT
+  ==================================================================== */
+  public cliente: Client;
+  selectC(client: Client){
+
+    this.cliente = client;
+    this.query.client = this.cliente.cid!;
+    this.loadQueryInvoices();
+    this.searchClient.nativeElement.value = '';
+    this.listaClientes = [];
+
+  }
+
+  /** ================================================================
+   *   DELETE CLIENT CLIENT
+  ==================================================================== */
+  deleteClient(){
+    delete this.query.client;
+    delete this.cliente;
+    this.loadQueryInvoices();
+  }
+
+  /** ================================================================
+   *   SEARCH FOR CONTROL
+  ==================================================================== */
+  searchInvoiceControl(control: any){
+
+    if (control.length === 0 || control === 0 || control < 0) {
+      delete this.query.control;
+    }else{
+      control = Number(control)
+      this.query.control = control;
+    }
+
+    this.loadQueryInvoices();
+
+  }
+
+  /** ================================================================
+   *   SEARCH FOR DATE
+  ==================================================================== */
+  searchForDates(inicial:Date, final: Date){
+
+    if (inicial === null && final === null || !inicial || !final) {
+      return;
+    }
+
+    // SET HOURS      
+    inicial = new Date(inicial);      
+    let initial = new Date(inicial.getTime() + 1000 * 60 * 60 * 5);
+
+    final = new Date(final);
+    let end = new Date(final.getTime() + 1000 * 60 * 60 * 5);      
+    // SET HOURS 
+
+    let url = document.URL.split(':');
+    if (url[0] === 'https') {
+      initial = new Date(inicial.getTime() + 1000 * 60 * 60 - 7200000); 
+      end = new Date(final.getTime() + 1000 * 60 * 60 - 3600000);        
+    }
+
+    this.query.$and = [{ fecha: { $gte: new Date(initial), $lt: new Date(end) } }];
+
+    this.loadQueryInvoices();   
+    
+  }
+
+  /** ================================================================
+   *   LOAD FOR STATUS
+  ==================================================================== */
+  searchStatus(status: boolean){
+
+    if (status) {
+      delete this.query.status;
+    }else{
+      this.query.status = status;
+    }
+
+    this.loadQueryInvoices();   
+
+  }
+
+  /** ================================================================
+   *   TIPO DE FACTURA
+  ==================================================================== */
+  public totalAbonado: number = 0;
+  searchInvoiceType(type: string){
+
+    if (type === 'all') {
+      delete this.query.credito;      
+    }else if (type === 'credito') {
+      this.query.credito = true;      
+    }else{
+      this.query.credito = false;
+    }
+
+    this.loadQueryInvoices();
 
   }
 

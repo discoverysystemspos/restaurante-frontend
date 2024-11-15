@@ -8,7 +8,10 @@
     <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
 
         <li class="nav-item" role="presentation">
-            <a class="nav-link text-dark active" id="ticket1-tab"><i class="bi-gear" style="font-size: 1rem"></i> Tablero Principal</a>
+            <a class="nav-link text-dark active" id="ticket1-tab" data-bs-toggle="tab" href="#ticket1" role="tab" aria-controls="ticket1" aria-selected="true"><i class="bi-gear" style="font-size: 1rem"></i> Tablero Principal</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-dark" id="pisos-tab"  data-bs-toggle="tab" href="#pisos" role="tab" aria-controls="pisos" aria-selected="true"><i class="bi-grid" style="font-size: 1rem"></i> Pisos</a>
         </li>
 
     </ul>
@@ -19,93 +22,103 @@
 
 <div class="container-fluid my-4">
 
-    <!-- TABLE CLIENTS -->
-    <div class="shadow-lg p-3 mb-5 rounded bg-white">
+    <div class="tab-content mt-4 bg-light2" id="myTabContent">
 
-        <!-- CARGANDO -->
-        <div *ngIf="cargando">
-            <div class="text-center p-4">
-                <div class="spinner-grow text-secondary" role="status">
-                    <span class="visually-hidden">Loading...</span>
+        <!-- TABLE CLIENTS -->
+        <div class="tab-pane fade show active" id="ticket1" role="tabpanel" aria-labelledby="ticket1-tab">
+            <div class="shadow-lg p-3 rounded bg-white">
+
+                <!-- CARGANDO -->
+                <div *ngIf="cargando">
+                    <div class="text-center p-4">
+                        <div class="spinner-grow text-secondary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <small class="text-muted">cargando...</small>
+                </div>
+                <!-- CARGANDO -->
+
+                <div *ngIf="!cargando">
+                    <div>
+                        <div class="form-floating mb-2">
+                            <span class="position-absolute top-50 start-90 translate-middle"><i class=" bi-search " style="font-size: 1rem "></i></span>
+                            <input type="text" class="form-control" id="floatingInput2" placeholder="Buscar" (keyup)="buscar(search.value)" #search>
+                            <label for="floatingInput2 ">Buscar</label>
+                        </div>
+                    </div>
+
+                    <!-- BTN CREAR MESA -->
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-sm btn-primary btnW waves-effect waves-ligth" data-bs-toggle="modal" data-bs-target="#nuevaMesa">Crear</button>
+                    </div>
+                    <!-- BTN CREAR MESA -->
+
+                    <div class="table-responsive ">
+                        <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                            <thead class="border-bottom ">
+                                <tr>
+                                    <th class="text-muted " scope="col " colspan="2">Mesa</th>
+                                    <th class="text-muted " scope="col ">Disponibilidad</th>
+                                    <th class="text-muted " scope="col ">Activa</th>
+                                    <th class="text-muted w100 " scope="col ">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngIf="!sinResultados" class="text-center ">
+                                    <th colspan="10" class="py-4">
+                                        <h4 class="text-muted">Sin Resultados</h4>
+                                    </th>
+                                </tr>
+
+                                <tr class="trHover" *ngFor="let mesa of listaMesas; let i = index">
+                                    <td colspan="2">{{ mesa.name }}</td>
+                                    <td>
+                                        <span *ngIf="mesa.disponible" class="badge rounded-pill bg-success text-white-75">Disponible</span>
+                                        <span *ngIf="!mesa.disponible" class="badge rounded-pill bg-danger text-white-75">Ocupada</span>
+                                    </td>
+                                    <td>
+                                        <button *ngIf="mesa.status" (click)="statusUpdate(mesa.mid)" type="button" class="btn btnW waves-effect waves-ligth btn-success btn-sm">Activa</button>
+                                        <button *ngIf="!mesa.status" (click)="statusUpdate(mesa.mid)" type="button" class="btn btnW waves-effect waves-ligth btn-danger btn-sm">Desactivada</button>
+                                    </td>
+                                    <td class="text-center">
+                                        <button type="button" (click)="informacionMesa(mesa)" class="btn btn-link p-1 text-primary" data-bs-toggle="modal" data-bs-target="#actualizarMesa">
+                                            <i class="bi bi-box-arrow-up-right"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <!-- BTN SIGUIENTE Y ANTERIOR -->
+                    <div class="row">
+                        <div class="col col-md-4">
+                            <small class="text-muted">Total de cajas: ({{totalMesas}})</small>
+                            <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
+                            <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + listaMesas.length }})</small>
+                        </div>
+
+                        <!-- <div *ngIf="search.value.length === 0" class="col d-flex justify-content-end">
+                            <button type="button" (click)="cambiarPagina(-10)" class="{{btnAtras}} btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
+                            <button type="button" (click)="cambiarPagina(10)" class="{{btnAdelante}} btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
+                        </div> -->
+                    </div>
+                    <!-- BTN SIGUIENTE Y ANTERIOR -->
+
                 </div>
             </div>
-            <small class="text-muted">cargando...</small>
         </div>
-        <!-- CARGANDO -->
+        <!-- TABLE CLIENTS -->
 
-        <div *ngIf="!cargando">
-            <div>
-                <div class="form-floating mb-2">
-                    <span class="position-absolute top-50 start-90 translate-middle"><i class=" bi-search " style="font-size: 1rem "></i></span>
-                    <input type="text" class="form-control" id="floatingInput2" placeholder="Buscar" (keyup)="buscar(search.value)" #search>
-                    <label for="floatingInput2 ">Buscar</label>
-                </div>
-            </div>
-
-            <!-- BTN CREAR MESA -->
-            <div class="d-flex justify-content-end">
-                <button type="button" class="btn btn-sm btn-primary btnW waves-effect waves-ligth" data-bs-toggle="modal" data-bs-target="#nuevaMesa">Crear</button>
-            </div>
-            <!-- BTN CREAR MESA -->
-
-            <div class="table-responsive ">
-                <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
-                    <thead class="border-bottom ">
-                        <tr>
-                            <th class="text-muted " scope="col " colspan="2">Mesa</th>
-                            <th class="text-muted " scope="col ">Disponibilidad</th>
-                            <th class="text-muted " scope="col ">Activa</th>
-                            <th class="text-muted w100 " scope="col ">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngIf="!sinResultados" class="text-center ">
-                            <th colspan="10" class="py-4">
-                                <h4 class="text-muted">Sin Resultados</h4>
-                            </th>
-                        </tr>
-
-                        <tr class="trHover" *ngFor="let mesa of listaMesas; let i = index">
-                            <td colspan="2">{{ mesa.name }}</td>
-                            <td>
-                                <span *ngIf="mesa.disponible" class="badge rounded-pill bg-success text-white-75">Disponible</span>
-                                <span *ngIf="!mesa.disponible" class="badge rounded-pill bg-danger text-white-75">Ocupada</span>
-                            </td>
-                            <td>
-                                <button *ngIf="mesa.status" (click)="statusUpdate(mesa.mid)" type="button" class="btn btnW waves-effect waves-ligth btn-success btn-sm">Activa</button>
-                                <button *ngIf="!mesa.status" (click)="statusUpdate(mesa.mid)" type="button" class="btn btnW waves-effect waves-ligth btn-danger btn-sm">Desactivada</button>
-                            </td>
-                            <td class="text-center">
-                                <button type="button" (click)="informacionMesa(mesa)" class="btn btn-link p-1 text-primary" data-bs-toggle="modal" data-bs-target="#actualizarMesa">
-                                    <i class="bi bi-box-arrow-up-right"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-
-                </table>
-
-            </div>
-
-            <!-- BTN SIGUIENTE Y ANTERIOR -->
-            <div class="row">
-                <div class="col col-md-4">
-                    <small class="text-muted">Total de cajas: ({{totalMesas}})</small>
-                    <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
-                    <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + listaMesas.length }})</small>
-                </div>
-
-                <!-- <div *ngIf="search.value.length === 0" class="col d-flex justify-content-end">
-                    <button type="button" (click)="cambiarPagina(-10)" class="{{btnAtras}} btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
-                    <button type="button" (click)="cambiarPagina(10)" class="{{btnAdelante}} btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
-                </div> -->
-            </div>
-            <!-- BTN SIGUIENTE Y ANTERIOR -->
-
+        <!-- TAB PISOS -->
+        <div class="tab-pane fade" id="pisos" role="tabpanel" aria-labelledby="pisos-tab">
+            <app-pisos></app-pisos>
         </div>
+        <!-- TAB PISOS -->
     </div>
-    <!-- TABLE CLIENTS -->
-
 
 </div>
 
@@ -155,7 +168,7 @@
 
                     </div>
 
-                    <div class="row mb-3">
+                    <div class="row mb-2">
 
                         <div class="col-md-12 px-md-1">
 
@@ -165,6 +178,24 @@
                                     <option selected value="0">Seleccionar</option>
                                     <option *ngFor="let mesero of meseros" [value]="mesero.uid">
                                         {{ mesero.name }}
+                                    </option>
+                              </select>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row mb-3" *ngIf="pisos.length > 0">
+
+                        <div class="col-md-12 px-md-1">
+
+                            <div class="form-group">
+                                <label for="">Piso</label>
+                                <select formControlName="piso" class="form-control" name="">
+                                    <option selected value="null">Seleccionar</option>
+                                    <option *ngFor="let piso of pisos" [value]="piso.piid">
+                                        {{ piso.name }}
                                     </option>
                               </select>
                             </div>
@@ -249,6 +280,24 @@
                                 <option *ngFor="let mesero of meseros" [value]="mesero.uid">
                                     {{ mesero.name }}
                                 </option>
+                              </select>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row mb-2" *ngIf="pisos.length > 0">
+
+                        <div class="col-md-12 px-md-1">
+
+                            <div class="form-group">
+                                <label for="">Piso</label>
+                                <select formControlName="piso" class="form-control" name="">
+                                    <option selected value="null">Seleccionar</option>
+                                    <option *ngFor="let piso of pisos" [value]="piso.piid">
+                                        {{ piso.name }}
+                                    </option>
                               </select>
                             </div>
 

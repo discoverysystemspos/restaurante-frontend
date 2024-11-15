@@ -70,7 +70,7 @@
             </div>
             <!-- FACTURA -->
 
-            <table class="table table-borderless table-hover table-sm" [ngClass]=" {'tabla-con-marca': empresa.marca && !factura.credito}">
+            <table class="table table-borderless table-hover table-sm" [ngClass]=" {'tabla-con-marca': factura.marca && !factura.credito}">
                 <tbody style="color: black;">
                     <tr *ngFor="let item of factura?.products" class="trHover">
                         <td class="py-0" style="line-height: 0.8rem">

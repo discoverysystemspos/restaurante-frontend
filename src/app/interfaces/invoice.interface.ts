@@ -82,6 +82,7 @@ export interface LoadInvoice {
     vueltos: number;
     nota: string;
     apartado: boolean;
+    marca: boolean;
     descuento: boolean;
     porcentaje: number;
     paymentsCredit: _paymentsCredito[];

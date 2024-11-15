@@ -1,4 +1,5 @@
 import { Carrito, _notas } from '../interfaces/carrito.interface';
+import { Piso } from './pisos.model';
 
 interface _images{
     img: string;
@@ -49,6 +50,7 @@ export class Mesa {
         public porcentaje?: number,
         public notaf?: string,
         public placa?: string,
+        public piso?: Piso,
         public deleteClient?: boolean
     ){}
 

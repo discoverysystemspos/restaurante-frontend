@@ -5,6 +5,15 @@
     <div class="bg-header-blue py-2 px-3 mb-2">
         <h5 class="text-white m-0">Ventas</h5>
     </div>
+
+    <ul class="nav nav-tabs px-3">
+        <li class="nav-item">
+          <a (click)="selectPiso('todos')" class="nav-link text-dark active cursor" id="todos-tab"  data-bs-toggle="tab" role="tab" aria-controls="todos" aria-selected="true" >Todos</a>
+        </li>
+        <li class="nav-item" *ngFor="let piso of pisos">
+          <a (click)="selectPiso(piso.piid)" class="nav-link text-dark cursor" id="{{piso.name}}-tab"  data-bs-toggle="tab" role="tab" aria-controls="{{piso.name}}" aria-selected="true"> {{ piso.name }} </a>
+        </li>
+      </ul>
 </header>
 <!-- =========================================================================
     HEADER 
@@ -15,7 +24,7 @@
 <div class="container-fluid">
 
     <!-- MESAS -->
-    <div class="p-2 border-bottom border-top my-2">
+    <div class="p-2 border-bottom my-2">
         <h4 class="mb-2 text-muted">Tickets</h4>
 
         <div class="col-md-8 mx-auto">

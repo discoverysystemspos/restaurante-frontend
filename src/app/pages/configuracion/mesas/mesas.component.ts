@@ -12,6 +12,8 @@ import { UserService } from '../../../services/user.service';
 import { User } from '../../../models/user.model';
 
 import { environment } from '../../../../environments/environment';
+import { PisosService } from 'src/app/services/pisos.service';
+import { Piso } from 'src/app/models/pisos.model';
 const base_url = environment.base_url;
 
 @Component({
@@ -37,15 +39,19 @@ export class MesasComponent implements OnInit {
   constructor(  private mesasService: MesasService,
                 private searchService: SearchService,
                 private fb: FormBuilder,
+                private pisosService: PisosService,
                 private userService: UserService ) { }
 
   ngOnInit(): void {
+
+    // LOAD PISOS
+    this.loadPisos();
 
     //  CARGAR MESEROS
     this.cargarMeseros();
 
     //  CARGAR MESAS
-    this.cargarMesas();
+    this.cargarMesas();    
 
   }
 
@@ -143,6 +149,7 @@ export class MesasComponent implements OnInit {
   public newMesaForm = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(1), Validators.min(1)]],
     mesero: [0, [Validators.required, Validators.minLength(2)]],
+    piso: null,
     img: ['ticket.svg']
   });
 
@@ -159,7 +166,11 @@ export class MesasComponent implements OnInit {
       Swal.fire('Error', 'Debes de asignar un usuario para crear el item', 'error');
       return;
     }
-    
+
+    if (this.newMesaForm.value.piso === 'null') {
+      this.newMesaForm.value.piso = null;
+    }
+
     this.mesasService.createMesa(this.newMesaForm.value)
         .subscribe( (resp:{ok: boolean, caja: Mesa}) => {
           
@@ -195,6 +206,7 @@ export class MesasComponent implements OnInit {
     id: ['', [Validators.required, Validators.minLength(3)]],
     img: [''],
     ruta: [''],
+    piso: [''],
   });
 
   informacionMesa( mesa: Mesa ){
@@ -204,7 +216,8 @@ export class MesasComponent implements OnInit {
       mesero: mesa.mesero._id,
       id: mesa.mid,
       ruta: `${base_url}/menu/${mesa.mid}`,
-      img: mesa.img || 'ticket.svg'
+      img: mesa.img || 'ticket.svg',
+      piso: mesa.piso?._id || 'null'
     });
 
   }
@@ -220,12 +233,15 @@ export class MesasComponent implements OnInit {
       return;
     }
 
+    if (this.upMesaForm.value.piso === 'null') {
+      this.upMesaForm.value.piso = null;
+    }
+
     this.mesasService.updateMesa(this.upMesaForm.value, this.upMesaForm.value.id)
         .subscribe((resp:{ok: boolean, mesa: Mesa}) => {          
 
           this.formSubmittedUp = false;
           this.cargarMesas();
-          this.upMesaForm.reset();
           Swal.fire('Estupendo', 'Se ha actualizado la mesa exitosamente', 'success');
 
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
@@ -263,9 +279,27 @@ export class MesasComponent implements OnInit {
   }
 
   /** ================================================================
-   *   ACTUALIZAR STATUS DE LA MESA
+   *   CARGAR PISOS
   ==================================================================== */
-  statusUpdate(){}
+  public pisos: Piso[] = [];
+  public queryP: any = {
+    desde: 0,
+    hasta: 50,
+    sort: {}
+  }
+  loadPisos(){
+
+    this.pisosService.loadPisos(this.queryP)
+        .subscribe( ({pisos}) => {
+
+          this.pisos = pisos;
+
+        }, (err) => {
+          console.log(err.error);
+          Swal.fire('Error', err.error.msg);
+        })
+
+  }
 
 
 

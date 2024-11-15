@@ -39,6 +39,13 @@ export class MesasService {
   }
 
   /** ================================================================
+   *  LOAD PISOS QUERY
+  ==================================================================== */
+  loadMesasQuery(query: any){    
+    return this.http.post<LoadMesas>(`${base_url}/mesas/query`, query, this.headers);
+  }
+
+  /** ================================================================
    *   CREATE MESA
   ==================================================================== */
   createMesa(formData: Mesa){

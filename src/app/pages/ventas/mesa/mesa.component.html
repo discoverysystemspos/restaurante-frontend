@@ -459,6 +459,18 @@
                                                 <input type="datetime-local" formControlName="fecha" class="form-control" id="fecha" placeholder="Selecciona una fecha limite" #fechCredito>
                                             </div> -->
 
+                                            <div class="mx-auto my-3" *ngIf="empresa?.marca">
+
+                                                <div class="form-check">
+                                                    <input formControlName="marca" class="form-check-input" type="checkbox" value="" id="marcaCheck">
+
+                                                    <label class="form-check-label h5" for="marcaCheck">
+                                                        Marca de Pagado
+                                                    </label>
+                                                </div>
+
+                                            </div>
+
                                             <div class="d-flex flex-wrap gap-2 justify-content-center">
                                                 <div class="">
 
@@ -533,6 +545,8 @@
                                                 </div>
 
                                             </div>
+
+                                            
 
                                             <div class="mx-auto my-3" *ngIf="invoiceForm.value.type === 'credito'">
 
@@ -805,7 +819,7 @@
 
                 </div>
 
-                <div class="d-flex justify-content-center">
+                <div class="d-flex justify-content-center mb-3">
                     <div class="card border-0 pb-4" [ngStyle]="{'width': empresa.impresora === 58 ? '14rem' : '24rem'}" style="width: 14rem; color:black; background: white;" id="printDiv2" *ngIf="factura">
 
                         <!-- EMPRESA -->
@@ -865,7 +879,7 @@
                         </div>
                         <!-- FACTURA -->
 
-                        <table class="table table-borderless table-hover table-sm" [ngClass]=" {'tabla-con-marca': empresa.marca && !factura.credito}">
+                        <table class="table table-borderless table-hover table-sm" [ngClass]=" {'tabla-con-marca': factura.marca && !factura.credito}">
                             <tbody style="color: black;">
                                 <tr *ngFor="let item of factura.products" class="trHover">
                                     <td class="py-0" style="line-height: 0.8rem">
@@ -1039,6 +1053,82 @@
                     </div>
                 </div>
 
+                <div class="d-flex justify-content-center mb-3" *ngIf="printComandaC">
+                    <div class="card border-0 pb-4" [ngStyle]="{'width': empresa.impresora === 58 ? '14rem' : '24rem'}" style="width: 14rem; color:black; background: white;" id="printComanda">
+                        <div class=" text-wrap bg-white p-3 position-relative">
+                            <h2 class="mb-2 text-center">Orden # {{ mesa.fecha | date: 'H-ms' }}</h2>
+                            <i [ngClass]="{'text-danger': mesa.disponible == false, 'text-success': mesa.disponible == true}" class="bi-dot position-absolute top-0 start-100 translate-middle pe-4 pt-2" style="font-size: 2.5rem;"></i>
+                            <h5 class="mb-0 text-center text-wrap text-capitalize">{{ mesa.name }}</h5>
+                            <h6 class="mb-0 text-center text-wrap text-capitalize fw-normal"> {{ mesa.mesero.name }} </h6>
+                            <p class="mb-0 text-center"> Fecha: {{ mesa.fecha | date: "medium" }} </p>
+                            <h5 class="mb-0 text-center text-wrap text-capitalize" *ngIf="mesa.cliente?.name">{{ mesa.cliente?.name || 'Consumidor Final' }}</h5>
+        
+        
+                            <div class="table-responsive">
+        
+                                <table class="table table-sm align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Item</th>
+                                            <th scope="col">Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+        
+                                        <ng-container *ngFor="let item of comandas; let i = index">
+        
+                                            <tr style="color: black;">
+                                                <td>
+                                                    <h6 class="mb-0 lh-1 text-capitalize fs-5" style="color: #000;"> <span class="lh-1">01 - {{item.product.name}}  </span></h6>
+                                                    <small> {{ item.fecha | date:'short' }} </small>
+                                                    <!-- <span *ngFor="let ingrediente of item.ingredientes" class="badge rounded-pill bg-light text-primary fw-normal"> {{ ingrediente.name }} </span> -->
+                                                    <ng-container *ngFor="let ingrediente of item.ingredientes">
+                                                        <small *ngIf="!ingrediente.status" class="me-1"> X {{ ingrediente.name }} </small>
+                                                    </ng-container>
+
+                                                </td>
+                                                <td>
+                                                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" (change)="cambiarEstado(mesa.comanda, item.product, esta.value, mesa)" #esta>
+                                                        <option class="text-danger" value="pendiente" [selected]="item.estado === 'pendiente'">Pendiente</option>
+                                                        <option class="text-warning" value="Preparando" [selected]="item.estado === 'Preparando'">Preparando</option>
+                                                        <option class="text-success" value="Entregado" [selected]="item.estado === 'Entregado'">Entregado</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+        
+                                <!-- NOTAS -->
+                                <div *ngIf="mesa?.nota.length > 0" class="container border rounded overflow-auto" #content style="max-height: 15rem; min-height: 5rem; overflow-x: hidden!important;">
+                                    <ul class="list-group list-group-flush py-2" #messages>
+                                        <li class="list-group-item border-0 py-1 px-1" *ngFor="let nota of mesa.nota">
+                                            <div class="d-flex justify-content-start">
+                                                <!-- <div>
+                                                    <button type="button" disabled class="btn btn-link p-1 text-danger">
+                                                        <i class="bi-trash" style="font-size: 0.9rem"></i>
+                                                    </button>
+                                                </div> -->
+                                                <div class="badge bg-light2 text-muted px-2 py-2 text-wrap text-start" style="width: auto;">
+                                                    <h6 class="mb-0 text-break">
+                                                        {{ nota.nota }}
+                                                    </h6>
+                                                    <p class="mb-0 text-end" *ngIf="nota.date "><small class="text-muted"> {{ nota?.date  | date: "medium" }} </small></p>
+                                                </div>
+                                            </div>
+                                        </li>
+        
+                                    </ul>
+                                </div>
+                                <!-- NOTAS -->
+        
+                            </div>
+        
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
 
         </div>
@@ -1105,7 +1195,20 @@
                 </div>
 
                 <!-- Buttons -->
-                <div>
+                <div *ngIf="empresa">
+
+                    <div class="mx-auto my-3" [ngClass]="{'d-none': !empresa.comandas}">
+
+                        <!-- IMPRIMIR COMANDA -->
+                        <div class="form-check">
+                            <input #checkCom (change)="printComandaC = checkCom.checked" class="form-check-input" type="checkbox" id="checkCom">
+
+                            <label class="form-check-label h5" for="checkCom">
+                                Imprimir Comanda
+                            </label>
+                        </div>
+
+                    </div>
 
                     <div class="d-flex justify-content-end gap-2">
 

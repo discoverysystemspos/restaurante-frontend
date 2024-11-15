@@ -363,6 +363,11 @@ export class CorteComponent implements OnInit {
             
             // SUMAR LAS VENTAS POR DEPARTAMENTOS
             for (const product of factura.products) {
+
+              let precio = product.price;
+              if (factura.descuento) {
+                precio = precio - ((precio * factura.porcentaje) /100);
+              }
               
               this.departamento.map( (depart) => {
                                 
@@ -371,13 +376,13 @@ export class CorteComponent implements OnInit {
                   // COMPROBAR SI EL PRODUCTO TIENE IMPUESTO
                   if (!product.product.tax) {
                     depart.qty = depart.qty + product.qty,
-                    depart.monto = depart.monto + (product.qty * product.price);
+                    depart.monto = depart.monto + (product.qty * precio);
                     
                   }else{
                     depart.qty = depart.qty + product.qty,
                     this.impuestos.map( (impuesto) => {
                       if (product.product.taxid === impuesto.taxid) {
-                        depart.monto = depart.monto + (product.qty * (((product.price * impuesto.valor)/100) + product.price));                        
+                        depart.monto = depart.monto + (product.qty * (((precio * impuesto.valor)/100) + precio));                        
                       }
                     })
 

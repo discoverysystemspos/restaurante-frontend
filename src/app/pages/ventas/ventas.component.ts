@@ -10,6 +10,8 @@ import { MesasService } from '../../services/mesas.service';
 import { UserService } from '../../services/user.service';
 import { User } from 'src/app/models/user.model';
 import { SearchService } from 'src/app/services/search.service';
+import { PisosService } from 'src/app/services/pisos.service';
+import { Piso } from 'src/app/models/pisos.model';
 
 @Component({
   selector: 'app-ventas',
@@ -37,6 +39,7 @@ export class VentasComponent implements OnInit {
   constructor(  private router: Router,
                 private mesasService: MesasService,
                 private userService:UserService,
+                private pisosService: PisosService,
                 private searchService: SearchService) {
 
                   const reloadMesa = setInterval( () => {
@@ -47,7 +50,7 @@ export class VentasComponent implements OnInit {
                     if (rutaArray.length > 5 ) {
                       clearInterval(reloadMesa);
                     }else if (rutaArray[4] === 'ventas'){                      
-                      this.cargarMesas();          
+                      this.cargarMesasQuery();          
                     }else{
                       clearInterval(reloadMesa);
                     }
@@ -71,8 +74,11 @@ export class VentasComponent implements OnInit {
 
     }
 
+    // CARGAR PISOS
+    this.loadPisos();
+
     // CARGAR MESAS
-    this.cargarMesas();
+    this.cargarMesasQuery();
 
   }
 
@@ -130,6 +136,66 @@ export class VentasComponent implements OnInit {
 
         });
     
+  }
+
+  /** ================================================================
+   *   CARGAR MESAS
+  ==================================================================== */
+  public query: any = {
+    desde: 0,
+    hasta: 999999
+  }
+  cargarMesasQuery(){
+
+    this.cargando = true;
+    this.sinResultados = true;
+
+    this.mesasService.loadMesasQuery(this.query)
+        .subscribe( ({mesas, total}) => {
+
+          this.totalMesas = total;
+          this.listaMesas = mesas;
+          this.listaMesasTemp = mesas;
+          this.resultado = 0;
+          this.cargando = false;
+
+        }, (err) => {
+          console.log(err.error);
+          Swal.fire('Error', err.error.msg, 'error');
+          
+        })
+
+  }
+
+  /** ================================================================
+   *   CARGAR PISOS
+  ==================================================================== */
+  public pisos: Piso[] = [];
+  loadPisos(){
+
+    this.pisosService.loadPisos({desde: 0, hasta: 999999, sort: {}})
+        .subscribe( ({pisos}) => {
+          this.pisos = pisos;
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');          
+        })
+
+  }
+
+  /** ================================================================
+   *   SELECT PISO
+  ==================================================================== */
+  selectPiso(piso:string){
+
+    if (piso === 'todos') {
+      delete this.query.piso;
+    }else{
+      this.query.piso = piso
+    }
+
+    this.cargarMesasQuery();
+
   }
 
 }

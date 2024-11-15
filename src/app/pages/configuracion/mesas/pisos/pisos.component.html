@@ -1,0 +1,109 @@
+<div class="d-flex flex-wrap align-items-top">
+
+    <div class="col-12" [ngClass]="{'col-md-8': pisoSelected}">
+
+        <div class="card">
+            <div class="card-body">
+
+                <!-- BTN CREAR PISO -->
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-sm btn-primary btnW waves-effect waves-ligth" data-bs-toggle="modal" data-bs-target="#nuevoPiso">Crear Piso</button>
+                </div>
+                <!-- BTN CREAR PISO -->
+                
+                <div class="table-responsive ">
+                <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                    <thead class="border-bottom ">
+                        <tr>
+                            <th class="text-muted" scope="col ">Nombre</th>
+                            <th class="text-muted text-end">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="pisos.length === 0" class="text-center ">
+                            <th colspan="10" class="py-4">
+                                <h4 class="text-muted">Sin Resultados</h4>
+                            </th>
+                        </tr>
+                        <tr class="trHover" *ngFor="let piso of pisos; let i=index ">
+                            <td>{{ piso.name }}</td>
+                            <td class="text-end">
+                                <button type="button" (click)="selectPisto(piso)" class="btn btn-link p-1 text-warning"><i class="bi-pen" style="font-size: 0.9rem"></i></button>
+                                <!-- <button type="button" (click)="deletePiso(piso.piid, i)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button> -->
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-4" *ngIf="pisoSelected">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+
+                <div class="d-flex flex-wrap">
+                    <h3 class="mb-0">
+                        {{ pisoSelected.name }}
+                    </h3>
+
+                    <button type="button" (click)="quitarPiso()" class="btn btn-link p-1 text-danger ms-auto"><i class="bi-x-lg" style="font-size: 0.9rem"></i></button>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <form id="newProveedorForm" autocomplete="off" [formGroup]="updateForm" (ngSubmit)="update()">
+
+                    <div class="form-group">
+                        <div class="form-floating">
+                            <input id="name" formControlName="name" type="text" class="form-control text-capitalize" placeholder="name">
+                            <label for="name">Nombre</label>
+                        </div>
+                        <small class="text-danger" *ngIf="validateUpdate('name')">Campo Obligatorio</small>
+                    </div>
+
+
+                    <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- NUEVO PISO -->
+<div class="modal fade" id="nuevoPiso" tabindex="-1" aria-labelledby="nuevoPisoModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="nuevoPisoModal"> Nuevo Piso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form id="newProveedorForm" autocomplete="off" [formGroup]="newForm" (ngSubmit)="create()">
+
+                    <div class="form-group">
+                        <div class="form-floating">
+                            <input id="name" formControlName="name" type="text" class="form-control text-capitalize" placeholder="name">
+                            <label for="name">Nombre</label>
+                        </div>
+                        <small class="text-danger" *ngIf="validate('name')">Campo Obligatorio</small>
+                    </div>
+
+
+                    <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

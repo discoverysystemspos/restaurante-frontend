@@ -7,6 +7,129 @@
     </div>
     <!-- TITLE - SUBTITLE -->
 
+    <!-- TARJETAS -->
+    <div class="col-12">
+
+        <div class="d-flex flex-wrap gap-2">
+
+            <div class="col-xl-2 col-md-3 mb-4">
+                <!-- Dashboard info widget 1-->
+                <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-primary h-100 bg-white">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center flex-wrap">
+                            <div class="flex-grow-1">
+                                <div class="small font-weight-bold text-primary mb-1">Monto Total Facturas</div>
+                                <div class="h5">({{totalAmount | divisa}})</div>
+                                
+                            </div>
+                            <div class="ms-2">
+                                <i class="bi bi-receipt text-muted" style="font-size: 1.5rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="user.role === 'ADMIN'" class="col-xl-2 col-md-3 mb-4">
+                <!-- Dashboard info widget 1-->
+                <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-success h-100 bg-white">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center flex-wrap">
+                            <div class="flex-grow-1">
+                                <div class="small font-weight-bold text-success mb-1">Ganancia</div>
+                                <div class="h5"> {{ totalAmount - totalCost | divisa }} </div>
+                                
+                            </div>
+                            <div class="ms-2">
+                                <i class="bi bi-cash text-muted" style="font-size: 1.5rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <ng-container *ngIf="empresa">
+                <div class="col-xl-2 col-md-3 mb-4" *ngIf="empresa.commission || empresa.commissions">
+                    <!-- Dashboard info widget 1-->
+                    <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-info h-100 bg-white">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center flex-wrap">
+                                <div class="flex-grow-1">
+                                    <div class="small font-weight-bold text-info mb-1">Comision</div>
+                                    <div class="h5"> ({{ comision | divisa}}) </div>
+                                    <div class="text-xs font-weight-bold text-info d-inline-flex align-items-center">
+                                        {{ porcentaje }}%
+                                    </div>
+                                </div>
+                                <div class="ms-2">
+                                    <i class="bi bi-percent text-muted" style="font-size: 1.5rem;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="empresa">
+                <div class="col-xl-2 col-md-3 mb-4" *ngIf="empresa.tip">
+                    <!-- Dashboard info widget 1-->
+                    <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-info h-100 bg-white">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center flex-wrap">
+                                <div class="flex-grow-1">
+                                    <div class="small font-weight-bold text-info mb-1">Propinas</div>
+                                    <div class="h5"> ({{ totalTip | divisa}}) </div>
+                                </div>
+                                <div class="ms-2">
+                                    <i class="bi bi-coin text-muted" style="font-size: 1.5rem;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="empresa">
+                <div class="col-xl-2 col-md-3 mb-4" *ngFor="let impuesto of impuestos">
+                    <!-- Dashboard info widget 1-->
+                    <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-info h-100 bg-white">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center flex-wrap">
+                                <div class="flex-grow-1">
+                                    <div class="small font-weight-bold text-info mb-1"> {{ impuesto.name }} </div>
+                                    <div class="h5"> ({{ impuesto.total | divisa}}) </div>
+                                </div>
+                                <div class="ms-2">
+                                    <i class="bi bi-cash text-muted" style="font-size: 1.5rem;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <div class="col-xl-2 col-md-3 mb-4" *ngIf="query.credito">
+                <!-- Dashboard info widget 1-->
+                <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-warning h-100 bg-white">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center flex-wrap">
+                            <div class="flex-grow-1">
+                                <div class="small font-weight-bold text-warning mb-1">Pendiente por cobrar</div>
+                                <div class="h5"> {{ totalAmount - totalAbonado | divisa }} </div>
+                                
+                            </div>
+                            <div class="ms-2">
+                                <i class="bi bi-cash text-muted" style="font-size: 1.5rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
     <div class="row">
 
         <div class="col-md-3">
@@ -15,6 +138,10 @@
                 <!-- BUSCADOR DE CLIENTES  -->
                 <div class="mb-3">
                     <h4 class="text-muted">Buscar Cliente</h4>
+                    <div *ngIf="cliente" class="d-flex flex-wrap align-items-center ">
+                        <button type="button" (click)="deleteClient()" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
+                        <samll  class="mb-0">{{ cliente.name }} </samll>
+                    </div>
                     <div>
                         <input type="text" class="form-control" placeholder="buscar cliente" (keyup)="buscarCliente(searchClient.value)" #searchClient>
                     </div>
@@ -44,7 +171,7 @@
                                     </div>
 
                                     <div class="ms-auto">
-                                        <button class="btn btn-link p-1 text-success float-end" (click)="searchInvoice(item.cid)"> <i class="bi-arrow-90deg-right"></i></button>
+                                        <button class="btn btn-link p-1 text-success float-end" (click)="selectC(item)"> <i class="bi-arrow-90deg-right"></i></button>
                                     </div>
                                 </div>
 
@@ -60,32 +187,48 @@
                 <div class="col-12">
                     <h6 class="text-muted">Activa ó Cancelada</h6>
                     <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked #estado>
-                        <label class="form-check-label" for="flexSwitchCheckChecked">Estado</label>
+                        <input (change)="searchStatus(estado.checked)" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked #estado>
+                        <label class="form-check-label" for="flexSwitchCheckChecked">
+                            <span *ngIf="estado.checked">Todas las facturas</span>
+                            <span *ngIf="!estado.checked">Solo las canceladas</span>
+                        </label>
                     </div>
                 </div>
 
                 <hr>
 
-                <div class="col-12">
-                    <h6 class="text-muted">Vendedores</h6>
-                    <select class="form-select" aria-label="Default select example" #cajeros>
-                        <option value="none" selected>Todos</option>
-                        <option [value]="vendedor.mid" *ngFor="let vendedor of listaMesas">{{vendedor.mesero.name}}</option>
+                <div class="form-group">
+                    <h6 class="text-muted">Tipo de factura</h6>
+                    <select class="form-select" aria-label="Default select example" (change)="searchInvoiceType(typeF.value)" #typeF>
+                        <option value="all" selected>Todas</option>
+                        <option value="facturas">Facturas</option>
+                        <option value="credito">Facturas a credito</option>
                      </select>
                 </div>
 
                 <hr>
 
-                <div class="col-12">
+                <div class="form-group">
+                    <h6 class="text-muted">Vendedores</h6>
+                    <select class="form-select" aria-label="Default select example" (change)="seletV(cajeros.value)" #cajeros>
+                        <option value="none" selected>Todos</option>
+                        <option [value]="vendedor.uid" *ngFor="let vendedor of vendedores">{{vendedor.name}}</option>
+                     </select>
+                </div>
+
+                <hr>
+
+                <div class="form-group">
                     <h6 class="text-muted">Control</h6>
                     <div>
-                        <input type="number" min="0" class="form-control" placeholder="buscar por control" (keyup.enter)="buscarControl(searchControl.value)" #searchControl>
+                        <input type="number" min="0" class="form-control" placeholder="buscar por control" (keyup.enter)="searchInvoiceControl(searchControl.value)" #searchControl>
                     </div>
                 </div>
 
+                
                 <ng-container *ngIf="empresa">
-                    <div *ngIf="empresa.placa" class="col-12">
+                    <hr [ngClass]="{'d-none': !empresa.placa}" >
+                    <div [ngClass]="{'d-none': !empresa.placa}" class="form-group">
                         <h6 class="text-muted">Placa</h6>
                         <div>
                             <input type="text" class="form-control" placeholder="buscar por placa" (keyup.enter)="buscarPlaca(searchPlaca.value)" #searchPlaca>
@@ -93,119 +236,27 @@
                     </div>
                 </ng-container>
 
+                <hr>
+
+                <div class="form-group mb-3">
+                    <label class="" for="">Desde</label>
+                    <input type="datetime-local" class="form-control" (change)="initial.value" #initial>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="" for="">Hasta</label>
+                    <input type="datetime-local" class="form-control" (change)="end.value" #end>
+                </div>
+                
+                <button type="button" class="btn btn-outline-primary btn-sm py-auto w-100" (click)="searchForDates(initial.value, end.value)"> 
+                    <i class="bi-search"></i> Buscar 
+                </button>
+
             </div>
 
         </div>
 
         <div class="col-md-9">
-
-            <div class="col-12">
-
-                <div class="d-flex flex-wrap gap-2">
-
-                    <div class="col-xl-3 col-md-3 mb-4">
-                        <!-- Dashboard info widget 1-->
-                        <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-primary h-100 bg-white">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center flex-wrap">
-                                    <div class="flex-grow-1">
-                                        <div class="small font-weight-bold text-primary mb-1">Monto Total Facturas</div>
-                                        <div class="h5">({{totalAmount | divisa}})</div>
-                                        <div class="text-xs font-weight-bold text-success d-inline-flex align-items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up mr-1"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
-                                        </div>
-                                    </div>
-                                    <div class="ms-2">
-                                        <i class="bi bi-receipt text-muted" style="font-size: 1.5rem;"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div *ngIf="user.role === 'ADMIN'" class="col-xl-3 col-md-3 mb-4">
-                        <!-- Dashboard info widget 1-->
-                        <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-success h-100 bg-white">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center flex-wrap">
-                                    <div class="flex-grow-1">
-                                        <div class="small font-weight-bold text-success mb-1">Ganancia</div>
-                                        <div class="h5"> {{ totalAmount - totalCost | divisa }} </div>
-                                        <div class="text-xs font-weight-bold text-success d-inline-flex align-items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up mr-1"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
-                                        </div>
-                                    </div>
-                                    <div class="ms-2">
-                                        <i class="bi bi-cash text-muted" style="font-size: 1.5rem;"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <ng-container *ngIf="empresa">
-                        <div class="col-xl-3 col-md-3 mb-4" *ngIf="empresa.commission || empresa.commissions">
-                            <!-- Dashboard info widget 1-->
-                            <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-info h-100 bg-white">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center flex-wrap">
-                                        <div class="flex-grow-1">
-                                            <div class="small font-weight-bold text-info mb-1">Comision</div>
-                                            <div class="h5"> ({{ comision | divisa}}) </div>
-                                            <div class="text-xs font-weight-bold text-info d-inline-flex align-items-center">
-                                                {{ porcentaje }}%
-                                            </div>
-                                        </div>
-                                        <div class="ms-2">
-                                            <i class="bi bi-percent text-muted" style="font-size: 1.5rem;"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </ng-container>
-
-                    <ng-container *ngIf="empresa">
-                        <div class="col-xl-3 col-md-3 mb-4" *ngIf="empresa.tip">
-                            <!-- Dashboard info widget 1-->
-                            <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-info h-100 bg-white">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center flex-wrap">
-                                        <div class="flex-grow-1">
-                                            <div class="small font-weight-bold text-info mb-1">Propinas</div>
-                                            <div class="h5"> ({{ totalTip | divisa}}) </div>
-                                        </div>
-                                        <div class="ms-2">
-                                            <i class="bi bi-coin text-muted" style="font-size: 1.5rem;"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </ng-container>
-
-                    <ng-container *ngIf="empresa">
-                        <div class="col-xl-3 col-md-3 mb-4" *ngFor="let impuesto of impuestos">
-                            <!-- Dashboard info widget 1-->
-                            <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-info h-100 bg-white">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center flex-wrap">
-                                        <div class="flex-grow-1">
-                                            <div class="small font-weight-bold text-info mb-1"> {{ impuesto.name }} </div>
-                                            <div class="h5"> ({{ impuesto.total | divisa}}) </div>
-                                        </div>
-                                        <div class="ms-2">
-                                            <i class="bi bi-cash text-muted" style="font-size: 1.5rem;"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </ng-container>
-
-                </div>
-
-            </div>
 
             <!-- TABLE FACTURAS -->
             <div class="shadow-lg p-3 mb-5 rounded bg-white">
@@ -227,29 +278,22 @@
                     <div class="d-flex justify-content-between flex-wrap">
 
                         <div>
-                            <button type="button" class="btn btn-outline-primary btn-sm" (click)="cargarFacturas()"> <i class="bi-arrow-clockwise"></i> Recargar </button>
+                            <button type="button" class="btn btn-outline-primary btn-sm" (click)="recargar()"> <i class="bi-arrow-clockwise"></i> Recargar </button>
                             <button *ngIf="user.role === 'ADMIN'" type="button" class="ml-2 btn btn-outline-success btn-sm" (click)="exportar()"> <i class="bi-file-earmark-spreadsheet"></i> Excel </button>
                         </div>
 
-                        <div class="d-flex justify-content-end flex-wrap">
-
-                            <div class="col-4 d-flex align-items-center">
-                                <label class="" for="">Desde</label>
-                                <input type="datetime-local" class="form-control" (change)="initial.value" #initial>
-                            </div>
-
-                            <div class="col-4 d-flex align-items-center ms-2">
-                                <label class="" for="">Hasta</label>
-                                <input type="datetime-local" class="form-control" (change)="end.value" #end>
-                            </div>
-
-                            <div class="col-auto ms-2 d-flex align-items-center">
-                                <button type="button" class="btn btn-outline-primary btn-sm py-auto h-100" (click)="buscar(initial.value, end.value, cajeros.value, estado.checked, false)"> 
-                                    <i class="bi-search"></i> Buscar 
-                                </button>
-                            </div>
+                        <div>
+                            <label for="mostrar" class="me-2">Mostrar: </label>
+                            <select name="" id="" [value]="query.hasta" #mostrar (change)="limiteChange(mostrar.value)">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="250">250</option>
+                                <option value="500">500</option>
+                                <option value="1000">1000</option>
+                            </select>
                         </div>
-
 
                     </div>
                     <!-- BUSCADOR -->
@@ -270,7 +314,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngIf="!sinResultados" class="text-center ">
+                                <tr *ngIf="facturas.length === 0" class="text-center ">
                                     <th colspan="10" class="py-4">
                                         <h4 class="text-muted">Sin Resultados</h4>
                                     </th>
@@ -313,19 +357,19 @@
                     <div class="row">
                         <div class="col col-md-4">
 
-                            <small class="text-muted">Total de facturas: ({{totalFacturas}})</small>
+                            <small class="text-muted">Total de facturas: ({{total}})</small>
                             <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
                             <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + facturas.length }})</small>
                             <small *ngIf="sumarMonto !== 0" class="text-muted"> - Monto: ({{sumarMonto}})</small>
 
                         </div>
 
-                        <div *ngIf="!initial.value.length" class="col d-flex justify-content-end">
-                            <button type="button" (click)="cambiarPagina(-50)" class="{{btnAtras}} btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
-                            <button type="button" (click)="cambiarPagina(50)" class="{{btnAdelante}} btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
+                        <div class="col d-flex justify-content-end">
+                            <button [disabled]="query.desde === 0" type="button" (click)="cambiarPagina((query.hasta * -1))" class="btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
+                            <button [disabled]="query.hasta  > facturas.length || query.hasta > total" type="button" (click)="cambiarPagina(query.hasta)" class="btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
                         </div>
                     </div>
-                    <!-- BTN SIGUIENTE Y ANTERIOR -->
+                    <!-- BTN SIGUIENTE Y ANTERIORS -->
 
                 </div>
 

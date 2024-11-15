@@ -266,10 +266,17 @@ export class FacturaComponent implements OnInit {
     this.factura.products.filter( product => {
 
       if (product._id === id) {
+
+        let precio = product.price;
+
+        if (this.factura.descuento) {
+          precio = precio - ((precio * this.factura.porcentaje)/100)
+        }
+
         devolucion.product = product.product._id;
         devolucion.qty = product.qty;
-        devolucion.price = product.price;
-        devolucion.monto = product.price * product.qty;
+        devolucion.price = precio;
+        devolucion.monto = precio * product.qty;
       }
 
     });
@@ -352,12 +359,18 @@ export class FacturaComponent implements OnInit {
           return;
         }
 
+        let precio = producto.price;
+
+        if (this.factura.descuento) {
+          precio = precio - ((precio * this.factura.porcentaje)/100)
+        }
+
         let devolucion = {
           factura: this.factura.iid,
           product: producto.product._id,
           qty: cantidad,
-          price: producto.price,
-          monto: producto.price * cantidad,
+          price: precio,
+          monto: precio * cantidad,
         }
 
         // SI YA HAN HECHO PAGOS
@@ -371,8 +384,8 @@ export class FacturaComponent implements OnInit {
 
         }
 
-          this.invoiceService.updateProdutInvoice(this.idFactura, producto._id, cantidad)
-              .subscribe( resp => {
+        this.invoiceService.updateProdutInvoice(this.idFactura, producto._id, cantidad)
+            .subscribe( resp => {
 
                 this.factura.devolucion.push(devolucion);
 
@@ -401,7 +414,7 @@ export class FacturaComponent implements OnInit {
 
                                 
                 
-              });
+            });
           
         
         
