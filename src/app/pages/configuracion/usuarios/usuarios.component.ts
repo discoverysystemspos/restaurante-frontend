@@ -66,14 +66,21 @@ export class UsuariosComponent implements OnInit {
    *   CREAR USUARIOS
   ==================================================================== */
   public formSubmitted:boolean = false;
-  public privilegio : _privilegios[] = [];
+  public privilegio : _privilegios = {
+    cierre: true,
+    comandas: true
+  };
   public newUserForm = this.fb.group({
     usuario: ['', [Validators.required, Validators.minLength(4)]],
     name: ['', [Validators.required, Validators.minLength(3)]],
     password: ['', [Validators.required, Validators.minLength(6)]],
     role: ['STAFF'],
     cierre: [true],
-    privilegios: []
+    comandas: [true],
+    privilegios: {
+      cierre: true,
+      comandas: true
+    }
   });
 
   crearUsuario(){
@@ -84,13 +91,14 @@ export class UsuariosComponent implements OnInit {
       return;
     }else{
 
-      this.privilegio = [];
+      
+      // this.privilegio.push({
+      //   cierre: this.newUserForm.value.cierre,
+      //   comandas: this.newUserForm.value.comandas,
+      // });
 
-      this.privilegio.push({
-        cierre: this.newUserForm.value.cierre
-      });
-
-      this.newUserForm.value.privilegios = this.privilegio;
+      this.newUserForm.value.privilegios.cierre = this.newUserForm.value.cierre;
+      this.newUserForm.value.privilegios.comandas = this.newUserForm.value.comandas;
 
       this.userService.createUser(this.newUserForm.value)
           .subscribe( (resp:{ok: boolean, user: User}) => {            
@@ -132,8 +140,9 @@ export class UsuariosComponent implements OnInit {
     password: [''],
     repassword: [''],
     role: ['STAFF'],
-    cierre: [true],
-    privilegios: []
+    cierre: true,
+    comandas: true,
+    privilegios: {}
   });
 
   public updateUserForm2 = this.fb.group({
@@ -142,19 +151,18 @@ export class UsuariosComponent implements OnInit {
     id: [''],
     role: ['STAFF'],
     cierre: [true],
-    privilegios: []
+    privilegios: {}
   });
 
   informacionUsuario(user: User){
+
+    if (!user.privilegios) {
+      user.privilegios = {
+        cierre: true,
+        comandas: true
+      }
+    }
     
-    if( user.privilegios.length === 0  ){
-
-      user.privilegios.push({
-        cierre : true
-      });
-
-    }       
-
     this.updateUserForm.setValue({
       usuario: user.usuario,
       name: user.name,
@@ -162,7 +170,8 @@ export class UsuariosComponent implements OnInit {
       repassword: [''],
       id: user.uid,
       role: user.role,
-      cierre: user.privilegios[0].cierre,
+      cierre: user.privilegios.cierre,
+      comandas: user.privilegios.comandas,
       privilegios: user.privilegios
     });
 
@@ -178,19 +187,16 @@ export class UsuariosComponent implements OnInit {
         
     
     if (this.updateUserForm.value.password.length === 1) {
-
-      this.privilegioUp = [];
-
-      this.privilegioUp.push({
-        cierre: this.updateUserForm.value.cierre
-      });
             
       this.updateUserForm2.setValue({
         usuario: this.updateUserForm.value.usuario,
         name: this.updateUserForm.value.name,
         id: this.updateUserForm.value.id,
         role: this.updateUserForm.value.role,
-        privilegios: this.privilegioUp,
+        privilegios: {
+          cierre: this.updateUserForm.value.cierre,
+          comandas: this.updateUserForm.value.comandas
+        },
         cierre: this.updateUserForm.value.cierre
       });
 
@@ -199,7 +205,6 @@ export class UsuariosComponent implements OnInit {
 
           this.formSubmittedUp = false;
           this.cargarUsuarios();
-          this.updateUserForm.reset();
           Swal.fire('Estupendo', 'Se ha actualizado el Usuario exitosamente!', 'success');
 
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); 
@@ -215,6 +220,11 @@ export class UsuariosComponent implements OnInit {
       if(this.updateUserForm.value.password !== this.updateUserForm.value.repassword){
         Swal.fire('Atención', 'Las contraseñas no son iguales', 'warning');
         return;  
+      }
+
+      this.updateUserForm.value.privilegios = {
+        cierre: this.updateUserForm.value.cierre,
+        comandas: this.updateUserForm.value.comandas
       }
 
       this.userService.updateUser(this.updateUserForm.value, this.updateUserForm.value.id)

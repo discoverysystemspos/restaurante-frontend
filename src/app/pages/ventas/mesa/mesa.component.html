@@ -738,7 +738,7 @@
 
                                                 <div class="mb-3">
                                                     <div class="formGroup">
-                                                        <label for="propi" class="form-label fw-bold">Propina</label>
+                                                        <label for="propi" class="form-label fw-bold">Servicio</label>
                                                         <input id="propi" (keyup.enter)="changeTip(tipIn.value)" type="number" min="0" class="form-control" placeholder="propina" #tipIn>
                                                     </div>
                                                 </div>
@@ -960,7 +960,7 @@
 
                                 <tr class="" style="border-top: 2px solid black;" *ngIf="empresa.tip">
                                     <td>
-                                        <h6 class="mb-0 text-wrap text-left">Propina Sugerida del {{empresa.propina}}%</h6>
+                                        <h6 class="mb-0 text-wrap text-left">Servicio Sugerido del {{empresa.propina}}%</h6>
                                     </td>
                                     <td class="fw-bold">
                                         <h6 class="mb-0 text-wrap text-rigth"> {{ factura.tip | divisa }} </h6>
@@ -978,7 +978,7 @@
 
                                 <tr class="" style="border-top: 2px solid black;" *ngIf="empresa.tip">
                                     <td>
-                                        <h6 class="mb-0 text-wrap text-left">Total + Propina <span *ngIf="empresa.datafon && datafon > 0"> + Datafon </span></h6>
+                                        <h6 class="mb-0 text-wrap text-left">Total + Servicio <span *ngIf="empresa.datafon && datafon > 0"> + Datafon </span></h6>
                                     </td>
                                     <td class="fw-bold">
                                         <h6 class="mb-0 text-wrap text-rigth"> {{ factura.tip + factura.amount + datafon | divisa}} </h6>
@@ -1182,7 +1182,7 @@
                 <div>
                     <div class="text-center" *ngIf="empresa">
 
-                        <p class="h6 fw-normal text-muted mb-0">Sub-total {{ base | divisa }} <span *ngIf="empresa.propina"> + Propina {{ totalTip | divisa }}</span> <span *ngIf="empresa.datafon && datafon > 0"> + Datafon {{ datafon | divisa }}</span> </p>
+                        <p class="h6 fw-normal text-muted mb-0">Sub-total {{ base | divisa }} <span *ngIf="empresa.propina"> + Servicio {{ totalTip | divisa }}</span> <span *ngIf="empresa.datafon && datafon > 0"> + Datafon {{ datafon | divisa }}</span> </p>
                         <p class="h6 fw-normal text-danger mb-0" *ngIf="mesa?.descuento">Descuento {{ ((base * mesa?.porcentaje) / 100) | divisa }}</p>
                         <h4 class="fw-normal display-7 text-primary mb-1">{{ total | divisa }}</h4>
                         <h5 class="mb-0 fw-normal animated fadeIn" [ngClass]=" {   'text-danger': totalPagos < total, 'text-success': totalPagos >= total  }" *ngIf="totalPagos > 0">
@@ -1869,8 +1869,8 @@ PREFACTURA
                                             <p class="h6 fw-bold mb-0" *ngIf="empresa.responsable">IVA: {{ iva | divisa }}</p>
                                             <p class="fw-bold mb-0" [ngClass]="{'h4': empresa.tip === false, 'h6': empresa.tip }" *ngIf="!empresa.responsable">Total: {{ (total - totalTip ) | divisa }}</p>
                                             <p class="fw-bold mb-0" [ngClass]="{'h4': empresa.tip === false, 'h6': empresa.tip }" *ngIf="empresa.responsable">Total: {{ (total - totalTip ) | divisa }}</p>
-                                            <p class="h6 fw-bold mb-0" *ngIf="empresa.tip"> Propina del {{empresa.propina}}%: {{ totalTip | divisa }}</p>
-                                            <p class="h4 fw-bold mb-0" *ngIf="empresa.tip"> Total + Propina: {{ total | divisa }}</p>
+                                            <p class="h6 fw-bold mb-0" *ngIf="empresa.tip"> Servicio del {{empresa.propina}}%: {{ totalTip | divisa }}</p>
+                                            <p class="h4 fw-bold mb-0" *ngIf="empresa.tip"> Total + Servicio: {{ total | divisa }}</p>
                                             <p class="h4 fw-bold mb-0" *ngIf="empresa.usd"> Total USD: {{ (total / empresa.currencyusd ) | number : '1.2-2' }}</p>
                                             <p class="h4 fw-bold mb-0" *ngIf="empresa.bs"> Total BS: {{ (total / empresa.currencybs ) | number : '1.2-2' }}</p>
                                         </div>

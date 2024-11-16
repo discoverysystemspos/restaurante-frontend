@@ -72,7 +72,7 @@ export class CorteComponent implements OnInit {
 
                       this.user = this.userService.user;
                       
-                      if (!this.user.privilegios[0].cierre) {
+                      if (!this.user.privilegios.cierre) {
 
                         this.corte();
                         

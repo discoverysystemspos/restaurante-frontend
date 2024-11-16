@@ -17,7 +17,7 @@ export class User {
         public status?: boolean,
         public cerrada?: boolean,
         public turno?: string,
-        public privilegios?: _privilegios[],
+        public privilegios?: _privilegios,
     ){}
 
     /** ================================================================

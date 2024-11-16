@@ -11,6 +11,8 @@ import { Mesa } from '../../models/mesas.model';
 import { MesasService } from '../../services/mesas.service';
 import { UserService } from '../../services/user.service';
 import { Carrito, LoadCarrito } from '../../interfaces/carrito.interface';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-comanda',
@@ -39,6 +41,7 @@ export class ComandaComponent implements OnInit {
 
   constructor(  private mesasService: MesasService,
                 private printerService: NgxPrinterService,
+                private router: Router,
                 private userService:UserService) {
 
                   const reloadMesa = setInterval( () => {
@@ -64,6 +67,12 @@ export class ComandaComponent implements OnInit {
                   );
               
                   this.$printItems = this.printerService.$printItems;
+
+                  if (!userService.user.privilegios.comandas) {
+                    Swal.fire('Atención', 'No tienes los privilegios para el modulo de comandas', 'warning');
+                    this.router.navigateByUrl('/');
+                    return
+                  }
 
                 }
 

@@ -19,7 +19,7 @@
 <!-- =========================================================================
     BODY
 ========================================================================= -->
-<div *ngIf="user.privilegios[0].cierre || !user.privilegios" class="container-fluid mb-5">
+<div *ngIf="user.privilegios.cierre" class="container-fluid mb-5">
 
     <div class="my-4">
         <h5 class="text-dark">Realizar Cierre de caja</h5>
@@ -174,7 +174,7 @@
 
             </div>
 
-            <div *ngIf="user.privilegios[0].cierre !== false && user.role !== 'CASHIER'" class="card shadow px-2 my-3 bg-dark border-0" style="width: 18rem;">
+            <div *ngIf="user.privilegios.cierre !== false && user.role !== 'CASHIER'" class="card shadow px-2 my-3 bg-dark border-0" style="width: 18rem;">
 
                 <div class="card-body text-white">
                     <h4 class="card-title mb-0 text-center">Ganancia Total</h4>
@@ -498,7 +498,7 @@
 </div>
 
 <!-- CIERRE CIEGO -->
-<div *ngIf="!user.privilegios[0].cierre" class="container my-5">
+<div *ngIf="!user.privilegios.cierre" class="container my-5">
     <div class="bg-body-tertiary p-5 rounded">
         <div class="col-sm-8 py-5 mx-auto">
             <h1 class="display-5 fw-normal">Cerrar Caja</h1>
@@ -611,7 +611,7 @@
 
                         </div>
 
-                        <div style="color: black;" *ngIf="user.privilegios[0].cierre !== false" class="col-auto p-2" style="width: 18rem;">
+                        <div style="color: black;" *ngIf="user.privilegios.cierre" class="col-auto p-2" style="width: 18rem;">
 
                             <table class="table text-center">
                                 <thead>

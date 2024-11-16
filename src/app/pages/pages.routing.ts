@@ -68,7 +68,7 @@ const routes: Routes = [
           { path: 'domicilios', component: DomiciliosComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Domicilios'} },
           { path: 'calendario', component: CalendarioComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Calendario'} },
           { path: 'clientes', component: ClientesComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Clientes'} },
-          { path: 'comandas', component: ComandaComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Comandas'} },
+          { path: 'comandas', component: ComandaComponent, data:{ titulo: 'Comandas'} },
           { path: 'compra/:id', component: CompraComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Compra'} },
           
           { path: 'configuracion', component: ConfiguracionComponent, canActivate: [AdminGuard], data:{ titulo: 'Configuracion'} },

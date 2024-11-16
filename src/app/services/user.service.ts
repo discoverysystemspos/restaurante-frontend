@@ -85,15 +85,9 @@ export class UserService {
         'x-token': token
       }
     }).pipe(
-      tap((resp: any)  => {        
+      tap((resp: any)  => {
         
         const { usuario, name, role, img, uid, status, cerrada, turno, privilegios} = resp.usuario;
-
-        if (privilegios.length === 0) {
-          privilegios.push({
-            cierre : true
-          });
-        }
 
         this.user = new User( usuario, name, '', role, img || 'no-image', uid, status, cerrada, turno, privilegios);        
 
