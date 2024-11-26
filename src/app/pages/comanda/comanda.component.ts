@@ -13,6 +13,7 @@ import { UserService } from '../../services/user.service';
 import { Carrito, LoadCarrito } from '../../interfaces/carrito.interface';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-comanda',
@@ -38,6 +39,7 @@ export class ComandaComponent implements OnInit {
   public desde: number = 0;
   public cargando: boolean = true;
   public sinResultados: boolean = true;
+  public user:User;
 
   constructor(  private mesasService: MesasService,
                 private printerService: NgxPrinterService,
@@ -67,6 +69,8 @@ export class ComandaComponent implements OnInit {
                   );
               
                   this.$printItems = this.printerService.$printItems;
+
+                  this.user = userService.user;
 
                   if (!userService.user.privilegios.comandas) {
                     Swal.fire('Atención', 'No tienes los privilegios para el modulo de comandas', 'warning');
@@ -125,15 +129,28 @@ export class ComandaComponent implements OnInit {
     this.carrito = [];
     this.carrito = carrito;
 
-    const validarItem = this.carrito.findIndex( (resp) =>{    
-      if (resp.product === id ) {
-        return true;
-      }else {
-        return false;
-      }
-    });
+    this.carrito.map( (cart) =>{
 
-    this.carrito[validarItem].estado = estado;
+      if (cart.product === id) {
+
+        // VERIFICAR EL ROLE
+        if (this.user.role === 'WAITER' || this.user.role === 'WAITERALL') {
+
+          // VERIFICAR EL ESTADO
+          if (estado === 'pendiente' || cart.estado === 'Entregado' || estado === 'Preparando' && cart.estado === 'Entregado') {
+            Swal.fire('Atención', 'no puedes volver a un estado anterior', 'warning');
+            return;
+          }
+
+          cart.estado = estado;
+          
+        }else{
+          cart.estado = estado;
+        }
+
+      }
+
+    })
 
     this.mesa = mesa;
     const mesaID = mesa.mid;

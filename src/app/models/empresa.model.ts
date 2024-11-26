@@ -69,6 +69,8 @@ export class Datos{
         public marca?: boolean,
         public placa?: boolean,
         public taller?: boolean,
+        public paiddirect?: boolean,
+        public kiosco?: boolean,
         public fechakardex?: Date,
         public min?: number,
         public impresora?: number,

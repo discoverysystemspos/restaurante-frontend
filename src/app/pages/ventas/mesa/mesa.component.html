@@ -92,7 +92,10 @@
                                 <div class="d-flex align-items-center">
 
                                     <p class="mb-0 text-success">{{ producto.price | divisa }}</p>
-                                    <button type="button" [disabled]=" producto.vencido || producto.inventario <= 0 && producto.type !== 'Paquete'" (click)="buscarCodigo( producto.code )" class="btn btn-link btn-primary text-white ms-auto" style="font-size: 1rem;">
+                                    <button *ngIf="!empresa.kiosco" type="button" [disabled]=" producto.vencido || producto.inventario <= 0 && producto.type !== 'Paquete'" (click)="buscarCodigo( producto.code )" class="btn btn-link btn-primary text-white ms-auto" style="font-size: 1rem;">
+                                        <i class="bi bi-cart-plus"></i>
+                                    </button>
+                                    <button *ngIf="empresa.kiosco" type="button" [disabled]=" producto.vencido || producto.inventario <= 0 && producto.type !== 'Paquete'" (click)="modalProducto(producto)" class="btn btn-link btn-primary text-white ms-auto" style="font-size: 1rem;">
                                         <i class="bi bi-cart-plus"></i>
                                     </button>
 
@@ -1908,26 +1911,18 @@ PRODUCT SELECT
     </div>
 
     <div class="modal-body">
-        <p class="mb-0">Codigo: <small> {{productSelected.code}} </small></p>
-        <h4 class="mb-0 text-break"> {{ productSelected.name }} </h4>
-        <p class="mb-0" *ngIf="productSelected.inventario <= productSelected.min &&  productSelected.type !== 'Paquete'"><span class="badge bg-warning text-dark">Inventario Bajo</span></p>
-        <p class="mb-3">stock: {{ productSelected.inventario | number }} </p>
-
-        <div class="container">
-            <div class="form-check form-switch my-2">
-                <input [disabled]="user.role !== 'ADMIN' && user.role !== 'STAFF' || cDis.checked" #cMayor (change)="mayoreoApp(cMayor.checked)" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                <label class="form-check-label" for="flexSwitchCheckDefault">Mayoreo</label>
-            </div>
-            <div class="form-check form-switch my-2">
-                <input [disabled]="user.role !== 'ADMIN' && user.role !== 'STAFF' || cMayor.checked " #cDis (change)="distribuidorApp(cDis.checked)" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefaultDistr">
-                <label class="form-check-label" for="flexSwitchCheckDefaultDistr">Distribuidor</label>
-            </div>
+        <div class="d-flex flex-wrap">
+            <p class="mb-0">Codigo: <small> {{productSelected.code}} </small></p>
+            <p class="mb-0 ms-auto"> stock: {{ productSelected.inventario | number }}</p>
         </div>
-
+        <h4 class="mb-0 text-break"> {{ productSelected.name }} </h4>
+        <p class="mb-2" *ngIf="productSelected.inventario <= productSelected.min &&  productSelected.type !== 'Paquete'"><span class="badge bg-warning text-dark">Inventario Bajo</span></p>
+        
         <!-- PRICES -->
         <div>
-            <h4 *ngIf="!newPri.checked" class="display-4 mb-2 text-center text-success fw-bold"> {{ priceProductSelected * qtySelect | divisa }} </h4>
-            <h4 *ngIf="newPri.checked" class="display-4 mb-2 text-center text-success fw-bold"> {{ ((priceProductSelected / (qtySelect * 1000)) * 1000 ) * qtySelect | divisa }} </h4>
+            <!-- <h4 class="display-5 mb-2 text-center text-success fw-bold"> $ {{ priceProductSelected * (qtySelect || 1) | number: '':'en-US' }} </h4> -->
+            <h4 *ngIf="!newPri.checked" class="display-5 mb-2 text-center text-success fw-bold"> {{ priceProductSelected * qtySelect | number: '':'en-US' }} </h4>
+            <h4 *ngIf="newPri.checked" class="display-5 mb-2 text-center text-success fw-bold"> {{ ((priceProductSelected / (qtySelect * 1000)) * 1000 ) * qtySelect | number: '':'en-US' }} </h4>
 
         </div>
         <!-- PRICES -->
@@ -1943,21 +1938,59 @@ PRODUCT SELECT
             <button class="btn btn-primary" type="button" id="button-addon2" (click)="cambiarValor(1)"> + </button>
         </div>
 
-        <div class="container">
-            <div class="form-check form-switch my-2">
-                <input #newPri (change)="newPri.checked = newPri.checked" class="form-check-input" type="checkbox" role="switch" id="newPriceC">
-                <label class="form-check-label" for="newPriceC">Totalizar Precio </label>
+        <div class="container my-2">
+            <div class="d-flex flex-row gap-4">
+                <div class="form-check form-switch">
+                    <input [disabled]="user.role !== 'ADMIN' && user.role !== 'STAFF' || cDis.checked" #cMayor (change)="mayoreoApp(cMayor.checked)" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                    <label class="form-check-label" for="flexSwitchCheckDefault">Mayoreo</label>
+                </div>
+                <div class="form-check form-switch">
+                    <input [disabled]="user.role !== 'ADMIN' && user.role !== 'STAFF' || cMayor.checked " #cDis (change)="distribuidorApp(cDis.checked)" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefaultDistr">
+                    <label class="form-check-label" for="flexSwitchCheckDefaultDistr">Distribuidor</label>
+                </div>
+                <div class="form-check form-switch">
+                    <input [disabled]="user.role !== 'ADMIN' && user.role !== 'STAFF' && user.role !== 'CASHIER'" #newPri (change)="newPri.checked = newPri.checked" class="form-check-input" type="checkbox" role="switch" id="newPriceC">
+                    <label class="form-check-label" for="newPriceC">Totalizar Precio </label>
+                </div>
             </div>
         </div>
 
         <label for="pricePr">Precio:</label>
         <div class="input-group">
-            <input #pricePr type="number" min="0" class="form-control" placeholder="" [(ngModel)]="priceProductSelected">
+            <input [readOnly]="user.role !== 'ADMIN' && user.role !== 'STAFF' && user.role !== 'CASHIER'" #pricePr type="number" min="0" class="form-control" placeholder="" [(ngModel)]="priceProductSelected">
         </div>
 
         <p class="mb-3 text-danger" *ngIf="qtySelect <= 0"> <small> Debes de agregar cantidad </small> </p>
         <p class="mb-3 text-danger text-break" *ngIf="qtySelect > productSelected.inventario && productSelected.type !== 'Paquete'"> <small> La cantidad es mayor de la que tenemos en stock. Stock actual {{ productSelected.inventario | number }} </small> </p>
 
+        <!-- TECLADO NUMERICO -->
+        <div class="mt-4" *ngIf="empresa.kiosco">
+
+            <div class="d-flex flex-row gap-1 mb-1">
+                <div class="w25"><button class="btn btn-secondary keypad-button" (click)="appendV(7)">7</button></div>
+                <div class="w25"><button class="btn btn-secondary keypad-button" (click)="appendV(8)">8</button></div>
+                <div class="w25"><button class="btn btn-secondary keypad-button" (click)="appendV(9)">9</button></div>
+                <div class="w25"><button class="btn btn-danger keypad-button" (click)="priceProductSelected = ''">C</button></div>
+            </div>
+            <div class="d-flex flex-row gap-1 mb-1">
+                <div class="w25"><button class="btn btn-secondary keypad-button" (click)="appendV(4)">4</button></div>
+                <div class="w25"><button class="btn btn-secondary keypad-button" (click)="appendV(5)">5</button></div>
+                <div class="w25"><button class="btn btn-secondary keypad-button" (click)="appendV(6)">6</button></div>
+                <div class="w25"><button class="btn btn-warning keypad-button" (click)="appendV('del')">←</button></div>
+            </div>
+            <div class="d-flex flex-row gap-1 mb-1">
+                <div class="w25"><button class="btn btn-secondary keypad-button" (click)="appendV(1)">1</button></div>
+                <div class="w25"><button class="btn btn-secondary keypad-button" (click)="appendV(2)">2</button></div>
+                <div class="w25"><button class="btn btn-secondary keypad-button" (click)="appendV(3)">3</button></div>
+                <div class="w25"><button class="btn btn-dark keypad-button" (click)="appendV('00')">00</button></div>
+            </div>
+            <div class="d-flex flex-row gap-1 mb-1">
+                <div class="w50"><button class="btn btn-secondary keypad-button" (click)="appendV(0)">0</button></div>
+                <div class="w50"><button class="btn btn-dark keypad-button" (click)="appendV('000')">000</button></div>
+            </div>
+
+        </div>
+    
     </div>
 
     <div class="modal-footer">

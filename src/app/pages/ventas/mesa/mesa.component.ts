@@ -488,12 +488,6 @@ export class MesaComponent implements OnInit {
 
     this.qtySelect = this.qtySelect + valor;
 
-    if (this.mayor) {  
-      this.priceProductSelected = this.productSelected.wholesale;
-    }else{
-      this.priceProductSelected = this.productSelected.price;
-    }
-
   }
 
 
@@ -541,6 +535,21 @@ export class MesaComponent implements OnInit {
     }else{
       this.priceProductSelected = this.productSelected.price;
     }
+
+  }
+
+  /** ================================================================
+   *  CHANGE PRICE CALCULADORA
+  ==================================================================== */
+  appendV(value: any){
+
+    if (value === 'del') {
+      this.priceProductSelected = Number(this.priceProductSelected.toString().slice(0, -1));
+      return;
+    }
+
+    this.priceProductSelected = Number(this.priceProductSelected.toString() + value);
+    
 
   }
 
@@ -2588,10 +2597,23 @@ export class MesaComponent implements OnInit {
     if(!this.credit){
 
       this.invoiceForm.value.apartado = false;
-      if (this.totalPagos < this.total) {
-        this.facturando = false;
-        Swal.fire('Importante', 'El monto del pago es diferente al del total, porfavor verificar', 'warning');
-        return;      
+
+      if (!this.empresa.paiddirect) {
+        if (this.totalPagos < this.total) {
+          this.facturando = false;
+          Swal.fire('Importante', 'El monto del pago es diferente al del total, porfavor verificar', 'warning');
+          return;      
+        }        
+      }
+
+      if (this.totalPagos === 0) {
+        this.agregarPagos('efectivo', this.total, '', false)
+      }else{
+        if (this.totalPagos < this.total) {
+          this.facturando = false;
+          Swal.fire('Importante', 'El monto del pago es diferente al del total, porfavor verificar', 'warning');
+          return;      
+        } 
       }
 
     }else{
