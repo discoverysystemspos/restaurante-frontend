@@ -15,6 +15,7 @@ export class Parqueo{
         public status: boolean,
         public fecha: Date,
         public subtotal?: number,
+        public plenas?: number,
         public iva?: number,
         public parqid?: string,
         public _id?: string,

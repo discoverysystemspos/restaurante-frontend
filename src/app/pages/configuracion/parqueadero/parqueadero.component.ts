@@ -377,12 +377,14 @@ export class ParqueaderoComponent implements OnInit {
   public iva: number = 0;
   public parq: any;
   public diff: any;
+  public plenas: number = 0;
   checkout( placa: string ){
     
     this.payments = [];
     this.total = 0;
     this.subtotal = 0;
     this.iva = 0;
+    this.plenas = 0;
 
 
     let parq = this.parqueos.find( (p) => {
@@ -414,7 +416,7 @@ export class ParqueaderoComponent implements OnInit {
       if (this.diff > 0) {        
         this.diff = Math.floor(this.diff);
       }      
-    }
+    }    
 
     this.total = this.diff * parq.car.typeparq.price;    
     
@@ -423,15 +425,30 @@ export class ParqueaderoComponent implements OnInit {
     }
     
     if (this.diff >= parq.car.typeparq.tplena ) {
-      this.total = parq.car.typeparq.plena;
+      // this.total = parq.car.typeparq.plena;
+      let w = true;
+      
+      while(w){
+        if (this.diff >= parq.car.typeparq.tplena) {
+          this.plenas += 1;          
+
+          this.diff -= parq.car.typeparq.tplena;
+        }else{
+          this.total = this.diff * parq.car.typeparq.price;
+          w = false;
+        }
+      }
+
     }
-   
+
+    if (this.plenas > 0) {
+      this.total += (this.plenas * parq.car.typeparq.plena)      
+    }
     
     this.subtotal = parseFloat(((this.total *100)/(parq.car.typeparq.tax.valor + 100)).toFixed(2));
     this.iva = parseFloat((this.total-this.subtotal).toFixed(2));
 
     this.modal.open(this.modalCheckOut);
-
     
   }
 
@@ -447,6 +464,7 @@ export class ParqueaderoComponent implements OnInit {
     let formData = {
       checkout: new Date().getTime(),
       total: this.total,
+      plenas: this.plenas,
       subtotal: this.subtotal,
       iva: this.iva,
       estado: 'Finalizado',

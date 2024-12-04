@@ -120,6 +120,7 @@
                                         <p class="mb-0 fs-4"> Hora Ingreso: {{ vCheckout.fecha | date:'h:mm a' }} </p>
                                         <p class="mb-0 fs-4"> Fecha Salida: {{ vCheckout.checkout | date:'d/M/yy' }} </p>
                                         <p class="mb-0 fs-4"> Hora Salida: {{ vCheckout.checkout | date:'h:mm a' }} </p>
+                                        <p class="mb-0 fs-4"> T. Plenas: {{ vCheckout.plenas }} </p>
                                         <p class="mb-0 fs-4"> Sub-total: {{ vCheckout.subtotal | divisa }} </p>
                                         <p class="mb-0 fs-4"> IVA: {{ vCheckout.iva | divisa}} </p>
                                         <p class="mb-0 fs-5 fw-bold"> Total: {{ vCheckout.total | divisa }} </p>
@@ -610,8 +611,9 @@ PRODUCT SELECT
 
         <!-- SUBTOTALES -->
         <div class="">
-            <p class="mb-1 text-center text-break"> Subtotal: {{ subtotal | currency:'COP' : 'symbol' : '1.0-0' }} </p>
-            <p class="mb-1 text-center text-break">IVA: {{ iva | currency:'COP' : 'symbol' : '1.0-0' }} </p>
+            <p *ngIf="plenas > 0" class="mb-1 text-center text-break"> Plenas: {{ plenas }} </p>
+            <p class="mb-1 text-center text-break"> Subtotal: {{ subtotal | divisa }} </p>
+            <p class="mb-1 text-center text-break">IVA: {{ iva | divisa }} </p>
         </div>
 
 
@@ -619,8 +621,8 @@ PRODUCT SELECT
         <!-- TOTALES -->
         <div class="pb-2">
             <p class="mb-0 text-center fw-bold">TOTAL</p>
-            <h4 class="mb-3 display-5 text-center text-break fw-bold"> {{ total | currency:'COP' : 'symbol' : '1.0-0' }} </h4>
-            <p class="mb-2 text-center" *ngIf="payments.length > 0" [ngClass]="{'text-success': restante === 0, 'text-danger': restante < total || restante > total}"> Restante {{ restante | currency:'COP' : 'symbol' : '1.0-0' }} </p>
+            <h4 class="mb-3 display-5 text-center text-break fw-bold"> {{ total | divisa }} </h4>
+            <p class="mb-2 text-center" *ngIf="payments.length > 0" [ngClass]="{'text-success': restante === 0, 'text-danger': restante < total || restante > total}"> Restante {{ restante | divisa }} </p>
             <div class="d-flex justify-content-center">
                 <a class="text-decoration-none mx-auto" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
                     Editar Monto
