@@ -71,19 +71,19 @@
             <!-- FACTURA -->
 
             <table class="table table-borderless table-hover table-sm" [ngClass]=" {'tabla-con-marca': factura.marca && !factura.credito}">
-                <tbody style="color: black;">
-                    <tr *ngFor="let item of factura?.products" class="trHover">
-                        <td class="py-0" style="line-height: 0.8rem">
-                            <small class="text-wrap"> {{ item.qty }} x {{item.price | divisa}} </small> <br>
-                            <small class="text-wrap"> {{ item.product.name }} <strong *ngIf="item.mayor" class="fw-bolde text-black">M</strong></small>
+                <tbody style="color: black;" [ngStyle]="{'fonto-size': empresa.impresora === 80 ? '1.4rem importan!' : '1rem'}">
+                    <tr *ngFor="let item of factura?.products" class="trHover" >
+                        <td class="py-0" [ngStyle]="{'line-height': empresa.impresora === 80 ? '1rem importan!' : '0.8rem'}">
+                            <span class="text-wrap"> {{ item.qty }} x {{item.price | divisa}} </span> <br>
+                            <span class="text-wrap"> {{ item.product.name }} <strong *ngIf="item.mayor" class="fw-bolde text-black">M</strong></span>
                         </td>
                         <td class="text-end">
-                            <small *ngIf="item.product.tax"> {{ item.product.taxid.valor }}% </small>
-                            <small *ngIf="!item.product.tax"> 0% </small>
+                            <span *ngIf="item.product.tax"> {{ item.product.taxid.valor }}% </span>
+                            <span *ngIf="!item.product.tax"> 0% </span>
                         </td>
                         <td class="py-0">
-                            <small *ngIf="!empresa.impuesto" class="text-wrap"> {{ item.qty * item.price | divisa }} </small>
-                            <small *ngIf="empresa.impuesto" class="text-wrap"> {{ (item.qty * item.price) + ((item.qty * item.price) * (item.product.taxid?.valor/100)) | divisa }} </small>
+                            <span *ngIf="!empresa.impuesto" class="text-wrap"> {{ item.qty * item.price | divisa }} </span>
+                            <span *ngIf="empresa.impuesto" class="text-wrap"> {{ (item.qty * item.price) + ((item.qty * item.price) * (item.product.taxid?.valor/100)) | divisa }} </span>
                         </td>
                     </tr>
 

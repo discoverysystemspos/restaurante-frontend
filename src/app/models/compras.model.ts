@@ -1,3 +1,4 @@
+import { _payments } from "../interfaces/carrito.interface";
 import { Product } from "./product.model";
 import { Proveedor } from "./proveedor.model";
 import { User } from "./user.model";
@@ -20,6 +21,9 @@ export class Compra{
         public base: number,
         public credito: boolean,
         public status: boolean,
+        public payments: _payments[],
         public fecha: Date,
+        public _id?: string,
+        public comid?: string
     ){}
 }

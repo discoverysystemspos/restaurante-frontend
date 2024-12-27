@@ -274,7 +274,7 @@ export class CorteComponent implements OnInit {
         }
            
 
-        for (const pago of factura.factura.paymentsCredit) {
+        for (const pago of factura.factura.paymentsCredit) {          
 
           if (pago.turno === turno.tid && factura.pay === pago._id && factura.factura.status) {
             

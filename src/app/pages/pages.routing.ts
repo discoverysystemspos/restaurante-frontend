@@ -53,6 +53,7 @@ import { BodegaComponent } from './configuracion/bodega/bodega.component';
 import { CompraComponent } from './compra/compra.component';
 import { WaiterGuardPrivate } from '../guards/waiterPrivate.guard';
 import { VehiculosComponent } from './vehiculos/vehiculos.component';
+import { FacturasComprasComponent } from './compras/facturas-compras/facturas-compras.component';
 
 const routes: Routes = [
     
@@ -93,7 +94,8 @@ const routes: Routes = [
 
           { path: 'facturas', component: FacturasComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Facturas'} },
           { path: 'factura/:id', component: FacturaComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Detalles de factura' } },
-
+          { path: 'facturas-compras', component: FacturasComprasComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Facturas de compras'} },
+          
           { path: 'inventario', component: InventarioComponent,  canActivate: [AdminGuard, WaiterGuardPrivate], data:{ titulo: 'Inventario'} },
           { path: 'perfil', component: PerfilComponent, data:{ titulo: 'Perfil'} },
 

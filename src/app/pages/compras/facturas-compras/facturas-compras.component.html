@@ -1,9 +1,31 @@
-<div class="container-fluid">
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<header>
+    <div class="bg-header-blue py-2 px-3 mb-2">
+        <h5 class="text-white m-0">Configuraciones / Compras</h5>
+    </div>
+    <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
+
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-dark" routerLinkActive="active" routerLink="/dashboard/configuracion/compras"  id="ticket1-tab"><i class="bi-gear" style="font-size: 1rem"></i> Tablero Principal</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-dark" routerLinkActive="active" routerLink="/dashboard/facturas-compras" id="ticket1-tab"><i class="bi-ticket" style="font-size: 1rem"></i> Facturas de Compras</a>
+        </li>
+
+    </ul>
+</header>
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+
+<div class="container-fluid py-4">
 
     <!-- TITLE - SUBTITLE -->
     <div>
-        <h5 class="text-dark">FACTURAS DE VENTAS</h5>
-        <p>Lista de todas las facturas de ventas.</p>
+        <h5 class="text-dark">FACTURAS DE COMPRAS</h5>
+        <p>Lista de todas las facturas de compras.</p>
     </div>
     <!-- TITLE - SUBTITLE -->
 
@@ -19,7 +41,7 @@
                         <div class="d-flex align-items-center flex-wrap">
                             <div class="flex-grow-1">
                                 <div class="small font-weight-bold text-primary mb-1">Monto Total Facturas</div>
-                                <div class="h5">({{totalAmount | divisa}})</div>
+                                <div class="h5">({{totalAmount | currency: '$'}})</div>
                                 
                             </div>
                             <div class="ms-2">
@@ -30,84 +52,6 @@
                 </div>
             </div>
 
-            <div *ngIf="user.role === 'ADMIN'" class="col-xl-2 col-md-3 mb-4">
-                <!-- Dashboard info widget 1-->
-                <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-success h-100 bg-white">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center flex-wrap">
-                            <div class="flex-grow-1">
-                                <div class="small font-weight-bold text-success mb-1">Ganancia</div>
-                                <div class="h5"> {{ totalAmount - totalCost | divisa }} </div>
-                                
-                            </div>
-                            <div class="ms-2">
-                                <i class="bi bi-cash text-muted" style="font-size: 1.5rem;"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <ng-container *ngIf="empresa">
-                <div class="col-xl-2 col-md-3 mb-4" *ngIf="empresa.commission || empresa.commissions">
-                    <!-- Dashboard info widget 1-->
-                    <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-info h-100 bg-white">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center flex-wrap">
-                                <div class="flex-grow-1">
-                                    <div class="small font-weight-bold text-info mb-1">Comision</div>
-                                    <div class="h5"> ({{ comision | divisa}}) </div>
-                                    <div class="text-xs font-weight-bold text-info d-inline-flex align-items-center">
-                                        {{ porcentaje }}%
-                                    </div>
-                                </div>
-                                <div class="ms-2">
-                                    <i class="bi bi-percent text-muted" style="font-size: 1.5rem;"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </ng-container>
-
-            <ng-container *ngIf="empresa">
-                <div class="col-xl-2 col-md-3 mb-4" *ngIf="empresa.tip">
-                    <!-- Dashboard info widget 1-->
-                    <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-info h-100 bg-white">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center flex-wrap">
-                                <div class="flex-grow-1">
-                                    <div class="small font-weight-bold text-info mb-1">Propinas</div>
-                                    <div class="h5"> ({{ totalTip | divisa}}) </div>
-                                </div>
-                                <div class="ms-2">
-                                    <i class="bi bi-coin text-muted" style="font-size: 1.5rem;"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </ng-container>
-
-            <ng-container *ngIf="empresa">
-                <div class="col-xl-2 col-md-3 mb-4" *ngFor="let impuesto of impuestos">
-                    <!-- Dashboard info widget 1-->
-                    <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-info h-100 bg-white">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center flex-wrap">
-                                <div class="flex-grow-1">
-                                    <div class="small font-weight-bold text-info mb-1"> {{ impuesto.name }} </div>
-                                    <div class="h5"> ({{ impuesto.total | divisa}}) </div>
-                                </div>
-                                <div class="ms-2">
-                                    <i class="bi bi-cash text-muted" style="font-size: 1.5rem;"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </ng-container>
-
             <div class="col-xl-2 col-md-3 mb-4" *ngIf="query.credito">
                 <!-- Dashboard info widget 1-->
                 <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-warning h-100 bg-white">
@@ -115,7 +59,7 @@
                         <div class="d-flex align-items-center flex-wrap">
                             <div class="flex-grow-1">
                                 <div class="small font-weight-bold text-warning mb-1">Total Abonado</div>
-                                <div class="h5"> {{ totalAbonado | divisa }} </div>
+                                <div class="h5"> {{ totalAbonado | currency: '$' }} </div>
                                 
                             </div>
                             <div class="ms-2">
@@ -132,8 +76,8 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center flex-wrap">
                             <div class="flex-grow-1">
-                                <div class="small font-weight-bold text-warning mb-1">Pendiente por cobrar</div>
-                                <div class="h5"> {{ totalAmount - totalAbonado | divisa }} </div>
+                                <div class="small font-weight-bold text-warning mb-1">Pendiente por pagar</div>
+                                <div class="h5"> {{ totalAmount - totalAbonado | currency: '$' }} </div>
                                 
                             </div>
                             <div class="ms-2">
@@ -153,20 +97,20 @@
         <div class="col-md-3">
             <div class="shadow-lg mb-5 py-3 rounded bg-white text-break container">
 
-                <!-- BUSCADOR DE CLIENTES  -->
+                <!-- BUSCADOR DE PROVEEDOR  -->
                 <div class="mb-3">
-                    <h4 class="text-muted">Buscar Cliente</h4>
-                    <div *ngIf="cliente" class="d-flex flex-wrap align-items-center ">
-                        <button type="button" (click)="deleteClient()" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
-                        <samll  class="mb-0">{{ cliente.name }} </samll>
+                    <h4 class="text-muted">Buscar PROVEEDOR</h4>
+                    <div *ngIf="proveedor" class="d-flex flex-wrap align-items-center ">
+                        <button type="button" (click)="deleteProveedor()" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
+                        <samll  class="mb-0">{{ proveedor.name }} </samll>
                     </div>
                     <div>
-                        <input type="text" class="form-control" placeholder="buscar cliente" (keyup)="buscarCliente(searchClient.value)" #searchClient>
+                        <input type="text" class="form-control" placeholder="buscar proveedor" (keyup)="buscarProveedor(searchProveed.value)" #searchProveed>
                     </div>
 
-                    <div *ngIf="listaClientes.length > 0" class="bg-white py-3 px-2 shadow" style="position: absolute; z-index: 1020;">
+                    <div *ngIf="listaProveedores.length > 0" class="bg-white py-3 px-2 shadow" style="position: absolute; z-index: 1020;">
 
-                        <div *ngIf="cargandoCliente" class="text-center py-3">
+                        <div *ngIf="cargandoProveedor" class="text-center py-3">
                             <div class="spinner-grow text-secondary" role="status">
                                 <span class="visually-hidden">Loading...</span>
                             </div>
@@ -175,13 +119,13 @@
                             </div>
                         </div>
 
-                        <ul *ngIf="!cargandoCliente" class="list-group list-group-flush overflow-auto" style="max-height: 200px; min-width: 250px;">
+                        <ul *ngIf="!cargandoProveedor" class="list-group list-group-flush overflow-auto" style="max-height: 200px; min-width: 250px;">
 
                             <li class="list-group-item">
-                                <h6>Resultados: ({{ listaClientes.length }})</h6>
+                                <h6>Resultados: ({{ listaProveedores.length }})</h6>
                             </li>
 
-                            <li class="list-group-item" *ngFor="let item of listaClientes">
+                            <li class="list-group-item" *ngFor="let item of listaProveedores">
                                 <div class="d-flex ">
                                     <div class="align-self-center">
                                         <span class="text-capitalize fw-bold"> {{ item.name }} </span><br>
@@ -198,7 +142,7 @@
 
                     </div>
                 </div>
-                <!-- BUSCADOR DE CLIENTES  -->
+                <!-- BUSCADOR DE PROVEEDORES  -->
 
                 <h4 class="text-muted">Filtros</h4>
 
@@ -223,36 +167,6 @@
                         <option value="credito">Facturas a credito</option>
                      </select>
                 </div>
-
-                <hr>
-
-                <div class="form-group">
-                    <h6 class="text-muted">Vendedores</h6>
-                    <select class="form-select" aria-label="Default select example" (change)="seletV(cajeros.value)" #cajeros>
-                        <option value="none" selected>Todos</option>
-                        <option [value]="vendedor.uid" *ngFor="let vendedor of vendedores">{{vendedor.name}}</option>
-                     </select>
-                </div>
-
-                <hr>
-
-                <div class="form-group">
-                    <h6 class="text-muted">Control</h6>
-                    <div>
-                        <input type="number" min="0" class="form-control" placeholder="buscar por control" (keyup.enter)="searchInvoiceControl(searchControl.value)" #searchControl>
-                    </div>
-                </div>
-
-                
-                <ng-container *ngIf="empresa">
-                    <hr [ngClass]="{'d-none': !empresa.placa}" >
-                    <div [ngClass]="{'d-none': !empresa.placa}" class="form-group">
-                        <h6 class="text-muted">Placa</h6>
-                        <div>
-                            <input type="text" class="form-control" placeholder="buscar por placa" (keyup.enter)="buscarPlaca(searchPlaca.value)" #searchPlaca>
-                        </div>
-                    </div>
-                </ng-container>
 
                 <hr>
 
@@ -297,7 +211,6 @@
 
                         <div>
                             <button type="button" class="btn btn-outline-primary btn-sm" (click)="recargar()"> <i class="bi-arrow-clockwise"></i> Recargar </button>
-                            <button *ngIf="user.role === 'ADMIN'" type="button" class="ml-2 btn btn-outline-success btn-sm" (click)="exportar()"> <i class="bi-file-earmark-spreadsheet"></i> Excel </button>
                         </div>
 
                         <div>
@@ -321,17 +234,15 @@
                             <thead class="border-bottom ">
                                 <tr>
                                     <th class="text-muted" scope="col ">#</th>
-                                    <th class="text-muted" scope="col ">Control</th>
-                                    <th class="text-muted" scope="col " colspan="2">Cliente</th>
-                                    <th class="text-muted" scope="col ">Cedula</th>
-                                    <th class="text-muted" scope="col " colspan="2">Ticket</th>
+                                    <th class="text-muted" scope="col " colspan="2">Proveedor</th>
+                                    <th class="text-muted" scope="col ">Nit / CC</th>
                                     <th class="text-muted" scope="col ">Monto</th>
-                                    <th class="text-muted" scope="col ">Metodo</th>
                                     <th class="text-muted" scope="col ">fecha</th>
                                     <th class="text-muted" scope="col "></th>
                                 </tr>
                             </thead>
                             <tbody>
+
                                 <tr *ngIf="facturas.length === 0" class="text-center ">
                                     <th colspan="10" class="py-4">
                                         <h4 class="text-muted">Sin Resultados</h4>
@@ -342,26 +253,21 @@
 
                                     <tr class="trHover" tabindex="0" data-bs-toggle="tooltip" title="Cajero: {{ factura.user?.name }}">
                                         <th>
-                                            <span *ngIf="factura.electronica && !factura.send" class="text-warning"><i class="bi bi-exclamation-triangle"></i></span>
-                                            <span *ngIf="!factura.cufe">{{ factura.invoice }}</span>
-                                            <span *ngIf="factura.cufe">{{factura.number }} </span>
-
+                                            <span>{{ factura.invoice }}</span>
                                         </th>
-                                        <th>{{ factura.control }}</th>
                                         <td colspan="2">
-                                            {{ factura.client?.name || 'Consumidor Final' }}
+                                            {{ factura.proveedor?.name || 'Consumidor Final' }}
                                             <span *ngIf="!factura.status" class="badge rounded-pill bg-danger">Cancelada</span>
                                             <span *ngIf="factura.credito && factura.status" class="badge rounded-pill bg-warning">Credito <small *ngIf="factura.apartado">- Apartado</small> </span>
                                             <span *ngIf="factura.mayor" class="badge rounded-pill bg-success">M </span>
                                         </td>
-                                        <td> {{ factura.client?.cedula || '222222222222' }} </td>
-                                        <td colspan="2"> {{ factura.mesa?.name }} </td>
-                                        <td> {{ factura.amount | divisa }} </td>
-                                        <td> {{ factura.type }} </td>
+                                        <td> {{ factura.proveedor?.cedula || '222222222222' }} </td>
+                                        <td> {{ factura.amount | currency: '$' }} </td>
                                         <td> {{ factura.fecha | date:'medium' }} </td>
                                         <td class="text-center">
-                                            <a [routerLink]="['/dashboard/factura', factura.iid]" class="btn btn-link p-1 text-primary"><i class="bi bi-box-arrow-up-right"></i></a>
-                                            <a *ngIf="factura.pdf_url" [href]="factura.pdf_url" target="_blank" class="btn btn-link p-1 text-danger"><i class="bi bi-file-pdf"></i></a>
+                                            <a [routerLink]="['/dashboard/compra', factura.comid]" class="btn btn-link p-1 text-primary">
+                                                <i class="bi bi-box-arrow-up-right"></i>
+                                            </a>
                                         </td>
                                     </tr>
 
@@ -374,12 +280,9 @@
                     <!-- BTN SIGUIENTE Y ANTERIOR -->
                     <div class="row">
                         <div class="col col-md-4">
-
                             <small class="text-muted">Total de facturas: ({{total}})</small>
-                            <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
-                            <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + facturas.length }})</small>
-                            <small *ngIf="sumarMonto !== 0" class="text-muted"> - Monto: ({{sumarMonto}})</small>
-
+                            <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado || 0 }})</small>
+                            <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ query.desde + 1}} Hasta el: {{ query.desde + query.hasta }})</small>
                         </div>
 
                         <div class="col d-flex justify-content-end">

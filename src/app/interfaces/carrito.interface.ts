@@ -7,6 +7,7 @@ export interface _payments {
     type: string;
     amount: number;
     description?: string;
+    fecha?: Date;
 }
 
 export interface _paymentsCredito {

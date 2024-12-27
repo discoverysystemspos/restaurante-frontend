@@ -1,8 +1,12 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { _payments } from 'src/app/interfaces/carrito.interface';
+import { Banco } from 'src/app/models/bancos.model';
 import { itemCompra } from 'src/app/models/compras.model';
 import { Product } from 'src/app/models/product.model';
 import { Proveedor } from 'src/app/models/proveedor.model';
 import { User } from 'src/app/models/user.model';
+import { BancosService } from 'src/app/services/bancos.service';
 import { ComprasService } from 'src/app/services/compras.service';
 import { ProveedoresService } from 'src/app/services/proveedores.service';
 import { SearchService } from 'src/app/services/search.service';
@@ -23,12 +27,34 @@ export class ComprasComponent implements OnInit {
   constructor(  private searchService: SearchService,
                 private comprasService: ComprasService,
                 private userService: UserService,
+                private proveedoresService: ProveedoresService,
+                private fb: FormBuilder,
+                private bancosService: BancosService,
                 private turnoService: TurnoService,
   ) { 
     this.user = userService.user;
   }
 
   ngOnInit(): void {
+
+    this.loadBancos();
+
+  }
+
+  /** ================================================================
+   *   BANCOS
+  ==================================================================== */
+  public bancos: Banco[] = [];
+  loadBancos(){
+
+    this.bancosService.loadBancos()
+        .subscribe( ({bancos}) => {
+          this.bancos = bancos;
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');          
+        })
+
   }
 
   /** ================================================================
@@ -244,10 +270,64 @@ export class ComprasComponent implements OnInit {
   ==================================================================== */
   public base: number = 0;
   public total: number = 0;
+
+
+  /** ================================================================
+   *   AGREGAR PAGO
+  ==================================================================== */
+  public payments: _payments[] = []
+  
+  @ViewChild ('nDescripcion') nDescripcion: ElementRef;  
+  @ViewChild ('nMonto') nMonto: ElementRef;
+  addPay(type: string, amount: any, description: string){
+
+    amount = Number(amount);
+
+    if (amount <= 0) {
+      Swal.fire('Atención', 'El monto no puede ser menor a cero', 'warning');
+      return;
+    }
+
+    if ((amount + this.totalPayments) > this.total) {
+      Swal.fire('Atención', `El monto supera al total de la factura, la diferencia es $${this.total - this.totalPayments}`, 'warning');
+      return;
+    }
+
+    this.payments.push({
+      type,
+      amount,
+      description
+    });
+    
+    this.nDescripcion.nativeElement.value = '';    
+    this.nMonto.nativeElement.value = '';  
+    this.sumarPagos();
+  }
+
+  /** ================================================================
+   *   ELIMINAR PAGO
+  ==================================================================== */
+  delPaid(i: any){
+    this.payments.splice(i, 1);
+    this.sumarPagos();
+  }
+
+  /** ================================================================
+   *   SUMAR PAGOS
+  ==================================================================== */
+  public totalPayments: number = 0;
+  sumarPagos(){
+    this.totalPayments = 0;
+    for (const paid of this.payments) {
+      this.totalPayments += paid.amount;
+    }
+
+  }
   
   /** ================================================================
    *   CREAR FACTURA DE COMPRA
   ==================================================================== */
+  @ViewChild ('icredito') icredito: ElementRef;
   createInvoice(){
 
     if (!this.proveedor) {
@@ -279,12 +359,16 @@ export class ComprasComponent implements OnInit {
 
     }
 
+    let credito = this.icredito.nativeElement.checked;
+
     let data: any = {
       proveedor: this.proveedor.provid,
       products,
       amount: this.total,
-      base: this.total
-    }    
+      base: this.total,
+      credito,
+      payments: this.payments
+    }
 
     this.comprasService.createCompra(data)
         .subscribe( ({compra}) => {
@@ -294,6 +378,9 @@ export class ComprasComponent implements OnInit {
           delete this.proveedor;
           this.items = [];
           this.total = 0;
+          this.totalPayments = 0;
+          this.payments = [];
+          this.icredito.nativeElement.checked = false;
 
         }, (err) => {
           console.log(err);
@@ -301,5 +388,55 @@ export class ComprasComponent implements OnInit {
         })
 
   }
+
+  /** ================================================================
+     *   CREAR PROVEEDOR
+    ==================================================================== */
+    // FORMULARIO
+    public formSubmitted = false;
+    public newProveedorForm = this.fb.group({
+      name: [ '' , [Validators.required, Validators.minLength(3)]],
+      cedula: ['', [Validators.required, Validators.minLength(3)]],
+      phone: [''],
+      email: [''],
+      address: [''],
+      city: [''],
+      department: [''],
+      zip: ['']
+    });
+  
+    crearProveedor(){
+  
+      this.formSubmitted = true;
+  
+      if (this.newProveedorForm.invalid) {
+        return;
+      }    
+  
+      this.proveedoresService.createProveedor(this.newProveedorForm.value)
+          .subscribe(({proveedor}) => {
+  
+            Swal.fire('Estupendo', 'Se ha creado el cliente exitosamente!', 'success');
+            
+            this.formSubmitted = false;
+            this.newProveedorForm.reset();          
+            this.selectProveedor(proveedor);
+            
+          }, (err) =>{
+            Swal.fire('Error', err.error.msg, 'error');
+          });
+    }
+  
+    // VALIDAR CAMPOS
+    campoValido(campo: string): boolean{
+  
+      if ( this.newProveedorForm.get(campo).invalid &&  this.formSubmitted) {      
+        return true;      
+      } else{
+              
+        return false;
+      }
+    
+    }
 
 }

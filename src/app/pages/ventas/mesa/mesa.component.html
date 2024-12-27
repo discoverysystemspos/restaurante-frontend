@@ -883,9 +883,9 @@
                         <!-- FACTURA -->
 
                         <table class="table table-borderless table-hover table-sm" [ngClass]=" {'tabla-con-marca': factura.marca && !factura.credito}">
-                            <tbody style="color: black;">
+                            <tbody style="color: black;" [ngStyle]="{'fonto-size': empresa.impresora === 80 ? '1.4rem importan!' : '1rem'}">
                                 <tr *ngFor="let item of factura.products" class="trHover">
-                                    <td class="py-0" style="line-height: 0.8rem">
+                                    <td class="py-0" [ngStyle]="{'line-height': empresa.impresora === 80 ? '1rem importan!' : '0.8rem'}">
                                         <small class="text-wrap"> {{ item.qty }} x {{item.price | divisa}} </small> <br>
                                         <small class="text-wrap"> {{ item.product.name }} <strong *ngIf="item.mayor" class="fw-bolde text-black">M</strong> </small>
                                     </td>
@@ -916,16 +916,7 @@
                                         <h6 class="mb-0 text-wrap text-rigth" *ngIf="factura.descuento"> {{ (factura.base * factura.porcentaje )/100 | divisa }} </h6>
                                     </td>
                                 </tr>
-
-
-                                <!-- <p class="h6 fw-normal text-primary mb-0">Sub-total {{ base | divisa }}</p>
-
-                                <ng-container *ngFor="let impuesto of impuestos">
-                                    <p class="h6 fw-normal text-primary mb-0" *ngIf="impuesto.total > 0"> {{ impuesto.name }} {{ impuesto.total | divisa }}</p>
-                                </ng-container>
-
-                                <p class="h6 fw-normal text-danger mb-0" *ngIf="mesa?.descuento">Descuento {{ (base * mesa?.porcentaje) / 100 | divisa }}</p>
-                                <h4 class="fw-normal text-primary" *ngIf="empresa.impuesto">{{ total | divisa }}</h4> -->
+                                
                                 <ng-container *ngIf="!empresa.impuesto">
                                     <tr class="" style="border-top: 2px solid black;">
                                         <td>

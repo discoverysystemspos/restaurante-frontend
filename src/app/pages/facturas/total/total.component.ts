@@ -781,16 +781,13 @@ export class TotalComponent implements OnInit {
     this.invoiceService.postQueryInvoice(this.query)
         .subscribe( ({total, invoices, montos, costos, iva}) => {
 
-          console.log(total);
-          
-
-        this.total = total;
-        this.cargando = false;
-        this.facturas = invoices; 
-        this.resultado = invoices.length; 
-        this.totalAmount = montos;
-        this.totalCost = costos;
-        this.totalIva = iva;
+          this.total = total;
+          this.cargando = false;
+          this.facturas = invoices; 
+          this.resultado = invoices.length; 
+          this.totalAmount = montos;
+          this.totalCost = costos;
+          this.totalIva = iva;
 
         this.comisionCalcular(this.totalAmount);
 
@@ -799,15 +796,19 @@ export class TotalComponent implements OnInit {
           if (this.query.credito) {
             for (const pago of factura.paymentsCredit) {              
               this.totalAbonado += pago.amount;
-            }            
+            }
+            
+            for (const pago of factura.payments) {              
+              this.totalAbonado += pago.amount;
+            }
           }
           
           
           if (factura.tip) {
             this.totalTip += factura.tip;              
           }
-          for (const product of factura.products) {
-            
+
+          for (const product of factura.products) {            
 
             if (product.mayor) {                  
               factura.mayor = true;                

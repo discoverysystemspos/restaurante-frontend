@@ -13,7 +13,7 @@
 
   caseritas.poslatino.com
 
-  base_url: 'https://elgustazo.poslatino.com/api',
+  base_url: 'https://farmafuentes.poslatino.com/api',
 
   dataico_url: 'https://api.dataico.com/dataico_api/v2'
   

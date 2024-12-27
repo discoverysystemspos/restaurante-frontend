@@ -26,122 +26,249 @@
     <ng-container *ngIf="factura">
         <!-- TITLE - SUBTITLE -->
         <div class="mt-4">
-            <h5 class="text-dark">DETALLES DE LA FACTURA #{{ factura.invoice }}</h5>
+            <h5 class="text-dark">DETALLES DE LA FACTURA DE COMPRA #{{ factura.invoice }}</h5>
             <p class="mb-0">Cajero: {{ factura.user.name }}</p>
 
         </div>
         <!-- TITLE - SUBTITLE -->
 
+        <!-- BTNS -->
+         <div>
+            <button *ngIf="factura.status" (click)="devolucion(factura.comid)" [disabled]="user.role !== 'ADMIN'" type="button" class="btn btn-outline-danger btn-sm mx-1 my-2"> 
+                <i class="bi-arrow-counterclockwise"></i> devolver Factura
+            </button>
+         </div>
+
         <div class="row">
 
             <!-- DETALLES DE LA FACTURA -->
-            <div class="col-md-12 shadow-lg p-3 mb-5 rounded bg-white">
+             <div class="col-md-8">
 
-                <div id="printDiv">
+             
+                <div class="shadow-lg p-3 mb-5 rounded bg-white">
 
-                    <!-- SI ES A CREDITO -->
-                    <span *ngIf="factura.credito" class="badge rounded-pill bg-warning text-dark mb-2">A Credito <span *ngIf="factura.apartado">- Apartado </span> </span>
+                    <div id="printDiv">
 
-                    <!-- INFORMACION DEL CLIENTE -->
-                    <div class="row">
+                        <!-- SI ES A CREDITO -->
+                        <span *ngIf="factura.credito" class="badge rounded-pill bg-warning text-dark mb-2">A Credito <span *ngIf="factura.apartado">- Apartado </span> </span>
+                        <span *ngIf="!factura.status" class="badge rounded-pill bg-danger text-white mb-2">Devuelta </span>
 
-                        <!-- Informacion del Cliente -->
-                        <div class="col-md-8 text-left text-muted" style="color:black">
+                        <!-- INFORMACION DEL CLIENTE -->
+                        <div class="row">
+
+                            <!-- Informacion del Cliente -->
+                            <div class="col-md-8 text-left text-muted" style="color:black">
 
 
-                            <div class="row" style="color:black">
-                                <div class="col-md-4">
-                                    <h6 class="text-wrap mb-0 text-capitalize"><strong>Proveedor:  </strong><br><small>{{ factura.proveedor?.name || 'Ocasional' }}</small></h6>
+                                <div class="row" style="color:black">
+                                    <div class="col-md-4">
+                                        <h6 class="text-wrap mb-0 text-capitalize"><strong>Proveedor:  </strong><br><small>{{ factura.proveedor?.name || 'Ocasional' }}</small></h6>
+                                    </div>
+                                    <div class="col">
+                                        <h6 class="text-wrap mb-0 text-capitalize"><strong>CC / Nit: </strong> <br><small> {{ factura.proveedor?.cedula || '00000000' }}</small></h6>
+                                    </div>
                                 </div>
-                                <div class="col">
-                                    <h6 class="text-wrap mb-0 text-capitalize"><strong>CC / Nit: </strong> <br><small> {{ factura.proveedor?.cedula || '00000000' }}</small></h6>
-                                </div>
-                            </div>
 
-                            <div class="row" style="color:black">
-                                <div class="col-md-4">
-                                    <h6 class="text-wrap mb-0 text-capitalize"><strong>TELEFONO: </strong> <br><small *ngIf="factura.proveedor?.phone"> {{ factura.proveedor?.phone }}</small> </h6>
+                                <div class="row" style="color:black">
+                                    <div class="col-md-4">
+                                        <h6 class="text-wrap mb-0 text-capitalize"><strong>TELEFONO: </strong> <br><small *ngIf="factura.proveedor?.phone"> {{ factura.proveedor?.phone }}</small> </h6>
+                                    </div>
+                                    <div class="col">
+                                        <h6 class="text-wrap mb-0"><strong>CORREO: </strong> <br><small *ngIf="factura.proveedor?.email"> {{ factura.proveedor?.email }} </small></h6>
+                                    </div>
                                 </div>
-                                <div class="col">
-                                    <h6 class="text-wrap mb-0"><strong>CORREO: </strong> <br><small *ngIf="factura.proveedor?.email"> {{ factura.proveedor?.email }} </small></h6>
-                                </div>
-                            </div>
 
-                            <div class="row" style="color:black">
-                                <div class="col">
-                                    <h6 class="text-wrap mb-0"><strong>DIRECCIÓN: </strong> <br><small *ngIf="factura.proveedor?.address"> {{ factura.proveedor?.address }} <span *ngIf="factura.proveedor?.city" > {{ factura.proveedor?.city }} </span></small></h6>
+                                <div class="row" style="color:black">
+                                    <div class="col">
+                                        <h6 class="text-wrap mb-0"><strong>DIRECCIÓN: </strong> <br><small *ngIf="factura.proveedor?.address"> {{ factura.proveedor?.address }} <span *ngIf="factura.proveedor?.city" > {{ factura.proveedor?.city }} </span></small></h6>
 
+                                    </div>
                                 </div>
+
                             </div>
 
                         </div>
+                        <!-- INFORMACION DEL CLIENTE -->
+
+                        <!-- INFORMACION DE LA FACTURA -->
+                        <h4 class="text-center text-wrap"> Factura de Compra </h4>
+
+                        <div class=" table-responsive ">
+
+                            <table class="table table-borderless table-striped table-sm ">
+                                <thead class="border-bottom">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Codigo de barras</th>
+                                        <th class=" text-left" scope="col " colspan="2 ">Nombre del Producto</th>
+                                        <th scope="col">tipo</th>
+                                        <th scope="col">Precio</th>
+                                        <th scope="col">Cantidad</th>
+                                        <th scope="col">Monto</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-dark">
+
+                                    <tr *ngFor="let producto of factura.products; let i = index">
+                                        <th> {{ i + 1 }} </th>
+                                        <td><small class="text-wrap">{{ producto.product.code }}</small></td>
+                                        <td colspan="2">{{ producto.product.name }} <strong *ngIf="producto.mayor">M</strong> </td>
+                                        <td>{{ producto.product.type }}</td>
+                                        <td>{{ producto.price | currency : '$': symbol: '1.0-0'}}</td>
+                                        <td class="text-center">{{ producto.qty }}</td>
+                                        <td>{{ producto.price * producto.qty | currency : '$': symbol: '1.0-0'}}</td>
+                                    </tr>
+
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="7">ITEMS</th>
+                                        <th> {{ factura.totalItems || 0 }} </th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+                        </div>
+
+                        <!-- TOTAL -->
+                        <div>
+                            <div class="d-flex py-2">
+
+                                <div class="ms-auto d-flex justify-content-end">
+                                    <div class="border-start col px-4">
+                                        <!-- TOTAL -->
+                                        <h5 class="display-6 fw-bold text-primary">{{ factura.amount | currency : '$': symbol: '1.0-0' }}</h5>
+                                        <!-- TOTAL -->
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- TOTAL -->
 
                     </div>
-                    <!-- INFORMACION DEL CLIENTE -->
 
                     <!-- INFORMACION DE LA FACTURA -->
-                    <h4 class="text-center text-wrap"> Factura de Compra </h4>
-
-                    <div class=" table-responsive ">
-
-                        <table class="table table-borderless table-striped table-sm ">
-                            <thead class="border-bottom">
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Codigo de barras</th>
-                                    <th class=" text-left" scope="col " colspan="2 ">Nombre del Producto</th>
-                                    <th scope="col">tipo</th>
-                                    <th scope="col">Precio</th>
-                                    <th scope="col">Cantidad</th>
-                                    <th scope="col">Monto</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-dark">
-
-                                <tr *ngFor="let producto of factura.products; let i = index">
-                                    <th> {{ i + 1 }} </th>
-                                    <td><small class="text-wrap">{{ producto.product.code }}</small></td>
-                                    <td colspan="2">{{ producto.product.name }} <strong *ngIf="producto.mayor">M</strong> </td>
-                                    <td>{{ producto.product.type }}</td>
-                                    <td>{{ producto.price | currency : 'COP' : 'symbol' : '1.0-0'}}</td>
-                                    <td class="text-center">{{ producto.qty }}</td>
-                                    <td>{{ producto.price * producto.qty | currency : 'COP' : 'symbol' : '1.0-0'}}</td>
-                                </tr>
-
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th colspan="7">ITEMS</th>
-                                    <th> {{ factura.totalItems || 0 }} </th>
-                                </tr>
-                            </tfoot>
-                        </table>
-
-                    </div>
-
-                    <!-- TOTAL -->
-                    <div>
-                        <div class="d-flex py-2">
-
-                            <div class="ms-auto d-flex justify-content-end">
-                                <div class="border-start col px-4">
-                                    <!-- TOTAL -->
-                                    <h5 class="display-6 fw-bold text-primary">{{ factura.amount | currency : 'COP' : 'symbol' : '1.0-0' }}</h5>
-                                    <!-- TOTAL -->
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <!-- TOTAL -->
 
                 </div>
-
-                <!-- INFORMACION DE LA FACTURA -->
-
             </div>
             <!-- DETALLES DE LA FACTURA -->
 
+            <!-- PAGOS -->
+            <div class="col-md-4">
+
+                <!-- METODOS DE PAGO Y CREDITO -->
+             <div *ngIf="factura.credito" class="card">
+                <div class="card-body">
+
+                    <h3 class="mb-2">Metodo de abono</h3>
+                    
+                    <div class="form-group">
+                        <label for="typeP" class="">Metodo de pago</label>
+                        <select class="form-select" aria-label="typeP" #typeP>
+                            <option value="efectivo">Efectivo</option>
+                            <option *ngFor="let banco of bancos" [value]="banco.name"> {{ banco.name }} </option>
+                          </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descripcion" class="">Descripción</label>
+                        <input type="text" class="form-control" id="descripcion" placeholder="Descripción" #nDescripcion>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nMonto" class="">Monto</label>
+                        <input type="number" class="form-control" id="nMonto" placeholder="Monto" #nMonto>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="button" (click)="addPay(typeP.value, nMonto.value, nDescripcion.value)" class="btn btn-primary">Agregar</button>
+                    </div>
+
+                </div>
+             </div>
+
+                <!-- TABLE PAGOS-->
+                <div class="shadow-lg p-3 mb-5 rounded bg-white">
+                    <div class="d-flex justify-content-center">
+                        <div id="printPagos" style="color: #000;">
+                            <div class="d-flex justify-content-between">
+                                <h5 class="">
+                                    Pagos
+                                </h5>
+                                <h5 class="">
+                                    #{{ factura.invoice }}
+                                </h5>
+                            </div>
+
+                            <div>
+
+                                <div class="table-responsive " class="overflow-auto">
+                                    <table class="table table-borderless table-stripe table-hover table-sm animated fadeIn ">
+                                        <thead class="border-bottom ">
+                                            <tr style="color: #000;">
+                                                <th scope="col">Descripcion</th>
+                                                <th scope="col">Tipo</th>
+                                                <th scope="col">Monto</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+
+                                            <tr style="color: #000;">
+                                                <td class="fw-bold">
+                                                    Total de la factura
+                                                </td>
+                                                <td class="fw-normal">
+                                                    --
+                                                </td>
+                                                <td class="fw-bold"> {{ factura.amount || 0 | currency: '$' : symbol: '1.0-0' }} </td>
+                                            </tr>
+
+                                            <tr *ngIf="factura.payments.length === 0 ">
+                                                <td colspan="3">
+                                                    No tiene registro de pagos...
+                                                </td>
+                                            </tr>
+
+                                            <tr class="trHover" *ngFor="let pay of factura.payments; let i = index" style="color: #000;">
+                                                <td class="fw-normal">
+                                                    <span>{{ pay.description || 'Sin descripción' }} </span>
+                                                    <br *ngIf="pay.fecha">
+                                                    <small *ngIf="pay.fecha"> {{ pay.fecha | date:'short' }} </small>
+                                                </td>
+                                                <td class="fw-normal">{{ pay.type }}</td>
+                                                <td class="fw-normal">{{ pay.amount | currency: '$' : symbol: '1.0-0' }} </td>
+                                            </tr>
+
+                                        </tbody>
+                                        <tfoot>
+                                            <tr class="border-top" style="color: #000;">
+                                                <td colspan="2"> <span class="fw-bold"> Restante </span></td>
+                                                <td> <span class="fw-bold">{{ ( (factura.amount || 0) - totalPagos) | currency: '$' : symbol: '1.0-0' }}</span> </td>
+                                            </tr>
+                                        </tfoot>
+
+                                    </table>
+
+                                </div>
+
+                                <!-- BTN SIGUIENTE Y ANTERIOR -->
+                                <div class="row">
+                                    <div class="col" style="color: #000;">
+                                        <small>Total de pagos: ({{factura.payments.length}})</small>
+                                    </div>
+                                </div>
+                                <!-- BTN SIGUIENTE Y ANTERIOR -->
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- TABLE PAGOS-->
+
+            </div>
+            <!-- PAGOS -->
 
         </div>
 

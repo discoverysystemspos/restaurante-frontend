@@ -65,7 +65,7 @@ export class ProveedoresService {
    *   CREATE PROVEEDORES
   ==================================================================== */
   createProveedor( formData: any ){    
-    return this.http.post(`${base_url}/proveedores`, formData, this.headers);
+    return this.http.post<{ok: boolean, proveedor: Proveedor}>(`${base_url}/proveedores`, formData, this.headers);
   }
 
   /** ================================================================

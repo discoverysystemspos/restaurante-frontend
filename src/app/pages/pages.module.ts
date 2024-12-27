@@ -65,6 +65,7 @@ import { CompraComponent } from './compra/compra.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { VehiculosComponent } from './vehiculos/vehiculos.component';
 import { PisosComponent } from './configuracion/mesas/pisos/pisos.component';
+import { FacturasComprasComponent } from './compras/facturas-compras/facturas-compras.component';
 
 
 
@@ -118,7 +119,8 @@ import { PisosComponent } from './configuracion/mesas/pisos/pisos.component';
     BodegaComponent,
     CompraComponent,
     VehiculosComponent,
-    PisosComponent
+    PisosComponent,
+    FacturasComprasComponent
   ],
   exports: [
     PagesComponent,

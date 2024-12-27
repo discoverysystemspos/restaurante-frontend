@@ -162,15 +162,10 @@
 
                                 <div class="table-responsive">
 
-                                    <table class="table table-sm align-middle mb-1">
+                                    <table class="table table-sm align-middle mb-1" style="color: #000 important!;">
                                         <thead>
                                             <tr>
-                                                <th scope="col">
-                                                    <h6 class="mb-0">Item</h6>
-                                                </th>
-                                                <th scope="col">
-                                                    <h6 class="mb-0">Estado</h6>
-                                                </th>
+                                                <th>Item</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -179,20 +174,16 @@
 
                                                 <tr style="color: black;" *ngIf="item.estado === 'pendiente'">
                                                     <td>
-                                                        <h6 class="mb-0 lh-1 text-capitalize fs-5" style="color: #000;"> <span class="lh-1">01 - {{item.product.name}}  </span></h6>
-                                                        <small> {{ item.fecha | date:'short' }} </small>
+                                                        <p class="mb-0 lh-1 text-capitalize fs-4  fw-bolder" style="color: #000;"> 
+                                                            <span class="lh-1">01 - {{item.product.name}}  </span>
+                                                        </p>
+                                                        
                                                         <!-- <span *ngFor="let ingrediente of item.ingredientes" class="badge rounded-pill bg-light text-primary fw-normal"> {{ ingrediente.name }} </span> -->
                                                         <ng-container *ngFor="let ingrediente of item.ingredientes">
-                                                            <small *ngIf="!ingrediente.status" class="me-1"> X {{ ingrediente.name }} </small>
+                                                            <p *ngIf="!ingrediente.status" class="mb-0"> X {{ ingrediente.name }} </p>
                                                         </ng-container>
+                                                        <span style="font-size: 0.8rem;"> {{ item.fecha | date:'short' }} </span>
 
-                                                    </td>
-                                                    <td>
-                                                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" #estadoitem>
-                                                            <option class="text-danger" value="Pendiente" [selected]="item.estado === 'Pendiente'">Pendiente</option>
-                                                            <option class="text-warning" value="Preparando" [selected]="item.estado === 'Preparando'">Preparando</option>
-                                                            <option class="text-success" value="Entregado" [selected]="item.estado === 'Entregado'">Entregado</option>
-                                                        </select>
                                                     </td>
                                                 </tr>
                                             </ng-container>
@@ -247,15 +238,10 @@
 
                                 <div class="table-responsive">
 
-                                    <table class="table table-sm align-middle">
+                                    <table class="table table-sm align-middle mb-1" style="color: #000 important!;">
                                         <thead>
                                             <tr>
-                                                <th scope="col">
-                                                    <h6 class="mb-0">Item</h6>
-                                                </th>
-                                                <th scope="col">
-                                                    <h6 class="mb-0">Estado</h6>
-                                                </th>
+                                                <th>Item</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -264,20 +250,16 @@
 
                                                 <tr style="color: black;" *ngIf="item.estado === 'pendiente'">
                                                     <td>
-                                                        <h6 class="mb-0 lh-1 text-capitalize"> <span class="lh-1">01 - {{item.product.name}}  </span></h6>
-
+                                                        <p class="mb-0 lh-1 text-capitalize fs-4  fw-bolder" style="color: #000;"> 
+                                                            <span class="lh-1">01 - {{item.product.name}}  </span>
+                                                        </p>
+                                                        
                                                         <!-- <span *ngFor="let ingrediente of item.ingredientes" class="badge rounded-pill bg-light text-primary fw-normal"> {{ ingrediente.name }} </span> -->
                                                         <ng-container *ngFor="let ingrediente of item.ingredientes">
-                                                            <small *ngIf="!ingrediente.status" class="me-1 line-through"> {{ ingrediente.name }} </small>
+                                                            <p *ngIf="!ingrediente.status" class="mb-0"> X {{ ingrediente.name }} </p>
                                                         </ng-container>
+                                                        <span style="font-size: 0.8rem;"> {{ item.fecha | date:'short' }} </span>
 
-                                                    </td>
-                                                    <td>
-                                                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" #estadoitem>
-                                                    <option class="text-danger" value="Pendiente" [selected]="item.estado === 'Pendiente'">Pendiente</option>
-                                                    <option class="text-warning" value="Preparando" [selected]="item.estado === 'Preparando'">Preparando</option>
-                                                    <option class="text-success" value="Entregado" [selected]="item.estado === 'Entregado'">Entregado</option>
-                                                </select>
                                                     </td>
                                                 </tr>
                                             </ng-container>
@@ -330,15 +312,10 @@
 
                                 <div class="table-responsive">
 
-                                    <table class="table table-sm align-middle">
+                                    <table class="table table-sm align-middle mb-1" style="color: #000 important!;">
                                         <thead>
                                             <tr>
-                                                <th scope="col">
-                                                    <h6 class="mb-0">Item</h6>
-                                                </th>
-                                                <th scope="col">
-                                                    <h6 class="mb-0">Estado</h6>
-                                                </th>
+                                                <th>Item</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -347,20 +324,16 @@
 
                                                 <tr style="color: black;" *ngIf="item.estado === 'pendiente'">
                                                     <td>
-                                                        <h6 class="mb-0 lh-1 text-capitalize"> <span class="lh-1">01 - {{item.product.name}}  </span></h6>
-
+                                                        <p class="mb-0 lh-1 text-capitalize fs-4  fw-bolder" style="color: #000;"> 
+                                                            <span class="lh-1">01 - {{item.product.name}}  </span>
+                                                        </p>
+                                                        
                                                         <!-- <span *ngFor="let ingrediente of item.ingredientes" class="badge rounded-pill bg-light text-primary fw-normal"> {{ ingrediente.name }} </span> -->
                                                         <ng-container *ngFor="let ingrediente of item.ingredientes">
-                                                            <small *ngIf="!ingrediente.status" class="me-1 line-through"> {{ ingrediente.name }} </small>
+                                                            <p *ngIf="!ingrediente.status" class="mb-0"> X {{ ingrediente.name }} </p>
                                                         </ng-container>
+                                                        <span style="font-size: 0.8rem;"> {{ item.fecha | date:'short' }} </span>
 
-                                                    </td>
-                                                    <td>
-                                                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" #estadoitem>
-                                                    <option class="text-danger" value="Pendiente" [selected]="item.estado === 'Pendiente'">Pendiente</option>
-                                                    <option class="text-warning" value="Preparando" [selected]="item.estado === 'Preparando'">Preparando</option>
-                                                    <option class="text-success" value="Entregado" [selected]="item.estado === 'Entregado'">Entregado</option>
-                                                </select>
                                                     </td>
                                                 </tr>
                                             </ng-container>

@@ -8,7 +8,10 @@
     <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
 
         <li class="nav-item" role="presentation">
-            <a class="nav-link text-dark active" id="ticket1-tab"><i class="bi-gear" style="font-size: 1rem"></i> Tablero Principal</a>
+            <a class="nav-link text-dark" routerLinkActive="active" routerLink="/dashboard/configuracion/compras"  id="ticket1-tab"><i class="bi-gear" style="font-size: 1rem"></i> Tablero Principal</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link text-dark" routerLinkActive="active" routerLink="/dashboard/facturas-compras" id="ticket1-tab"><i class="bi-ticket" style="font-size: 1rem"></i> Facturas de Compras</a>
         </li>
 
     </ul>
@@ -134,18 +137,18 @@
                                         </button> #{{i+1}}
                                     </td>
                                     <td> {{ item.product.name }} <br> <small>{{ item.product!.code }}</small> </td>
-                                    <td class="text-right"> {{ item.price | currency : 'COP' : 'symbol' : '1.0-0' }} </td>
-                                    <td class="text-right"> {{ item.wholesale || 0 | currency : 'COP' : 'symbol' : '1.0-0' }} </td>
+                                    <td class="text-right"> {{ item.price | currency :'$' }} </td>
+                                    <td class="text-right"> {{ item.wholesale || 0 | currency :'$' }} </td>
                                     <td class="text-right"> {{ item.qty }} </td>
-                                    <td class="text-right"> {{ item.cost | currency : 'COP' : 'symbol' : '1.0-0' }} </td>
-                                    <td class="text-right"> {{ item.qty * item.cost | currency : 'COP' : 'symbol' : '1.0-0' }}</td>
+                                    <td class="text-right"> {{ item.cost | currency :'$' }} </td>
+                                    <td class="text-right"> {{ item.qty * item.cost | currency :'$' }}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="col-md-12">
                         <div class="pull-right m-t-30 text-right">
-                            <h3><b>Total :</b> {{total | currency: 'COP' : 'symbol' : '1.0-0'}}</h3>
+                            <h3><b>Total :</b> {{total | currency: '$'}}</h3>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -196,10 +199,17 @@
             <div class="card mb-3">
                 <div class="card-body">
 
-                    <!-- BUSCAR Y SELECCIONAR CLIENTE -->
+                    <!-- BUSCAR Y SELECCIONAR PROVEEDOR -->
                     <div class="w-100">
+                        
                         <div class="form-group mb-0">
-                            <label for="searchC">Buscar Proveedor</label>
+                            <div class="d-flex flex-wrap justify-content-between align-items-end pb-3">
+                                <label for="searchC">Buscar Proveedor</label>
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#nuevoProveedor">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                                
+                            </div>
                             <input id="searchC" type="text" class="form-control" placeholder="Buscar Proveedor" (keyup)="searchProveedor(searchP.value)" #searchP>
                         </div>
 
@@ -225,23 +235,90 @@
                 </div>
             </div>
 
-            <div class="card mb-3">
+            <!-- METODOS DE PAGO Y CREDITO -->
+             <div class="card">
                 <div class="card-body">
 
+                    <h3 class="mb-2">Metodo de pago</h3>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" value="" id="iCredito" #icredito>
+                        <label class="form-check-label" for="iCredito">
+                          Credito
+                        </label>
+                    </div>
+
+                    
+                    <div class="form-group">
+                        <label for="typeP" class="">Metodo de pago</label>
+                        <select class="form-select" aria-label="typeP" #typeP>
+                            <option value="efectivo">Efectivo</option>
+                            <option *ngFor="let banco of bancos" [value]="banco.name"> {{ banco.name }} </option>
+                          </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descripcion" class="">Descripción</label>
+                        <input type="text" class="form-control" id="descripcion" placeholder="Descripción" #nDescripcion>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nMonto" class="">Monto</label>
+                        <input type="number" class="form-control" id="nMonto" placeholder="Monto" #nMonto>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="button" (click)="addPay(typeP.value, nMonto.value, nDescripcion.value)" class="btn btn-primary">Agregar</button>
+                    </div>
+
+                    <hr *ngIf="payments.length > 0">
+
+                    <div *ngIf="payments.length > 0">
+
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Metodo</th>
+                                        <th scope="col">Descripción</th>
+                                        <th scope="col">Monto</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let paid of payments; let i = index">
+                                        <td> {{paid.type}} </td>
+                                        <td>{{paid.description}}</td>
+                                        <td>{{paid.amount | currency: '$'}}</td>
+                                        <td> 
+                                            <button (click)="delPaid(i)" type="button" class="btn btn-link p-1 text-danger">
+                                                <i class="bi bi-trash"></i>
+                                            </button> 
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="2">TOTAL</th>
+                                        <th> {{ totalPayments | currency: '$' }} </th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        
+
+                    </div>
+
                 </div>
-            </div>
+             </div>
 
             <div class="card">
                 <div class="card-body">
-
-
 
                     <!-- CREAR FACTURA -->
                     <div>
                         <button (click)="createInvoice()" [disabled]="items.length === 0 " type="button" class="btn btn-success w-100">Guardar Factura</button>
                     </div>
-
-
 
                 </div>
             </div>
@@ -251,4 +328,132 @@
 
     </div>
 
+</div>
+
+<!-- =========================================================================
+    NUEVO PROVEEDOR
+========================================================================= -->
+<div class="modal fade" id="nuevoProveedor" tabindex="-1" aria-labelledby="nuevoProveedorModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="nuevoProveedorModal"><i class="bi-person-plus" style="font-size: 2rem"></i> Nuevo Proveedor</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <form id="newProveedorForm" autocomplete="off" [formGroup]="newProveedorForm" (ngSubmit)="crearProveedor()">
+
+                    <!-- =======================================================================
+                        DATOS PROVEEDOR 
+                    =========================================================================== -->
+                    <h5 class="text-muted">Datos Del Proveedor</h5>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="name" type="text" class="form-control text-capitalize" placeholder="Nombres">
+                                <label for="floatingInput">Nombres</label>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 px-md-1 ">
+
+                            <div class="form-floating">
+                                <input formControlName="cedula" type="text" class="form-control" placeholder="Cedula de ciudadania">
+                                <label for="floatingInput">Cedula de ciudadania</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+
+                        <div class="col-md-6 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="email" type="email" class="form-control" placeholder="Email">
+                                <label for="floatingInput">Email</label>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="phone" type="text" class="form-control" placeholder="Telefono">
+                                <label for="floatingInput">Telefono</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- =======================================================================
+                        DIRECCION
+                    =========================================================================== -->
+                    <h5 class="text-muted">DIRECCIÓN</h5>
+
+                    <div class="row mb-3">
+
+                        <div class="col-md-12 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="address" type="text" class="form-control" placeholder="Dirección">
+                                <label for="floatingInput">Dirección</label>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row mb-3">
+
+                        <div class="col-md-5 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="department" type="text" class="form-control" placeholder="Departamento">
+                                <label for="floatingInput">Departamento</label>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-5 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="city" type="text" class="form-control" placeholder="Ciudad">
+                                <label for="floatingInput">Ciudad</label>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-2 px-md-1">
+
+                            <div class="form-floating">
+                                <input formControlName="zip" type="text" class="form-control" placeholder="ZIP">
+                                <label for="floatingInput">ZIP</label>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="text-danger mb-2">
+                            <p *ngIf="campoValido('name')" class="mb-1 animated fadeIn">- El nombre es obligatorio</p>
+                            <p *ngIf="campoValido('cedula')" class="mb-1 animated fadeIn">-El NIT o La cedula de ciudadania es obligatoria</p>
+
+                        </div>
+                    </div>
+
+
+                    <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
 </div>

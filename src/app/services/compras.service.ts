@@ -57,4 +57,12 @@ export class ComprasService {
   updateCompra(formData: any, id: string){    
     return this.http.put<{ok: boolean, compra: Compra}>(`${base_url}/compras/${id}`, formData, this.headers);
   }
+
+  /** ================================================================
+   *  RETURN COMPRA
+  ==================================================================== */
+  returnCompra(id: string){
+    return this.http.delete<{ok: boolean, msg: string}>(`${base_url}/compras/${id}`, this.headers)
+  }
+
 }
