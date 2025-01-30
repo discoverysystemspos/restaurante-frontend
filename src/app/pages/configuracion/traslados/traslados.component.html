@@ -1,0 +1,382 @@
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<header>
+    <div class="bg-header-blue py-2 px-3 mb-2">
+        <h5 class="text-white m-0">Configuraciones / Bodegas</h5>
+    </div>
+    <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
+
+        <li class="nav-item" role="presentation">
+            <a routerLink="/dashboard/configuracion/bodegas" class="nav-link text-dark " id="ticket1-tab"><i class="bi-gear" style="font-size: 1rem"></i> Bodegas</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a  class="nav-link text-dark active" id="ticket1-tab2"><i class="bi-gear" style="font-size: 1rem"></i> Trasalados</a>
+        </li>
+
+    </ul>
+</header>
+<!-- =========================================================================
+    HEADER 
+========================================================================= -->
+<div class="container-fluid py-4">
+
+    <!-- TITLE - SUBTITLE -->
+    <div>
+        <h5 class="text-dark">TRASLADOS</h5>
+        <p>Lista de los traslados entre bodegas, enviadas y recibidas</p>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="shadow-lg mb-5 py-3 rounded bg-white text-break container">
+
+                <h4 class="text-muted">Filtros</h4>
+
+                <div class="col-12">
+                    <h6 class="text-muted">Activa ó Cancelada</h6>
+                    <div class="form-check form-switch">
+                        <input (change)="searchStatus(estado.checked)" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked #estado>
+                        <label class="form-check-label" for="flexSwitchCheckChecked">
+                            <span *ngIf="estado.checked">Todos los traslados</span>
+                            <span *ngIf="!estado.checked">Solo los cancelados</span>
+                        </label>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="form-group">
+                    <h6 class="text-muted">Tipo de traslados</h6>
+                    <select class="form-select" aria-label="Default select example" (change)="searchTrasladosType(typeT.value)" #typeT>
+                        <option value="Enviado">Enviados</option>
+                        <option value="Recibido">Recibidos</option>
+                     </select>
+                </div>
+
+                <hr>
+
+                <div class="form-group">
+                    <div class="mb-3">
+                        <label for="" class="form-label">Referencia</label>
+                        <input (keydown.enter)="searchReferencia(searchR.value)" #searchR type="text" class="form-control" name="" id="" aria-describedby="helpId" placeholder="Referencia" />
+                    </div>
+                    
+                </div>
+
+                <hr>
+
+                <div class="form-group mb-3">
+                    <label class="" for="">Desde</label>
+                    <input type="datetime-local" class="form-control" (change)="initial.value" #initial>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="" for="">Hasta</label>
+                    <input type="datetime-local" class="form-control" (change)="end.value" #end>
+                </div>
+                
+                <button type="button" class="btn btn-outline-primary btn-sm py-auto w-100" (click)="searchForDates(initial.value, end.value)"> 
+                    <i class="bi-search"></i> Buscar 
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-9">
+
+            <!-- TABLE FACTURAS -->
+            <div class="shadow-lg p-3 mb-5 rounded bg-white">
+
+                <!-- CARGANDO -->
+                <div *ngIf="cargando">
+                    <div class="text-center p-4">
+                        <div class="spinner-grow text-secondary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <small class="text-muted">cargando...</small>
+                </div>
+                <!-- CARGANDO -->
+
+                <div *ngIf="!cargando">
+
+                    <!-- BUSCADOR -->
+                    <div class="d-flex justify-content-between flex-wrap">
+
+                        <div>
+                            <button type="button" class="btn btn-outline-primary btn-sm" (click)="recargar()"> <i class="bi-arrow-clockwise"></i> Recargar </button>
+                        </div>
+
+                        <div>
+                            <label for="mostrar" class="me-2">Mostrar: </label>
+                            <select name="" id="" [value]="query.hasta" #mostrar (change)="limiteChange(mostrar.value)">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="250">250</option>
+                                <option value="500">500</option>
+                                <option value="1000">1000</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <!-- BUSCADOR -->
+                     <!-- BTN CREAR VEHICULO -->
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-sm btn-primary btnW waves-effect waves-ligth" data-bs-toggle="modal" data-bs-target="#nuevoTraslado">Crear traslado</button>
+                    </div>
+                    <!-- BTN CREAR VEHICULO -->
+
+                    <div class="table-responsive ">
+                        <table class="table table-borderless table-striped table-hover table-sm animated fadeIn overflow-auto">
+                            <thead class="border-bottom ">
+                                <tr>
+                                    <th class="text-muted" scope="col ">referencia</th>
+                                    <th class="text-muted" scope="col ">Bodega</th>
+                                    <th class="text-muted" scope="col ">Tipo</th>
+                                    <th class="text-muted" scope="col ">Estado</th>
+                                    <th class="text-muted" scope="col ">Fecha</th>
+                                    <th class="text-muted" scope="col "></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr *ngIf="traslados.length === 0" class="text-center ">
+                                    <th colspan="10" class="py-4">
+                                        <h4 class="text-muted">Sin Resultados</h4>
+                                    </th>
+                                </tr>
+
+                                <tr *ngFor="let traslado of traslados">
+                                    <td>
+                                        <a [routerLink]="['/dashboard/configuracion/traslado', traslado.traid]">
+                                            <small class="text-break">
+                                                {{ traslado.referencia }}
+                                            </small>
+                                        </a>
+                                    </td>
+                                    <td>                                        
+                                        <span>
+                                            {{ traslado.desde }}
+                                        </span>
+                                    </td>
+                                    <td> {{ traslado.type }} </td>
+                                    <td> {{ traslado.estado }} </td>
+                                    <td> {{ traslado.fecha | date: 'short' }} </td>
+                                    <td>
+                                        <a class="btn btn-link p-1 text-primary" [routerLink]="['/dashboard/configuracion/traslado', traslado.traid]">
+                                            <i class="bi bi-box-arrow-up-right"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- BTN SIGUIENTE Y ANTERIOR -->
+                    <div class="row">
+                        <div class="col col-md-4">
+                            <small *ngIf="resultado !== 0" class="text-muted">(Resultados: {{ resultado || 0 }})</small>
+                            <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ query.desde + 1}} Hasta el: {{ query.desde + query.hasta }})</small>
+                        </div>
+
+                        <div class="col d-flex justify-content-end">
+                            <button [disabled]="query.desde === 0" type="button" (click)="cambiarPagina((query.hasta * -1))" class="btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
+                            <button [disabled]="query.hasta  > traslados.length || query.hasta > total" type="button" (click)="cambiarPagina(query.hasta)" class="btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
+                        </div>
+                    </div>
+                    <!-- BTN SIGUIENTE Y ANTERIORS -->
+
+                </div>
+
+            </div>
+            <!-- TABLE FACTURAS -->
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =========================================================================
+    NUEVO TRASLADO
+========================================================================= -->
+<div class="modal fade" id="nuevoTraslado" tabindex="-1" aria-labelledby="nuevoTrasladoModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="nuevoTrasladoModal"> Nuevo Traslado</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <h5 class="text-muted">Buscar Sucursal o Bodega</h5>
+
+                <div class="col-md-12 mt-2 px-md-1">
+
+                    <input type="text" class="form-control" placeholder="buscar sucursal" (keydown.enter)="searchBodega(searchB.value)" (keyup)="searchBodega(searchB.value)" #searchB>
+
+                    <div *ngIf="bodegasLists.length > 0 && searchB.value.length !== 0" class="bg-white px-2 shadow col-auto" style="position: absolute; z-index: 1020;">
+
+                        <ul class="list-group list-group-flush overflow-auto" style="max-height: 150px;">
+
+                            <li class="list-group-item py-1">
+                                <h6>Resultados: ({{ bodegasLists.length }})</h6>
+                            </li>
+
+                            <li class="list-group-item py-1" *ngFor="let bodega of bodegasLists">
+                                <button [disabled]="!bodega.status" class="border-0 bg-white w-100 text-start" (click)="bodegaSelected = bodega; bodegasLists = [] " type="button">
+                                    <div class="d-flex">
+                                        <div class="align-self-center">
+                                            <span> {{ bodega.name }} </span>
+                                            <span *ngIf="!bodega.status" class="badge rounded-pill bg-danger">Eliminado</span>
+                                        </div>
+                                    </div>
+                                </button>
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </div>
+
+                <hr *ngIf="bodegaSelected">
+
+                <!-- BODEGA SELECCIONADA -->
+                <div *ngIf="bodegaSelected">
+
+                    <h5 class="text-muted">Informacion de la bodega</h5>
+
+                    <div class="form-group">
+
+                        <div class="form-floating">
+                            <input id="Nombre" readonly class="form-control" [value]="bodegaSelected.name">
+                            <label for="Nombre">Nombre</label>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+
+                        <div class="form-floating">
+                            <input id="cedula" readonly type="text" class="form-control" [value]="bodegaSelected.endpoint">
+                            <label for="cedula">Link</label>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+                <h5 class="text-muted">Buscar Producto</h5>
+
+                <div class="col-md-12 mt-2 px-md-1">
+
+                    <input type="text" class="form-control" placeholder="buscar producto" (keydown.enter)="searchProduct(searchP.value)" (keyup)="searchProduct(searchP.value)" #searchP>
+
+                    <div *ngIf="productsLists.length > 0 && searchP.value.length !== 0" class="bg-white px-2 shadow col-auto" style="position: absolute; z-index: 1020;">
+
+                        <ul class="list-group list-group-flush overflow-auto" style="max-height: 150px;">
+
+                            <li class="list-group-item py-1">
+                                <h6>Resultados: ({{ productsLists.length }})</h6>
+                            </li>
+
+                            <li class="list-group-item py-1" *ngFor="let product of productsLists">
+                                <button [disabled]="!product.status" class="border-0 bg-white w-100 text-start" (click)="productSeletec = product; productsLists = [] " type="button">
+                                    <div class="d-flex">
+                                        <div class="align-self-center">
+                                            <span> {{ product.code }} </span>
+                                            <span> {{ product.name }} </span>
+                                            <span *ngIf="!product.status" class="badge rounded-pill bg-danger">Eliminado</span>
+                                        </div>
+                                    </div>
+                                </button>
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- BODEGA SELECCIONADA -->
+                <div *ngIf="productSeletec">
+
+                    <h5 class="text-muted">Informacion del producto</h5>
+
+                    <div class="form-group">
+                        <div class="form-floating">
+                            <input id="codigo" readonly class="form-control" [value]="productSeletec.code">
+                            <label for="codigo">Codigo</label>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="form-floating">
+                            <input id="Nombre" readonly class="form-control" [value]="productSeletec.name">
+                            <label for="Nombre">Nombre</label>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="form-floating">
+                            <input id="qty" class="form-control" type="number" min="0" #qtyI>
+                            <label for="qty">Cantidad</label>
+                        </div>
+
+                    </div>
+
+                    <button type="button" (click)="addProduct(qtyI.value)" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Agregar</button>
+                    
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-sm table-striped table-hover table-borderless align-middle">
+                        <thead class="table-light">
+                            <caption>
+                                Productos
+                            </caption>
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th>Cantidad</th>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody class="">
+
+                            <tr *ngIf="this.formaData.products.length === 0">
+                                <td class="text-center" colspan="4">Aun no has agregado items...</td>
+                            </tr>
+
+                            <tr *ngFor="let item of this.formaData.products; let i = index">
+                                <td> {{ i +1 }} </td>
+                                <td> {{ item.name }} </td>
+                                <td> {{ item.qty }} </td>
+                                <td> <button type="button" (click)="delProduct(i)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button> </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            
+                        </tfoot>
+                    </table>
+                </div>
+                                
+
+                <button type="button" (click)="create()" class="btn btnW waves-effect waves-ligth px-3 btn-primary">Guardar</button>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

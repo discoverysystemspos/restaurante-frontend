@@ -94,7 +94,9 @@ export class PrintComponent implements OnInit {
    *   IMPRIMIR
   ==================================================================== */
   printDiv() {
+
     this.printerService.printDiv('printDiv');
+    
   }
 
   /** ================================================================

@@ -93,5 +93,55 @@ export class BodegasComponent implements OnInit {
       return false;
     }
   }
+
+  /** ================================================================
+    *   SET BODEGA {}
+  ==================================================================== */
+  public bodegaSeleted: Bodega;
+  setForm(bodega: Bodega){
+
+    this.bodegaSeleted = bodega;
+    this.updateForm.setValue({
+      name: bodega.name,
+      endpoint: bodega.endpoint
+    })  
+
+  }
+
+  /** ================================================================
+    *   UPDATE BODEGA
+  ==================================================================== */
+  public updateFormSubmmited: boolean = false;
+  public updateForm = this.fb.group({
+    name: ['', [Validators.required]],
+    endpoint: ['', [Validators.required]]
+  })
+
+  update(){
+
+    this.updateFormSubmmited = false;
+
+    if (this.updateForm.invalid) {
+      return;
+    }
+
+    this.bodegasService.updateBodega(this.updateForm.value, this.bodegaSeleted.bid)    
+      .subscribe( ({bodega}) =>  {
+
+        this.bodegas.map( bod => {
+          if (bod.bid === this.bodegaSeleted.bid) {
+            bod.name = bodega.name;
+            bod.endpoint = bodega.endpoint;
+          }
+        })
+
+        Swal.fire('Estupendo', 'Se ha actualizado la bodega exitosamente!', 'success');
+
+      }, (err) => {
+        console.log(err);
+        
+      })
+  }
+
 }
 

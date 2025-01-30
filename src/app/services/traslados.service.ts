@@ -54,6 +54,13 @@ export class TrasladosService {
   /** ================================================================
    *  LOAD TRASLADO
   ==================================================================== */
+  loadTrasladosBodega(query: any, bodega: string){    
+    return this.http.post<{ok: boolean, total: number, traslados: Traslado[]}>(`${bodega}/traslados/query`, query, this.headers);
+  }
+
+  /** ================================================================
+   *  LOAD TRASLADO
+  ==================================================================== */
   loadTrasladoID(traslado: any){    
     return this.http.get<{ok: boolean, traslado: Traslado}>(`${base_url}/traslados/one/${traslado}`, this.headers);
   }
@@ -63,5 +70,12 @@ export class TrasladosService {
   ==================================================================== */
   updateTraslado(formData: any, id: string){    
     return this.http.put<{ok: boolean, traslado: Traslado}>(`${base_url}/traslados/${id}`, formData, this.headers);
+  }
+
+  /** ================================================================
+   *  UPDATE TRASLADO
+  ==================================================================== */
+  updateTrasladoBodega(formData: any, id: string, bodega: any){    
+    return this.http.put<{ok: boolean, traslado: Traslado}>(`${bodega}/traslados/${id}`, formData, this.headers);
   }
 }

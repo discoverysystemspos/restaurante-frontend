@@ -180,7 +180,7 @@
                             <div class="card shadow px-2 bg-dark border-0" style="width: 18rem;">
                                 <div class="card-body text-white">
                                     <h4 class="card-title mb-0 text-center">Ganancia Total</h4>
-                                    <h5 class="text-center"> {{ (montos) - costo | divisa }} </h5>
+                                    <h5 class="text-center"> {{ (efectivo + tarjeta + transferencia + vales + totalBancos) - costo | divisa | divisa }} </h5>
                                 </div>
                             </div>
                         </div>

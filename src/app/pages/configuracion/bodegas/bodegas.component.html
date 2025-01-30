@@ -8,7 +8,10 @@
     <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
 
         <li class="nav-item" role="presentation">
-            <a class="nav-link text-dark active" id="ticket1-tab"><i class="bi-gear" style="font-size: 1rem"></i> Tablero Principal</a>
+            <a class="nav-link text-dark active" id="ticket1-tab"><i class="bi-gear" style="font-size: 1rem"></i> Bodegas</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a routerLink="/dashboard/configuracion/traslados" class="nav-link text-dark" id="ticket1-tab2"><i class="bi-gear" style="font-size: 1rem"></i> Trasalados</a>
         </li>
 
     </ul>
@@ -66,9 +69,9 @@
                                 <button *ngIf="!bodega.status" type="button" class="btn btnW waves-effect waves-ligth btn-danger btn-sm">Desactivo</button>
                             </td>
                             <td class="text-center">
-                                <a routerLink="/dashboard/configuracion/bodega/{{bodega.bid}}" class="btn btn-link p-1 text-primary">
-                                    <i class="bi bi-box-arrow-up-right"></i>
-                                </a>
+                                <button (click)="setForm(bodega)" type="button" class="btn btn-link p-1 text-primary" data-bs-toggle="modal" data-bs-target="#editarBodega">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
                             </td>
                         </tr>
                     </tbody>
@@ -145,6 +148,68 @@
 
 
                     <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary w-100">crear</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =========================================================================
+    EDITAR BODEGA 
+========================================================================= -->
+<div class="modal fade" id="editarBodega" tabindex="-1" aria-labelledby="editarBodegaModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editarBodegaModal"><i class="bi-collection" style="font-size: 1rem"></i> Editar bodga Nueva</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <form autocomplete="off" [formGroup]="updateForm" (ngSubmit)="update()">
+
+                    <!-- =======================================================================
+                        Informacion del BANCO
+                    =========================================================================== -->
+                    <h5 class="text-muted">Informaciòn</h5>
+
+
+                    <div class="row mb-2">
+
+                        <div class="col-md-12">
+                            <label for="">Nombre</label>
+                            <div class="form-floating">
+                                <input formControlName="name" type="text" class="form-control" placeholder="Nombre de la bodega">
+                                <label for="floatingInput">Nombre de la bodega</label>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12">
+                            <label for="">URL</label>
+                            <div class="form-floating">
+                                <input formControlName="endpoint" type="text" class="form-control" placeholder="URL de la bodega">
+                                <label for="floatingInput">URL</label>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="text-danger mb-2">
+                            <p *ngIf="campoValido('name')" class="mb-1 animated fadeIn">- El nombre del impuesto es obligatorio</p>
+                            <p *ngIf="campoValido('endpoint')" class="mb-1 animated fadeIn">- El URL es obligatorio</p>
+                        </div>
+                    </div>
+
+
+                    <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary w-100">Actualizar</button>
                 </form>
 
             </div>

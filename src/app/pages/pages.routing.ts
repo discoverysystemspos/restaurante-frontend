@@ -54,6 +54,8 @@ import { CompraComponent } from './compra/compra.component';
 import { WaiterGuardPrivate } from '../guards/waiterPrivate.guard';
 import { VehiculosComponent } from './vehiculos/vehiculos.component';
 import { FacturasComprasComponent } from './compras/facturas-compras/facturas-compras.component';
+import { TrasladosComponent } from './configuracion/traslados/traslados.component';
+import { TrasladoComponent } from './configuracion/traslado/traslado.component';
 
 const routes: Routes = [
     
@@ -87,6 +89,8 @@ const routes: Routes = [
           { path: 'configuracion/prestamos', component: PrestamosComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Prestamos'} },
           { path: 'configuracion/prestamo/:id', component: PrestamoComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Prestamo'} },
           { path: 'configuracion/parqueadero', component: ParqueaderoComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Parqueadero'} },
+          { path: 'configuracion/traslados', component: TrasladosComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Traslados'} },
+          { path: 'configuracion/traslado/:id', component: TrasladoComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Traslados'} },
           { path: 'parqueadero/reportes', component: ReportesComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Reportes'} },
           
           { path: 'corte', component: CorteComponent, canActivate: [WaiterGuardPrivate], data:{ titulo: 'Corte'} },

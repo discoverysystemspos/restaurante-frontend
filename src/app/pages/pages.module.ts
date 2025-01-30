@@ -66,6 +66,8 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { VehiculosComponent } from './vehiculos/vehiculos.component';
 import { PisosComponent } from './configuracion/mesas/pisos/pisos.component';
 import { FacturasComprasComponent } from './compras/facturas-compras/facturas-compras.component';
+import { TrasladosComponent } from './configuracion/traslados/traslados.component';
+import { TrasladoComponent } from './configuracion/traslado/traslado.component';
 
 
 
@@ -120,7 +122,9 @@ import { FacturasComprasComponent } from './compras/facturas-compras/facturas-co
     CompraComponent,
     VehiculosComponent,
     PisosComponent,
-    FacturasComprasComponent
+    FacturasComprasComponent,
+    TrasladosComponent,
+    TrasladoComponent
   ],
   exports: [
     PagesComponent,
