@@ -93,6 +93,8 @@ export class MesaComponent implements OnInit {
   printWindowSubscription: Subscription;
   $printItems: Observable<PrintItem[]>;
 
+  public basculaT: string = '1';
+
   constructor(  private productService: ProductService,
                 private clientService: ClientService,
                 private searchService: SearchService,
@@ -387,7 +389,12 @@ export class MesaComponent implements OnInit {
           if (this.empresa?.electronica) {
             this.loadDataDataico();      
           }
-          
+
+          if (this.empresa.bascula) {
+            if (localStorage.getItem('bascula')) {
+              this.basculaT = localStorage.getItem('bascula');
+            }
+          }          
 
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
   }
@@ -583,7 +590,7 @@ export class MesaComponent implements OnInit {
       // SI ESTA USANDO BASCULA
       if (this.empresa.bascula) {
 
-        this.basculaService.loadPeso()
+        this.basculaService.loadPeso(this.basculaT)
             .subscribe( resp => {
               this.qtySelect = resp;
             });
@@ -592,7 +599,7 @@ export class MesaComponent implements OnInit {
 
       if (this.empresa.bascula) {
 
-        this.basculaService.loadPeso()
+        this.basculaService.loadPeso(this.basculaT)
             .subscribe( resp => {
               this.qtySelect = resp;
             });
@@ -693,7 +700,7 @@ export class MesaComponent implements OnInit {
               
               if (this.empresa.bascula) {                
                 
-                this.basculaService.loadPeso()
+                this.basculaService.loadPeso(this.basculaT)
                 .subscribe( resp => {
                   cantidad = resp;
 
@@ -772,7 +779,7 @@ export class MesaComponent implements OnInit {
               
               if (this.empresa.bascula) {                
                 
-                this.basculaService.loadPeso()
+                this.basculaService.loadPeso(this.basculaT)
                 .subscribe( resp => {
                   cantidad = resp;
 
@@ -856,7 +863,7 @@ export class MesaComponent implements OnInit {
 
       if (this.empresa.bascula) {
 
-        this.basculaService.loadPeso()
+        this.basculaService.loadPeso(this.basculaT)
             .subscribe( resp => {
 
               qty = resp;
@@ -2202,7 +2209,7 @@ export class MesaComponent implements OnInit {
 
     if (this.empresa.bascula) {        
 
-      this.basculaService.loadPeso()
+      this.basculaService.loadPeso(this.basculaT)
           .subscribe( resp => {
 
             this.changeCant(resp, product);                
@@ -2259,7 +2266,7 @@ export class MesaComponent implements OnInit {
 
       if (this.empresa.bascula) {        
 
-        this.basculaService.loadPeso()
+        this.basculaService.loadPeso(this.basculaT)
             .subscribe( resp => {
 
               qty = resp;
@@ -2272,7 +2279,7 @@ export class MesaComponent implements OnInit {
       
     }else if(producto.type === 'Paquete' && producto.bascula ){
 
-      this.basculaService.loadPeso()
+      this.basculaService.loadPeso(this.basculaT)
             .subscribe( resp => {
 
               qty = resp;

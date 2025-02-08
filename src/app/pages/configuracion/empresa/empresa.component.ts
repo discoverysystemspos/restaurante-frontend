@@ -26,6 +26,7 @@ interface _Department {
 export class EmpresaComponent implements OnInit {
 
   public empresa: Datos;
+  public basculaT: string = '1';
 
   constructor(  private empresaService: EmpresaService,
                 private fb: FormBuilder,
@@ -41,6 +42,11 @@ export class EmpresaComponent implements OnInit {
     this.loadDataDataico();
 
     this.loadDepartmentAndCitys();
+
+    if (localStorage.getItem('bascula')) {
+      this.basculaT = localStorage.getItem('bascula');
+    }
+
   }
 
   /** ================================================================
@@ -633,6 +639,16 @@ export class EmpresaComponent implements OnInit {
 
     this.ListCities = this.cities.filter( city =>  department === city['codigo departamento'] );
     
+
+  }
+
+  /** ================================================================
+   *  CAMBIAR EL TIPO DE BASCULA
+  ==================================================================== */
+  changeBascula(type: string){
+
+    localStorage.setItem('bascula', type);
+    this.basculaT = type;
 
   }
 
