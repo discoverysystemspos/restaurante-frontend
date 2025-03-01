@@ -27,6 +27,7 @@ export class EmpresaComponent implements OnInit {
 
   public empresa: Datos;
   public basculaT: string = '1';
+  public puertoBascula: string = 'COM1';
 
   constructor(  private empresaService: EmpresaService,
                 private fb: FormBuilder,
@@ -45,6 +46,10 @@ export class EmpresaComponent implements OnInit {
 
     if (localStorage.getItem('bascula')) {
       this.basculaT = localStorage.getItem('bascula');
+    }
+    
+    if (localStorage.getItem('puertoBascula')) {
+      this.puertoBascula = localStorage.getItem('puertoBascula');
     }
 
   }
@@ -67,7 +72,7 @@ export class EmpresaComponent implements OnInit {
           
           this.comisiones = datos.comisiones || [];
           
-          const { tax, name, address, phone, nit, eid, impuesto, printpos, responsable, noresponsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas, commissions, comisiones, fruver, moneda, decimal, usd,  currencyusd, cop, currencycop, basculaimp, basculatype, basculacode, electronica, min, alquileres, impresora, parqueadero, bs, currencybs, datafon, marca, comidatafon, cotizacion, placa, taller, paiddirect, kiosco } = datos;
+          const { tax, name, address, phone, nit, eid, impuesto, printpos, responsable, noresponsable, impuestoconsumo, resolucion, prefijopos, commission, comision, tip, propina, bascula, comandas, commissions, comisiones, fruver, moneda, decimal, usd,  currencyusd, cop, currencycop, basculaimp, basculatype, basculacode, electronica, min, alquileres, impresora, parqueadero, bs, currencybs, datafon, marca, comidatafon, cotizacion, placa, taller, paiddirect, kiosco, pais } = datos;
 
           let tipoImpuesto = '';
 
@@ -127,7 +132,7 @@ export class EmpresaComponent implements OnInit {
               taller: taller || false,
               paiddirect: paiddirect || false,
               kiosco: kiosco || false,
-
+              pais: pais || 'Colombia'
             });
 
         });
@@ -186,6 +191,7 @@ export class EmpresaComponent implements OnInit {
     taller: false,
     paiddirect: false,
     kiosco: false,
+    pais: 'Colombia',
   })
 
   actualizarDatos(){
@@ -646,10 +652,16 @@ export class EmpresaComponent implements OnInit {
    *  CAMBIAR EL TIPO DE BASCULA
   ==================================================================== */
   changeBascula(type: string){
-
     localStorage.setItem('bascula', type);
     this.basculaT = type;
+  }
 
+  /** ================================================================
+   *  CAMBIAR EL PUERTO DE BASCULA
+  ==================================================================== */
+  changePort(port: string){
+    localStorage.setItem('puertoBascula', port);
+    this.puertoBascula = port;
   }
 
 

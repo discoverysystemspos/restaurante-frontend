@@ -21,6 +21,8 @@ import { User } from 'src/app/models/user.model';
 import { Invoice } from 'src/app/models/invoice.model';
 import { TurnoService } from 'src/app/services/turno.service';
 import { LoadTurno } from 'src/app/interfaces/load-turno.interface';
+import { EmpresaService } from 'src/app/services/empresa.service';
+import { Datos } from 'src/app/models/empresa.model';
 
 interface _Department {
   codigo: string,
@@ -49,6 +51,8 @@ export class ClientesComponent implements OnInit {
   public btnAdelante: string = '';
 
   public user: User;
+  
+
   constructor(  private clientService: ClientService,
                 private searchService: SearchService,
                 private fb:FormBuilder,
@@ -56,6 +60,7 @@ export class ClientesComponent implements OnInit {
                 private bancosService: BancosService,
                 private userService: UserService,
                 private turnoService: TurnoService,
+                private empresaService: EmpresaService,
                 private http: HttpClient) {  
                   this.user = userService.user;
                 }
@@ -64,14 +69,29 @@ export class ClientesComponent implements OnInit {
     
     this.cargarClientes();
 
-    this.loadDepartmentAndCitys();
+    this.cargarDatos();    
 
     this.cargarBancos();
 
     // CARGAR TURNO
     this.cargarTurno();
 
+
   }
+
+  /** ================================================================
+   *   CARGAR DATOS
+  ==================================================================== */
+public empresa: Datos;
+  cargarDatos(){
+  
+      this.empresaService.getDatos()
+          .subscribe( datos => {
+            this.empresa = datos;  
+            this.loadDepartmentAndCitys();      
+  
+          }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
+    }
 
   /** ================================================================
    *   CARGAR BANCOS
@@ -241,12 +261,20 @@ export class ClientesComponent implements OnInit {
   public cities: any[] = [];
   loadDepartmentAndCitys(){
 
-    this.http.get('assets/json/departamentos.json')
+    let JsonCity: string = 'assets/json/ciudades.json';
+    let JsonDepartment: string = 'assets/json/departamentos.json';
+
+    if (this.empresa.pais === 'USA') {
+      JsonCity = 'assets/json/usaciudades.json';
+      JsonDepartment = 'assets/json/usadepartamentos.json';
+    }
+
+    this.http.get(JsonDepartment)
         .subscribe( (data: any) => {          
           this.departments = data;            
         });
 
-    this.http.get('assets/json/ciudades.json')
+    this.http.get(JsonCity)
     .subscribe( (data: any) => {          
       this.cities = data;          
     })

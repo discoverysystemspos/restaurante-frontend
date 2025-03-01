@@ -149,13 +149,7 @@ export class UserService {
   ==================================================================== */
   login( formData: LoginForm ){
     
-    return this.http.post(`${base_url}/login`, formData)
-                      .pipe(
-                        tap( (resp: any) => {
-                          localStorage.setItem('token', resp.token);
-                        }),
-                        catchError( error => of(false) )
-                      );
+    return this.http.post<{ok: boolean, token: string}>(`${base_url}/login`, formData);
   }
 
 }

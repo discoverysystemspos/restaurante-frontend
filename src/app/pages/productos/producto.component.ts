@@ -526,129 +526,33 @@ export class ProductoComponent implements OnInit {
   /** ================================================================
    *  CARGAR LOG DE PRODUCTOS
   ==================================================================== */
-  public desde: number = 0;
-  public limite: number = 0;
-  public btnAtras: string = '';
-  public btnAdelante: string = '';
-  public logs: any[] = [];
+  public query: any = {
+    desde: 0,
+    hasta: 50,
+    sort: {fecha: -1}
+  }
 
-  public total: number = 0;
-  
+  public logs: any[] = [];
+  public total: number = 0;  
   public resultado: number = 0;
 
   loadLogs(){
 
-    this.logProdcutsService.loadOneProductLogs(new Date, new Date, this.producto.code, 'false', this.desde, this.limite)
-        .subscribe( ({ products, total }) => {
+    this.utilidad = 0;
+    this.comprados = 0;
+    this.vendidos = 0;
+    this.devueltos = 0;
 
-          // COMPROBAR SI EXISTEN RESULTADOS
-          if (products.length === 0) {
-            this.logs = [];
-            this.resultado = 0;
-            this.btnAtras = 'disabled';
-            this.btnAdelante = 'disabled';
-            return;                
-          }
-          // COMPROBAR SI EXISTEN RESULTADOS
+    this.query.code = this.producto.code;
+
+    this.logProdcutsService.loadLogProductsQuery(this.query)
+        .subscribe( ({ products, total }) => {
 
           this.total = total;
           this.logs = products;
           this.resultado = 0;
-          this.cargando = false;
-
-          // BOTONOS DE ADELANTE Y ATRAS          
-          if (this.desde === 0 && this.total > this.limite) {
-            this.btnAtras = 'disabled';
-            this.btnAdelante = '';
-          }else if(this.desde === 0 && this.total < (this.limite + 1)){
-            this.btnAtras = 'disabled';
-            this.btnAdelante = 'disabled';
-          }else if( this.desde >= this.total){
-            this.btnAtras = '';
-            this.btnAdelante = 'disabled';
-          }else{
-            this.btnAtras = '';
-            this.btnAdelante = '';
-          }   
-          // BOTONOS DE ADELANTE Y ATRAS
+          this.cargando = false;          
           
-        })
-
-  }
-
-  /** ================================================================
-   *   CAMBIAR PAGINA
-  ==================================================================== */
-  cambiarPagina (direccion:string){
-
-    let valor:number = 10;
-    if (direccion === 'next') {
-      valor = this.limite;
-    }else if(direccion === 'back'){
-      valor = this.limite * -1;
-    }
-
-    this.desde += valor;
-
-    if (this.desde < 0) {
-      this.desde = 0;
-    }else if( this.desde > this.total ){
-      this.desde -= valor;
-    }
-
-    this.loadLogs();
-
-  }
-
-  /** ================================================================
-   *   CAMBIAR LIMITE
-  ==================================================================== */
-  // @ViewChild('limit') limit: ElementRef;
-  cambiarLimite(limite:number){
-    
-    this.limite = limite;
-    // this.limit.nativeElement.value = this.limit;
-    this.loadLogs();    
-    
-  }
-
-  /** ================================================================
-   *   BUSCAR POR
-  ==================================================================== */
-  public utilidad: number = 0;
-  buscarPor(inicial:Date, final: Date){
-
-    this.sinResultados = true;
-
-    if(inicial === null && final === null){
-      Swal.fire('Atención', 'No has seleccionado una fecha valida', 'info');
-      return;
-    }
-
-    // SET HOURS      
-    inicial = new Date(inicial);      
-    const initial = new Date(inicial.getTime());
-
-    final = new Date(final);
-    const end = new Date(final.getTime());      
-    // SET HOURS 
-
-    this.logProdcutsService.loadOneProductLogs(initial, end, this.producto.code, 'true', 0, 1000)
-    .subscribe( ({products}) => {
-      
-          this.vendidos = 0;
-          this.comprados = 0;
-          this.devueltos = 0;
-          this.utilidad = 0;
-          // COMPROBAR SI EXISTEN RESULTADOS
-          if (products.length === 0) {
-            this.sinResultados = false;
-            this.logs = [];
-            this.resultado = 0;
-            return;                
-          }
-          // COMPROBAR SI EXISTEN RESULTADOS
-
           for (const product of products) {
 
             if( product.type === 'Agrego' ){
@@ -671,10 +575,79 @@ export class ProductoComponent implements OnInit {
             
           }
 
-          this.logs = products; 
-          this.resultado = products.length;
-          
-        });
+
+        })
+
+  }
+
+  /** ================================================================
+   *   CAMBIAR PAGINA
+  ==================================================================== */
+  @ViewChild('mostrar') mostrar!: ElementRef;
+  cambiarPagina (valor: Number){
+
+    this.query.desde += valor;
+
+    if (this.query.desde < 0) {
+      this.query.desde = 0;
+    }
+
+    this.loadLogs();
+
+  }
+
+  /** ================================================================
+   *   CAMBIAR LIMITE
+  ==================================================================== */
+  limiteChange( cantidad: any ){  
+
+    this.query.hasta = Number(cantidad);    
+    this.loadLogs();
+
+  }
+
+  /** ================================================================
+   *   CAMBIAR LIMITE
+  ==================================================================== */
+  selectType( type: any ){  
+
+    if (type === 'all') {
+      delete this.query.type;      
+    }else{
+      this.query.type = type;
+    }
+
+    this.loadLogs();
+
+  }
+
+  /** ================================================================
+   *   BUSCAR POR
+  ==================================================================== */
+  public utilidad: number = 0;
+  buscarPor(inicial:Date, final: Date){
+
+    if (inicial === null && final === null || !inicial || !final) {
+      return;
+    }
+
+    // SET HOURS      
+    inicial = new Date(inicial);      
+    let initial = new Date(inicial.getTime() + 1000 * 60 * 60 * 5);
+
+    final = new Date(final);
+    let end = new Date(final.getTime() + 1000 * 60 * 60 * 5);      
+    // SET HOURS 
+
+    let url = document.URL.split(':');
+    if (url[0] === 'https') {
+      initial = new Date(inicial.getTime() + 1000 * 60 * 60 - 7200000); 
+      end = new Date(final.getTime() + 1000 * 60 * 60 - 3600000);        
+    }
+
+    this.query.$and = [{ fecha: { $gte: new Date(initial), $lt: new Date(end) } }];
+
+    this.loadLogs();
 
   }
 

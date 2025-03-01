@@ -1,4 +1,9 @@
-<header class="bg-dark pt-2 border-bottom">
+<div *ngIf="vencido" class="alert alert-warning d-flex align-items-center mb-0" role="alert">
+    <div>
+        <i class="fw-bold bi bi-exclamation-triangle-fill"></i> <span class="fw-bold ms-1"> Atención: </span> {{ empresa.msgv || 'Recuerda hacer el pago de la nube antes del 5, para evitar que se desactive!. Si ya realizaste el pago, envia el comprobante, gracias por preferirnos!' }}
+    </div>
+</div>
+<header class="bg-dark border-bottom">
 
     <nav class="navbar navbar-expand-lg bg-body-tertiary rounded" aria-label="Eleventh navbar example">
         <div class="container-fluid">
@@ -51,7 +56,13 @@
                 </ul>
             </div>
 
+            <a class="text-white-50 align-items-center" href="whatsapp://send?text=Hola,+necesito+que+me+ayuden+con+algo!&phone=+573007325684" target="_blank"> 
+                <i class="bi bi-whatsapp fs-4"></i>
+            </a>
             <div class="dropdown btn-group dropstart">
+                <!-- WHATSAPP -->
+                
+                <!-- DROWPDOWN -->
                 <button class="btn text-white" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     <div class="avatar shadow" >
                         <img class="avatar-img img-fluid border border-2 border-light" [src]="user.getImage" >

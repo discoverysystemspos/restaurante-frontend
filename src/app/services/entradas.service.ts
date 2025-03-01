@@ -39,6 +39,13 @@ export class EntradasService {
   }
 
   /** ================================================================
+   *  POST QUERY TURNOS
+  ==================================================================== */
+  loadMovimientosQuery(query: any){
+    return this.http.post<LoadEntradas>(`${base_url}/movimientos/query`, query, this.headers);
+  }
+
+  /** ================================================================
    *  GET TURNOS
   ==================================================================== */
   loadMovimientos(desde: number = 0, hasta: number = 50){        

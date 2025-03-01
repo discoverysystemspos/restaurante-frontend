@@ -139,6 +139,23 @@
                 </div> -->
                 <!-- BTN CREAR CAJA -->
 
+                <div class="d-flex justify-content-end flex-wrap">
+
+                    <div>
+                        <label for="mostrar" class="me-2">Mostrar: </label>
+                        <select name="" id="" [value]="query.hasta" #mostrar (change)="limiteChange(mostrar.value)">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="250">250</option>
+                            <option value="500">500</option>
+                            <option value="1000">1000</option>
+                        </select>
+                    </div>
+
+                </div>
+
                 <div class="table-responsive ">
                     <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
                         <thead class="border-bottom ">
@@ -187,8 +204,8 @@
                     </div>
 
                     <div class="col d-flex justify-content-end">
-                        <button type="button" (click)="cambiarPagina('back')" class="{{btnAtras}} btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
-                        <button type="button" (click)="cambiarPagina('next')" class="{{btnAdelante}} btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
+                        <button [disabled]="query.desde === 0" type="button" (click)="cambiarPagina((query.hasta * -1))" class="btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
+                        <button [disabled]="query.hasta  > movimientos.length || query.hasta > total" type="button" (click)="cambiarPagina(query.hasta)" class="btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
                     </div>
                 </div>
                 <!-- BTN SIGUIENTE Y ANTERIOR -->

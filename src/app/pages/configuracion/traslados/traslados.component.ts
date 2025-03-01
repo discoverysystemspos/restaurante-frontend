@@ -203,9 +203,7 @@ export class TrasladosComponent implements OnInit {
       this.bodegasService.loadBodegas(this.queryB)
           .subscribe( ({bodegas}) => {
 
-            this.bodegasLists = bodegas;
-            console.log(bodegas);
-            
+            this.bodegasLists = bodegas;            
 
           }, (err) => {
             console.log(err);

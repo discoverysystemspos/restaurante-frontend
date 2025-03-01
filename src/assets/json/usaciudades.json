@@ -1,0 +1,6002 @@
+[
+  {
+    "codigo departamento": "36",
+    "departamento": "New York",
+    "codigo": "001",
+    "ciudad": "New York"
+  },
+  {
+    "codigo departamento": "36",
+    "departamento": "New York",
+    "codigo": "002",
+    "ciudad": "Buffalo"
+  },
+  {
+    "codigo departamento": "36",
+    "departamento": "New York",
+    "codigo": "003",
+    "ciudad": "Rochester"
+  },
+  {
+    "codigo departamento": "36",
+    "departamento": "New York",
+    "codigo": "004",
+    "ciudad": "Yonkers"
+  },
+  {
+    "codigo departamento": "36",
+    "departamento": "New York",
+    "codigo": "005",
+    "ciudad": "Syracuse"
+  },
+  {
+    "codigo departamento": "36",
+    "departamento": "New York",
+    "codigo": "006",
+    "ciudad": "Albany"
+  },
+  {
+    "codigo departamento": "36",
+    "departamento": "New York",
+    "codigo": "007",
+    "ciudad": "New Rochelle"
+  },
+  {
+    "codigo departamento": "36",
+    "departamento": "New York",
+    "codigo": "008",
+    "ciudad": "Mount Vernon"
+  },
+  {
+    "codigo departamento": "36",
+    "departamento": "New York",
+    "codigo": "009",
+    "ciudad": "Schenectady"
+  },
+  {
+    "codigo departamento": "36",
+    "departamento": "New York",
+    "codigo": "010",
+    "ciudad": "Utica"
+  },
+  {
+    "codigo departamento": "36",
+    "departamento": "New York",
+    "codigo": "011",
+    "ciudad": "White Plains"
+  },
+  {
+    "codigo departamento": "36",
+    "departamento": "New York",
+    "codigo": "012",
+    "ciudad": "Hempstead"
+  },
+  {
+    "codigo departamento": "36",
+    "departamento": "New York",
+    "codigo": "013",
+    "ciudad": "Troy"
+  },
+  {
+    "codigo departamento": "36",
+    "departamento": "New York",
+    "codigo": "014",
+    "ciudad": "Niagara Falls"
+  },
+  {
+    "codigo departamento": "36",
+    "departamento": "New York",
+    "codigo": "015",
+    "ciudad": "Binghamton"
+  },
+  {
+    "codigo departamento": "36",
+    "departamento": "New York",
+    "codigo": "016",
+    "ciudad": "Freeport"
+  },
+  {
+    "codigo departamento": "36",
+    "departamento": "New York",
+    "codigo": "017",
+    "ciudad": "Valley Stream"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "001",
+    "ciudad": "Los Angeles"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "002",
+    "ciudad": "San Diego"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "003",
+    "ciudad": "San Jose"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "004",
+    "ciudad": "San Francisco"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "005",
+    "ciudad": "Fresno"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "006",
+    "ciudad": "Sacramento"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "007",
+    "ciudad": "Long Beach"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "008",
+    "ciudad": "Oakland"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "009",
+    "ciudad": "Bakersfield"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "010",
+    "ciudad": "Anaheim"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "011",
+    "ciudad": "Santa Ana"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "012",
+    "ciudad": "Riverside"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "013",
+    "ciudad": "Stockton"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "014",
+    "ciudad": "Chula Vista"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "015",
+    "ciudad": "Irvine"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "016",
+    "ciudad": "Fremont"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "017",
+    "ciudad": "San Bernardino"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "018",
+    "ciudad": "Modesto"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "019",
+    "ciudad": "Fontana"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "020",
+    "ciudad": "Oxnard"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "021",
+    "ciudad": "Moreno Valley"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "022",
+    "ciudad": "Huntington Beach"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "023",
+    "ciudad": "Glendale"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "024",
+    "ciudad": "Santa Clarita"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "025",
+    "ciudad": "Garden Grove"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "026",
+    "ciudad": "Oceanside"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "027",
+    "ciudad": "Rancho Cucamonga"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "028",
+    "ciudad": "Santa Rosa"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "029",
+    "ciudad": "Ontario"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "030",
+    "ciudad": "Lancaster"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "031",
+    "ciudad": "Elk Grove"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "032",
+    "ciudad": "Corona"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "033",
+    "ciudad": "Palmdale"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "034",
+    "ciudad": "Salinas"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "035",
+    "ciudad": "Pomona"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "036",
+    "ciudad": "Hayward"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "037",
+    "ciudad": "Escondido"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "038",
+    "ciudad": "Torrance"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "039",
+    "ciudad": "Sunnyvale"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "040",
+    "ciudad": "Orange"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "041",
+    "ciudad": "Fullerton"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "042",
+    "ciudad": "Pasadena"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "043",
+    "ciudad": "Thousand Oaks"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "044",
+    "ciudad": "Visalia"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "045",
+    "ciudad": "Simi Valley"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "046",
+    "ciudad": "Concord"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "047",
+    "ciudad": "Roseville"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "048",
+    "ciudad": "Victorville"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "049",
+    "ciudad": "Santa Clara"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "050",
+    "ciudad": "Vallejo"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "051",
+    "ciudad": "Berkeley"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "052",
+    "ciudad": "El Monte"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "053",
+    "ciudad": "Downey"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "054",
+    "ciudad": "Costa Mesa"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "055",
+    "ciudad": "Inglewood"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "056",
+    "ciudad": "Carlsbad"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "057",
+    "ciudad": "San Buenaventura (Ventura)"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "058",
+    "ciudad": "Fairfield"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "059",
+    "ciudad": "West Covina"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "060",
+    "ciudad": "Murrieta"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "061",
+    "ciudad": "Richmond"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "062",
+    "ciudad": "Norwalk"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "063",
+    "ciudad": "Antioch"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "064",
+    "ciudad": "Temecula"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "065",
+    "ciudad": "Burbank"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "066",
+    "ciudad": "Daly City"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "067",
+    "ciudad": "Rialto"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "068",
+    "ciudad": "Santa Maria"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "069",
+    "ciudad": "El Cajon"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "070",
+    "ciudad": "San Mateo"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "071",
+    "ciudad": "Clovis"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "072",
+    "ciudad": "Compton"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "073",
+    "ciudad": "Jurupa Valley"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "074",
+    "ciudad": "Vista"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "075",
+    "ciudad": "South Gate"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "076",
+    "ciudad": "Mission Viejo"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "077",
+    "ciudad": "Vacaville"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "078",
+    "ciudad": "Carson"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "079",
+    "ciudad": "Hesperia"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "080",
+    "ciudad": "Santa Monica"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "081",
+    "ciudad": "Westminster"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "082",
+    "ciudad": "Redding"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "083",
+    "ciudad": "Santa Barbara"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "084",
+    "ciudad": "Chico"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "085",
+    "ciudad": "Newport Beach"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "086",
+    "ciudad": "San Leandro"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "087",
+    "ciudad": "San Marcos"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "088",
+    "ciudad": "Whittier"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "089",
+    "ciudad": "Hawthorne"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "090",
+    "ciudad": "Citrus Heights"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "091",
+    "ciudad": "Tracy"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "092",
+    "ciudad": "Alhambra"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "093",
+    "ciudad": "Livermore"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "094",
+    "ciudad": "Buena Park"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "095",
+    "ciudad": "Menifee"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "096",
+    "ciudad": "Hemet"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "097",
+    "ciudad": "Lakewood"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "098",
+    "ciudad": "Merced"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "099",
+    "ciudad": "Chino"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "100",
+    "ciudad": "Indio"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "101",
+    "ciudad": "Redwood City"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "102",
+    "ciudad": "Lake Forest"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "103",
+    "ciudad": "Napa"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "104",
+    "ciudad": "Tustin"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "105",
+    "ciudad": "Bellflower"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "106",
+    "ciudad": "Mountain View"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "107",
+    "ciudad": "Chino Hills"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "108",
+    "ciudad": "Baldwin Park"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "109",
+    "ciudad": "Alameda"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "110",
+    "ciudad": "Upland"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "111",
+    "ciudad": "San Ramon"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "112",
+    "ciudad": "Folsom"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "113",
+    "ciudad": "Pleasanton"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "114",
+    "ciudad": "Union City"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "115",
+    "ciudad": "Perris"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "116",
+    "ciudad": "Manteca"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "117",
+    "ciudad": "Lynwood"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "118",
+    "ciudad": "Apple Valley"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "119",
+    "ciudad": "Redlands"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "120",
+    "ciudad": "Turlock"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "121",
+    "ciudad": "Milpitas"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "122",
+    "ciudad": "Redondo Beach"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "123",
+    "ciudad": "Rancho Cordova"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "124",
+    "ciudad": "Yorba Linda"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "125",
+    "ciudad": "Palo Alto"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "126",
+    "ciudad": "Davis"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "127",
+    "ciudad": "Camarillo"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "128",
+    "ciudad": "Walnut Creek"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "129",
+    "ciudad": "Pittsburg"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "130",
+    "ciudad": "South San Francisco"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "131",
+    "ciudad": "Yuba City"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "132",
+    "ciudad": "San Clemente"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "133",
+    "ciudad": "Laguna Niguel"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "134",
+    "ciudad": "Pico Rivera"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "135",
+    "ciudad": "Montebello"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "136",
+    "ciudad": "Lodi"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "137",
+    "ciudad": "Madera"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "138",
+    "ciudad": "Santa Cruz"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "139",
+    "ciudad": "La Habra"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "140",
+    "ciudad": "Encinitas"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "141",
+    "ciudad": "Monterey Park"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "142",
+    "ciudad": "Tulare"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "143",
+    "ciudad": "Cupertino"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "144",
+    "ciudad": "Gardena"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "145",
+    "ciudad": "National City"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "146",
+    "ciudad": "Rocklin"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "147",
+    "ciudad": "Petaluma"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "148",
+    "ciudad": "Huntington Park"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "149",
+    "ciudad": "San Rafael"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "150",
+    "ciudad": "La Mesa"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "151",
+    "ciudad": "Arcadia"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "152",
+    "ciudad": "Fountain Valley"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "153",
+    "ciudad": "Diamond Bar"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "154",
+    "ciudad": "Woodland"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "155",
+    "ciudad": "Santee"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "156",
+    "ciudad": "Lake Elsinore"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "157",
+    "ciudad": "Porterville"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "158",
+    "ciudad": "Paramount"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "159",
+    "ciudad": "Eastvale"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "160",
+    "ciudad": "Rosemead"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "161",
+    "ciudad": "Hanford"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "162",
+    "ciudad": "Highland"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "163",
+    "ciudad": "Brentwood"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "164",
+    "ciudad": "Novato"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "165",
+    "ciudad": "Colton"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "166",
+    "ciudad": "Cathedral City"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "167",
+    "ciudad": "Delano"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "168",
+    "ciudad": "Yucaipa"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "169",
+    "ciudad": "Watsonville"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "170",
+    "ciudad": "Placentia"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "171",
+    "ciudad": "Glendora"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "172",
+    "ciudad": "Gilroy"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "173",
+    "ciudad": "Palm Desert"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "174",
+    "ciudad": "Cerritos"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "175",
+    "ciudad": "West Sacramento"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "176",
+    "ciudad": "Aliso Viejo"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "177",
+    "ciudad": "Poway"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "178",
+    "ciudad": "La Mirada"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "179",
+    "ciudad": "Rancho Santa Margarita"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "180",
+    "ciudad": "Cypress"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "181",
+    "ciudad": "Dublin"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "182",
+    "ciudad": "Covina"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "183",
+    "ciudad": "Azusa"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "184",
+    "ciudad": "Palm Springs"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "185",
+    "ciudad": "San Luis Obispo"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "186",
+    "ciudad": "Ceres"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "187",
+    "ciudad": "San Jacinto"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "188",
+    "ciudad": "Lincoln"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "189",
+    "ciudad": "Newark"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "190",
+    "ciudad": "Lompoc"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "191",
+    "ciudad": "El Centro"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "192",
+    "ciudad": "Danville"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "193",
+    "ciudad": "Bell Gardens"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "194",
+    "ciudad": "Coachella"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "195",
+    "ciudad": "Rancho Palos Verdes"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "196",
+    "ciudad": "San Bruno"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "197",
+    "ciudad": "Rohnert Park"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "198",
+    "ciudad": "Brea"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "199",
+    "ciudad": "La Puente"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "200",
+    "ciudad": "Campbell"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "201",
+    "ciudad": "San Gabriel"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "202",
+    "ciudad": "Beaumont"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "203",
+    "ciudad": "Morgan Hill"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "204",
+    "ciudad": "Culver City"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "205",
+    "ciudad": "Calexico"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "206",
+    "ciudad": "Stanton"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "207",
+    "ciudad": "La Quinta"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "208",
+    "ciudad": "Pacifica"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "209",
+    "ciudad": "Montclair"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "210",
+    "ciudad": "Oakley"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "211",
+    "ciudad": "Monrovia"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "212",
+    "ciudad": "Los Banos"
+  },
+  {
+    "codigo departamento": "06",
+    "departamento": "California",
+    "codigo": "213",
+    "ciudad": "Martinez"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "001",
+    "ciudad": "Chicago"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "002",
+    "ciudad": "Aurora"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "003",
+    "ciudad": "Rockford"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "004",
+    "ciudad": "Joliet"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "005",
+    "ciudad": "Naperville"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "006",
+    "ciudad": "Springfield"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "007",
+    "ciudad": "Peoria"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "008",
+    "ciudad": "Elgin"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "009",
+    "ciudad": "Waukegan"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "010",
+    "ciudad": "Cicero"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "011",
+    "ciudad": "Champaign"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "012",
+    "ciudad": "Bloomington"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "013",
+    "ciudad": "Arlington Heights"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "014",
+    "ciudad": "Evanston"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "015",
+    "ciudad": "Decatur"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "016",
+    "ciudad": "Schaumburg"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "017",
+    "ciudad": "Bolingbrook"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "018",
+    "ciudad": "Palatine"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "019",
+    "ciudad": "Skokie"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "020",
+    "ciudad": "Des Plaines"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "021",
+    "ciudad": "Orland Park"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "022",
+    "ciudad": "Tinley Park"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "023",
+    "ciudad": "Oak Lawn"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "024",
+    "ciudad": "Berwyn"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "025",
+    "ciudad": "Mount Prospect"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "026",
+    "ciudad": "Normal"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "027",
+    "ciudad": "Wheaton"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "028",
+    "ciudad": "Hoffman Estates"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "029",
+    "ciudad": "Oak Park"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "030",
+    "ciudad": "Downers Grove"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "031",
+    "ciudad": "Elmhurst"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "032",
+    "ciudad": "Glenview"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "033",
+    "ciudad": "DeKalb"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "034",
+    "ciudad": "Lombard"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "035",
+    "ciudad": "Belleville"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "036",
+    "ciudad": "Moline"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "037",
+    "ciudad": "Buffalo Grove"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "038",
+    "ciudad": "Bartlett"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "039",
+    "ciudad": "Urbana"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "040",
+    "ciudad": "Quincy"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "041",
+    "ciudad": "Crystal Lake"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "042",
+    "ciudad": "Plainfield"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "043",
+    "ciudad": "Streamwood"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "044",
+    "ciudad": "Carol Stream"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "045",
+    "ciudad": "Romeoville"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "046",
+    "ciudad": "Rock Island"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "047",
+    "ciudad": "Hanover Park"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "048",
+    "ciudad": "Carpentersville"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "049",
+    "ciudad": "Wheeling"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "050",
+    "ciudad": "Park Ridge"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "051",
+    "ciudad": "Addison"
+  },
+  {
+    "codigo departamento": "17",
+    "departamento": "Illinois",
+    "codigo": "052",
+    "ciudad": "Calumet City"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "001",
+    "ciudad": "Houston"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "002",
+    "ciudad": "San Antonio"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "003",
+    "ciudad": "Dallas"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "004",
+    "ciudad": "Austin"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "005",
+    "ciudad": "Fort Worth"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "006",
+    "ciudad": "El Paso"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "007",
+    "ciudad": "Arlington"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "008",
+    "ciudad": "Corpus Christi"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "009",
+    "ciudad": "Plano"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "010",
+    "ciudad": "Laredo"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "011",
+    "ciudad": "Lubbock"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "012",
+    "ciudad": "Garland"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "013",
+    "ciudad": "Irving"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "014",
+    "ciudad": "Amarillo"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "015",
+    "ciudad": "Grand Prairie"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "016",
+    "ciudad": "Brownsville"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "017",
+    "ciudad": "Pasadena"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "018",
+    "ciudad": "McKinney"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "019",
+    "ciudad": "Mesquite"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "020",
+    "ciudad": "McAllen"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "021",
+    "ciudad": "Killeen"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "022",
+    "ciudad": "Frisco"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "023",
+    "ciudad": "Waco"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "024",
+    "ciudad": "Carrollton"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "025",
+    "ciudad": "Denton"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "026",
+    "ciudad": "Midland"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "027",
+    "ciudad": "Abilene"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "028",
+    "ciudad": "Beaumont"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "029",
+    "ciudad": "Round Rock"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "030",
+    "ciudad": "Odessa"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "031",
+    "ciudad": "Wichita Falls"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "032",
+    "ciudad": "Richardson"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "033",
+    "ciudad": "Lewisville"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "034",
+    "ciudad": "Tyler"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "035",
+    "ciudad": "College Station"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "036",
+    "ciudad": "Pearland"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "037",
+    "ciudad": "San Angelo"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "038",
+    "ciudad": "Allen"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "039",
+    "ciudad": "League City"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "040",
+    "ciudad": "Sugar Land"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "041",
+    "ciudad": "Longview"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "042",
+    "ciudad": "Edinburg"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "043",
+    "ciudad": "Mission"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "044",
+    "ciudad": "Bryan"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "045",
+    "ciudad": "Baytown"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "046",
+    "ciudad": "Pharr"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "047",
+    "ciudad": "Temple"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "048",
+    "ciudad": "Missouri City"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "049",
+    "ciudad": "Flower Mound"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "050",
+    "ciudad": "Harlingen"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "051",
+    "ciudad": "North Richland Hills"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "052",
+    "ciudad": "Victoria"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "053",
+    "ciudad": "Conroe"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "054",
+    "ciudad": "New Braunfels"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "055",
+    "ciudad": "Mansfield"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "056",
+    "ciudad": "Cedar Park"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "057",
+    "ciudad": "Rowlett"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "058",
+    "ciudad": "Port Arthur"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "059",
+    "ciudad": "Euless"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "060",
+    "ciudad": "Georgetown"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "061",
+    "ciudad": "Pflugerville"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "062",
+    "ciudad": "DeSoto"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "063",
+    "ciudad": "San Marcos"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "064",
+    "ciudad": "Grapevine"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "065",
+    "ciudad": "Bedford"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "066",
+    "ciudad": "Galveston"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "067",
+    "ciudad": "Cedar Hill"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "068",
+    "ciudad": "Texas City"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "069",
+    "ciudad": "Wylie"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "070",
+    "ciudad": "Haltom City"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "071",
+    "ciudad": "Keller"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "072",
+    "ciudad": "Coppell"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "073",
+    "ciudad": "Rockwall"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "074",
+    "ciudad": "Huntsville"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "075",
+    "ciudad": "Duncanville"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "076",
+    "ciudad": "Sherman"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "077",
+    "ciudad": "The Colony"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "078",
+    "ciudad": "Burleson"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "079",
+    "ciudad": "Hurst"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "080",
+    "ciudad": "Lancaster"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "081",
+    "ciudad": "Texarkana"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "082",
+    "ciudad": "Friendswood"
+  },
+  {
+    "codigo departamento": "48",
+    "departamento": "Texas",
+    "codigo": "083",
+    "ciudad": "Weslaco"
+  },
+  {
+    "codigo departamento": "42",
+    "departamento": "Pennsylvania",
+    "codigo": "001",
+    "ciudad": "Philadelphia"
+  },
+  {
+    "codigo departamento": "42",
+    "departamento": "Pennsylvania",
+    "codigo": "002",
+    "ciudad": "Pittsburgh"
+  },
+  {
+    "codigo departamento": "42",
+    "departamento": "Pennsylvania",
+    "codigo": "003",
+    "ciudad": "Allentown"
+  },
+  {
+    "codigo departamento": "42",
+    "departamento": "Pennsylvania",
+    "codigo": "004",
+    "ciudad": "Erie"
+  },
+  {
+    "codigo departamento": "42",
+    "departamento": "Pennsylvania",
+    "codigo": "005",
+    "ciudad": "Reading"
+  },
+  {
+    "codigo departamento": "42",
+    "departamento": "Pennsylvania",
+    "codigo": "006",
+    "ciudad": "Scranton"
+  },
+  {
+    "codigo departamento": "42",
+    "departamento": "Pennsylvania",
+    "codigo": "007",
+    "ciudad": "Bethlehem"
+  },
+  {
+    "codigo departamento": "42",
+    "departamento": "Pennsylvania",
+    "codigo": "008",
+    "ciudad": "Lancaster"
+  },
+  {
+    "codigo departamento": "42",
+    "departamento": "Pennsylvania",
+    "codigo": "009",
+    "ciudad": "Harrisburg"
+  },
+  {
+    "codigo departamento": "42",
+    "departamento": "Pennsylvania",
+    "codigo": "010",
+    "ciudad": "Altoona"
+  },
+  {
+    "codigo departamento": "42",
+    "departamento": "Pennsylvania",
+    "codigo": "011",
+    "ciudad": "York"
+  },
+  {
+    "codigo departamento": "42",
+    "departamento": "Pennsylvania",
+    "codigo": "012",
+    "ciudad": "State College"
+  },
+  {
+    "codigo departamento": "42",
+    "departamento": "Pennsylvania",
+    "codigo": "013",
+    "ciudad": "Wilkes-Barre"
+  },
+  {
+    "codigo departamento": "04",
+    "departamento": "Arizona",
+    "codigo": "001",
+    "ciudad": "Phoenix"
+  },
+  {
+    "codigo departamento": "04",
+    "departamento": "Arizona",
+    "codigo": "002",
+    "ciudad": "Tucson"
+  },
+  {
+    "codigo departamento": "04",
+    "departamento": "Arizona",
+    "codigo": "003",
+    "ciudad": "Mesa"
+  },
+  {
+    "codigo departamento": "04",
+    "departamento": "Arizona",
+    "codigo": "004",
+    "ciudad": "Chandler"
+  },
+  {
+    "codigo departamento": "04",
+    "departamento": "Arizona",
+    "codigo": "005",
+    "ciudad": "Glendale"
+  },
+  {
+    "codigo departamento": "04",
+    "departamento": "Arizona",
+    "codigo": "006",
+    "ciudad": "Scottsdale"
+  },
+  {
+    "codigo departamento": "04",
+    "departamento": "Arizona",
+    "codigo": "007",
+    "ciudad": "Gilbert"
+  },
+  {
+    "codigo departamento": "04",
+    "departamento": "Arizona",
+    "codigo": "008",
+    "ciudad": "Tempe"
+  },
+  {
+    "codigo departamento": "04",
+    "departamento": "Arizona",
+    "codigo": "009",
+    "ciudad": "Peoria"
+  },
+  {
+    "codigo departamento": "04",
+    "departamento": "Arizona",
+    "codigo": "010",
+    "ciudad": "Surprise"
+  },
+  {
+    "codigo departamento": "04",
+    "departamento": "Arizona",
+    "codigo": "011",
+    "ciudad": "Yuma"
+  },
+  {
+    "codigo departamento": "04",
+    "departamento": "Arizona",
+    "codigo": "012",
+    "ciudad": "Avondale"
+  },
+  {
+    "codigo departamento": "04",
+    "departamento": "Arizona",
+    "codigo": "013",
+    "ciudad": "Goodyear"
+  },
+  {
+    "codigo departamento": "04",
+    "departamento": "Arizona",
+    "codigo": "014",
+    "ciudad": "Flagstaff"
+  },
+  {
+    "codigo departamento": "04",
+    "departamento": "Arizona",
+    "codigo": "015",
+    "ciudad": "Buckeye"
+  },
+  {
+    "codigo departamento": "04",
+    "departamento": "Arizona",
+    "codigo": "016",
+    "ciudad": "Lake Havasu City"
+  },
+  {
+    "codigo departamento": "04",
+    "departamento": "Arizona",
+    "codigo": "017",
+    "ciudad": "Casa Grande"
+  },
+  {
+    "codigo departamento": "04",
+    "departamento": "Arizona",
+    "codigo": "018",
+    "ciudad": "Sierra Vista"
+  },
+  {
+    "codigo departamento": "04",
+    "departamento": "Arizona",
+    "codigo": "019",
+    "ciudad": "Maricopa"
+  },
+  {
+    "codigo departamento": "04",
+    "departamento": "Arizona",
+    "codigo": "020",
+    "ciudad": "Oro Valley"
+  },
+  {
+    "codigo departamento": "04",
+    "departamento": "Arizona",
+    "codigo": "021",
+    "ciudad": "Prescott"
+  },
+  {
+    "codigo departamento": "04",
+    "departamento": "Arizona",
+    "codigo": "022",
+    "ciudad": "Bullhead City"
+  },
+  {
+    "codigo departamento": "04",
+    "departamento": "Arizona",
+    "codigo": "023",
+    "ciudad": "Prescott Valley"
+  },
+  {
+    "codigo departamento": "04",
+    "departamento": "Arizona",
+    "codigo": "024",
+    "ciudad": "Marana"
+  },
+  {
+    "codigo departamento": "04",
+    "departamento": "Arizona",
+    "codigo": "025",
+    "ciudad": "Apache Junction"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "001",
+    "ciudad": "Jacksonville"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "002",
+    "ciudad": "Miami"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "003",
+    "ciudad": "Tampa"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "004",
+    "ciudad": "Orlando"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "005",
+    "ciudad": "St. Petersburg"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "006",
+    "ciudad": "Hialeah"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "007",
+    "ciudad": "Tallahassee"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "008",
+    "ciudad": "Fort Lauderdale"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "009",
+    "ciudad": "Port St. Lucie"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "010",
+    "ciudad": "Cape Coral"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "011",
+    "ciudad": "Pembroke Pines"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "012",
+    "ciudad": "Hollywood"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "013",
+    "ciudad": "Miramar"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "014",
+    "ciudad": "Gainesville"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "015",
+    "ciudad": "Coral Springs"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "016",
+    "ciudad": "Miami Gardens"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "017",
+    "ciudad": "Clearwater"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "018",
+    "ciudad": "Palm Bay"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "019",
+    "ciudad": "Pompano Beach"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "020",
+    "ciudad": "West Palm Beach"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "021",
+    "ciudad": "Lakeland"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "022",
+    "ciudad": "Davie"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "023",
+    "ciudad": "Miami Beach"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "024",
+    "ciudad": "Sunrise"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "025",
+    "ciudad": "Plantation"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "026",
+    "ciudad": "Boca Raton"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "027",
+    "ciudad": "Deltona"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "028",
+    "ciudad": "Largo"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "029",
+    "ciudad": "Deerfield Beach"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "030",
+    "ciudad": "Palm Coast"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "031",
+    "ciudad": "Melbourne"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "032",
+    "ciudad": "Boynton Beach"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "033",
+    "ciudad": "Lauderhill"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "034",
+    "ciudad": "Weston"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "035",
+    "ciudad": "Fort Myers"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "036",
+    "ciudad": "Kissimmee"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "037",
+    "ciudad": "Homestead"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "038",
+    "ciudad": "Tamarac"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "039",
+    "ciudad": "Delray Beach"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "040",
+    "ciudad": "Daytona Beach"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "041",
+    "ciudad": "North Miami"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "042",
+    "ciudad": "Wellington"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "043",
+    "ciudad": "North Port"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "044",
+    "ciudad": "Jupiter"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "045",
+    "ciudad": "Ocala"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "046",
+    "ciudad": "Port Orange"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "047",
+    "ciudad": "Margate"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "048",
+    "ciudad": "Coconut Creek"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "049",
+    "ciudad": "Sanford"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "050",
+    "ciudad": "Sarasota"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "051",
+    "ciudad": "Pensacola"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "052",
+    "ciudad": "Bradenton"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "053",
+    "ciudad": "Palm Beach Gardens"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "054",
+    "ciudad": "Pinellas Park"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "055",
+    "ciudad": "Coral Gables"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "056",
+    "ciudad": "Doral"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "057",
+    "ciudad": "Bonita Springs"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "058",
+    "ciudad": "Apopka"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "059",
+    "ciudad": "Titusville"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "060",
+    "ciudad": "North Miami Beach"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "061",
+    "ciudad": "Oakland Park"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "062",
+    "ciudad": "Fort Pierce"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "063",
+    "ciudad": "North Lauderdale"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "064",
+    "ciudad": "Cutler Bay"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "065",
+    "ciudad": "Altamonte Springs"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "066",
+    "ciudad": "St. Cloud"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "067",
+    "ciudad": "Greenacres"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "068",
+    "ciudad": "Ormond Beach"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "069",
+    "ciudad": "Ocoee"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "070",
+    "ciudad": "Hallandale Beach"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "071",
+    "ciudad": "Winter Garden"
+  },
+  {
+    "codigo departamento": "12",
+    "departamento": "Florida",
+    "codigo": "072",
+    "ciudad": "Aventura"
+  },
+  {
+    "codigo departamento": "18",
+    "departamento": "Indiana",
+    "codigo": "001",
+    "ciudad": "Indianapolis"
+  },
+  {
+    "codigo departamento": "18",
+    "departamento": "Indiana",
+    "codigo": "002",
+    "ciudad": "Fort Wayne"
+  },
+  {
+    "codigo departamento": "18",
+    "departamento": "Indiana",
+    "codigo": "003",
+    "ciudad": "Evansville"
+  },
+  {
+    "codigo departamento": "18",
+    "departamento": "Indiana",
+    "codigo": "004",
+    "ciudad": "South Bend"
+  },
+  {
+    "codigo departamento": "18",
+    "departamento": "Indiana",
+    "codigo": "005",
+    "ciudad": "Carmel"
+  },
+  {
+    "codigo departamento": "18",
+    "departamento": "Indiana",
+    "codigo": "006",
+    "ciudad": "Bloomington"
+  },
+  {
+    "codigo departamento": "18",
+    "departamento": "Indiana",
+    "codigo": "007",
+    "ciudad": "Fishers"
+  },
+  {
+    "codigo departamento": "18",
+    "departamento": "Indiana",
+    "codigo": "008",
+    "ciudad": "Hammond"
+  },
+  {
+    "codigo departamento": "18",
+    "departamento": "Indiana",
+    "codigo": "009",
+    "ciudad": "Gary"
+  },
+  {
+    "codigo departamento": "18",
+    "departamento": "Indiana",
+    "codigo": "010",
+    "ciudad": "Muncie"
+  },
+  {
+    "codigo departamento": "18",
+    "departamento": "Indiana",
+    "codigo": "011",
+    "ciudad": "Lafayette"
+  },
+  {
+    "codigo departamento": "18",
+    "departamento": "Indiana",
+    "codigo": "012",
+    "ciudad": "Terre Haute"
+  },
+  {
+    "codigo departamento": "18",
+    "departamento": "Indiana",
+    "codigo": "013",
+    "ciudad": "Kokomo"
+  },
+  {
+    "codigo departamento": "18",
+    "departamento": "Indiana",
+    "codigo": "014",
+    "ciudad": "Anderson"
+  },
+  {
+    "codigo departamento": "18",
+    "departamento": "Indiana",
+    "codigo": "015",
+    "ciudad": "Noblesville"
+  },
+  {
+    "codigo departamento": "18",
+    "departamento": "Indiana",
+    "codigo": "016",
+    "ciudad": "Greenwood"
+  },
+  {
+    "codigo departamento": "18",
+    "departamento": "Indiana",
+    "codigo": "017",
+    "ciudad": "Elkhart"
+  },
+  {
+    "codigo departamento": "18",
+    "departamento": "Indiana",
+    "codigo": "018",
+    "ciudad": "Mishawaka"
+  },
+  {
+    "codigo departamento": "18",
+    "departamento": "Indiana",
+    "codigo": "019",
+    "ciudad": "Lawrence"
+  },
+  {
+    "codigo departamento": "18",
+    "departamento": "Indiana",
+    "codigo": "020",
+    "ciudad": "Jeffersonville"
+  },
+  {
+    "codigo departamento": "18",
+    "departamento": "Indiana",
+    "codigo": "021",
+    "ciudad": "Columbus"
+  },
+  {
+    "codigo departamento": "18",
+    "departamento": "Indiana",
+    "codigo": "022",
+    "ciudad": "Portage"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "001",
+    "ciudad": "Columbus"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "002",
+    "ciudad": "Cleveland"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "003",
+    "ciudad": "Cincinnati"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "004",
+    "ciudad": "Toledo"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "005",
+    "ciudad": "Akron"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "006",
+    "ciudad": "Dayton"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "007",
+    "ciudad": "Parma"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "008",
+    "ciudad": "Canton"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "009",
+    "ciudad": "Youngstown"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "010",
+    "ciudad": "Lorain"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "011",
+    "ciudad": "Hamilton"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "012",
+    "ciudad": "Springfield"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "013",
+    "ciudad": "Kettering"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "014",
+    "ciudad": "Elyria"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "015",
+    "ciudad": "Lakewood"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "016",
+    "ciudad": "Cuyahoga Falls"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "017",
+    "ciudad": "Middletown"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "018",
+    "ciudad": "Euclid"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "019",
+    "ciudad": "Newark"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "020",
+    "ciudad": "Mansfield"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "021",
+    "ciudad": "Mentor"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "022",
+    "ciudad": "Beavercreek"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "023",
+    "ciudad": "Cleveland Heights"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "024",
+    "ciudad": "Strongsville"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "025",
+    "ciudad": "Dublin"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "026",
+    "ciudad": "Fairfield"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "027",
+    "ciudad": "Findlay"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "028",
+    "ciudad": "Warren"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "029",
+    "ciudad": "Lancaster"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "030",
+    "ciudad": "Lima"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "031",
+    "ciudad": "Huber Heights"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "032",
+    "ciudad": "Westerville"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "033",
+    "ciudad": "Marion"
+  },
+  {
+    "codigo departamento": "39",
+    "departamento": "Ohio",
+    "codigo": "034",
+    "ciudad": "Grove City"
+  },
+  {
+    "codigo departamento": "37",
+    "departamento": "North Carolina",
+    "codigo": "001",
+    "ciudad": "Charlotte"
+  },
+  {
+    "codigo departamento": "37",
+    "departamento": "North Carolina",
+    "codigo": "002",
+    "ciudad": "Raleigh"
+  },
+  {
+    "codigo departamento": "37",
+    "departamento": "North Carolina",
+    "codigo": "003",
+    "ciudad": "Greensboro"
+  },
+  {
+    "codigo departamento": "37",
+    "departamento": "North Carolina",
+    "codigo": "004",
+    "ciudad": "Durham"
+  },
+  {
+    "codigo departamento": "37",
+    "departamento": "North Carolina",
+    "codigo": "005",
+    "ciudad": "Winston-Salem"
+  },
+  {
+    "codigo departamento": "37",
+    "departamento": "North Carolina",
+    "codigo": "006",
+    "ciudad": "Fayetteville"
+  },
+  {
+    "codigo departamento": "37",
+    "departamento": "North Carolina",
+    "codigo": "007",
+    "ciudad": "Cary"
+  },
+  {
+    "codigo departamento": "37",
+    "departamento": "North Carolina",
+    "codigo": "008",
+    "ciudad": "Wilmington"
+  },
+  {
+    "codigo departamento": "37",
+    "departamento": "North Carolina",
+    "codigo": "009",
+    "ciudad": "High Point"
+  },
+  {
+    "codigo departamento": "37",
+    "departamento": "North Carolina",
+    "codigo": "010",
+    "ciudad": "Greenville"
+  },
+  {
+    "codigo departamento": "37",
+    "departamento": "North Carolina",
+    "codigo": "011",
+    "ciudad": "Asheville"
+  },
+  {
+    "codigo departamento": "37",
+    "departamento": "North Carolina",
+    "codigo": "012",
+    "ciudad": "Concord"
+  },
+  {
+    "codigo departamento": "37",
+    "departamento": "North Carolina",
+    "codigo": "013",
+    "ciudad": "Gastonia"
+  },
+  {
+    "codigo departamento": "37",
+    "departamento": "North Carolina",
+    "codigo": "014",
+    "ciudad": "Jacksonville"
+  },
+  {
+    "codigo departamento": "37",
+    "departamento": "North Carolina",
+    "codigo": "015",
+    "ciudad": "Chapel Hill"
+  },
+  {
+    "codigo departamento": "37",
+    "departamento": "North Carolina",
+    "codigo": "016",
+    "ciudad": "Rocky Mount"
+  },
+  {
+    "codigo departamento": "37",
+    "departamento": "North Carolina",
+    "codigo": "017",
+    "ciudad": "Burlington"
+  },
+  {
+    "codigo departamento": "37",
+    "departamento": "North Carolina",
+    "codigo": "018",
+    "ciudad": "Wilson"
+  },
+  {
+    "codigo departamento": "37",
+    "departamento": "North Carolina",
+    "codigo": "019",
+    "ciudad": "Huntersville"
+  },
+  {
+    "codigo departamento": "37",
+    "departamento": "North Carolina",
+    "codigo": "020",
+    "ciudad": "Kannapolis"
+  },
+  {
+    "codigo departamento": "37",
+    "departamento": "North Carolina",
+    "codigo": "021",
+    "ciudad": "Apex"
+  },
+  {
+    "codigo departamento": "37",
+    "departamento": "North Carolina",
+    "codigo": "022",
+    "ciudad": "Hickory"
+  },
+  {
+    "codigo departamento": "37",
+    "departamento": "North Carolina",
+    "codigo": "023",
+    "ciudad": "Goldsboro"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "001",
+    "ciudad": "Detroit"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "002",
+    "ciudad": "Grand Rapids"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "003",
+    "ciudad": "Warren"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "004",
+    "ciudad": "Sterling Heights"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "005",
+    "ciudad": "Ann Arbor"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "006",
+    "ciudad": "Lansing"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "007",
+    "ciudad": "Flint"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "008",
+    "ciudad": "Dearborn"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "009",
+    "ciudad": "Livonia"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "010",
+    "ciudad": "Westland"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "011",
+    "ciudad": "Troy"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "012",
+    "ciudad": "Farmington Hills"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "013",
+    "ciudad": "Kalamazoo"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "014",
+    "ciudad": "Wyoming"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "015",
+    "ciudad": "Southfield"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "016",
+    "ciudad": "Rochester Hills"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "017",
+    "ciudad": "Taylor"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "018",
+    "ciudad": "Pontiac"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "019",
+    "ciudad": "St. Clair Shores"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "020",
+    "ciudad": "Royal Oak"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "021",
+    "ciudad": "Novi"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "022",
+    "ciudad": "Dearborn Heights"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "023",
+    "ciudad": "Battle Creek"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "024",
+    "ciudad": "Saginaw"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "025",
+    "ciudad": "Kentwood"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "026",
+    "ciudad": "East Lansing"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "027",
+    "ciudad": "Roseville"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "028",
+    "ciudad": "Portage"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "029",
+    "ciudad": "Midland"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "030",
+    "ciudad": "Lincoln Park"
+  },
+  {
+    "codigo departamento": "26",
+    "departamento": "Michigan",
+    "codigo": "031",
+    "ciudad": "Muskegon"
+  },
+  {
+    "codigo departamento": "47",
+    "departamento": "Tennessee",
+    "codigo": "001",
+    "ciudad": "Memphis"
+  },
+  {
+    "codigo departamento": "47",
+    "departamento": "Tennessee",
+    "codigo": "002",
+    "ciudad": "Nashville-Davidson"
+  },
+  {
+    "codigo departamento": "47",
+    "departamento": "Tennessee",
+    "codigo": "003",
+    "ciudad": "Knoxville"
+  },
+  {
+    "codigo departamento": "47",
+    "departamento": "Tennessee",
+    "codigo": "004",
+    "ciudad": "Chattanooga"
+  },
+  {
+    "codigo departamento": "47",
+    "departamento": "Tennessee",
+    "codigo": "005",
+    "ciudad": "Clarksville"
+  },
+  {
+    "codigo departamento": "47",
+    "departamento": "Tennessee",
+    "codigo": "006",
+    "ciudad": "Murfreesboro"
+  },
+  {
+    "codigo departamento": "47",
+    "departamento": "Tennessee",
+    "codigo": "007",
+    "ciudad": "Jackson"
+  },
+  {
+    "codigo departamento": "47",
+    "departamento": "Tennessee",
+    "codigo": "008",
+    "ciudad": "Franklin"
+  },
+  {
+    "codigo departamento": "47",
+    "departamento": "Tennessee",
+    "codigo": "009",
+    "ciudad": "Johnson City"
+  },
+  {
+    "codigo departamento": "47",
+    "departamento": "Tennessee",
+    "codigo": "010",
+    "ciudad": "Bartlett"
+  },
+  {
+    "codigo departamento": "47",
+    "departamento": "Tennessee",
+    "codigo": "011",
+    "ciudad": "Hendersonville"
+  },
+  {
+    "codigo departamento": "47",
+    "departamento": "Tennessee",
+    "codigo": "012",
+    "ciudad": "Kingsport"
+  },
+  {
+    "codigo departamento": "47",
+    "departamento": "Tennessee",
+    "codigo": "013",
+    "ciudad": "Collierville"
+  },
+  {
+    "codigo departamento": "47",
+    "departamento": "Tennessee",
+    "codigo": "014",
+    "ciudad": "Cleveland"
+  },
+  {
+    "codigo departamento": "47",
+    "departamento": "Tennessee",
+    "codigo": "015",
+    "ciudad": "Smyrna"
+  },
+  {
+    "codigo departamento": "47",
+    "departamento": "Tennessee",
+    "codigo": "016",
+    "ciudad": "Germantown"
+  },
+  {
+    "codigo departamento": "47",
+    "departamento": "Tennessee",
+    "codigo": "017",
+    "ciudad": "Brentwood"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "001",
+    "ciudad": "Boston"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "002",
+    "ciudad": "Worcester"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "003",
+    "ciudad": "Springfield"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "004",
+    "ciudad": "Lowell"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "005",
+    "ciudad": "Cambridge"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "006",
+    "ciudad": "New Bedford"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "007",
+    "ciudad": "Brockton"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "008",
+    "ciudad": "Quincy"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "009",
+    "ciudad": "Lynn"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "010",
+    "ciudad": "Fall River"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "011",
+    "ciudad": "Newton"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "012",
+    "ciudad": "Lawrence"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "013",
+    "ciudad": "Somerville"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "014",
+    "ciudad": "Waltham"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "015",
+    "ciudad": "Haverhill"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "016",
+    "ciudad": "Malden"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "017",
+    "ciudad": "Medford"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "018",
+    "ciudad": "Taunton"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "019",
+    "ciudad": "Chicopee"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "020",
+    "ciudad": "Weymouth Town"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "021",
+    "ciudad": "Revere"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "022",
+    "ciudad": "Peabody"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "023",
+    "ciudad": "Methuen"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "024",
+    "ciudad": "Barnstable Town"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "025",
+    "ciudad": "Pittsfield"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "026",
+    "ciudad": "Attleboro"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "027",
+    "ciudad": "Everett"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "028",
+    "ciudad": "Salem"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "029",
+    "ciudad": "Westfield"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "030",
+    "ciudad": "Leominster"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "031",
+    "ciudad": "Fitchburg"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "032",
+    "ciudad": "Beverly"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "033",
+    "ciudad": "Holyoke"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "034",
+    "ciudad": "Marlborough"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "035",
+    "ciudad": "Woburn"
+  },
+  {
+    "codigo departamento": "25",
+    "departamento": "Massachusetts",
+    "codigo": "036",
+    "ciudad": "Chelsea"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "001",
+    "ciudad": "Seattle"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "002",
+    "ciudad": "Spokane"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "003",
+    "ciudad": "Tacoma"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "004",
+    "ciudad": "Vancouver"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "005",
+    "ciudad": "Bellevue"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "006",
+    "ciudad": "Kent"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "007",
+    "ciudad": "Everett"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "008",
+    "ciudad": "Renton"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "009",
+    "ciudad": "Yakima"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "010",
+    "ciudad": "Federal Way"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "011",
+    "ciudad": "Spokane Valley"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "012",
+    "ciudad": "Bellingham"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "013",
+    "ciudad": "Kennewick"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "014",
+    "ciudad": "Auburn"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "015",
+    "ciudad": "Pasco"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "016",
+    "ciudad": "Marysville"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "017",
+    "ciudad": "Lakewood"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "018",
+    "ciudad": "Redmond"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "019",
+    "ciudad": "Shoreline"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "020",
+    "ciudad": "Richland"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "021",
+    "ciudad": "Kirkland"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "022",
+    "ciudad": "Burien"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "023",
+    "ciudad": "Sammamish"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "024",
+    "ciudad": "Olympia"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "025",
+    "ciudad": "Lacey"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "026",
+    "ciudad": "Edmonds"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "027",
+    "ciudad": "Bremerton"
+  },
+  {
+    "codigo departamento": "53",
+    "departamento": "Washington",
+    "codigo": "028",
+    "ciudad": "Puyallup"
+  },
+  {
+    "codigo departamento": "08",
+    "departamento": "Colorado",
+    "codigo": "001",
+    "ciudad": "Denver"
+  },
+  {
+    "codigo departamento": "08",
+    "departamento": "Colorado",
+    "codigo": "002",
+    "ciudad": "Colorado Springs"
+  },
+  {
+    "codigo departamento": "08",
+    "departamento": "Colorado",
+    "codigo": "003",
+    "ciudad": "Aurora"
+  },
+  {
+    "codigo departamento": "08",
+    "departamento": "Colorado",
+    "codigo": "004",
+    "ciudad": "Fort Collins"
+  },
+  {
+    "codigo departamento": "08",
+    "departamento": "Colorado",
+    "codigo": "005",
+    "ciudad": "Lakewood"
+  },
+  {
+    "codigo departamento": "08",
+    "departamento": "Colorado",
+    "codigo": "006",
+    "ciudad": "Thornton"
+  },
+  {
+    "codigo departamento": "08",
+    "departamento": "Colorado",
+    "codigo": "007",
+    "ciudad": "Arvada"
+  },
+  {
+    "codigo departamento": "08",
+    "departamento": "Colorado",
+    "codigo": "008",
+    "ciudad": "Westminster"
+  },
+  {
+    "codigo departamento": "08",
+    "departamento": "Colorado",
+    "codigo": "009",
+    "ciudad": "Pueblo"
+  },
+  {
+    "codigo departamento": "08",
+    "departamento": "Colorado",
+    "codigo": "010",
+    "ciudad": "Centennial"
+  },
+  {
+    "codigo departamento": "08",
+    "departamento": "Colorado",
+    "codigo": "011",
+    "ciudad": "Boulder"
+  },
+  {
+    "codigo departamento": "08",
+    "departamento": "Colorado",
+    "codigo": "012",
+    "ciudad": "Greeley"
+  },
+  {
+    "codigo departamento": "08",
+    "departamento": "Colorado",
+    "codigo": "013",
+    "ciudad": "Longmont"
+  },
+  {
+    "codigo departamento": "08",
+    "departamento": "Colorado",
+    "codigo": "014",
+    "ciudad": "Loveland"
+  },
+  {
+    "codigo departamento": "08",
+    "departamento": "Colorado",
+    "codigo": "015",
+    "ciudad": "Grand Junction"
+  },
+  {
+    "codigo departamento": "08",
+    "departamento": "Colorado",
+    "codigo": "016",
+    "ciudad": "Broomfield"
+  },
+  {
+    "codigo departamento": "08",
+    "departamento": "Colorado",
+    "codigo": "017",
+    "ciudad": "Castle Rock"
+  },
+  {
+    "codigo departamento": "08",
+    "departamento": "Colorado",
+    "codigo": "018",
+    "ciudad": "Commerce City"
+  },
+  {
+    "codigo departamento": "08",
+    "departamento": "Colorado",
+    "codigo": "019",
+    "ciudad": "Parker"
+  },
+  {
+    "codigo departamento": "08",
+    "departamento": "Colorado",
+    "codigo": "020",
+    "ciudad": "Littleton"
+  },
+  {
+    "codigo departamento": "08",
+    "departamento": "Colorado",
+    "codigo": "021",
+    "ciudad": "Northglenn"
+  },
+  {
+    "codigo departamento": "11",
+    "departamento": "District of Columbia",
+    "codigo": "001",
+    "ciudad": "Washington"
+  },
+  {
+    "codigo departamento": "24",
+    "departamento": "Maryland",
+    "codigo": "001",
+    "ciudad": "Baltimore"
+  },
+  {
+    "codigo departamento": "24",
+    "departamento": "Maryland",
+    "codigo": "002",
+    "ciudad": "Frederick"
+  },
+  {
+    "codigo departamento": "24",
+    "departamento": "Maryland",
+    "codigo": "003",
+    "ciudad": "Rockville"
+  },
+  {
+    "codigo departamento": "24",
+    "departamento": "Maryland",
+    "codigo": "004",
+    "ciudad": "Gaithersburg"
+  },
+  {
+    "codigo departamento": "24",
+    "departamento": "Maryland",
+    "codigo": "005",
+    "ciudad": "Bowie"
+  },
+  {
+    "codigo departamento": "24",
+    "departamento": "Maryland",
+    "codigo": "006",
+    "ciudad": "Hagerstown"
+  },
+  {
+    "codigo departamento": "24",
+    "departamento": "Maryland",
+    "codigo": "007",
+    "ciudad": "Annapolis"
+  },
+  {
+    "codigo departamento": "21",
+    "departamento": "Kentucky",
+    "codigo": "001",
+    "ciudad": "Louisville/Jefferson County"
+  },
+  {
+    "codigo departamento": "21",
+    "departamento": "Kentucky",
+    "codigo": "002",
+    "ciudad": "Lexington-Fayette"
+  },
+  {
+    "codigo departamento": "21",
+    "departamento": "Kentucky",
+    "codigo": "003",
+    "ciudad": "Bowling Green"
+  },
+  {
+    "codigo departamento": "21",
+    "departamento": "Kentucky",
+    "codigo": "004",
+    "ciudad": "Owensboro"
+  },
+  {
+    "codigo departamento": "21",
+    "departamento": "Kentucky",
+    "codigo": "005",
+    "ciudad": "Covington"
+  },
+  {
+    "codigo departamento": "41",
+    "departamento": "Oregon",
+    "codigo": "001",
+    "ciudad": "Portland"
+  },
+  {
+    "codigo departamento": "41",
+    "departamento": "Oregon",
+    "codigo": "002",
+    "ciudad": "Eugene"
+  },
+  {
+    "codigo departamento": "41",
+    "departamento": "Oregon",
+    "codigo": "003",
+    "ciudad": "Salem"
+  },
+  {
+    "codigo departamento": "41",
+    "departamento": "Oregon",
+    "codigo": "004",
+    "ciudad": "Gresham"
+  },
+  {
+    "codigo departamento": "41",
+    "departamento": "Oregon",
+    "codigo": "005",
+    "ciudad": "Hillsboro"
+  },
+  {
+    "codigo departamento": "41",
+    "departamento": "Oregon",
+    "codigo": "006",
+    "ciudad": "Beaverton"
+  },
+  {
+    "codigo departamento": "41",
+    "departamento": "Oregon",
+    "codigo": "007",
+    "ciudad": "Bend"
+  },
+  {
+    "codigo departamento": "41",
+    "departamento": "Oregon",
+    "codigo": "008",
+    "ciudad": "Medford"
+  },
+  {
+    "codigo departamento": "41",
+    "departamento": "Oregon",
+    "codigo": "009",
+    "ciudad": "Springfield"
+  },
+  {
+    "codigo departamento": "41",
+    "departamento": "Oregon",
+    "codigo": "010",
+    "ciudad": "Corvallis"
+  },
+  {
+    "codigo departamento": "41",
+    "departamento": "Oregon",
+    "codigo": "011",
+    "ciudad": "Albany"
+  },
+  {
+    "codigo departamento": "41",
+    "departamento": "Oregon",
+    "codigo": "012",
+    "ciudad": "Tigard"
+  },
+  {
+    "codigo departamento": "41",
+    "departamento": "Oregon",
+    "codigo": "013",
+    "ciudad": "Lake Oswego"
+  },
+  {
+    "codigo departamento": "41",
+    "departamento": "Oregon",
+    "codigo": "014",
+    "ciudad": "Keizer"
+  },
+  {
+    "codigo departamento": "40",
+    "departamento": "Oklahoma",
+    "codigo": "001",
+    "ciudad": "Oklahoma City"
+  },
+  {
+    "codigo departamento": "40",
+    "departamento": "Oklahoma",
+    "codigo": "002",
+    "ciudad": "Tulsa"
+  },
+  {
+    "codigo departamento": "40",
+    "departamento": "Oklahoma",
+    "codigo": "003",
+    "ciudad": "Norman"
+  },
+  {
+    "codigo departamento": "40",
+    "departamento": "Oklahoma",
+    "codigo": "004",
+    "ciudad": "Broken Arrow"
+  },
+  {
+    "codigo departamento": "40",
+    "departamento": "Oklahoma",
+    "codigo": "005",
+    "ciudad": "Lawton"
+  },
+  {
+    "codigo departamento": "40",
+    "departamento": "Oklahoma",
+    "codigo": "006",
+    "ciudad": "Edmond"
+  },
+  {
+    "codigo departamento": "40",
+    "departamento": "Oklahoma",
+    "codigo": "007",
+    "ciudad": "Moore"
+  },
+  {
+    "codigo departamento": "40",
+    "departamento": "Oklahoma",
+    "codigo": "008",
+    "ciudad": "Midwest City"
+  },
+  {
+    "codigo departamento": "40",
+    "departamento": "Oklahoma",
+    "codigo": "009",
+    "ciudad": "Enid"
+  },
+  {
+    "codigo departamento": "40",
+    "departamento": "Oklahoma",
+    "codigo": "010",
+    "ciudad": "Stillwater"
+  },
+  {
+    "codigo departamento": "40",
+    "departamento": "Oklahoma",
+    "codigo": "011",
+    "ciudad": "Muskogee"
+  },
+  {
+    "codigo departamento": "55",
+    "departamento": "Wisconsin",
+    "codigo": "001",
+    "ciudad": "Milwaukee"
+  },
+  {
+    "codigo departamento": "55",
+    "departamento": "Wisconsin",
+    "codigo": "002",
+    "ciudad": "Madison"
+  },
+  {
+    "codigo departamento": "55",
+    "departamento": "Wisconsin",
+    "codigo": "003",
+    "ciudad": "Green Bay"
+  },
+  {
+    "codigo departamento": "55",
+    "departamento": "Wisconsin",
+    "codigo": "004",
+    "ciudad": "Kenosha"
+  },
+  {
+    "codigo departamento": "55",
+    "departamento": "Wisconsin",
+    "codigo": "005",
+    "ciudad": "Racine"
+  },
+  {
+    "codigo departamento": "55",
+    "departamento": "Wisconsin",
+    "codigo": "006",
+    "ciudad": "Appleton"
+  },
+  {
+    "codigo departamento": "55",
+    "departamento": "Wisconsin",
+    "codigo": "007",
+    "ciudad": "Waukesha"
+  },
+  {
+    "codigo departamento": "55",
+    "departamento": "Wisconsin",
+    "codigo": "008",
+    "ciudad": "Eau Claire"
+  },
+  {
+    "codigo departamento": "55",
+    "departamento": "Wisconsin",
+    "codigo": "009",
+    "ciudad": "Oshkosh"
+  },
+  {
+    "codigo departamento": "55",
+    "departamento": "Wisconsin",
+    "codigo": "010",
+    "ciudad": "Janesville"
+  },
+  {
+    "codigo departamento": "55",
+    "departamento": "Wisconsin",
+    "codigo": "011",
+    "ciudad": "West Allis"
+  },
+  {
+    "codigo departamento": "55",
+    "departamento": "Wisconsin",
+    "codigo": "012",
+    "ciudad": "La Crosse"
+  },
+  {
+    "codigo departamento": "55",
+    "departamento": "Wisconsin",
+    "codigo": "013",
+    "ciudad": "Sheboygan"
+  },
+  {
+    "codigo departamento": "55",
+    "departamento": "Wisconsin",
+    "codigo": "014",
+    "ciudad": "Wauwatosa"
+  },
+  {
+    "codigo departamento": "55",
+    "departamento": "Wisconsin",
+    "codigo": "015",
+    "ciudad": "Fond du Lac"
+  },
+  {
+    "codigo departamento": "55",
+    "departamento": "Wisconsin",
+    "codigo": "016",
+    "ciudad": "New Berlin"
+  },
+  {
+    "codigo departamento": "55",
+    "departamento": "Wisconsin",
+    "codigo": "017",
+    "ciudad": "Wausau"
+  },
+  {
+    "codigo departamento": "55",
+    "departamento": "Wisconsin",
+    "codigo": "018",
+    "ciudad": "Brookfield"
+  },
+  {
+    "codigo departamento": "55",
+    "departamento": "Wisconsin",
+    "codigo": "019",
+    "ciudad": "Greenfield"
+  },
+  {
+    "codigo departamento": "55",
+    "departamento": "Wisconsin",
+    "codigo": "020",
+    "ciudad": "Beloit"
+  },
+  {
+    "codigo departamento": "32",
+    "departamento": "Nevada",
+    "codigo": "001",
+    "ciudad": "Las Vegas"
+  },
+  {
+    "codigo departamento": "32",
+    "departamento": "Nevada",
+    "codigo": "002",
+    "ciudad": "Henderson"
+  },
+  {
+    "codigo departamento": "32",
+    "departamento": "Nevada",
+    "codigo": "003",
+    "ciudad": "Reno"
+  },
+  {
+    "codigo departamento": "32",
+    "departamento": "Nevada",
+    "codigo": "004",
+    "ciudad": "North Las Vegas"
+  },
+  {
+    "codigo departamento": "32",
+    "departamento": "Nevada",
+    "codigo": "005",
+    "ciudad": "Sparks"
+  },
+  {
+    "codigo departamento": "32",
+    "departamento": "Nevada",
+    "codigo": "006",
+    "ciudad": "Carson City"
+  },
+  {
+    "codigo departamento": "35",
+    "departamento": "New Mexico",
+    "codigo": "001",
+    "ciudad": "Albuquerque"
+  },
+  {
+    "codigo departamento": "35",
+    "departamento": "New Mexico",
+    "codigo": "002",
+    "ciudad": "Las Cruces"
+  },
+  {
+    "codigo departamento": "35",
+    "departamento": "New Mexico",
+    "codigo": "003",
+    "ciudad": "Rio Rancho"
+  },
+  {
+    "codigo departamento": "35",
+    "departamento": "New Mexico",
+    "codigo": "004",
+    "ciudad": "Santa Fe"
+  },
+  {
+    "codigo departamento": "35",
+    "departamento": "New Mexico",
+    "codigo": "005",
+    "ciudad": "Roswell"
+  },
+  {
+    "codigo departamento": "35",
+    "departamento": "New Mexico",
+    "codigo": "006",
+    "ciudad": "Farmington"
+  },
+  {
+    "codigo departamento": "35",
+    "departamento": "New Mexico",
+    "codigo": "007",
+    "ciudad": "Clovis"
+  },
+  {
+    "codigo departamento": "29",
+    "departamento": "Missouri",
+    "codigo": "001",
+    "ciudad": "Kansas City"
+  },
+  {
+    "codigo departamento": "29",
+    "departamento": "Missouri",
+    "codigo": "002",
+    "ciudad": "St. Louis"
+  },
+  {
+    "codigo departamento": "29",
+    "departamento": "Missouri",
+    "codigo": "003",
+    "ciudad": "Springfield"
+  },
+  {
+    "codigo departamento": "29",
+    "departamento": "Missouri",
+    "codigo": "004",
+    "ciudad": "Independence"
+  },
+  {
+    "codigo departamento": "29",
+    "departamento": "Missouri",
+    "codigo": "005",
+    "ciudad": "Columbia"
+  },
+  {
+    "codigo departamento": "29",
+    "departamento": "Missouri",
+    "codigo": "006",
+    "ciudad": "Lee's Summit"
+  },
+  {
+    "codigo departamento": "29",
+    "departamento": "Missouri",
+    "codigo": "007",
+    "ciudad": "O'Fallon"
+  },
+  {
+    "codigo departamento": "29",
+    "departamento": "Missouri",
+    "codigo": "008",
+    "ciudad": "St. Joseph"
+  },
+  {
+    "codigo departamento": "29",
+    "departamento": "Missouri",
+    "codigo": "009",
+    "ciudad": "St. Charles"
+  },
+  {
+    "codigo departamento": "29",
+    "departamento": "Missouri",
+    "codigo": "010",
+    "ciudad": "St. Peters"
+  },
+  {
+    "codigo departamento": "29",
+    "departamento": "Missouri",
+    "codigo": "011",
+    "ciudad": "Blue Springs"
+  },
+  {
+    "codigo departamento": "29",
+    "departamento": "Missouri",
+    "codigo": "012",
+    "ciudad": "Florissant"
+  },
+  {
+    "codigo departamento": "29",
+    "departamento": "Missouri",
+    "codigo": "013",
+    "ciudad": "Joplin"
+  },
+  {
+    "codigo departamento": "29",
+    "departamento": "Missouri",
+    "codigo": "014",
+    "ciudad": "Chesterfield"
+  },
+  {
+    "codigo departamento": "29",
+    "departamento": "Missouri",
+    "codigo": "015",
+    "ciudad": "Jefferson City"
+  },
+  {
+    "codigo departamento": "29",
+    "departamento": "Missouri",
+    "codigo": "016",
+    "ciudad": "Cape Girardeau"
+  },
+  {
+    "codigo departamento": "51",
+    "departamento": "Virginia",
+    "codigo": "001",
+    "ciudad": "Virginia Beach"
+  },
+  {
+    "codigo departamento": "51",
+    "departamento": "Virginia",
+    "codigo": "002",
+    "ciudad": "Norfolk"
+  },
+  {
+    "codigo departamento": "51",
+    "departamento": "Virginia",
+    "codigo": "003",
+    "ciudad": "Chesapeake"
+  },
+  {
+    "codigo departamento": "51",
+    "departamento": "Virginia",
+    "codigo": "004",
+    "ciudad": "Richmond"
+  },
+  {
+    "codigo departamento": "51",
+    "departamento": "Virginia",
+    "codigo": "005",
+    "ciudad": "Newport News"
+  },
+  {
+    "codigo departamento": "51",
+    "departamento": "Virginia",
+    "codigo": "006",
+    "ciudad": "Alexandria"
+  },
+  {
+    "codigo departamento": "51",
+    "departamento": "Virginia",
+    "codigo": "007",
+    "ciudad": "Hampton"
+  },
+  {
+    "codigo departamento": "51",
+    "departamento": "Virginia",
+    "codigo": "008",
+    "ciudad": "Roanoke"
+  },
+  {
+    "codigo departamento": "51",
+    "departamento": "Virginia",
+    "codigo": "009",
+    "ciudad": "Portsmouth"
+  },
+  {
+    "codigo departamento": "51",
+    "departamento": "Virginia",
+    "codigo": "010",
+    "ciudad": "Suffolk"
+  },
+  {
+    "codigo departamento": "51",
+    "departamento": "Virginia",
+    "codigo": "011",
+    "ciudad": "Lynchburg"
+  },
+  {
+    "codigo departamento": "51",
+    "departamento": "Virginia",
+    "codigo": "012",
+    "ciudad": "Harrisonburg"
+  },
+  {
+    "codigo departamento": "51",
+    "departamento": "Virginia",
+    "codigo": "013",
+    "ciudad": "Leesburg"
+  },
+  {
+    "codigo departamento": "51",
+    "departamento": "Virginia",
+    "codigo": "014",
+    "ciudad": "Charlottesville"
+  },
+  {
+    "codigo departamento": "51",
+    "departamento": "Virginia",
+    "codigo": "015",
+    "ciudad": "Danville"
+  },
+  {
+    "codigo departamento": "51",
+    "departamento": "Virginia",
+    "codigo": "016",
+    "ciudad": "Blacksburg"
+  },
+  {
+    "codigo departamento": "51",
+    "departamento": "Virginia",
+    "codigo": "017",
+    "ciudad": "Manassas"
+  },
+  {
+    "codigo departamento": "13",
+    "departamento": "Georgia",
+    "codigo": "001",
+    "ciudad": "Atlanta"
+  },
+  {
+    "codigo departamento": "13",
+    "departamento": "Georgia",
+    "codigo": "002",
+    "ciudad": "Columbus"
+  },
+  {
+    "codigo departamento": "13",
+    "departamento": "Georgia",
+    "codigo": "003",
+    "ciudad": "Augusta-Richmond County"
+  },
+  {
+    "codigo departamento": "13",
+    "departamento": "Georgia",
+    "codigo": "004",
+    "ciudad": "Savannah"
+  },
+  {
+    "codigo departamento": "13",
+    "departamento": "Georgia",
+    "codigo": "005",
+    "ciudad": "Athens-Clarke County"
+  },
+  {
+    "codigo departamento": "13",
+    "departamento": "Georgia",
+    "codigo": "006",
+    "ciudad": "Sandy Springs"
+  },
+  {
+    "codigo departamento": "13",
+    "departamento": "Georgia",
+    "codigo": "007",
+    "ciudad": "Roswell"
+  },
+  {
+    "codigo departamento": "13",
+    "departamento": "Georgia",
+    "codigo": "008",
+    "ciudad": "Macon"
+  },
+  {
+    "codigo departamento": "13",
+    "departamento": "Georgia",
+    "codigo": "009",
+    "ciudad": "Johns Creek"
+  },
+  {
+    "codigo departamento": "13",
+    "departamento": "Georgia",
+    "codigo": "010",
+    "ciudad": "Albany"
+  },
+  {
+    "codigo departamento": "13",
+    "departamento": "Georgia",
+    "codigo": "011",
+    "ciudad": "Warner Robins"
+  },
+  {
+    "codigo departamento": "13",
+    "departamento": "Georgia",
+    "codigo": "012",
+    "ciudad": "Alpharetta"
+  },
+  {
+    "codigo departamento": "13",
+    "departamento": "Georgia",
+    "codigo": "013",
+    "ciudad": "Marietta"
+  },
+  {
+    "codigo departamento": "13",
+    "departamento": "Georgia",
+    "codigo": "014",
+    "ciudad": "Valdosta"
+  },
+  {
+    "codigo departamento": "13",
+    "departamento": "Georgia",
+    "codigo": "015",
+    "ciudad": "Smyrna"
+  },
+  {
+    "codigo departamento": "13",
+    "departamento": "Georgia",
+    "codigo": "016",
+    "ciudad": "Dunwoody"
+  },
+  {
+    "codigo departamento": "31",
+    "departamento": "Nebraska",
+    "codigo": "001",
+    "ciudad": "Omaha"
+  },
+  {
+    "codigo departamento": "31",
+    "departamento": "Nebraska",
+    "codigo": "002",
+    "ciudad": "Lincoln"
+  },
+  {
+    "codigo departamento": "31",
+    "departamento": "Nebraska",
+    "codigo": "003",
+    "ciudad": "Bellevue"
+  },
+  {
+    "codigo departamento": "31",
+    "departamento": "Nebraska",
+    "codigo": "004",
+    "ciudad": "Grand Island"
+  },
+  {
+    "codigo departamento": "27",
+    "departamento": "Minnesota",
+    "codigo": "001",
+    "ciudad": "Minneapolis"
+  },
+  {
+    "codigo departamento": "27",
+    "departamento": "Minnesota",
+    "codigo": "002",
+    "ciudad": "St. Paul"
+  },
+  {
+    "codigo departamento": "27",
+    "departamento": "Minnesota",
+    "codigo": "003",
+    "ciudad": "Rochester"
+  },
+  {
+    "codigo departamento": "27",
+    "departamento": "Minnesota",
+    "codigo": "004",
+    "ciudad": "Duluth"
+  },
+  {
+    "codigo departamento": "27",
+    "departamento": "Minnesota",
+    "codigo": "005",
+    "ciudad": "Bloomington"
+  },
+  {
+    "codigo departamento": "27",
+    "departamento": "Minnesota",
+    "codigo": "006",
+    "ciudad": "Brooklyn Park"
+  },
+  {
+    "codigo departamento": "27",
+    "departamento": "Minnesota",
+    "codigo": "007",
+    "ciudad": "Plymouth"
+  },
+  {
+    "codigo departamento": "27",
+    "departamento": "Minnesota",
+    "codigo": "008",
+    "ciudad": "St. Cloud"
+  },
+  {
+    "codigo departamento": "27",
+    "departamento": "Minnesota",
+    "codigo": "009",
+    "ciudad": "Eagan"
+  },
+  {
+    "codigo departamento": "27",
+    "departamento": "Minnesota",
+    "codigo": "010",
+    "ciudad": "Woodbury"
+  },
+  {
+    "codigo departamento": "27",
+    "departamento": "Minnesota",
+    "codigo": "011",
+    "ciudad": "Maple Grove"
+  },
+  {
+    "codigo departamento": "27",
+    "departamento": "Minnesota",
+    "codigo": "012",
+    "ciudad": "Eden Prairie"
+  },
+  {
+    "codigo departamento": "27",
+    "departamento": "Minnesota",
+    "codigo": "013",
+    "ciudad": "Coon Rapids"
+  },
+  {
+    "codigo departamento": "27",
+    "departamento": "Minnesota",
+    "codigo": "014",
+    "ciudad": "Burnsville"
+  },
+  {
+    "codigo departamento": "27",
+    "departamento": "Minnesota",
+    "codigo": "015",
+    "ciudad": "Blaine"
+  },
+  {
+    "codigo departamento": "27",
+    "departamento": "Minnesota",
+    "codigo": "016",
+    "ciudad": "Lakeville"
+  },
+  {
+    "codigo departamento": "27",
+    "departamento": "Minnesota",
+    "codigo": "017",
+    "ciudad": "Minnetonka"
+  },
+  {
+    "codigo departamento": "27",
+    "departamento": "Minnesota",
+    "codigo": "018",
+    "ciudad": "Apple Valley"
+  },
+  {
+    "codigo departamento": "27",
+    "departamento": "Minnesota",
+    "codigo": "019",
+    "ciudad": "Edina"
+  },
+  {
+    "codigo departamento": "27",
+    "departamento": "Minnesota",
+    "codigo": "020",
+    "ciudad": "St. Louis Park"
+  },
+  {
+    "codigo departamento": "27",
+    "departamento": "Minnesota",
+    "codigo": "021",
+    "ciudad": "Mankato"
+  },
+  {
+    "codigo departamento": "27",
+    "departamento": "Minnesota",
+    "codigo": "022",
+    "ciudad": "Maplewood"
+  },
+  {
+    "codigo departamento": "27",
+    "departamento": "Minnesota",
+    "codigo": "023",
+    "ciudad": "Moorhead"
+  },
+  {
+    "codigo departamento": "27",
+    "departamento": "Minnesota",
+    "codigo": "024",
+    "ciudad": "Shakopee"
+  },
+  {
+    "codigo departamento": "20",
+    "departamento": "Kansas",
+    "codigo": "001",
+    "ciudad": "Wichita"
+  },
+  {
+    "codigo departamento": "20",
+    "departamento": "Kansas",
+    "codigo": "002",
+    "ciudad": "Overland Park"
+  },
+  {
+    "codigo departamento": "20",
+    "departamento": "Kansas",
+    "codigo": "003",
+    "ciudad": "Kansas City"
+  },
+  {
+    "codigo departamento": "20",
+    "departamento": "Kansas",
+    "codigo": "004",
+    "ciudad": "Olathe"
+  },
+  {
+    "codigo departamento": "20",
+    "departamento": "Kansas",
+    "codigo": "005",
+    "ciudad": "Topeka"
+  },
+  {
+    "codigo departamento": "20",
+    "departamento": "Kansas",
+    "codigo": "006",
+    "ciudad": "Lawrence"
+  },
+  {
+    "codigo departamento": "20",
+    "departamento": "Kansas",
+    "codigo": "007",
+    "ciudad": "Shawnee"
+  },
+  {
+    "codigo departamento": "20",
+    "departamento": "Kansas",
+    "codigo": "008",
+    "ciudad": "Manhattan"
+  },
+  {
+    "codigo departamento": "20",
+    "departamento": "Kansas",
+    "codigo": "009",
+    "ciudad": "Lenexa"
+  },
+  {
+    "codigo departamento": "20",
+    "departamento": "Kansas",
+    "codigo": "010",
+    "ciudad": "Salina"
+  },
+  {
+    "codigo departamento": "20",
+    "departamento": "Kansas",
+    "codigo": "011",
+    "ciudad": "Hutchinson"
+  },
+  {
+    "codigo departamento": "22",
+    "departamento": "Louisiana",
+    "codigo": "001",
+    "ciudad": "New Orleans"
+  },
+  {
+    "codigo departamento": "22",
+    "departamento": "Louisiana",
+    "codigo": "002",
+    "ciudad": "Baton Rouge"
+  },
+  {
+    "codigo departamento": "22",
+    "departamento": "Louisiana",
+    "codigo": "003",
+    "ciudad": "Shreveport"
+  },
+  {
+    "codigo departamento": "22",
+    "departamento": "Louisiana",
+    "codigo": "004",
+    "ciudad": "Lafayette"
+  },
+  {
+    "codigo departamento": "22",
+    "departamento": "Louisiana",
+    "codigo": "005",
+    "ciudad": "Lake Charles"
+  },
+  {
+    "codigo departamento": "22",
+    "departamento": "Louisiana",
+    "codigo": "006",
+    "ciudad": "Kenner"
+  },
+  {
+    "codigo departamento": "22",
+    "departamento": "Louisiana",
+    "codigo": "007",
+    "ciudad": "Bossier City"
+  },
+  {
+    "codigo departamento": "22",
+    "departamento": "Louisiana",
+    "codigo": "008",
+    "ciudad": "Monroe"
+  },
+  {
+    "codigo departamento": "22",
+    "departamento": "Louisiana",
+    "codigo": "009",
+    "ciudad": "Alexandria"
+  },
+  {
+    "codigo departamento": "15",
+    "departamento": "Hawaii",
+    "codigo": "001",
+    "ciudad": "Honolulu"
+  },
+  {
+    "codigo departamento": "02",
+    "departamento": "Alaska",
+    "codigo": "001",
+    "ciudad": "Anchorage"
+  },
+  {
+    "codigo departamento": "34",
+    "departamento": "New Jersey",
+    "codigo": "001",
+    "ciudad": "Newark"
+  },
+  {
+    "codigo departamento": "34",
+    "departamento": "New Jersey",
+    "codigo": "002",
+    "ciudad": "Jersey City"
+  },
+  {
+    "codigo departamento": "34",
+    "departamento": "New Jersey",
+    "codigo": "003",
+    "ciudad": "Paterson"
+  },
+  {
+    "codigo departamento": "34",
+    "departamento": "New Jersey",
+    "codigo": "004",
+    "ciudad": "Elizabeth"
+  },
+  {
+    "codigo departamento": "34",
+    "departamento": "New Jersey",
+    "codigo": "005",
+    "ciudad": "Clifton"
+  },
+  {
+    "codigo departamento": "34",
+    "departamento": "New Jersey",
+    "codigo": "006",
+    "ciudad": "Trenton"
+  },
+  {
+    "codigo departamento": "34",
+    "departamento": "New Jersey",
+    "codigo": "007",
+    "ciudad": "Camden"
+  },
+  {
+    "codigo departamento": "34",
+    "departamento": "New Jersey",
+    "codigo": "008",
+    "ciudad": "Passaic"
+  },
+  {
+    "codigo departamento": "34",
+    "departamento": "New Jersey",
+    "codigo": "009",
+    "ciudad": "Union City"
+  },
+  {
+    "codigo departamento": "34",
+    "departamento": "New Jersey",
+    "codigo": "010",
+    "ciudad": "Bayonne"
+  },
+  {
+    "codigo departamento": "34",
+    "departamento": "New Jersey",
+    "codigo": "011",
+    "ciudad": "East Orange"
+  },
+  {
+    "codigo departamento": "34",
+    "departamento": "New Jersey",
+    "codigo": "012",
+    "ciudad": "Vineland"
+  },
+  {
+    "codigo departamento": "34",
+    "departamento": "New Jersey",
+    "codigo": "013",
+    "ciudad": "New Brunswick"
+  },
+  {
+    "codigo departamento": "34",
+    "departamento": "New Jersey",
+    "codigo": "014",
+    "ciudad": "Hoboken"
+  },
+  {
+    "codigo departamento": "34",
+    "departamento": "New Jersey",
+    "codigo": "015",
+    "ciudad": "Perth Amboy"
+  },
+  {
+    "codigo departamento": "34",
+    "departamento": "New Jersey",
+    "codigo": "016",
+    "ciudad": "West New York"
+  },
+  {
+    "codigo departamento": "34",
+    "departamento": "New Jersey",
+    "codigo": "017",
+    "ciudad": "Plainfield"
+  },
+  {
+    "codigo departamento": "34",
+    "departamento": "New Jersey",
+    "codigo": "018",
+    "ciudad": "Hackensack"
+  },
+  {
+    "codigo departamento": "34",
+    "departamento": "New Jersey",
+    "codigo": "019",
+    "ciudad": "Sayreville"
+  },
+  {
+    "codigo departamento": "34",
+    "departamento": "New Jersey",
+    "codigo": "020",
+    "ciudad": "Kearny"
+  },
+  {
+    "codigo departamento": "34",
+    "departamento": "New Jersey",
+    "codigo": "021",
+    "ciudad": "Linden"
+  },
+  {
+    "codigo departamento": "34",
+    "departamento": "New Jersey",
+    "codigo": "022",
+    "ciudad": "Atlantic City"
+  },
+  {
+    "codigo departamento": "16",
+    "departamento": "Idaho",
+    "codigo": "001",
+    "ciudad": "Boise City"
+  },
+  {
+    "codigo departamento": "16",
+    "departamento": "Idaho",
+    "codigo": "002",
+    "ciudad": "Nampa"
+  },
+  {
+    "codigo departamento": "16",
+    "departamento": "Idaho",
+    "codigo": "003",
+    "ciudad": "Meridian"
+  },
+  {
+    "codigo departamento": "16",
+    "departamento": "Idaho",
+    "codigo": "004",
+    "ciudad": "Idaho Falls"
+  },
+  {
+    "codigo departamento": "16",
+    "departamento": "Idaho",
+    "codigo": "005",
+    "ciudad": "Pocatello"
+  },
+  {
+    "codigo departamento": "16",
+    "departamento": "Idaho",
+    "codigo": "006",
+    "ciudad": "Caldwell"
+  },
+  {
+    "codigo departamento": "16",
+    "departamento": "Idaho",
+    "codigo": "007",
+    "ciudad": "Coeur d'Alene"
+  },
+  {
+    "codigo departamento": "16",
+    "departamento": "Idaho",
+    "codigo": "008",
+    "ciudad": "Twin Falls"
+  },
+  {
+    "codigo departamento": "01",
+    "departamento": "Alabama",
+    "codigo": "001",
+    "ciudad": "Birmingham"
+  },
+  {
+    "codigo departamento": "01",
+    "departamento": "Alabama",
+    "codigo": "002",
+    "ciudad": "Montgomery"
+  },
+  {
+    "codigo departamento": "01",
+    "departamento": "Alabama",
+    "codigo": "003",
+    "ciudad": "Mobile"
+  },
+  {
+    "codigo departamento": "01",
+    "departamento": "Alabama",
+    "codigo": "004",
+    "ciudad": "Huntsville"
+  },
+  {
+    "codigo departamento": "01",
+    "departamento": "Alabama",
+    "codigo": "005",
+    "ciudad": "Tuscaloosa"
+  },
+  {
+    "codigo departamento": "01",
+    "departamento": "Alabama",
+    "codigo": "006",
+    "ciudad": "Hoover"
+  },
+  {
+    "codigo departamento": "01",
+    "departamento": "Alabama",
+    "codigo": "007",
+    "ciudad": "Dothan"
+  },
+  {
+    "codigo departamento": "01",
+    "departamento": "Alabama",
+    "codigo": "008",
+    "ciudad": "Auburn"
+  },
+  {
+    "codigo departamento": "01",
+    "departamento": "Alabama",
+    "codigo": "009",
+    "ciudad": "Decatur"
+  },
+  {
+    "codigo departamento": "01",
+    "departamento": "Alabama",
+    "codigo": "010",
+    "ciudad": "Madison"
+  },
+  {
+    "codigo departamento": "01",
+    "departamento": "Alabama",
+    "codigo": "011",
+    "ciudad": "Florence"
+  },
+  {
+    "codigo departamento": "01",
+    "departamento": "Alabama",
+    "codigo": "012",
+    "ciudad": "Gadsden"
+  },
+  {
+    "codigo departamento": "19",
+    "departamento": "Iowa",
+    "codigo": "001",
+    "ciudad": "Des Moines"
+  },
+  {
+    "codigo departamento": "19",
+    "departamento": "Iowa",
+    "codigo": "002",
+    "ciudad": "Cedar Rapids"
+  },
+  {
+    "codigo departamento": "19",
+    "departamento": "Iowa",
+    "codigo": "003",
+    "ciudad": "Davenport"
+  },
+  {
+    "codigo departamento": "19",
+    "departamento": "Iowa",
+    "codigo": "004",
+    "ciudad": "Sioux City"
+  },
+  {
+    "codigo departamento": "19",
+    "departamento": "Iowa",
+    "codigo": "005",
+    "ciudad": "Iowa City"
+  },
+  {
+    "codigo departamento": "19",
+    "departamento": "Iowa",
+    "codigo": "006",
+    "ciudad": "Waterloo"
+  },
+  {
+    "codigo departamento": "19",
+    "departamento": "Iowa",
+    "codigo": "007",
+    "ciudad": "Council Bluffs"
+  },
+  {
+    "codigo departamento": "19",
+    "departamento": "Iowa",
+    "codigo": "008",
+    "ciudad": "Ames"
+  },
+  {
+    "codigo departamento": "19",
+    "departamento": "Iowa",
+    "codigo": "009",
+    "ciudad": "West Des Moines"
+  },
+  {
+    "codigo departamento": "19",
+    "departamento": "Iowa",
+    "codigo": "010",
+    "ciudad": "Dubuque"
+  },
+  {
+    "codigo departamento": "19",
+    "departamento": "Iowa",
+    "codigo": "011",
+    "ciudad": "Ankeny"
+  },
+  {
+    "codigo departamento": "19",
+    "departamento": "Iowa",
+    "codigo": "012",
+    "ciudad": "Urbandale"
+  },
+  {
+    "codigo departamento": "19",
+    "departamento": "Iowa",
+    "codigo": "013",
+    "ciudad": "Cedar Falls"
+  },
+  {
+    "codigo departamento": "05",
+    "departamento": "Arkansas",
+    "codigo": "001",
+    "ciudad": "Little Rock"
+  },
+  {
+    "codigo departamento": "05",
+    "departamento": "Arkansas",
+    "codigo": "002",
+    "ciudad": "Fort Smith"
+  },
+  {
+    "codigo departamento": "05",
+    "departamento": "Arkansas",
+    "codigo": "003",
+    "ciudad": "Fayetteville"
+  },
+  {
+    "codigo departamento": "05",
+    "departamento": "Arkansas",
+    "codigo": "004",
+    "ciudad": "Springdale"
+  },
+  {
+    "codigo departamento": "05",
+    "departamento": "Arkansas",
+    "codigo": "005",
+    "ciudad": "Jonesboro"
+  },
+  {
+    "codigo departamento": "05",
+    "departamento": "Arkansas",
+    "codigo": "006",
+    "ciudad": "North Little Rock"
+  },
+  {
+    "codigo departamento": "05",
+    "departamento": "Arkansas",
+    "codigo": "007",
+    "ciudad": "Conway"
+  },
+  {
+    "codigo departamento": "05",
+    "departamento": "Arkansas",
+    "codigo": "008",
+    "ciudad": "Rogers"
+  },
+  {
+    "codigo departamento": "05",
+    "departamento": "Arkansas",
+    "codigo": "009",
+    "ciudad": "Pine Bluff"
+  },
+  {
+    "codigo departamento": "05",
+    "departamento": "Arkansas",
+    "codigo": "010",
+    "ciudad": "Bentonville"
+  },
+  {
+    "codigo departamento": "49",
+    "departamento": "Utah",
+    "codigo": "001",
+    "ciudad": "Salt Lake City"
+  },
+  {
+    "codigo departamento": "49",
+    "departamento": "Utah",
+    "codigo": "002",
+    "ciudad": "West Valley City"
+  },
+  {
+    "codigo departamento": "49",
+    "departamento": "Utah",
+    "codigo": "003",
+    "ciudad": "Provo"
+  },
+  {
+    "codigo departamento": "49",
+    "departamento": "Utah",
+    "codigo": "004",
+    "ciudad": "West Jordan"
+  },
+  {
+    "codigo departamento": "49",
+    "departamento": "Utah",
+    "codigo": "005",
+    "ciudad": "Orem"
+  },
+  {
+    "codigo departamento": "49",
+    "departamento": "Utah",
+    "codigo": "006",
+    "ciudad": "Sandy"
+  },
+  {
+    "codigo departamento": "49",
+    "departamento": "Utah",
+    "codigo": "007",
+    "ciudad": "Ogden"
+  },
+  {
+    "codigo departamento": "49",
+    "departamento": "Utah",
+    "codigo": "008",
+    "ciudad": "St. George"
+  },
+  {
+    "codigo departamento": "49",
+    "departamento": "Utah",
+    "codigo": "009",
+    "ciudad": "Layton"
+  },
+  {
+    "codigo departamento": "49",
+    "departamento": "Utah",
+    "codigo": "010",
+    "ciudad": "Taylorsville"
+  },
+  {
+    "codigo departamento": "49",
+    "departamento": "Utah",
+    "codigo": "011",
+    "ciudad": "South Jordan"
+  },
+  {
+    "codigo departamento": "49",
+    "departamento": "Utah",
+    "codigo": "012",
+    "ciudad": "Lehi"
+  },
+  {
+    "codigo departamento": "49",
+    "departamento": "Utah",
+    "codigo": "013",
+    "ciudad": "Logan"
+  },
+  {
+    "codigo departamento": "49",
+    "departamento": "Utah",
+    "codigo": "014",
+    "ciudad": "Murray"
+  },
+  {
+    "codigo departamento": "49",
+    "departamento": "Utah",
+    "codigo": "015",
+    "ciudad": "Draper"
+  },
+  {
+    "codigo departamento": "49",
+    "departamento": "Utah",
+    "codigo": "016",
+    "ciudad": "Bountiful"
+  },
+  {
+    "codigo departamento": "49",
+    "departamento": "Utah",
+    "codigo": "017",
+    "ciudad": "Riverton"
+  },
+  {
+    "codigo departamento": "49",
+    "departamento": "Utah",
+    "codigo": "018",
+    "ciudad": "Roy"
+  },
+  {
+    "codigo departamento": "44",
+    "departamento": "Rhode Island",
+    "codigo": "001",
+    "ciudad": "Providence"
+  },
+  {
+    "codigo departamento": "44",
+    "departamento": "Rhode Island",
+    "codigo": "002",
+    "ciudad": "Warwick"
+  },
+  {
+    "codigo departamento": "44",
+    "departamento": "Rhode Island",
+    "codigo": "003",
+    "ciudad": "Cranston"
+  },
+  {
+    "codigo departamento": "44",
+    "departamento": "Rhode Island",
+    "codigo": "004",
+    "ciudad": "Pawtucket"
+  },
+  {
+    "codigo departamento": "44",
+    "departamento": "Rhode Island",
+    "codigo": "005",
+    "ciudad": "East Providence"
+  },
+  {
+    "codigo departamento": "44",
+    "departamento": "Rhode Island",
+    "codigo": "006",
+    "ciudad": "Woonsocket"
+  },
+  {
+    "codigo departamento": "28",
+    "departamento": "Mississippi",
+    "codigo": "001",
+    "ciudad": "Jackson"
+  },
+  {
+    "codigo departamento": "28",
+    "departamento": "Mississippi",
+    "codigo": "002",
+    "ciudad": "Gulfport"
+  },
+  {
+    "codigo departamento": "28",
+    "departamento": "Mississippi",
+    "codigo": "003",
+    "ciudad": "Southaven"
+  },
+  {
+    "codigo departamento": "28",
+    "departamento": "Mississippi",
+    "codigo": "004",
+    "ciudad": "Hattiesburg"
+  },
+  {
+    "codigo departamento": "28",
+    "departamento": "Mississippi",
+    "codigo": "005",
+    "ciudad": "Biloxi"
+  },
+  {
+    "codigo departamento": "28",
+    "departamento": "Mississippi",
+    "codigo": "006",
+    "ciudad": "Meridian"
+  },
+  {
+    "codigo departamento": "46",
+    "departamento": "South Dakota",
+    "codigo": "001",
+    "ciudad": "Sioux Falls"
+  },
+  {
+    "codigo departamento": "46",
+    "departamento": "South Dakota",
+    "codigo": "002",
+    "ciudad": "Rapid City"
+  },
+  {
+    "codigo departamento": "09",
+    "departamento": "Connecticut",
+    "codigo": "001",
+    "ciudad": "Bridgeport"
+  },
+  {
+    "codigo departamento": "09",
+    "departamento": "Connecticut",
+    "codigo": "002",
+    "ciudad": "New Haven"
+  },
+  {
+    "codigo departamento": "09",
+    "departamento": "Connecticut",
+    "codigo": "003",
+    "ciudad": "Stamford"
+  },
+  {
+    "codigo departamento": "09",
+    "departamento": "Connecticut",
+    "codigo": "004",
+    "ciudad": "Hartford"
+  },
+  {
+    "codigo departamento": "09",
+    "departamento": "Connecticut",
+    "codigo": "005",
+    "ciudad": "Waterbury"
+  },
+  {
+    "codigo departamento": "09",
+    "departamento": "Connecticut",
+    "codigo": "006",
+    "ciudad": "Norwalk"
+  },
+  {
+    "codigo departamento": "09",
+    "departamento": "Connecticut",
+    "codigo": "007",
+    "ciudad": "Danbury"
+  },
+  {
+    "codigo departamento": "09",
+    "departamento": "Connecticut",
+    "codigo": "008",
+    "ciudad": "New Britain"
+  },
+  {
+    "codigo departamento": "09",
+    "departamento": "Connecticut",
+    "codigo": "009",
+    "ciudad": "Meriden"
+  },
+  {
+    "codigo departamento": "09",
+    "departamento": "Connecticut",
+    "codigo": "010",
+    "ciudad": "Bristol"
+  },
+  {
+    "codigo departamento": "09",
+    "departamento": "Connecticut",
+    "codigo": "011",
+    "ciudad": "West Haven"
+  },
+  {
+    "codigo departamento": "09",
+    "departamento": "Connecticut",
+    "codigo": "012",
+    "ciudad": "Milford"
+  },
+  {
+    "codigo departamento": "09",
+    "departamento": "Connecticut",
+    "codigo": "013",
+    "ciudad": "Middletown"
+  },
+  {
+    "codigo departamento": "09",
+    "departamento": "Connecticut",
+    "codigo": "014",
+    "ciudad": "Norwich"
+  },
+  {
+    "codigo departamento": "09",
+    "departamento": "Connecticut",
+    "codigo": "015",
+    "ciudad": "Shelton"
+  },
+  {
+    "codigo departamento": "45",
+    "departamento": "South Carolina",
+    "codigo": "001",
+    "ciudad": "Columbia"
+  },
+  {
+    "codigo departamento": "45",
+    "departamento": "South Carolina",
+    "codigo": "002",
+    "ciudad": "Charleston"
+  },
+  {
+    "codigo departamento": "45",
+    "departamento": "South Carolina",
+    "codigo": "003",
+    "ciudad": "North Charleston"
+  },
+  {
+    "codigo departamento": "45",
+    "departamento": "South Carolina",
+    "codigo": "004",
+    "ciudad": "Mount Pleasant"
+  },
+  {
+    "codigo departamento": "45",
+    "departamento": "South Carolina",
+    "codigo": "005",
+    "ciudad": "Rock Hill"
+  },
+  {
+    "codigo departamento": "45",
+    "departamento": "South Carolina",
+    "codigo": "006",
+    "ciudad": "Greenville"
+  },
+  {
+    "codigo departamento": "45",
+    "departamento": "South Carolina",
+    "codigo": "007",
+    "ciudad": "Summerville"
+  },
+  {
+    "codigo departamento": "45",
+    "departamento": "South Carolina",
+    "codigo": "008",
+    "ciudad": "Sumter"
+  },
+  {
+    "codigo departamento": "45",
+    "departamento": "South Carolina",
+    "codigo": "009",
+    "ciudad": "Goose Creek"
+  },
+  {
+    "codigo departamento": "45",
+    "departamento": "South Carolina",
+    "codigo": "010",
+    "ciudad": "Hilton Head Island"
+  },
+  {
+    "codigo departamento": "45",
+    "departamento": "South Carolina",
+    "codigo": "011",
+    "ciudad": "Florence"
+  },
+  {
+    "codigo departamento": "45",
+    "departamento": "South Carolina",
+    "codigo": "012",
+    "ciudad": "Spartanburg"
+  },
+  {
+    "codigo departamento": "33",
+    "departamento": "New Hampshire",
+    "codigo": "001",
+    "ciudad": "Manchester"
+  },
+  {
+    "codigo departamento": "33",
+    "departamento": "New Hampshire",
+    "codigo": "002",
+    "ciudad": "Nashua"
+  },
+  {
+    "codigo departamento": "33",
+    "departamento": "New Hampshire",
+    "codigo": "003",
+    "ciudad": "Concord"
+  },
+  {
+    "codigo departamento": "38",
+    "departamento": "North Dakota",
+    "codigo": "001",
+    "ciudad": "Fargo"
+  },
+  {
+    "codigo departamento": "38",
+    "departamento": "North Dakota",
+    "codigo": "002",
+    "ciudad": "Bismarck"
+  },
+  {
+    "codigo departamento": "38",
+    "departamento": "North Dakota",
+    "codigo": "003",
+    "ciudad": "Grand Forks"
+  },
+  {
+    "codigo departamento": "38",
+    "departamento": "North Dakota",
+    "codigo": "004",
+    "ciudad": "Minot"
+  },
+  {
+    "codigo departamento": "30",
+    "departamento": "Montana",
+    "codigo": "001",
+    "ciudad": "Billings"
+  },
+  {
+    "codigo departamento": "30",
+    "departamento": "Montana",
+    "codigo": "002",
+    "ciudad": "Missoula"
+  },
+  {
+    "codigo departamento": "30",
+    "departamento": "Montana",
+    "codigo": "003",
+    "ciudad": "Great Falls"
+  },
+  {
+    "codigo departamento": "30",
+    "departamento": "Montana",
+    "codigo": "004",
+    "ciudad": "Bozeman"
+  },
+  {
+    "codigo departamento": "10",
+    "departamento": "Delaware",
+    "codigo": "001",
+    "ciudad": "Wilmington"
+  },
+  {
+    "codigo departamento": "10",
+    "departamento": "Delaware",
+    "codigo": "002",
+    "ciudad": "Dover"
+  },
+  {
+    "codigo departamento": "23",
+    "departamento": "Maine",
+    "codigo": "001",
+    "ciudad": "Portland"
+  },
+  {
+    "codigo departamento": "56",
+    "departamento": "Wyoming",
+    "codigo": "001",
+    "ciudad": "Cheyenne"
+  },
+  {
+    "codigo departamento": "56",
+    "departamento": "Wyoming",
+    "codigo": "002",
+    "ciudad": "Casper"
+  },
+  {
+    "codigo departamento": "54",
+    "departamento": "West Virginia",
+    "codigo": "001",
+    "ciudad": "Charleston"
+  },
+  {
+    "codigo departamento": "54",
+    "departamento": "West Virginia",
+    "codigo": "002",
+    "ciudad": "Huntington"
+  },
+  {
+    "codigo departamento": "50",
+    "departamento": "Vermont",
+    "codigo": "001",
+    "ciudad": "Burlington"
+  }
+]

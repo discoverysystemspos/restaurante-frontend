@@ -11,9 +11,9 @@
   base_url: 'http://192.168.1.150:3000/api',
   base_url: 'https://admin.castitoner.com/api',
 
-  caseritas.poslatino.com
+  maxbuenovalencia.poslatino.com
 
-  base_url: 'https://pollosrohi.poslatino.com/api',
+  base_url: 'https://granfrutiversanfrancisco.poslatino.com/api',
 
   dataico_url: 'https://api.dataico.com/dataico_api/v2'
   

@@ -535,7 +535,7 @@
                         <div class="d-flex align-items-center flex-wrap">
                             <div class="flex-grow-1">
                                 <div class="small font-weight-bold text-info mb-1">Utilidad</div>
-                                <div class="h5">({{ utilidad | currency:'COP' }})</div>
+                                <div class="h5">({{ utilidad | divisa }})</div>
                             </div>
                             <div class="ms-2">
                                 <i class="bi bi-currency-dollar text-muted" style="font-size: 1.5rem;"></i>
@@ -607,6 +607,20 @@
                     <h4 class="mb-0 text-muted">Filtros</h4>
 
                     <hr>
+                    <div class="mb-3">
+                        <label for="" class="form-label">Tipo</label>
+                        <select class="form-select form-select-lg" name="" id="" (change)="selectType(typeS.value)" #typeS>
+                            <option value="all">Todos</option>
+                            <option value="Salida">Salida</option>
+                            <option value="Agrego">Agrego</option>
+                            <option value="Compra">Compra</option>
+                            <option value="Elimino">Elimino</option>
+                            <option value="Devolución">Devolución</option>
+                        </select>
+                    </div>
+                    
+
+                    <hr>
 
                     <!-- DESDE -->
                     <div class="mt-4">
@@ -623,8 +637,8 @@
                     <!-- HASTA -->
 
                     <button (click)="buscarPor(initial.value, end.value)" type="button" class="btn btn-outline-primary btn-sm btn-block mt-4"> 
-                                <i class="bi-search"></i> Buscar 
-                            </button>
+                        <i class="bi-search"></i> Buscar 
+                    </button>
 
                 </div>
             </div>
@@ -641,12 +655,17 @@
                         <div class="row">
                             <div class="col pe-0">Mostrar:</div>
                             <div class="col">
-                                <select class="form-select form-select-sm" (change)="cambiarLimite(limit.value)" [value]="limite" aria-label=".form-select-sm example" #limit>
-                                            <option value="10">10</option>
-                                            <option value="25">25</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>
-                                        </select>
+                                <select class="form-select form-select-sm" (change)="limiteChange(limit.value)" [value]="query.hasta" aria-label=".form-select-sm example" #limit>
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                    <option value="250">250</option>
+                                    <option value="500">500</option>
+                                    <option value="1000">1000</option>
+                                    <option value="5000">5000</option>
+                                    <option value="10000">10000</option>
+                                </select>
                             </div>
 
                         </div>
@@ -687,23 +706,27 @@
                                     <td colspan="2">{{ item.name }}</td>
                                     <td class="text-center">{{ item.departamento }}</td>
                                     <td>
-                                        <a *ngIf="item.invoice" [routerLink]="['/dashboard/factura', item.invoice._id]">                            
+                                        <a *ngIf="item.invoice" [routerLink]="['/dashboard/factura', item.invoice._id]">                   
                                             {{ item.description }}
                                         </a>
-                                        <span *ngIf="!item.invoice">
+                                        <a *ngIf="item.compra" [routerLink]="['/dashboard/compra', item.compra]">                   
+                                            {{ item.description }}
+                                        </a>
+                                        <span *ngIf="!item.invoice && !item.compra">
                                             {{ item.description }}                                
                                         </span>
                                     </td>
                                     <td>
                                         <span *ngIf="item.type === 'Salida'" class="badge rounded-pill bg-danger text-white-75">{{ item.type }}</span>
                                         <span *ngIf="item.type === 'Agrego'" class="badge rounded-pill bg-success text-white-75">{{ item.type }}</span>
+                                        <span *ngIf="item.type === 'Compra'" class="badge rounded-pill bg-success text-white-75">{{ item.type }}</span>
                                         <span *ngIf="item.type === 'Elimino'" class="badge rounded-pill bg-warning text-white-75">{{ item.type }}</span>
                                         <span *ngIf="item.type === 'Devolución'" class="badge rounded-pill bg-info text-white-75">{{ item.type }}</span>
                                     </td>
-
+    
                                     <td class="text-center">{{ item.befored | number }}</td>
-                                    <td class="text-center">{{ item.qty }}</td>
-                                    <td class="text-center">{{ item.stock | number }}</td>
+                                    <td class="text-center">{{ item.qty | number }}</td>
+                                    <td class="text-center">{{ item.stock  | number}}</td>
                                     <td>{{ item.cajero.name }}</td>
                                     <td> <small class="text-wrapp"> {{ item.fecha | date:'medium'}}</small></td>
                                 </tr>
@@ -720,8 +743,8 @@
                         </div>
 
                         <div class="col d-flex justify-content-end">
-                            <button type="button" (click)="cambiarPagina('back')" class="{{btnAtras}} btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
-                            <button type="button" (click)="cambiarPagina('next')" class="{{btnAdelante}} btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
+                            <button [disabled]="query.desde === 0" type="button" (click)="cambiarPagina((query.hasta * -1))" class="btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
+                            <button [disabled]="query.hasta  > logs.length || query.hasta > total" type="button" (click)="cambiarPagina(query.hasta)" class="btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
                         </div>
                     </div>
                     <!-- BTN SIGUIENTE Y ANTERIOR -->

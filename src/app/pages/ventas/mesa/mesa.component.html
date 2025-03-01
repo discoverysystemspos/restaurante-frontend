@@ -82,7 +82,7 @@
 
                         <img class="avatar-xxl avatar-img avatar-redondo-lg mx-auto" style="height: 180px; width: auto;" [src]="producto.img | imagen:'products'" class="card-img-top" alt="...">
 
-                        <div class="card-body py-2 d-flex align-items-start flex-column">
+                        <div *ngIf="empresa" class="card-body py-2 d-flex align-items-start flex-column">
 
                             <div>
                                 <p class="mb-0">cant. {{ producto.inventario | number }}</p>
@@ -1153,7 +1153,7 @@
                     <div *ngIf="mesa">
                         <h6 class="fw-bold mb-0">
                             <span class="text-primary text-wrap">
-                            {{ mesa.name }} - {{ mesa.mesero.name }} 
+                            {{ mesa.name }} - {{ mesa.mesero.name || '' }} 
                         </span>
                         </h6>
                     </div>

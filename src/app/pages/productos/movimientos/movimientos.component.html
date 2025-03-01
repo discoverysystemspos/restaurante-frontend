@@ -80,8 +80,8 @@
                 <!-- DEPARTAMENTOS -->
                 <div>
                     <h6 class="text-muted">Departamentos</h6>
-                    <select class="form-select" aria-label="Default select example" #departament>
-                        <option value="none" selected>Seleccionar departamento</option>
+                    <select class="form-select" aria-label="Default select example" (change)="searchDepartment(departament.value)" #departament>
+                        <option value="all" selected>Seleccionar departamento</option>
                         <ng-container *ngFor="let departmento of departamentos">
                             <option *ngIf="departmento.status" value="{{departmento.name}}">{{departmento.name}}</option>
                         </ng-container>
@@ -103,7 +103,7 @@
                 </div>
                 <!-- HASTA -->
 
-                <button type="button" class="btn btn-outline-primary btn-sm btn-block mt-4" (click)="buscarPor(initial.value, end.value, departament.value)"> 
+                <button type="button" class="btn btn-outline-primary btn-sm btn-block mt-4" (click)="buscarPor(initial.value, end.value)"> 
                     <i class="bi-search"></i> Buscar 
                 </button>
 
@@ -114,49 +114,48 @@
         <!-- TABLE CLIENTS -->
         <div class="shadow p-3 rounded bg-white col-12 col-md-9 col-xl-9 mt-2">
 
-            <!-- CARGANDO -->
-            <div *ngIf="cargando">
-                <div class="text-center p-4">
-                    <div class="spinner-grow text-secondary" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                </div>
-                <small class="text-muted">cargando...</small>
-            </div>
-            <!-- CARGANDO -->
-
-
-
-            <div *ngIf="!cargando">
+            <div>
                 <div>
                     <div class="form-floating mb-2">
                         <span class="position-absolute top-50 start-90 translate-middle"><i class=" bi-search " style="font-size: 1rem "></i></span>
-                        <input type="text" class="form-control" id="floatingInput2" placeholder="Buscar Producto" (keyup)="buscar(search.value)" #search>
+                        <input type="text" class="form-control" id="floatingInput2" placeholder="Buscar Producto" (keyup)="buscar(search.value)" (keydown.enter)="buscar(search.value)" #search>
                         <label for="floatingInput2 ">Buscar Producto</label>
                     </div>
                 </div>
 
-                <!-- BTN CREAR CAJA -->
-                <div class="d-flex justify-content-end">
+                <!-- FILTROS -->
+                <div class="d-flex justify-content-end flex-wrap">
 
-                    <div class="row">
-                        <div class="col pe-0">Mostrar:</div>
-                        <div class="col">
-                            <select class="form-select form-select-sm" (change)="cambiarLimite(limit.value)" [value]="limite" aria-label=".form-select-sm example" #limit>
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select>
-                        </div>
-
+                    <div>
+                        <label for="mostrar" class="me-2">Mostrar: </label>
+                        <select name="" id="" [value]="query.hasta" #mostrar (change)="limiteChange(mostrar.value)">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="250">250</option>
+                            <option value="500">500</option>
+                            <option value="1000">1000</option>
+                            <option value="5000">5000</option>
+                            <option value="10000">10000</option>
+                        </select>
                     </div>
 
-
                 </div>
-                <!-- BTN CREAR CAJA -->
+                <!-- FILTROS -->                
 
-                <div class="table-responsive ">
+                <!-- CARGANDO -->
+                <div *ngIf="cargando">
+                    <div class="text-center p-4">
+                        <div class="spinner-grow text-secondary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <small class="text-muted">cargando...</small>
+                </div>
+                <!-- CARGANDO -->
+
+                <div *ngIf="!cargando" class="table-responsive ">
                     <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
                         <thead class="border-bottom ">
                             <tr>
@@ -203,9 +202,9 @@
                                     <span *ngIf="item.type === 'Devolución'" class="badge rounded-pill bg-info text-white-75">{{ item.type }}</span>
                                 </td>
 
-                                <td class="text-center">{{ item.befored }}</td>
-                                <td class="text-center">{{ item.qty }}</td>
-                                <td class="text-center">{{ item.stock }}</td>
+                                <td class="text-center">{{ item.befored | number }}</td>
+                                <td class="text-center">{{ item.qty | number }}</td>
+                                <td class="text-center">{{ item.stock  | number}}</td>
                                 <td>{{ item.cajero.name }}</td>
                                 <td> <small class="text-wrapp"> {{ item.fecha | date:'medium'}}</small></td>
                             </tr>
@@ -218,14 +217,15 @@
                 <!-- BTN SIGUIENTE Y ANTERIOR -->
                 <div class="row">
                     <div class="col col-md-4">
-                        <small class="text-muted">Total de movimientos: ({{total}})</small>
+                        <small class="text-muted">Total de facturas: ({{total}})</small>
                         <small *ngIf="resultado !== 0" class="text-muted"> - (Resultados: {{ resultado }})</small>
-                        <!-- <small *ngIf="desde !== 0" class="text-muted"> - (Desde el: {{ desde + 1}} Hasta el: {{ desde + productosLog.length }})</small> -->
+                        <small *ngIf="query.desde !== 0" class="text-muted"> - (Desde el: {{ query.desde + 1}} Hasta el: {{ query.desde + productosLog.length }})</small>
+                        
                     </div>
 
-                    <div *ngIf="search.value.length === 0" class="col d-flex justify-content-end">
-                        <button type="button" (click)="cambiarPagina('back')" class="{{btnAtras}} btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
-                        <button type="button" (click)="cambiarPagina('next')" class="{{btnAdelante}} btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
+                    <div class="col d-flex justify-content-end">
+                        <button [disabled]="query.desde === 0" type="button" (click)="cambiarPagina((query.hasta * -1))" class="btn btn-sm btn-dark btnW waves-effect waves-light px-3">Anterior</button>
+                        <button [disabled]="query.hasta  > productosLog.length || query.hasta > total" type="button" (click)="cambiarPagina(query.hasta)" class="btn btn-sm btn-dark btnW waves-effect waves-light px-3 ms-2">Siguiente</button>
                     </div>
                 </div>
                 <!-- BTN SIGUIENTE Y ANTERIOR -->

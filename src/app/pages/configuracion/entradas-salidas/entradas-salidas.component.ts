@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 // MODEL
 import { Entradas } from 'src/app/models/entradas.model';
@@ -29,11 +29,20 @@ export class EntradasSalidasComponent implements OnInit {
   public desde: number = 0;
   public hasta: number = 50;
   public total: number = 0;
+  public query: any = {
+    desde: 0,
+    hasta: 50,
+    sort: {fecha: -1}
+  }
+
   cargarMovimientos(){
 
     this.cargando = true;
+    this.totalEntrada = 0;
+    this.totalSalida = 0;
+    
 
-    this.entradasService.loadMovimientos(this.desde, this.hasta)
+    this.entradasService.loadMovimientosQuery(this.query)
         .subscribe( ({movimientos, total}) => {
 
           // COMPROBAR SI EXISTEN RESULTADOS
@@ -51,23 +60,7 @@ export class EntradasSalidasComponent implements OnInit {
           this.movimientosTemp = movimientos;
           this.resultado = 0;
           this.cargando = false;
-          this.sinResultados = true;
-
-          // BOTONOS DE ADELANTE Y ATRAS          
-          // if (this.desde === 0 && this.total > this.limite) {
-          //   this.btnAtras = 'disabled';
-          //   this.btnAdelante = '';
-          // }else if(this.desde === 0 && this.total < (this.limite + 1)){
-          //   this.btnAtras = 'disabled';
-          //   this.btnAdelante = 'disabled';
-          // }else if( this.desde >= this.total){
-          //   this.btnAtras = '';
-          //   this.btnAdelante = 'disabled';
-          // }else{
-          //   this.btnAtras = '';
-          //   this.btnAdelante = '';
-          // }   
-          // BOTONOS DE ADELANTE Y ATRAS
+          this.sinResultados = true;          
 
           for (const log of movimientos) {
 
@@ -89,7 +82,6 @@ export class EntradasSalidasComponent implements OnInit {
    *   BUSCAR POR FECHA
   ==================================================================== */
   public cargando: boolean = true;
-  public monto: number = 0;
   public totalEntrada: number = 0;
   public totalSalida: number = 0;
   public resultado: number = 0;
@@ -97,65 +89,57 @@ export class EntradasSalidasComponent implements OnInit {
   public movimientos: Entradas[] = [];
   public movimientosTemp: Entradas[] = [];
 
-  buscarPor(inicial:Date, final: Date, tipo: string = 'none'){
+  buscarPor(inicial:Date, final: Date){
 
-    this.monto = 0;
-    this.sinResultados = true;    
-
-    if(tipo === 'none' && inicial === null && final === null){
-      this.movimientos = this.movimientosTemp;
-      this.resultado = 0;
+    if (inicial === null && final === null || !inicial || !final) {
       return;
     }
 
     // SET HOURS      
     inicial = new Date(inicial);      
-    const initial = new Date(inicial.getTime());
+    let initial = new Date(inicial.getTime() + 1000 * 60 * 60 * 5);
 
     final = new Date(final);
-    const end = new Date(final.getTime());      
+    let end = new Date(final.getTime() + 1000 * 60 * 60 * 5);      
     // SET HOURS 
 
-    this.entradasService.loadMovimientosDate(initial, end, tipo)
-        .subscribe( ({movimientos}) => {
+    let url = document.URL.split(':');
+    if (url[0] === 'https') {
+      initial = new Date(inicial.getTime() + 1000 * 60 * 60 - 7200000); 
+      end = new Date(final.getTime() + 1000 * 60 * 60 - 3600000);        
+    }
 
-          this.totalEntrada = 0;
-          this.totalSalida = 0;
+    this.query.$and = [{ fecha: { $gte: new Date(initial), $lt: new Date(end) } }];
 
-          // COMPROBAR SI EXISTEN RESULTADOS
-          if (movimientos.length === 0) {
-            this.sinResultados = false;
-            this.movimientos = [];
-            this.resultado = 0;
-            return;                
-          }
-          // COMPROBAR SI EXISTEN RESULTADOS
-
-          for (const log of movimientos) {
-            this.monto += log.monto || 0;
-          }   
-
-          
-
-          this.movimientos = movimientos; 
-          this.resultado = movimientos.length;
-
-          for (const log of movimientos) {
-
-            if (log.type === 'entrada') {
-              
-              this.totalEntrada += log.monto || 0;
-            }else{
-              
-              this.totalSalida += log.monto || 0;
-            }
-
-          }
-          
-        });
+    this.cargarMovimientos();
 
   }
 
+  /** ================================================================
+   *   CAMBIAR PAGINA
+  ==================================================================== */
+  @ViewChild('mostrar') mostrar!: ElementRef;
+  cambiarPagina (valor: number){
+    
+    this.query.desde += valor;
+
+    if (this.query.desde < 0) {
+      this.query.desde = 0;
+    }
+    
+    this.cargarMovimientos();
+    
+  }
+
+  /** ================================================================
+   *   CHANGE LIMITE
+  ==================================================================== */
+  limiteChange( cantidad: any ){  
+
+    this.query.hasta = Number(cantidad);    
+    this.cargarMovimientos();
+
+  }
 
   // FIN DE LA CLASE
 }

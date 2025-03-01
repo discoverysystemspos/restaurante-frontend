@@ -32,12 +32,21 @@ export class HeaderComponent implements OnInit  {
     
   }
 
+  public vencido: boolean = false;
+
   getDatos(){
 
     this.empresaService.getDatos()
         .subscribe( resp => {
 
           this.empresa = resp;
+
+          if (this.empresa.nube) {
+            if (new Date(this.empresa.vence).getTime() < new Date().getTime()) {
+              this.vencido = true;              
+            }
+          }
+          
 
         });   
 

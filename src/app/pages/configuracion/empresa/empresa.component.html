@@ -151,6 +151,18 @@
 
                             </div>
 
+                            <div class="col-md-12 mt-3">
+                                <div class="form-group row">
+                                    <label for="pais" class="col-sm-auto col-form-label">Pais</label>
+                                    <div class="col-sm-6">
+                                        <select formControlName="pais" id="pais" class="custom-select custom-select-sm">
+                                            <option value="Colombia" >Colombia</option>
+                                            <option value="USA" >USA</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
 
                         <hr>
@@ -591,7 +603,7 @@
 
 
 
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-check">
                                     <input formControlName="bascula" class="form-check-input" type="checkbox" id="bascula">
                                     <label class="form-check-label" for="bascula">
@@ -601,11 +613,30 @@
                             </div>
 
                             
-                            <div  class="col-md-6">
+                            <div  class="col-md-4">
                                 <div class="form-group row">
                                     <select id="basculat" class="custom-select custom-select-sm" (change)="changeBascula(modelBascula.value)" #modelBascula [value]="basculaT">
                                         <option value="1">Modelo 1</option>
                                         <option value="2">Modelo 2</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div  class="col-md-4">
+                                <div class="form-group row">
+                                    <select id="basculat" class="custom-select custom-select-sm" (change)="changePort(puertoBasculaS.value)" #puertoBasculaS [value]="puertoBascula">
+                                        <option value="COM1">COM1</option>
+                                        <option value="COM2">COM2</option>
+                                        <option value="COM3">COM3</option>
+                                        <option value="COM4">COM4</option>
+                                        <option value="COM5">COM5</option>
+                                        <option value="COM6">COM6</option>
+                                        <option value="COM7">COM7</option>
+                                        <option value="COM8">COM8</option>
+                                        <option value="COM9">COM9</option>
+                                        <option value="COM10">COM10</option>
+                                        <option value="COM11">COM11</option>
+                                        <option value="COM12">COM12</option>
                                     </select>
                                 </div>
                             </div>

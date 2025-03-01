@@ -37,6 +37,13 @@ export class LogProductsService {
   }
 
   /** ================================================================
+   *  LOAD LOGS PRODUCTS QUERY
+  ==================================================================== */
+  loadLogProductsQuery(query: any){
+    return this.http.post<LoadLogProducts>(`${base_url}/log/products/query`, query, this.headers)
+  }
+
+  /** ================================================================
    *  LOAD LOGS PRODUCTS
   ==================================================================== */
   loadLogP(desde:number, limite){

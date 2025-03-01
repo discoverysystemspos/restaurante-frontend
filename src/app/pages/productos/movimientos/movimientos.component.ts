@@ -62,12 +62,19 @@ export class MovimientosComponent implements OnInit {
   /** ================================================================
    *   CARGAR LOG PRODUCTOS
   ==================================================================== */
+  public query: any = {
+    desde: 0,
+    hasta: 50,
+    sort: {fecha: -1}
+  }
+  
   cargarLogProductos(){
 
     this.cargando = true;
     this.sinResultados = true;
+    this.monto = 0;
 
-    this.logProductsServices.loadLogP(this.desde, this.limite)
+    this.logProductsServices.loadLogProductsQuery(this.query)
         .subscribe( ({ products, total }) => {
 
           // COMPROBAR SI EXISTEN RESULTADOS
@@ -85,24 +92,12 @@ export class MovimientosComponent implements OnInit {
           this.total = total;
           this.productosLog = products;
           this.productosLogTemp = products;
-          this.resultado = 0;
+          this.resultado = products.length;
           this.cargando = false;
 
-          // BOTONOS DE ADELANTE Y ATRAS          
-          if (this.desde === 0 && this.total > this.limite) {
-            this.btnAtras = 'disabled';
-            this.btnAdelante = '';
-          }else if(this.desde === 0 && this.total < (this.limite + 1)){
-            this.btnAtras = 'disabled';
-            this.btnAdelante = 'disabled';
-          }else if( this.desde >= this.total){
-            this.btnAtras = '';
-            this.btnAdelante = 'disabled';
-          }else{
-            this.btnAtras = '';
-            this.btnAdelante = '';
-          }   
-          // BOTONOS DE ADELANTE Y ATRAS
+          for (const log of products) {
+            this.monto += log.monto || 0;
+          }
 
 
         });
@@ -112,21 +107,13 @@ export class MovimientosComponent implements OnInit {
   /** ================================================================
    *   CAMBIAR PAGINA
   ==================================================================== */
-  cambiarPagina (direccion:string){
+  @ViewChild('mostrar') mostrar!: ElementRef;
+  cambiarPagina (valor: Number){
 
-    let valor:number = 10;
-    if (direccion === 'next') {
-      valor = this.limite;
-    }else if(direccion === 'back'){
-      valor = this.limite * -1;
-    }
+    this.query.desde += valor;
 
-    this.desde += valor;
-
-    if (this.desde < 0) {
-      this.desde = 0;
-    }else if( this.desde > this.total ){
-      this.desde -= valor;
+    if (this.query.desde < 0) {
+      this.query.desde = 0;
     }
 
     this.cargarLogProductos();
@@ -136,12 +123,10 @@ export class MovimientosComponent implements OnInit {
   /** ================================================================
    *   CAMBIAR LIMITE
   ==================================================================== */
-  // @ViewChild('limit') limit: ElementRef;
-  cambiarLimite(limite:number){
+  limiteChange( cantidad: any ){  
 
-    this.limite = limite;
-    // this.limit.nativeElement.value = this.limit;
-    this.cargarLogProductos();    
+    this.query.hasta = Number(cantidad);    
+    this.cargarLogProductos();
 
   }
 
@@ -151,81 +136,64 @@ export class MovimientosComponent implements OnInit {
   public monto: number = 0;
   buscar( termino:string ){
 
-    this.sinResultados = true;
-    this.monto = 0;
-
-    if (termino.length === 0) {
-      this.productosLog = this.productosLogTemp;
-      this.resultado = 0;
+    if (termino.length <= 0) {
+      delete this.query['$or'];
+      this.cargarLogProductos();
       return;
-    }else{
-      this.sinResultados = true;
+    }
 
-      this.searchService.search('log', termino)
-            .subscribe(({total, resultados}) => {
-              
-              // COMPROBAR SI EXISTEN RESULTADOS
-              if (resultados.length === 0) {
-                this.sinResultados = false;
-                this.productosLog = [];
-                this.resultado = 0;
-                return;                
-              }
-              // COMPROBAR SI EXISTEN RESULTADOS
+    const regex = { $regex: termino, $options: 'i' }; // Construir regex      
+    this.query.$or = [
+      { name: regex },
+      { code: regex },
+      { description: regex },
+      { type: regex },
+      { departamento: regex }
+    ];
 
-              for (const log of resultados) {
-                this.monto += log.monto || 0;
-              }              
-
-              this.total = total;
-              this.productosLog = resultados; 
-              this.resultado = resultados.length;
-
-            });
-    }    
+    this.cargarLogProductos();
 
   }
 
 
-  buscarPor(inicial:Date, final: Date, departamento: string){
+  buscarPor(inicial:Date, final: Date){
 
-    this.monto = 0;
-    this.sinResultados = true;
-
-    if(departamento === 'none' && inicial === null && final === null){
-      this.productosLog = this.productosLogTemp;
-      this.resultado = 0;
+    if (inicial === null && final === null || !inicial || !final) {
       return;
     }
 
     // SET HOURS      
     inicial = new Date(inicial);      
-    const initial = new Date(inicial.getTime());
+    let initial = new Date(inicial.getTime() + 1000 * 60 * 60 * 5);
 
     final = new Date(final);
-    const end = new Date(final.getTime());      
+    let end = new Date(final.getTime() + 1000 * 60 * 60 * 5);      
     // SET HOURS 
 
-    this.logProductsServices.loadDateLogs(initial, end, departamento)
-        .subscribe( ({products}) => {
+    let url = document.URL.split(':');
+    if (url[0] === 'https') {
+      initial = new Date(inicial.getTime() + 1000 * 60 * 60 - 7200000); 
+      end = new Date(final.getTime() + 1000 * 60 * 60 - 3600000);        
+    }
 
-          // COMPROBAR SI EXISTEN RESULTADOS
-          if (products.length === 0) {
-            this.sinResultados = false;
-            this.productosLog = [];
-            this.resultado = 0;
-            return;                
-          }
-          // COMPROBAR SI EXISTEN RESULTADOS
+    this.query.$and = [{ fecha: { $gte: new Date(initial), $lt: new Date(end) } }];
 
-          for (const log of products) {
-            this.monto += log.monto || 0;
-          }   
+    this.cargarLogProductos();
 
-          this.productosLog = products; 
-          this.resultado = products.length;
-          
-        });
+  }
+
+  /** ================================================================
+   *   BUSCAR DEPARTAMENTO
+  ==================================================================== */
+  searchDepartment(departamento: string){    
+    
+    if (departamento === 'all') {
+      delete this.query.departamento;      
+    }else{
+      this.query.departamento = departamento;
+    }
+
+    this.cargarLogProductos();
 
   }
 

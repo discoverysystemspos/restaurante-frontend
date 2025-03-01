@@ -56,6 +56,7 @@ export class Datos{
         public usd?: boolean,
         public currencyusd?: number,
         public cop?: boolean,
+        public nube?: boolean,
         public bs?: boolean,
         public currencybs?: number,
         public currencycop?: number,
@@ -73,6 +74,10 @@ export class Datos{
         public kiosco?: boolean,
         public fechakardex?: Date,
         public min?: number,
+        public pais?: string,
+        public msgv?: string,
+        public notificaciones?: any[],
+        public vence?: Date,
         public impresora?: number,
     ){}
 
