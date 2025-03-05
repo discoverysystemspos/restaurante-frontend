@@ -2753,56 +2753,56 @@ export class MesaComponent implements OnInit {
                 
                 if (this.empresa.electronica && send_dian) {
                   
-                  this.electronicaService.postFacturaDataico(this.factura, this.dataico, this.impuestos)
-                      .subscribe( (resp: {status, invoice, ok}) => {
+                  // this.electronicaService.postFacturaDataico(this.factura, this.dataico, this.impuestos)
+                  //     .subscribe( (resp: {status, invoice, ok}) => {
 
-                        this.facturando = false;
+                  //       this.facturando = false;
                         
-                        // TODO: OLD 
-                        if (resp.status === 500) {
-                          Swal.fire('Atención', 'No se pudo enviar la factura electronica a la DIAN, ve a la factura y vuelve a enviarla, si el problema persiste, ponte en contacto', 'warning');
-                          window.open(`./dashboard/factura/${ this.factura.iid }`, '_blank');
-                        }
+                  //       // TODO: OLD 
+                  //       if (resp.status === 500) {
+                  //         Swal.fire('Atención', 'No se pudo enviar la factura electronica a la DIAN, ve a la factura y vuelve a enviarla, si el problema persiste, ponte en contacto', 'warning');
+                  //         window.open(`./dashboard/factura/${ this.factura.iid }`, '_blank');
+                  //       }
 
-                        if (resp.invoice.cufe) {
-                          this.factura.cufe = resp.invoice.cufe;
-                          this.factura.number = resp.invoice.number;
-                        }
+                  //       if (resp.invoice.cufe) {
+                  //         this.factura.cufe = resp.invoice.cufe;
+                  //         this.factura.number = resp.invoice.number;
+                  //       }
 
-                        if (this.empresa.printpos) {              
-                          // window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
-                          // IMPRIMIR FACTURA
-                          setTimeout( () => {
-                            this.printDiv2();                      
-                          },2000);
+                  //       if (this.empresa.printpos) {              
+                  //         // window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
+                  //         // IMPRIMIR FACTURA
+                  //         setTimeout( () => {
+                  //           this.printDiv2();                      
+                  //         },2000);
                           
-                        }else{
-                          window.open(`./dashboard/factura/${ this.factura.iid }`, '_blank');
-                          setTimeout( () => {             
-                            window.location.reload();
-                          },1000);
-                        }
+                  //       }else{
+                  //         window.open(`./dashboard/factura/${ this.factura.iid }`, '_blank');
+                  //         setTimeout( () => {             
+                  //           window.location.reload();
+                  //         },1000);
+                  //       }
                         
-                      }, (err) => {
-                        console.log(err);
+                  //     }, (err) => {
+                  //       console.log(err);
                         
-                      });
-                      // TODO: OLD
+                  //     });
+                  //     // TODO: OLD
 
                   // TODO: PRUEBAS 
-                  // if (this.empresa.printpos) {              
-                  //   // window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
-                  //   // IMPRIMIR FACTURA
-                  //   setTimeout( () => {
-                  //     this.printDiv2();                      
-                  //   },2000);
+                  if (this.empresa.printpos) {              
+                    // window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
+                    // IMPRIMIR FACTURA
+                    setTimeout( () => {
+                      this.printDiv2();                      
+                    },2000);
                     
-                  // }else{
-                  //   window.open(`./dashboard/factura/${ this.factura.iid }`, '_blank');
-                  //   setTimeout( () => {             
-                  //     window.location.reload();
-                  //   },1000);
-                  // }
+                  }else{
+                    window.open(`./dashboard/factura/${ this.factura.iid }`, '_blank');
+                    setTimeout( () => {             
+                      window.location.reload();
+                    },1000);
+                  }
                   // TODO: PRUEBAS 
                   
                   
