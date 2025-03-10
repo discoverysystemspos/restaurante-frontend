@@ -2751,6 +2751,7 @@ export class MesaComponent implements OnInit {
             this.mesasServices.updateMesa(this.mesa, this.mesaID)
               .subscribe( (resp:{ok: boolean, mesa: Mesa}) => {
                 
+                // TODO DESARROLLO NORMAL
                 if (this.empresa.electronica && send_dian) {
                   
                   this.electronicaService.postFacturaDataico(this.factura, this.dataico, this.impuestos)
@@ -2788,22 +2789,6 @@ export class MesaComponent implements OnInit {
                         
                       });
                       // TODO: OLD
-
-                  // TODO: PRUEBAS 
-                  // if (this.empresa.printpos) {              
-                  //   // window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
-                  //   // IMPRIMIR FACTURA
-                  //   setTimeout( () => {
-                  //     this.printDiv2();                      
-                  //   },2000);
-                    
-                  // }else{
-                  //   window.open(`./dashboard/factura/${ this.factura.iid }`, '_blank');
-                  //   setTimeout( () => {             
-                  //     window.location.reload();
-                  //   },1000);
-                  // }
-                  // TODO: PRUEBAS 
                   
                   
                 }else{
@@ -2822,6 +2807,21 @@ export class MesaComponent implements OnInit {
                     },1000);
                   }
                 }
+
+                // TODO: PRUEBAS
+                // if (this.empresa.printpos) {              
+                //   // window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
+                //   // IMPRIMIR FACTURA
+                //   setTimeout( () => {
+                //     this.printDiv2();                      
+                //   },2000);
+                  
+                // }else{
+                //   window.open(`./dashboard/factura/${ this.factura.iid }`, '_blank');
+                //   setTimeout( () => {             
+                //     window.location.reload();
+                //   },1000);
+                // }
 
               
             }, (err) => { 

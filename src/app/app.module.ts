@@ -35,7 +35,7 @@ import { PipesModule } from './pipes/pipes.module';
     PagesModule,
     AuthModule,    
     NgbModule,
-    PipesModule
+    PipesModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-CO' },

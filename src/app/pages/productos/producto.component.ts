@@ -138,6 +138,7 @@ export class ProductoComponent implements OnInit {
           
           if (taxid) {
             this.upProductForm.reset({code, name, type, cost, price, visibility, wholesale, gain, department, min, max, expiration: expiracion, pid, comanda, tipo, description, tax, impuestoT, valor: valorT, taxid: taxid._id, bascula, mayoreo, brand, sku, distribuidor });
+            this.selectTax = taxid._id;
           }else{
             this.upProductForm.reset({code, name, type, cost, price, visibility, wholesale, gain, department, min, max, expiration: expiracion, pid, comanda, tipo, description, tax, impuestoT, valor: valorT, taxid: '', bascula, mayoreo, brand, sku, distribuidor });
           }
@@ -344,6 +345,9 @@ export class ProductoComponent implements OnInit {
   ==================================================================== */
   public selectTax: string;
   precioIva(){
+
+    console.log(this.selectTax);
+    
 
     let tax = this.impuestos.find( taxS =>  {
 
