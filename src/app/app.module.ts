@@ -21,13 +21,15 @@ import { NopagefoundComponent } from './nopagefound/nopagefound.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MenuComponent } from './menu/menu.component';
 import { PipesModule } from './pipes/pipes.module';
+import { ShopComponent } from './shop/shop.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     NopagefoundComponent,
-    MenuComponent
+    MenuComponent,
+    ShopComponent
   ],
   imports: [
     BrowserModule,

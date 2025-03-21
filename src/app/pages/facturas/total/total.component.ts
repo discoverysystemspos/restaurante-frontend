@@ -678,10 +678,7 @@ export class TotalComponent implements OnInit {
   ==================================================================== */
   exportar(){
 
-    let invoices = [];
-
-    console.log(this.facturas);
-    
+    let invoices = [];    
 
     for (const invoi of this.facturas) {
 
@@ -698,9 +695,10 @@ export class TotalComponent implements OnInit {
       for (const item of invoi.products) {
 
         let porc = 0;
+        let tipeT = 'N/A';
         if (item.product.tax) {
           porc = item.product.taxid.valor;
-          
+          tipeT = item.product.taxid.name;
         }
         
         invoices.push({
@@ -715,6 +713,7 @@ export class TotalComponent implements OnInit {
           Producto: item.product.name,
           Cantidad: item.qty,
           "Valor Sin IVA": item.price,
+          "Tipo de Impuesto": tipeT,
           "IVA": ((item.price * porc)/100).toFixed(2),
           "Porcentaje de IVA": porc,
           "Total": ((item.price+((item.price * porc)/100)) * item.qty).toFixed(2),

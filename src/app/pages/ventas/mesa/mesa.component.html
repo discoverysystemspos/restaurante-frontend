@@ -36,15 +36,6 @@
             <!-- <div class="p-2 border-bottom my-2 d-flex flex-wrap justify-content-start gap-2"> -->
             <div id="dd" class="p-2 my-2 d-flex flex-wrap justify-content-start gap-2" style="max-height: 105px; overflow-y: scroll;">
 
-                <!-- <div class="p-2">
-
-                        <button type="button" (click)="cargarProductos()" class="btn bg-white btnW waves-effect waves-blue text-muted"> 
-                            <i class="bi-grid-3x3-gap" style="font-size:2rem;"></i> 
-                            <h5>Todos</h5>
-                        </button>
-
-                    </div> -->
-
                 <ng-container *ngFor="let departamento of departmentos">
 
                     <div *ngIf="departamento.visibility && departamento.status">
@@ -57,7 +48,6 @@
                     </div>
 
                 </ng-container>
-
 
             </div>
             <!-- DEPARTAMENTOS -->

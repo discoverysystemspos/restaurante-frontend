@@ -58,6 +58,13 @@ export class ProductService {
   /** ================================================================
    *   CREATE PRODUCT
   ==================================================================== */
+  searchQueryProducts(formData:any){    
+    return this.http.post<{ok: boolean, products: Product[], total: number}>(`${base_url}/products/search/query`, formData);
+  }
+
+  /** ================================================================
+   *   CREATE PRODUCT
+  ==================================================================== */
   createProductExcel(formData:any){    
     return this.http.post<{ok: boolean, total: number}>(`${base_url}/products/create/excel`, formData, this.headers);
   }
