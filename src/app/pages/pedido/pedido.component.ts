@@ -15,6 +15,8 @@ import Swal from 'sweetalert2';
 import { Observable, Subscription } from 'rxjs';
 import { EmpresaService } from '../../services/empresa.service';
 import { Datos } from '../../models/empresa.model';
+import { ImpuestosService } from 'src/app/services/impuestos.service';
+import { Impuestos } from 'src/app/models/impuestos.model';
 
 @Component({
   selector: 'app-pedido',
@@ -35,6 +37,7 @@ export class PedidoComponent implements OnInit {
   constructor(  private printerService: NgxPrinterService,
                 private pedidosService: PedidosService,
                 private activatedRoute: ActivatedRoute,
+                private impuestosService: ImpuestosService,
                 private empresaService: EmpresaService) {
 
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
@@ -49,17 +52,38 @@ export class PedidoComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.activatedRoute.params.subscribe( ({id}) => {
-
-      this.pedidoID = id;
-      
-      this.cargarPedido(this.pedidoID);
-      
-    });
-
+    this.cargarImpuestos();
     this.cargarDatos();
 
   }
+
+  /** ================================================================
+     *   CARGAR IMPUESTOS
+    ==================================================================== */
+    public impuestos: Impuestos[] = [];
+    cargarImpuestos(){
+  
+      this.impuestosService.loadImpuestos()
+          .subscribe( ({taxes}) => {
+  
+            this.impuestos = taxes;
+  
+            this.impuestos.map( impuesto => {
+              impuesto.total = 0;
+            })
+  
+  
+            this.activatedRoute.params.subscribe( ({id}) => {
+  
+              this.pedidoID = id;
+      
+              this.cargarPedido(this.pedidoID);
+              
+            });
+  
+          });
+  
+    }
 
   /** ================================================================
    *   IMPRIMIR
@@ -85,6 +109,7 @@ export class PedidoComponent implements OnInit {
   ==================================================================== */
   public pedido: any;
   public pedidoID: string;  
+  public base: number = 0;
 
   cargarPedido(id: string){
     
@@ -92,8 +117,29 @@ export class PedidoComponent implements OnInit {
         .subscribe( ({pedido}) => {
 
           this.pedido = pedido;
-
           console.log(pedido);
+          
+
+          for (const product of pedido.products) {
+
+            this.base += product.price;
+            
+            if( this.empresa.impuesto ){
+
+              if(product.product.taxid){
+
+                this.impuestos.map( (impuesto) => {
+    
+                  if (impuesto.taxid === product.product.taxid._id) {                  
+                    impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
+                  }
+    
+                });              
+              }
+
+            }
+
+          }
           
           
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });

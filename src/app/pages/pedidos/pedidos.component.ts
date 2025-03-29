@@ -52,6 +52,9 @@ export class PedidosComponent implements OnInit {
 
     this.pedidosService.loadPedidos(query)
         .subscribe(({ total, pedidos }) =>{  
+
+          console.log(pedidos);
+          
           
           // COMPROBAR SI EXISTEN RESULTADOS
           if (pedidos.length === 0) {

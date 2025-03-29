@@ -76,6 +76,7 @@ export interface LoadCarrito{
     tipo?: string;
     iva?: number;
     estado?:string;
-    tax?: boolean; 
+    tax?: boolean;
+    taxid?: any;
     inventario?:number;
 }

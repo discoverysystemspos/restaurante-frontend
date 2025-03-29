@@ -73,7 +73,12 @@
 
                             <td colspan="2">
                                 <a class="btn btn-link p-1 text-primary" [routerLink]="['/dashboard/pedido', pedido.peid]">
-                                    {{ pedido.client?.name }}
+                                    <span *ngIf="pedido.client">
+                                        {{ pedido.client?.name }}
+                                    </span>
+                                    <span *ngIf="!pedido.client && pedido.cliente" >
+                                        {{ pedido.cliente.first_name + ' ' + pedido.cliente.family_name }}
+                                    </span>
                                 </a>
                             </td>
                             <td>

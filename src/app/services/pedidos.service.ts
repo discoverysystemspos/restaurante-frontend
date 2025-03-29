@@ -54,6 +54,13 @@ export class PedidosService {
   }
 
   /** ================================================================
+   *  CREATE PEDIDOS LOCAL
+  ==================================================================== */
+  createPedidosLocal(formData : any){
+    return this.http.post<{ok: boolean, pedido: Pedido}>(`${base_url}/pedidos/local`, formData, this.headers);
+  }
+
+  /** ================================================================
    *  LOAD PEDIDOS
   ==================================================================== */
   loadPedidos(query: string = ''){

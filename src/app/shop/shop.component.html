@@ -2,6 +2,12 @@
     <div class="navbar navbar-dark bg-dark shadow-sm">
         <div class="container">
             <strong class="text-white"> {{ empresa.name }} </strong>
+            <button type="button" class="btn btn-sm btn-light rounded-pill position-relative" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+              <i class="bi bi-cart"></i>
+              <span *ngIf="carrito.length > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {{ carrito.length }}
+              </span>
+            </button>
         </div>
     </div>
 </header>
@@ -28,172 +34,167 @@
 
 <main>
 
-<!-- <section class="py-5 text-center container">
-  <div class="row py-lg-5">
-    <div class="col-lg-6 col-md-8 mx-auto">
-      <h1 class="fw-light">Album example</h1>
-      <p class="lead text-body-secondary">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
-      <p>
-        <a href="#" class="btn btn-primary my-2">Main call to action</a>
-        <a href="#" class="btn btn-secondary my-2">Secondary action</a>
-      </p>
-    </div>
-  </div>
-</section> -->
-
 <div class="album py-5 bg-body-tertiary">
-  <div class="container">
+  <div class="container-fluid">
 
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-      <div class="col">
-        <div class="card shadow-sm">
-          <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+
+      <div *ngFor="let product of products" style="width: 16rem;">
+        <div  class="card shadow-sm" >
+
+          <div style="width: 100%; height: 200px; background-color: #f5f5f5;">
+            <img [src]="product.img | imagen: 'products'" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+
           <div class="card-body">
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            <h6 class="mb-1 fw-bold"> {{ product.name }} </h6>
+            <p class="card-text"> 
+              <span *ngIf="product.description">
+                {{ product.description.length > 100 ? (product.description | slice: 0:100) + '...' : product.description }} 
+              </span>
+            </p>
+            <p class="fw-bold text-success">
+              {{ ((product.tax)? ((product.price * product.taxid.valor)/100) + product.price : product.price )  | currency}}
+            </p>
             <div class="d-flex justify-content-between align-items-center">
               <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                <button (click)="addItem(product)" type="button" class="btn btn-sm btn-outline-secondary">Agregar</button>
               </div>
-              <small class="text-body-secondary">9 mins</small>
+              <small class="text-body-secondary">stock {{product.inventario | number}} </small>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card shadow-sm">
-          <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-          <div class="card-body">
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-              </div>
-              <small class="text-body-secondary">9 mins</small>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card shadow-sm">
-          <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-          <div class="card-body">
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-              </div>
-              <small class="text-body-secondary">9 mins</small>
-            </div>
-          </div>
-        </div>
+        </div>    
       </div>
 
-      <div class="col">
-        <div class="card shadow-sm">
-          <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-          <div class="card-body">
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-              </div>
-              <small class="text-body-secondary">9 mins</small>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card shadow-sm">
-          <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-          <div class="card-body">
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-              </div>
-              <small class="text-body-secondary">9 mins</small>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card shadow-sm">
-          <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-          <div class="card-body">
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-              </div>
-              <small class="text-body-secondary">9 mins</small>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="col">
-        <div class="card shadow-sm">
-          <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-          <div class="card-body">
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-              </div>
-              <small class="text-body-secondary">9 mins</small>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card shadow-sm">
-          <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-          <div class="card-body">
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-              </div>
-              <small class="text-body-secondary">9 mins</small>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card shadow-sm">
-          <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-          <div class="card-body">
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-              </div>
-              <small class="text-body-secondary">9 mins</small>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
+
   </div>
 </div>
+
+<!-- CARRITO DE COMPRAS -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Carrito de Compras</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+
+    <div class="card border-0 shadow mb-4">
+
+      <div class="card-body">
+
+        <p class="mb-0 mx-auto text-center"><small>TOTAL:</small></p>
+        <h4 class=" text-center mb-3"> {{ amount | currency }} </h4>
+
+        <div class="table-responsive">
+          <table class="table table-sm" style="border-top: 0;">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">Producto</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Cant.</th>
+                <th scope="col">Monto</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="carrito.length === 0" class="">
+                <td colspan="5" scope="row">No has agregado ningun poducto...</td>
+              </tr>
+    
+              <tr *ngFor="let item of carrito; let i = index">
+                <td>
+                  <button type="button" (click)="deleteItem(i)" class="btn btn-sm btn-link p-1 text-danger">
+                    <i class="bi-trash" style="font-size: 0.7rem"></i>
+                  </button> 
+                </td>
+                <td> {{ item.product.name }} </td>
+                <td> 
+                  <span *ngIf="!item.product.tax"> {{ item.price | currency }} </span>
+                  <span *ngIf="item.product.tax">
+                    {{ ((item.product.tax)? ((item.product.price * item.product.taxid.valor)/100) + item.product.price : item.product.price )  | currency}}
+                  </span>
+                </td>
+                <td> {{ item.qty | number }} </td>
+                <td> {{ ((item.product.tax)? (((item.product.price * item.product.taxid.valor)/100) + item.product.price) * item.qty : item.product.price * item.qty )  | currency}} </td>
+              </tr>
+    
+            </tbody>            
+          </table>
+        </div>
+
+      </div>     
+
+    </div>
+
+    <div *ngIf="carrito.length > 0" class="card border-0 shadow mb-4">
+      <div class="card-body">
+
+        <h5 class="offcanvas-title">Información</h5>
+    
+        <form autocomplete="off" [formGroup]="pedidoForm" (ngSubmit)="crear()" *ngIf="carrito.length > 0">
+    
+          <div class="mb-3">
+            <label for="first_name" class="form-label">Nombres</label>
+            <input formControlName="first_name" type="text" id="first_name" class="form-control" placeholder="Nombres" aria-describedby="helpId"/>
+            <small *ngIf="validate('first_name')" id="helpId" class="text-danger">Este campo es obligatorio</small>
+          </div>
+          
+          <div class="mb-3">
+            <label for="family_name" class="form-label">Apellidos</label>
+            <input formControlName="family_name" type="text" id="family_name" class="form-control" placeholder="Apellidos" aria-describedby="helpId"/>
+            <small *ngIf="validate('family_name')" id="helpId" class="text-danger">Este campo es obligatorio</small>
+          </div>
+    
+          <div class="mb-3">
+            <label for="cedula" class="form-label">CC/NIT</label>
+            <input formControlName="cedula" type="text" id="cedula" class="form-control" placeholder="CC/NIT" aria-describedby="helpId"/>
+            <small *ngIf="validate('cedula')" id="helpId" class="text-danger">Este campo es obligatorio</small>
+          </div>
+          
+          <div class="mb-3">
+            <label for="ciudad" class="form-label">Ciudad</label>
+            <input formControlName="ciudad" type="text" id="ciudad" class="form-control" placeholder="Ciudad" aria-describedby="helpId"/>
+            <small *ngIf="validate('ciudad')" id="helpId" class="text-danger">Este campo es obligatorio</small>
+          </div>
+          
+          <div class="mb-3">
+            <label for="departamento" class="form-label">Departamento</label>
+            <input formControlName="departamento" type="text" id="departamento" class="form-control" placeholder="Departamento" aria-describedby="helpId"/>
+            <small *ngIf="validate('departamento')" id="helpId" class="text-danger">Este campo es obligatorio</small>
+          </div>
+    
+          <div class="mb-3">
+            <label for="direccion" class="form-label">Dirección</label>
+            <input formControlName="direccion" type="text" id="direccion" class="form-control" placeholder="Dirección" aria-describedby="helpId"/>
+            <small *ngIf="validate('direccion')" id="helpId" class="text-danger">Este campo es obligatorio</small>
+          </div>
+          
+          <div class="mb-3">
+            <label for="telefono" class="form-label">Telefono</label>
+            <input formControlName="telefono" type="text" id="telefono" class="form-control" placeholder="Telefono" aria-describedby="helpId"/>
+            <small *ngIf="validate('telefono')" id="helpId" class="text-danger">Este campo es obligatorio</small>
+          </div>
+    
+          <div class="form-floating mb-3">
+            <textarea formControlName="comentario"  class="form-control" placeholder="Describe una nota o comentario adicional..." id="floatingTextarea2" style="height: 100px"></textarea>
+            <label for="floatingTextarea2">Nota...</label>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100">
+            Crear pedido
+          </button>    
+        </form>
+
+      </div>
+    </div>
+    
+
+    
+
+  </div>
+</div>
+
 
 </main>
-
-<footer class="text-body-secondary py-5">
-<div class="container">
-  <p class="float-end mb-1">
-    <a href="#">Back to top</a>
-  </p>
-  <p class="mb-1">Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
-  <p class="mb-0">New to Bootstrap? <a href="/">Visit the homepage</a> or read our <a href="../getting-started/introduction/">getting started guide</a>.</p>
-</div>
-</footer>

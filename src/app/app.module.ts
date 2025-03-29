@@ -22,6 +22,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MenuComponent } from './menu/menu.component';
 import { PipesModule } from './pipes/pipes.module';
 import { ShopComponent } from './shop/shop.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -38,6 +39,8 @@ import { ShopComponent } from './shop/shop.component';
     AuthModule,    
     NgbModule,
     PipesModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-CO' },
