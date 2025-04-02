@@ -60,7 +60,7 @@ export class ClientService {
    *   CREATE CLIENT
   ==================================================================== */
   createClient( formData: any ){    
-    return this.http.post(`${base_url}/clients`, formData, this.headers);
+    return this.http.post<{client: Client, ok: boolean}>(`${base_url}/clients`, formData, this.headers);
   }
 
   /** ================================================================

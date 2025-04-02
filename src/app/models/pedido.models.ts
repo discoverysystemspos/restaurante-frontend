@@ -7,6 +7,7 @@ export class Pedido{
     constructor(
         public pedido:number,
         public client?: Client,
+        public cliente?: any,
         public user?: User,
         public products?: LoadCarrito[],
         public amount?: number,

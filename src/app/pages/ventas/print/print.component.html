@@ -50,11 +50,14 @@
                     DIRECCIÓN <br>
                     <small *ngIf="factura?.client" class="text-wrap fw-normal"> {{ factura?.client.address || '----------' }} </small>
                 </h6>
-
-                <h6 class="mb-0 text-wrap text-left" *ngIf="factura.placa.length > 0">
-                    Placa <br>
-                    <small class="text-wrap fw-normal"> {{ factura.placa || '----------'}} </small>
-                </h6>
+                
+                <ng-container *ngIf="factura.placa">
+                    <h6 class="mb-0 text-wrap text-left" *ngIf="factura.placa.length > 0">
+                        Placa <br>
+                        <small class="text-wrap fw-normal"> {{ factura.placa || '----------'}} </small>
+                    </h6>
+                </ng-container>
+                
 
                 <h6 class="mb-0 text-wrap text-left">
                     <p class="text-wrap fw-normal mb-0"> {{ factura?.mesa.name }} - {{ factura?.mesero.name }} </p>
