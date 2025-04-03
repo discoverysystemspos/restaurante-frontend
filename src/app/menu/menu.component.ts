@@ -553,7 +553,7 @@ export class MenuComponent implements OnInit {
       confirmacion = true;
     }
     
-    this.mesaService.updatePedidoMesa('sadsafs', confirmacion)
+    this.mesaService.updatePedidoMesa(this.mesaID, confirmacion)
         .subscribe( (resp:{ ok: boolean, mesa: Mesa }) => {
 
           this.mesa = resp.mesa

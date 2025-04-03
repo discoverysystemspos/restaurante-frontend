@@ -106,15 +106,42 @@ export class ComandaComponent implements OnInit {
   /** ================================================================
    *   CARGAR MESAS
   ==================================================================== */
+  public pendientes: number = 0;
+  public preparandos: number = 0;
+  public entregados: number = 0;
   cargarMesas(){
     
     this.cargando = true;
     this.sinResultados = true;
 
+    let pendientes = 0;
+    let preparandos = 0;
+    let entregados = 0;
+
     this.mesasService.loadMesasComanda()
         .subscribe(({ total, mesas }) => {
           this.totalMesas = total;
-          this.listaMesas = mesas;   
+          this.listaMesas = mesas;         
+
+          for (const mesa of mesas) {
+            mesa.comanda.map( (me) => {
+
+              if (me.estado === 'pendiente') {
+                pendientes ++;
+              }else if(me.estado === 'Preparando'){
+                preparandos ++;
+              }else{
+                entregados ++;
+              }
+
+            })
+          }
+
+          this.pendientes = pendientes;
+          this.preparandos = preparandos;
+          this.entregados = entregados;
+          
+
         });    
   }
 

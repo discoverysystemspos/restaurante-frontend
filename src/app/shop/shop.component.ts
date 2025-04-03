@@ -68,6 +68,21 @@ export class ShopComponent implements OnInit {
   }
 
   /** ================================================================
+   *   FILTRAR POR DEPARTAMENTO DEPARTAMENTOS
+  ==================================================================== */
+  filterDeparments(department: string){
+
+    if(department === 'all'){
+      delete this.queryP.department;
+    }else{
+      this.queryP.department = department;
+    }
+
+    this.loadProducts();
+
+  }
+
+  /** ================================================================
    *   CARGAR PRODUCTOS
   ==================================================================== */
   public products: Product[] = [];
