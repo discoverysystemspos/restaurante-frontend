@@ -395,9 +395,7 @@ export class MesaComponent implements OnInit {
           this.ticketHeader =  this.empresa.header.split('\n');
           this.ticketfooter =  this.empresa.footer.split('\n');
 
-          if (this.empresa?.electronica) {
-            this.loadDataDataico();      
-          }
+          this.loadDataDataico();
 
           if (this.empresa.bascula) {
             if (localStorage.getItem('bascula')) {
@@ -605,7 +603,7 @@ export class MesaComponent implements OnInit {
       // SI ESTA USANDO BASCULA
       if (this.empresa.bascula) {
 
-        this.basculaService.loadPeso(this.basculaT, this.puertoBascula)
+        this.basculaService.loadPeso(this.basculaT, this.puertoBascula, this.empresa.basculakg)
             .subscribe( resp => {
               this.qtySelect = resp;
             });
@@ -614,7 +612,7 @@ export class MesaComponent implements OnInit {
 
       if (this.empresa.bascula) {
 
-        this.basculaService.loadPeso(this.basculaT, this.puertoBascula)
+        this.basculaService.loadPeso(this.basculaT, this.puertoBascula, this.empresa.basculakg)
             .subscribe( resp => {
               this.qtySelect = resp;
             });
@@ -715,7 +713,7 @@ export class MesaComponent implements OnInit {
               
               if (this.empresa.bascula) {                
                 
-                this.basculaService.loadPeso(this.basculaT, this.puertoBascula)
+                this.basculaService.loadPeso(this.basculaT, this.puertoBascula, this.empresa.basculakg)
                 .subscribe( resp => {
                   cantidad = resp;
 
@@ -794,7 +792,7 @@ export class MesaComponent implements OnInit {
               
               if (this.empresa.bascula) {                
                 
-                this.basculaService.loadPeso(this.basculaT, this.puertoBascula)
+                this.basculaService.loadPeso(this.basculaT, this.puertoBascula, this.empresa.basculakg)
                 .subscribe( resp => {
                   cantidad = resp;
 
@@ -878,7 +876,7 @@ export class MesaComponent implements OnInit {
 
       if (this.empresa.bascula) {
 
-        this.basculaService.loadPeso(this.basculaT, this.puertoBascula)
+        this.basculaService.loadPeso(this.basculaT, this.puertoBascula, this.empresa.basculakg)
             .subscribe( resp => {
 
               qty = resp;
@@ -1934,24 +1932,41 @@ export class MesaComponent implements OnInit {
     // OLD
     name: '',
     cedula: ['', [Validators.required, Validators.minLength(6)]],
-    email: ['', [Validators.required]],
-    phone: ['', [Validators.required]],
+    email: [''],
+    phone: [''],
     city: '',
-    address: ['', [Validators.required]]
+    address: ['']
   });
   
 
   async crearCliente(){
 
     // OBTENER CODIGO DEL DEPARTAMENTO Y CIUDAD
-    let ciudaQ = await this.cities.find( city =>  {
-      if ( this.newClientForm.value.city === city.ciudad && this.newClientForm.value.department === city.departamento) {
-        return city
-      }
-    });
+    if (this.newClientForm.value.city === '' || !this.newClientForm.value.city) {
+      
+      let ciudaQ = await this.cities.find( city =>  {
+        if ( this.dataico.city === city.codigo && this.dataico.department === city['codigo departamento']) {
+          return city
+        }
+      });
+      
+      this.newClientForm.value.codigodepartamento  = ciudaQ['codigo departamento'];
+      this.newClientForm.value.codigociudad  = ciudaQ['codigo'];
+      this.newClientForm.value.department  = ciudaQ.departamento;
+      this.newClientForm.value.city  = ciudaQ.ciudad;
     
-    this.newClientForm.value.codigodepartamento  = ciudaQ['codigo departamento'];
-    this.newClientForm.value.codigociudad  = ciudaQ['codigo'];
+    }else{
+
+      let ciudaQ = await this.cities.find( city =>  {
+        if ( this.newClientForm.value.city === city.ciudad && this.newClientForm.value.department === city.departamento) {
+          return city
+        }
+      });
+      
+      this.newClientForm.value.codigodepartamento  = ciudaQ['codigo departamento'];
+      this.newClientForm.value.codigociudad  = ciudaQ['codigo'];
+
+    }
 
     this.formSubmitted = true;
 
@@ -1968,12 +1983,19 @@ export class MesaComponent implements OnInit {
     this.newClientForm.value.party_identification = this.newClientForm.value.cedula;
 
     this.clientService.createClient(this.newClientForm.value)
-        .subscribe((resp: any) => {
+        .subscribe(({client}) => {
 
           Swal.fire('Estupendo', 'Se ha creado el cliente exitosamente!', 'success');
 
           this.formSubmitted = false;
-          this.newClientForm.reset();          
+          this.newClientForm.reset({
+            party_type: 'PERSONA_NATURAL',
+            tax_level_code: 'NO_RESPONSABLE_DE_IVA',
+            party_identification_type: 'CC',
+            regimen: 'SIMPLE',
+          });
+          
+          this.seleccionarCliente(client);
           
         }, (err) =>{
           Swal.fire('Error', err.error.msg, 'error');
@@ -2224,7 +2246,7 @@ export class MesaComponent implements OnInit {
 
     if (this.empresa.bascula) {        
 
-      this.basculaService.loadPeso(this.basculaT, this.puertoBascula)
+      this.basculaService.loadPeso(this.basculaT, this.puertoBascula, this.empresa.basculakg)
           .subscribe( resp => {
 
             this.changeCant(resp, product);                
@@ -2281,7 +2303,7 @@ export class MesaComponent implements OnInit {
 
       if (this.empresa.bascula) {        
 
-        this.basculaService.loadPeso(this.basculaT, this.puertoBascula)
+        this.basculaService.loadPeso(this.basculaT, this.puertoBascula, this.empresa.basculakg)
             .subscribe( resp => {
 
               qty = resp;
@@ -2294,7 +2316,7 @@ export class MesaComponent implements OnInit {
       
     }else if(producto.type === 'Paquete' && producto.bascula ){
 
-      this.basculaService.loadPeso(this.basculaT, this.puertoBascula)
+      this.basculaService.loadPeso(this.basculaT, this.puertoBascula, this.empresa.basculakg)
             .subscribe( resp => {
 
               qty = resp;
@@ -2601,6 +2623,7 @@ export class MesaComponent implements OnInit {
   ==================================================================== */
   @ViewChild('tipIn') tipIn: ElementRef;
   @ViewChild('datafIn') datafIn: ElementRef;
+  @ViewChild('datafonCheck') datafonCheck: ElementRef;
   @ViewChild('fechCredito') fechCredito: ElementRef;
   public factura: LoadInvoice;
   public facturando: boolean = false;
@@ -2653,12 +2676,15 @@ export class MesaComponent implements OnInit {
     }
 
     if (this.empresa?.datafon) {
+
+      this.datafon = 0
       
-      if (Number(this.datafIn.nativeElement.value) > 0) {
-        this.datafon = Number(this.datafIn.nativeElement.value);
-      }else{
-        this.datafon = 0
+      if (this.datafonCheck.nativeElement.checked) {        
+        if (Number(this.datafIn.nativeElement.value) > 0) {
+          this.datafon = Number(this.datafIn.nativeElement.value);
+        }
       }
+
     }
 
     this.invoiceForm.setValue({

@@ -7,7 +7,7 @@
 
     <nav class="navbar navbar-expand-lg bg-body-tertiary rounded" aria-label="Eleventh navbar example">
         <div class="container-fluid">
-            <a class="navbar-brand text-white" routerLink="./">SIMIDS</a>
+            <a class="navbar-brand text-white text-uppercase" routerLink="./"> {{ empresaT.name || 'SIMIDS' }} </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="bi bi-list text-white"></span>
             </button>
@@ -83,8 +83,8 @@
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item" routerLink="./perfil">Perfil</a></li>
-                    <li><a class="dropdown-item cursor" (click)="logout()">Salir</a></li>
+                    <li><a class="dropdown-item text-white" routerLink="./perfil">Perfil</a></li>
+                    <li><a class="dropdown-item cursor text-white" (click)="logout()">Salir</a></li>
                 </ul>
             </div>
 

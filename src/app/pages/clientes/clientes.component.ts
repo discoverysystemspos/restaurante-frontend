@@ -23,6 +23,8 @@ import { TurnoService } from 'src/app/services/turno.service';
 import { LoadTurno } from 'src/app/interfaces/load-turno.interface';
 import { EmpresaService } from 'src/app/services/empresa.service';
 import { Datos } from 'src/app/models/empresa.model';
+import { DataicoService } from 'src/app/services/dataico.service';
+import { DataicoInterface } from 'src/app/interfaces/dataico.interface';
 
 interface _Department {
   codigo: string,
@@ -60,6 +62,7 @@ export class ClientesComponent implements OnInit {
                 private bancosService: BancosService,
                 private userService: UserService,
                 private turnoService: TurnoService,
+                private dataicoService: DataicoService,
                 private empresaService: EmpresaService,
                 private http: HttpClient) {  
                   this.user = userService.user;
@@ -82,16 +85,37 @@ export class ClientesComponent implements OnInit {
   /** ================================================================
    *   CARGAR DATOS
   ==================================================================== */
-public empresa: Datos;
+  public empresa: Datos;
   cargarDatos(){
   
       this.empresaService.getDatos()
           .subscribe( datos => {
             this.empresa = datos;  
-            this.loadDepartmentAndCitys();      
+            this.loadDepartmentAndCitys();
+            this.loadDataico();  
   
           }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
     }
+
+  /** ================================================================
+   *   CARGAR DATOS DATAICO
+  ==================================================================== */
+  public dataico: DataicoInterface;
+  loadDataico(){
+
+    this.dataicoService.loadDataDataico()
+        .subscribe( ({dataico}) => {
+
+          if (dataico) {
+            this.dataico = dataico;
+          }
+
+        }, (err) => {
+          console.log(err);
+          
+        })
+
+  }
 
   /** ================================================================
    *   CARGAR BANCOS
@@ -331,14 +355,41 @@ public empresa: Datos;
   async crearCliente(){
 
     // OBTENER CODIGO DEL DEPARTAMENTO Y CIUDAD
-    let ciudaQ = await this.cities.find( city =>  {
-      if ( this.newClientForm.value.city === city.ciudad && this.newClientForm.value.department === city.departamento) {
-        return city
-      }
-    });
+    // let ciudaQ = await this.cities.find( city =>  {
+    //   if ( this.newClientForm.value.city === city.ciudad && this.newClientForm.value.department === city.departamento) {
+    //     return city
+    //   }
+    // });
     
-    this.newClientForm.value.codigodepartamento  = ciudaQ['codigo departamento'];
-    this.newClientForm.value.codigociudad  = ciudaQ['codigo'];
+    // this.newClientForm.value.codigodepartamento  = ciudaQ['codigo departamento'];
+    // this.newClientForm.value.codigociudad  = ciudaQ['codigo'];
+
+    // OBTENER CODIGO DEL DEPARTAMENTO Y CIUDAD
+    if (this.newClientForm.value.city === '' || !this.newClientForm.value.city) {
+      
+      let ciudaQ = await this.cities.find( city =>  {
+        if ( this.dataico.city === city.codigo && this.dataico.department === city['codigo departamento']) {
+          return city
+        }
+      });
+      
+      this.newClientForm.value.codigodepartamento  = ciudaQ['codigo departamento'];
+      this.newClientForm.value.codigociudad  = ciudaQ['codigo'];
+      this.newClientForm.value.department  = ciudaQ.departamento;
+      this.newClientForm.value.city  = ciudaQ.ciudad;
+    
+    }else{
+
+      let ciudaQ = await this.cities.find( city =>  {
+        if ( this.newClientForm.value.city === city.ciudad && this.newClientForm.value.department === city.departamento) {
+          return city
+        }
+      });
+      
+      this.newClientForm.value.codigodepartamento  = ciudaQ['codigo departamento'];
+      this.newClientForm.value.codigociudad  = ciudaQ['codigo'];
+
+    }
 
     this.formSubmitted = true;
 

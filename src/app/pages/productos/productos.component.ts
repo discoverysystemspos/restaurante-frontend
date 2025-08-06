@@ -77,8 +77,6 @@ export class ProductosComponent implements OnInit {
 
           this.impuestos = taxes;
 
-          
-
         });
 
   }
@@ -241,6 +239,11 @@ export class ProductosComponent implements OnInit {
 
     this.productService.cargarProductoCost()
     .subscribe(({costo, precio, inventario}) => {
+
+      console.log(costo);
+      console.log(precio);
+      console.log(inventario);
+      
 
       this.totalCost = costo;
       this.totalPrice = precio;

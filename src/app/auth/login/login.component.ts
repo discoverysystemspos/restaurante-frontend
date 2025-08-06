@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -6,16 +6,19 @@ import Swal from 'sweetalert2';
 
 // SERVICES
 import { UserService } from 'src/app/services/user.service';
+import { environment } from 'src/environments/environment';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   
   // YEAR
   year = new Date().getFullYear();
+  public empresaT = environment.empresa; 
  
   public loginForm = this.fb.group({
     usuario: [ localStorage.getItem('usuario') || '' , [Validators.required]],
@@ -25,7 +28,25 @@ export class LoginComponent {
   
   constructor(  private router: Router,
                 private fb:FormBuilder,
-                private userService:UserService ) { }
+                private userService:UserService,
+                private titleService: Title,
+                private metaService: Meta ) { }
+
+  ngOnInit(): void {
+    // Configuración SEO
+    this.titleService.setTitle(this.empresaT.name);
+
+    // OpenGraph / Facebook
+    this.metaService.updateTag({ 
+      property: 'og:title', 
+      content: this.empresaT.name 
+    });
+    
+    this.metaService.updateTag({ 
+      property: 'og:url', 
+      content: window.location.href 
+    });
+  }
   
   /** ================================================================
    *  LOGIN

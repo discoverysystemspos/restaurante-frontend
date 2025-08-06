@@ -78,8 +78,8 @@
                                         <span *ngIf="!mesa.disponible" class="badge rounded-pill bg-danger text-white-75">Ocupada</span>
                                     </td>
                                     <td>
-                                        <button *ngIf="mesa.status" (click)="statusUpdate(mesa.mid)" type="button" class="btn btnW waves-effect waves-ligth btn-success btn-sm">Activa</button>
-                                        <button *ngIf="!mesa.status" (click)="statusUpdate(mesa.mid)" type="button" class="btn btnW waves-effect waves-ligth btn-danger btn-sm">Desactivada</button>
+                                        <button *ngIf="mesa.status" (click)="changeStatus(mesa)" type="button" class="btn btnW waves-effect waves-ligth btn-success btn-sm">Activa</button>
+                                        <button *ngIf="!mesa.status" (click)="changeStatus(mesa)" type="button" class="btn btnW waves-effect waves-ligth btn-danger btn-sm">Desactivada</button>
                                     </td>
                                     <td class="text-center">
                                         <button type="button" (click)="informacionMesa(mesa)" class="btn btn-link p-1 text-primary" data-bs-toggle="modal" data-bs-target="#actualizarMesa">

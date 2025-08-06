@@ -44,7 +44,7 @@
 
                 <div *ngFor="let mesa of listaMesas">
 
-                    <div class="p-2" *ngIf="mesa.mesero._id === user">
+                    <div class="p-2" *ngIf="mesa.mesero._id === user && mesa.status">
                         <button [routerLink]="['/dashboard/ventas/mesa', mesa.mid]" type="button" style="width: 10rem;" class=" text-wrap bg-white p-3 btn btnW waves-effect waves-ligth position-relative"> 
                             <small *ngIf="!mesa.disponible" class="text-danger"> Ocupada </small>
                             <small *ngIf="mesa.disponible" class="text-success"> Disponible </small>
@@ -69,7 +69,7 @@
 
                     <div *ngFor="let mesa of listaMesas">
 
-                        <div class="p-2" *ngIf="mesa.mesero._id === user">
+                        <div class="p-2" *ngIf="mesa.mesero._id === user && mesa.status">
                             <button [routerLink]="['/dashboard/ventas/mesa', mesa.mid]" type="button" style="width: 10rem;" class=" text-wrap bg-white p-3 btn btnW waves-effect waves-ligth position-relative"> 
                                 <small *ngIf="!mesa.disponible" class="text-danger"> Ocupada </small>
                                 <small *ngIf="mesa.disponible" class="text-success"> Disponible </small>
@@ -87,8 +87,8 @@
 
                 <ng-container *ngIf="role !== 'CASHIER'">
 
-                    <div class="p-2" *ngFor="let mesa of listaMesas">
-                        <button [routerLink]="['/dashboard/ventas/mesa', mesa.mid]" type="button" style="width: 10rem;" class=" text-wrap bg-white text-wrap p-3 btn btnW waves-effect waves-ligth position-relative"> 
+                    <div  class="p-2" *ngFor="let mesa of listaMesas">
+                        <button *ngIf="mesa.status" [routerLink]="['/dashboard/ventas/mesa', mesa.mid]" type="button" style="width: 10rem;" class=" text-wrap bg-white text-wrap p-3 btn btnW waves-effect waves-ligth position-relative"> 
                             <small *ngIf="!mesa.disponible" class="text-danger"> Ocupada </small>
                             <small *ngIf="mesa.disponible" class="text-success"> Disponible </small>
                             <i [ngClass]="{'text-danger': mesa.disponible == false, 'text-success': mesa.disponible == true}" class="bi-dot position-absolute top-0 start-100 translate-middle pe-4 pt-2" style="font-size: 2.5rem;"></i>

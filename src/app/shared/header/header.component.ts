@@ -8,6 +8,10 @@ import { Datos } from '../../models/empresa.model';
 import { UserService } from '../../services/user.service';
 import { EmpresaService } from '../../services/empresa.service';
 
+import { environment } from '../../../environments/environment';
+import { Meta, Title } from '@angular/platform-browser';
+
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -16,11 +20,15 @@ import { EmpresaService } from '../../services/empresa.service';
 })
 export class HeaderComponent implements OnInit  {
 
+  public empresaT = environment.empresa; 
+
   public user: User;
   public empresa: Datos;
 
   constructor(  private userService: UserService,
-                private empresaService: EmpresaService) { 
+                private empresaService: EmpresaService,
+                private titleService: Title,
+                private metaService: Meta) { 
     
     this.user = userService.user;   
 
@@ -29,6 +37,20 @@ export class HeaderComponent implements OnInit  {
   ngOnInit(): void {
 
     this.getDatos();
+
+    // Configuración SEO
+    this.titleService.setTitle(this.empresaT.name);
+
+    // OpenGraph / Facebook
+    this.metaService.updateTag({ 
+      property: 'og:title', 
+      content: this.empresaT.name 
+    });
+    
+    this.metaService.updateTag({ 
+      property: 'og:url', 
+      content: window.location.href 
+    });
     
   }
 

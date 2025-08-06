@@ -694,31 +694,34 @@ export class TotalComponent implements OnInit {
 
       for (const item of invoi.products) {
 
-        let porc = 0;
-        let tipeT = 'N/A';
-        if (item.product.tax) {
-          porc = item.product.taxid.valor;
-          tipeT = item.product.taxid.name;
+        if (item.product) {
+          
+          let porc = 0;
+          let tipeT = 'N/A';
+          if (item.product.tax) {
+            porc = item.product.taxid.valor || 0;
+            tipeT = item.product.taxid.name;
+          }
+          
+          invoices.push({
+            fecha: invoi.fecha,
+            invoice: number, 
+            "razón social": clienteName,
+            "Tipo de Documento": invoi.client?.party_identification_type || 'CC',
+            "Identificación": clienteCedula,
+            "Tipo de persona": invoi.client?.party_type || 'PERSONA_NATURAL',
+            "Tipo de regimen": invoi.client?.tax_level_code || 'NO_RESPONSABLE_DE_IVA',
+            Codigo: item.product.code,
+            Producto: item.product.name,
+            Cantidad: item.qty,
+            "Valor Sin IVA": item.price,
+            "Tipo de Impuesto": tipeT,
+            "IVA": ((item.price * porc)/100).toFixed(2),
+            "Porcentaje de IVA": porc,
+            "Total": ((item.price+((item.price * porc)/100)) * item.qty).toFixed(2),
+            usuario
+          })
         }
-        
-        invoices.push({
-          fecha: invoi.fecha,
-          invoice: number, 
-          "razón social": clienteName,
-          "Tipo de Documento": invoi.client?.party_identification_type || 'CC',
-          "Identificación": clienteCedula,
-          "Tipo de persona": invoi.client?.party_type || 'PERSONA_NATURAL',
-          "Tipo de regimen": invoi.client?.tax_level_code || 'NO_RESPONSABLE_DE_IVA',
-          Codigo: item.product.code,
-          Producto: item.product.name,
-          Cantidad: item.qty,
-          "Valor Sin IVA": item.price,
-          "Tipo de Impuesto": tipeT,
-          "IVA": ((item.price * porc)/100).toFixed(2),
-          "Porcentaje de IVA": porc,
-          "Total": ((item.price+((item.price * porc)/100)) * item.qty).toFixed(2),
-          usuario
-        })
       }
       
 
@@ -786,7 +789,7 @@ export class TotalComponent implements OnInit {
           this.resultado = invoices.length; 
           this.totalAmount = montos;
           this.totalCost = costos;
-          this.totalIva = iva;
+          this.totalIva = iva;          
 
         this.comisionCalcular(this.totalAmount);
 
@@ -816,10 +819,13 @@ export class TotalComponent implements OnInit {
             if( this.empresa.impuesto ){
               this.impuestos.map( (impuesto) => {
                 
-                if (impuesto.taxid === product.product.taxid) {
+                if (product.product) {
                   
-                  impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
-
+                  if (impuesto.taxid === product.product.taxid) {
+                    
+                    impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
+  
+                  }
                 }
   
               });

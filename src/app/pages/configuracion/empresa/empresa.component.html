@@ -603,7 +603,7 @@
 
 
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-check">
                                     <input formControlName="bascula" class="form-check-input" type="checkbox" id="bascula">
                                     <label class="form-check-label" for="bascula">
@@ -612,8 +612,17 @@
                                 </div>
                             </div>
 
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    <input formControlName="basculakg" class="form-check-input" type="checkbox" id="basculakg">
+                                    <label class="form-check-label" for="basculakg">
+                                    Bascula KG
+                                  </label>
+                                </div>
+                            </div>
+
                             
-                            <div  class="col-md-4">
+                            <div  class="col-md-3">
                                 <div class="form-group row">
                                     <select id="basculat" class="custom-select custom-select-sm" (change)="changeBascula(modelBascula.value)" #modelBascula [value]="basculaT">
                                         <option value="1">Modelo 1</option>
@@ -622,7 +631,7 @@
                                 </div>
                             </div>
 
-                            <div  class="col-md-4">
+                            <div  class="col-md-3">
                                 <div class="form-group row">
                                     <select id="basculat" class="custom-select custom-select-sm" (change)="changePort(puertoBasculaS.value)" #puertoBasculaS [value]="puertoBascula">
                                         <option value="COM1">COM1</option>

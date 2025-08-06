@@ -301,6 +301,45 @@ export class MesasComponent implements OnInit {
 
   }
 
+  /** ================================================================
+   *   ACTIVAR O DESACTIVAR MESA
+  ==================================================================== */
+  changeStatus(mesa: Mesa){
+
+    if (mesa.status) {
+      mesa.status = false;
+    }else{
+      mesa.status = true;
+    }
+      
+    Swal.fire({
+      title: "Estas seguro?",
+      text: `de ${ mesa.status? 'Activar': 'Desactivar'}, este ticket.`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: `Si, ${ mesa.status? 'Activar': 'Desactivar'}`,
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      
+      this.mesasService.updateMesa({status: mesa.status}, mesa.mid)
+          .subscribe( (resp) => {
+
+            console.log(resp);
+            
+
+          }, (err) => {
+            console.log(err);
+            Swal.fire('Error', err.error.msg, 'error');            
+          })
+
+    });
+
+    
+
+  }
+
 
 
   // FIN DE LA CLASE 
