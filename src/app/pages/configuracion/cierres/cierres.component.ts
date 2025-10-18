@@ -35,8 +35,7 @@ interface _departament {
 @Component({
   selector: 'app-cierres',
   templateUrl: './cierres.component.html',
-  styles: [
-  ]
+  styleUrls: ['./cierres.component.css']
 })
 export class CierresComponent implements OnInit {
 
@@ -425,9 +424,10 @@ export class CierresComponent implements OnInit {
       depart.monto = 0;      
     });
     
+    this.parqueos = 0;
+
     const endPoint = `?turno=${id}`;
 
-    this.parqueos = 0;
 
     this.parqueoService.loadParqueos({turno: id, estado: 'Finalizado'})
         .subscribe( ({parqueos}) => {
@@ -628,6 +628,236 @@ export class CierresComponent implements OnInit {
                 }, (err) => {
                   console.log(err);                  
                 })
+    }
+
+  }
+
+
+  /** ===============================================================
+  * CARGAR ALLS
+  ==================================================================== */
+  async cargarTurnosAll(){
+
+    this.movimientos = [];
+    this.inicial = 0;
+
+    this.totalBancosAbono = 0;
+
+    this.bancos.map( (banco) => {
+      banco.monto = 0;
+    });
+
+    this.bancosAbonos.map( (banco) => {
+      banco.monto = 0;
+    });
+
+    this.abEfectivo = 0;
+    this.abTarjeta = 0;
+    this.abTransferencia = 0;
+    this.inicial = 0;
+
+    this.montos = 0;
+    this.costo = 0;
+    this.propinas = 0;
+    this.efectivo = 0;
+    this.tarjeta = 0;
+    this.transferencia = 0;
+    this.credito = 0;
+    this.totalCreditos = 0;
+    this.vales = 0;
+    this.entradas = 0;
+    this.salidas = 0;
+    this.montoDiferencia = 0;
+    this.devolucion = 0;
+    this.totalBancos = 0;
+
+    this.departamento.forEach(depart => {
+      depart.qty = 0;
+      depart.monto = 0;      
+    });
+    
+    this.parqueos = 0;
+
+    for (const turn of this.listaTurnos) {
+      
+      this.turnoService.getTurnoId(turn.tid)
+        .subscribe( (turno) => { 
+          this.turnoId = turno;
+          this.movimientos = turno.movements;     
+
+          this.inicial += turno.initial;
+            
+            for (const factura of turno.abonos) {        
+      
+              for (const pago of factura.factura.paymentsCredit ) {
+      
+                if (pago.turno === turno.tid  && factura.pay === pago._id && factura.factura.status) {
+                  
+                  if (pago.type === "efectivo") {
+                    this.abEfectivo += pago.amount;
+                  }else if (pago.type === "tarjeta") {
+                    this.abTarjeta += pago.amount;              
+                  }else if (pago.type === "transferencia") {
+                    this.abTransferencia += pago.amount;              
+                  }
+                }
+      
+                
+      
+              }
+              
+              
+            }  
+          
+          
+          // PROCESAR INFORMACION 
+          const endPoint = `?turno=${turno.tid}`;
+
+            this.invoiceService.loadInvoiceCierre(endPoint)
+              .subscribe(({invoices, total, montos, devolucion, costos, efectivo, tarjeta, transferencia, credit, creditos, vales, propinas}) => {
+
+                this.montos += montos;
+                this.propinas += propinas;
+                this.costo += costos;
+                this.efectivo += efectivo;          
+                this.tarjeta += tarjeta;
+                this.transferencia += transferencia;
+                this.credito += credit;
+                this.totalCreditos += creditos;
+                this.vales += vales;
+                this.devolucion += devolucion;
+
+                let facturas: any = invoices;
+
+                
+                for (const factura of facturas) {
+                  
+                  for (const product of factura.products) {
+
+                    let precio = product.price;
+                    if (factura.descuento) {
+                      precio = precio - ((precio * factura.porcentaje) /100);
+                    }
+
+                    this.departamento.map( (depart) => {
+
+                      if (product.product?.department === depart.did) {                  
+
+                        // COMPROBAR SI EL PRODUCTO TIENE IMPUESTO
+                        if (!product.product.tax) {
+                          depart.qty = depart.qty + product.qty,
+                          depart.monto = depart.monto + (product.qty * precio);
+                          
+                        }else{              
+
+                          depart.qty = depart.qty + product.qty,
+                          this.impuestos.map( (impuesto) => {
+                            if (product.product.taxid === impuesto.taxid) {
+                              depart.monto = depart.monto + (product.qty * (((precio * impuesto.valor)/100) + precio));                        
+                            }
+                          })
+
+                        }
+                      
+                      }
+
+                    });
+                    
+                  }
+                
+                  for (const pago of factura.payments) {
+
+                    this.bancos.map( (banco) => {
+          
+                      if (banco.name === pago.type) {
+                        banco.monto += pago.amount;
+          
+                        this.totalBancos += pago.amount;
+          
+                      };
+          
+                    });
+                    
+                  }
+                  
+                }
+
+
+                // CARGAR LOS ABONOS A CREDITO          
+                if (this.turnoId.abonos.length > 0) {
+
+                  for (const factura of this.turnoId.abonos) {
+
+                    for (const pago of factura.factura.paymentsCredit) {
+
+                      if (pago.turno === this.turnoId.tid && factura.pay === pago._id && factura.factura.status) {  
+
+                        
+                        this.bancosAbonos.map( (banco) => {
+                          
+                          if (banco.name === pago.type) {
+                            banco.monto += pago.amount;      
+                            this.totalBancosAbono += pago.amount;
+                            
+                          };
+                          
+                        });
+                      }
+                    }
+                    
+                  }
+
+                }else{
+
+                  this.bancosAbonos.map( (banco) => {    
+                    banco.monto = 0;  
+                  });
+
+                }
+
+                // this.efectivo = this.montos - this.totalBancos;
+
+              });
+
+          // TOTALIZAR MOVIMIENTOS
+          const movements = this.movimientos;
+          for (let i = 0; i < movements.length; i++) {
+            
+            switch (movements[i].type) {
+              case 'entrada':
+
+                this.entradas += movements[i].monto;
+                
+                break;
+
+              case 'salida':
+
+                this.salidas += movements[i].monto;
+                
+                break;
+            
+              default:
+                break;
+            }
+            
+          }
+
+
+          // SI TIENES PAGOS DE ALQUILERES
+          if (turno.alquileres.length > 0) {
+            this.cargarAlquileres();      
+          }else{
+            this.alquileresList = [];
+            this.alqEfectivo = 0;
+            this.totalAlquiler = 0;
+
+            this.bancosAlquileres.map( (banco) => {
+              banco.monto = 0;
+            });
+          }
+          
+        });
+
     }
 
   }

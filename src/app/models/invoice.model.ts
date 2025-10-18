@@ -37,6 +37,7 @@ export class Invoice {
         public electronica?: boolean,
         public send?: boolean,
         public number?: string,
+        public ncomanda?: Date,
         public paymentsAlquiler?: _paymentsCredito[]
     ){}
 

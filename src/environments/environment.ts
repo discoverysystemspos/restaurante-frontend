@@ -12,9 +12,17 @@
 
   base_url: 'https://admin.castitoner.com/api',
 
-  base_url: 'https://empanadasdelvalle.poslatino.com/api',
+  base_url: 'https://elemporio.poslatino.com/api',
 
-  base_url: 'https://demo.loggikpos.online/api',
+  base_url: 'https://custommer999.loggikpos.online/api',
+
+  name: 'simids',
+  url: 'simids.com',
+  phone: '573007325684'
+  
+  name: 'LoggikPos',
+  url: 'loggikpos.com',
+  phone: '573007325684'
   
 */
 

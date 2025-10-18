@@ -40,21 +40,29 @@
                     <button type="button" class="btn btn-outline-primary btn-sm" (click)="cargarTurno()"> <i class="bi-arrow-clockwise"></i> Recargar </button>
                 </div>
 
-                <div class="d-flex justify-content-end flex-wrap">
+                <div class="d-flex justify-content-end flex-wrap align-items-center">
 
-                    <div class="col-4 d-flex align-items-center">
+                    <div class="col-auto">
                         <label class="" for="">Desde</label>
+                    </div>
+
+                    <div class="col-12 col-md-3">
                         <input type="datetime-local" class="form-control" (change)="initial.value" #initial>
                     </div>
 
-                    <div class="col-4 d-flex align-items-center ms-2">
+                    <div class="col-auto">
                         <label class="" for="">Hasta</label>
+                    </div>
+                    <div class="col-12 col-md-3">
                         <input type="datetime-local" class="form-control" (change)="end.value" #end>
                     </div>
 
-                    <div class="col-auto ms-2 d-flex align-items-center">
+                    <div class="col-auto">
                         <button type="button" class="btn btn-outline-primary btn-sm py-auto h-100" (click)="buscar(initial.value, end.value, 'none')"> 
                             <i class="bi-search"></i> Buscar 
+                        </button>
+                        <button type="button" class="btn btn-outline-success btn-sm py-auto h-100" (click)="cargarTurnosAll()" data-bs-toggle="modal" data-bs-target="#turnoDetalles"> 
+                             Totalizar 
                         </button>
                     </div>
                 </div>
@@ -62,7 +70,7 @@
             </div>
 
             <div class="table-responsive ">
-                <table class="table table-borderless table-striped table-hover table-sm animated fadeIn ">
+                <table class="table table-borderless table-striped table-hover table-sm">
                     <thead class="border-bottom ">
                         <tr>
                             <th></th>
@@ -88,7 +96,7 @@
 
                             <td colspan="2">{{ turno.cajero.name }}</td>
                             <td>
-                                <span *ngIf="!turno.cerrado" class="badge rounded-pill bg-success text-white-75">Abierto</span>
+                                <span *ngIf="!turno.cerrado" class="badge rounded-pill bg-dark text-white-75">Abierto</span>
                                 <span *ngIf="turno.cerrado" class="badge rounded-pill bg-danger text-white-75">Cerrado</span>
                             </td>
                             <td class="text-center">
@@ -149,9 +157,9 @@
 
                         <div class="col-auto p-2">
 
-                            <div class="card shadow px-2 bg-success border-0" style="width: 18rem;">
-                                <div class="card-body text-white">
-                                    <h4 class="card-title mb-0 text-center">Ventas Totales</h4>
+                            <div class="card shadow px-2 border-1" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h4 class="card-title mb-0 text-center" style="color: #000;">Ventas Totales</h4>
                                     <h5 class="text-center"> {{ montos | divisa }} </h5>
                                 </div>
                             </div>
@@ -159,8 +167,8 @@
                         </div>
 
                         <div class="col-auto p-2">
-                            <div class="card shadow px-2 bg-dark border-0" style="width: 18rem;">
-                                <div class="card-body text-white">
+                            <div class="card shadow px-2 border-1" style="width: 18rem;">
+                                <div class="card-body">
                                     <h4 class="card-title mb-0 text-center">Propinas</h4>
                                     <h5 class="text-center"> {{ propinas | divisa }} </h5>
                                 </div>
@@ -168,8 +176,8 @@
                         </div>
 
                         <div class="col-auto p-2">
-                            <div class="card shadow px-2 bg-dark border-0" style="width: 18rem;">
-                                <div class="card-body text-white">
+                            <div class="card shadow px-2 border-1" style="width: 18rem;">
+                                <div class="card-body">
                                     <h4 class="card-title mb-0 text-center">Ventas totales + Propinas</h4>
                                     <h5 class="text-center"> {{ montos + propinas | divisa }} </h5>
                                 </div>
@@ -177,8 +185,8 @@
                         </div>
 
                         <div class="col-auto p-2">
-                            <div class="card shadow px-2 bg-dark border-0" style="width: 18rem;">
-                                <div class="card-body text-white">
+                            <div class="card shadow px-2 border-1" style="width: 18rem;">
+                                <div class="card-body">
                                     <h4 class="card-title mb-0 text-center">Ganancia Total</h4>
                                     <h5 class="text-center"> {{ (efectivo + tarjeta + transferencia + vales + totalBancos) - costo | divisa }} </h5>
                                 </div>
@@ -186,8 +194,8 @@
                         </div>
 
                         <div class="col-auto p-2">
-                            <div class="card shadow px-2 bg-dark border-0" style="width: 18rem;">
-                                <div class="card-body text-white">
+                            <div class="card shadow px-2 border-1" style="width: 18rem;">
+                                <div class="card-body">
                                     <h4 class="card-title mb-0 text-center">Ventas a creditos</h4>
                                     <h5 class="text-center"> {{ totalCreditos | divisa }} </h5>
                                 </div>
@@ -198,11 +206,9 @@
 
                         <div class="col-auto p-2" *ngIf="montoDiferencia !== 0">
 
-                            <div [ngClass]=" {   'bg-danger': montoDiferencia < 0, 
-                                            'bg-success': montoDiferencia > 0
-                            }" class="card shadow px-2 border-0" style="width: 18rem;">
+                            <div class="card shadow px-2 border-0" style="width: 18rem;">
 
-                                <div class="card-body text-white">
+                                <div class="card-body">
                                     <h5 class="card-title mb-0 text-center">Diferencia</h5>
                                     <p class="text-center mb-0"> {{ montoDiferencia | divisa }} </p>
                                 </div>
@@ -219,7 +225,7 @@
                                 </div>
 
                                 <div class="table-responsive ">
-                                    <table class="table table-borderless table-hover table-sm animated fadeIn ">
+                                    <table class="table table-borderless table-hover table-sm">
 
                                         <tbody>
 
@@ -249,11 +255,11 @@
                                                 <td> {{ alqEfectivo | divisa }} </td>
                                             </tr>
 
-                                            <tr class="text-danger">
+                                            <tr>
                                                 <td colspan="2"> <small> Salidas </small> </td>
                                                 <td> {{ salidas | divisa }} </td>
                                             </tr>
-                                            <tr class="text-danger">
+                                            <tr>
                                                 <td colspan="2"> <small> devolucion </small> </td>
                                                 <td> {{ devolucion | divisa }} </td>
                                             </tr>
@@ -278,7 +284,7 @@
                                 </div>
 
                                 <div class="table-responsive ">
-                                    <table class="table table-borderless table-hover table-sm animated fadeIn ">
+                                    <table class="table table-borderless table-hover table-sm">
 
                                         <tbody>
 
@@ -302,7 +308,7 @@
                                                 </tr>
                                             </ng-container>
 
-                                            <tr class="text-danger">
+                                            <tr>
                                                 <td colspan="2"> <small> devolucion </small> </td>
                                                 <td> {{ devolucion | divisa }} </td>
                                             </tr>
@@ -329,7 +335,7 @@
                                 </div>
 
                                 <div class="table-responsive ">
-                                    <table class="table table-borderless table-hover table-sm animated fadeIn ">
+                                    <table class="table table-borderless table-hover table-sm">
 
                                         <tbody>
 
@@ -338,7 +344,7 @@
                                                 <tr *ngIf="movimiento.type === 'salida'">
 
                                                     <td colspan="2"> <small> {{ movimiento.descripcion }} </small> </td>
-                                                    <td [ngClass]="{ 'text-danger':  movimiento.type == 'salida'}">
+                                                    <td>
                                                         {{ movimiento.monto | divisa }}
                                                     </td>
                                                 </tr>
@@ -365,7 +371,7 @@
                                 </div>
 
                                 <div class="table-responsive ">
-                                    <table class="table table-borderless table-hover table-sm animated fadeIn ">
+                                    <table class="table table-borderless table-hover table-sm">
 
                                         <tbody>
 
@@ -374,7 +380,7 @@
                                                 <tr *ngIf="movimiento.type === 'entrada'">
 
                                                     <td colspan="2"> <small> {{ movimiento.descripcion }} </small> </td>
-                                                    <td [ngClass]="{ 'text-danger':  movimiento.type == 'salida'}">
+                                                    <td>
                                                         {{ movimiento.monto | divisa }}
                                                     </td>
                                                 </tr>
@@ -401,7 +407,7 @@
                                 </div>
 
                                 <div class="table-responsive ">
-                                    <table class="table table-borderless table-hover table-sm animated fadeIn ">
+                                    <table class="table table-borderless table-hover table-sm">
 
                                         <thead>
                                             <th>Departamento</th>
@@ -442,7 +448,7 @@
                                 </div>
 
                                 <div class="table-responsive ">
-                                    <table class="table table-borderless table-hover table-sm animated fadeIn ">
+                                    <table class="table table-borderless table-hover table-sm">
 
                                         <tbody>
 
@@ -488,7 +494,7 @@
                                 </div>
 
                                 <div class="table-responsive ">
-                                    <table class="table table-borderless table-hover table-sm animated fadeIn ">
+                                    <table class="table table-borderless table-hover table-sm">
 
                                         <tbody>
 

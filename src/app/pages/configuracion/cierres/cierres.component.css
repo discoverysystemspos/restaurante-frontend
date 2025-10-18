@@ -1,11 +1,3 @@
-.printDiv>td {
-    color: #000;
-}
-
-.printDiv>td>small {
-    color: #000;
-}
-
 h1,h2,h3,h4,h5,h6,p,span, td,th{
     color: #000000 !important;
 }

@@ -90,7 +90,7 @@ export class CalendarioComponent implements OnInit {
         
         console.log(event);
 
-        this.calendarioService.deleteCalendario(event.calid)
+        this.calendarioService.deleteCalendario(event.id)
             .subscribe( (resp: { ok: boolean, msg: string }) => {
 
               if (resp.ok) {
@@ -315,6 +315,7 @@ export class CalendarioComponent implements OnInit {
              ...this.events,
              {
                title: calendario.title,
+               id: calendario.calid,
                start: addDays(setHours(setMinutes(new Date(initial), Number(initial.getMinutes())), Number(initial.getHours())), 0),
                color: colors.blue,
                actions: this.actions,

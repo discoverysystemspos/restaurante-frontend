@@ -547,10 +547,7 @@ export class TotalComponent implements OnInit {
 
     this.invoiceService.postQueryInvoice({placa})
       .subscribe(({total, invoices, montos, costos, iva}) => {
-
-        console.log(invoices);
         
-
         // COMPROBAR SI EXISTEN RESULTADOS
         if (invoices.length === 0) {
           this.sinResultados = false;
@@ -764,6 +761,7 @@ export class TotalComponent implements OnInit {
   public query: any = {
     desde: 0,
     hasta: 50,
+    status: true,
     sort: {invoice: -1}
   }
 
@@ -771,7 +769,7 @@ export class TotalComponent implements OnInit {
 
     this.totalAmount = 0;    
     this.totalCost = 0;    
-    this.totalIva = 0;    
+    this.totalIva = 0;  
     this.totalTip = 0;
     this.totalAbonado = 0;
     this.cargando = true;
@@ -795,6 +793,8 @@ export class TotalComponent implements OnInit {
 
         for (const factura of invoices) {
 
+         
+
           if (this.query.credito) {
             for (const pago of factura.paymentsCredit) {              
               this.totalAbonado += pago.amount;
@@ -816,16 +816,17 @@ export class TotalComponent implements OnInit {
               factura.mayor = true;                
             }
             
-            if( this.empresa.impuesto ){
+            if( this.empresa.impuesto && product.product.taxid ){
               this.impuestos.map( (impuesto) => {
                 
                 if (product.product) {
-                  
-                  if (impuesto.taxid === product.product.taxid) {
+
+                  if (impuesto.taxid === product.product.taxid._id) {
                     
                     impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
   
                   }
+                  
                 }
   
               });
@@ -929,11 +930,7 @@ export class TotalComponent implements OnInit {
   ==================================================================== */
   searchStatus(status: boolean){
 
-    if (status) {
-      delete this.query.status;
-    }else{
-      this.query.status = status;
-    }
+    this.query.status = status;
 
     this.loadQueryInvoices();   
 

@@ -2445,6 +2445,7 @@ export class MesaComponent implements OnInit {
     datafon: 0,
     electronica: false,
     placa: '',
+    ncomanda: '',
     images: [],
   })
 
@@ -2714,6 +2715,7 @@ export class MesaComponent implements OnInit {
       electronica: send_dian,
       placa: this.invoiceForm.value.placa,
       images: this.mesa.images || [],
+      ncomanda: (this.mesa.img === 'mesa.svg')? this.mesa.fecha: null
     });
 
     if(!this.clienteTemp){
@@ -2724,6 +2726,8 @@ export class MesaComponent implements OnInit {
       this.invoiceForm.value.tip = Number(this.tipIn.nativeElement.value);
       this.invoiceForm.value.amount = this.total - this.totalTip;
     }
+
+    
 
     try {
       

@@ -69,6 +69,7 @@
             <div class="py-2" style="border-bottom: 2px solid black;">
                 <h6 class="mb-0 text-wrap text-left">{{ empresa?.type }}: <span *ngIf="!factura?.cufe"> {{ factura?.invoice }} </span> <span *ngIf="factura?.cufe"> {{ factura?.number }} </span> </h6>
                 <h6 class="mb-0 text-wrap text-left">Control: {{ factura?.control }}</h6>
+                <h6 *ngIf="factura.ncomanda" class="mb-0 text-wrap text-left">Orden: #{{ factura.ncomanda | date: 'H-ms' }}</h6>
                 <small class="mb-0 text-wrap text-left">Fecha: {{ factura?.fecha | date:'short' }}</small>
             </div>
             <!-- FACTURA -->

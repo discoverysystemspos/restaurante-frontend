@@ -868,6 +868,7 @@
                         <div class="py-2" style="border-bottom: 2px solid black;">
                             <h6 class="mb-0 text-wrap text-left">{{ empresa.type }}: <span *ngIf="!factura.cufe"> {{ factura?.invoice }} </span> <span *ngIf="factura.cufe"> {{ factura?.number }} </span></h6>
                             <h6 class="mb-0 text-wrap text-left">Control: {{ factura?.control }}</h6>
+                            <h6 *ngIf="factura.ncomanda" class="mb-0 text-wrap text-left">Orden: #{{ factura.ncomanda | date: 'H-ms' }}</h6>
                             <small class="mb-0 text-wrap text-left">Fecha: {{ factura.fecha | date:'short' }}</small>
                         </div>
                         <!-- FACTURA -->
@@ -1811,6 +1812,7 @@ PREFACTURA
 
                         <h4 class="card-title mb-0 text-wrap text-center"> {{ empresa.name }} </h4>
                         <p class="text-center mb-0" *ngFor="let text of ticketHeader" style="line-height: 1rem;"> {{ text }} </p>
+                        <p class="text-center mb-0" *ngIf="mesa.img === 'mesa.svg'"> Orden #{{ mesa.fecha | date: 'H-ms' }}</p>
                     </div>
                     <!-- EMPRESA -->
 
@@ -1857,6 +1859,7 @@ PREFACTURA
                                             <p class="h4 fw-bold mb-0" *ngIf="empresa.tip"> Total + Servicio: {{ total | divisa }}</p>
                                             <p class="h4 fw-bold mb-0" *ngIf="empresa.usd"> Total USD: {{ (total / empresa.currencyusd ) | number : '1.2-2' }}</p>
                                             <p class="h4 fw-bold mb-0" *ngIf="empresa.bs"> Total BS: {{ (total / empresa.currencybs ) | number : '1.2-2' }}</p>
+                                            
                                         </div>
                                     </td>
                                 </tr>

@@ -98,6 +98,7 @@ export interface LoadInvoice {
     totalItems: number;
     paymentsAlquiler?: _paymentsCredito[];
     _id?:string;
+    ncomanda?:Date;
     placa?:string;
     images?:_images[];
 
