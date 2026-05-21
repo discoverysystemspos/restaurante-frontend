@@ -263,6 +263,8 @@ export class FacturaComponent implements OnInit {
       factura: this.factura.iid
     }
 
+    /* DEVOLVER IVA */
+    let ivaR: number = 0;
     this.factura.products.filter( product => {
 
       if (product._id === id) {
@@ -277,6 +279,9 @@ export class FacturaComponent implements OnInit {
         devolucion.qty = product.qty;
         devolucion.price = precio;
         devolucion.monto = precio * product.qty;
+        if (product.product.tax && product.product.taxid ) {
+          ivaR = ((product.price * product.product.taxid.valor)/100 ) * product.qty;
+        }
       }
 
     });
@@ -298,7 +303,7 @@ export class FacturaComponent implements OnInit {
         .subscribe( (resp: {ok: boolean, invoice: LoadInvoice} ) => {
 
 
-          this.invoiceService.updateInvoice({devolucion: this.factura.devolucion, payments: this.factura.payments}, this.factura.iid)
+          this.invoiceService.updateInvoice({devolucion: this.factura.devolucion, amount: (this.factura.amount - ivaR), iva: (this.factura.iva - ivaR), payments: this.factura.payments}, this.factura.iid)
                     .subscribe( resp => {
 
                       // GUARDAR EN EL TURNO LA DEVOLUCION SI EXITEN PAGOS 
@@ -384,12 +389,18 @@ export class FacturaComponent implements OnInit {
 
         }
 
+        /* DEVOLVER IVA */
+        let ivaR: number = 0;
+        if (producto.product.tax && producto.product.taxid ) {
+          ivaR = ((producto.price * producto.product.taxid.valor)/100 ) * cantidad;
+        }
+
         this.invoiceService.updateProdutInvoice(this.idFactura, producto._id, cantidad)
             .subscribe( resp => {
 
                 this.factura.devolucion.push(devolucion);
 
-                this.invoiceService.updateInvoice({devolucion: this.factura.devolucion, payments: this.factura.payments}, this.factura.iid)
+                this.invoiceService.updateInvoice({devolucion: this.factura.devolucion, amount: (this.factura.amount - (devolucion.monto + ivaR)), iva: (this.factura.iva - ivaR)  ,payments: this.factura.payments}, this.factura.iid)
                     .subscribe( resp => {
 
                       // GUARDAR EN EL TURNO LA DEVOLUCION SI EXITEN PAGOS 

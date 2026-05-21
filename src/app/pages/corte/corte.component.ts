@@ -47,14 +47,14 @@ import { ParqueoService } from 'src/app/services/parqueo.service';
 export class CorteComponent implements OnInit {
 
   @ViewChild('PrintTemplate')
-  private PrintTemplateTpl: TemplateRef<any>;
+  private PrintTemplateTpl!: TemplateRef<any>;
 
   title = 'ngx-printer-demo';
 
   printWindowSubscription: Subscription;
   $printItems: Observable<PrintItem[]>;
 
-  public user:User;
+  public user!:User;
 
   constructor(  private turnoService: TurnoService,
                 private bancosService: BancosService,
@@ -72,7 +72,7 @@ export class CorteComponent implements OnInit {
 
                       this.user = this.userService.user;
                       
-                      if (!this.user.privilegios.cierre) {
+                      if (!this.user.privilegios!.cierre) {
 
                         this.corte();
                         
@@ -144,6 +144,7 @@ export class CorteComponent implements OnInit {
 
           bancos.map( (banco) => {
             banco.monto = 0;
+            banco.transacciones = [];
           });   
 
           this.bancos = bancos;
@@ -155,6 +156,7 @@ export class CorteComponent implements OnInit {
 
           bancos.map( (banco) => {
             banco.monto = 0;
+            banco.transacciones = [];
           });   
           
           this.bancosAbonos = bancos;
@@ -166,6 +168,7 @@ export class CorteComponent implements OnInit {
 
           bancos.map( (banco) => {
             banco.monto = 0;
+            banco.transacciones = [];
           });   
           
           this.bancosAlquileres = bancos;
@@ -224,7 +227,7 @@ export class CorteComponent implements OnInit {
   public abEfectivo: number = 0;
   public abTarjeta: number = 0;
   public abTransferencia: number = 0;
-  public turno: LoadTurno;
+  public turno!: LoadTurno;
   public totalDevolucion: number = 0; 
 
   public inicial: number = 0;
@@ -233,17 +236,17 @@ export class CorteComponent implements OnInit {
   public movimientos: _movements[] = [];
 
   cargarTurno(){  
-    this.turnoService.getTurnoId(this.user.turno)
+    this.turnoService.getTurnoId(this.user.turno!)
     .subscribe( (turno) => { 
 
-      if (turno.devolucion.length > 0) {
-        turno.devolucion.forEach(devolucion => {
+      if (turno.devolucion!.length > 0) {
+        turno.devolucion!.forEach(devolucion => {
           this.totalDevolucion += devolucion.monto;
         });
       }
 
       this.turno = turno;
-      this.movimientos = turno.movements;
+      this.movimientos = turno.movements!;
       this.inicial = turno.initial;
 
       this.abEfectivo = 0;
@@ -251,7 +254,7 @@ export class CorteComponent implements OnInit {
       this.abTransferencia = 0;
       this.totalBancosAbono = 0;
       
-      for (const factura of turno.abonos) {
+      for (const factura of turno.abonos!) {
 
         // ABONOS EN BANCOS bancosAbonos
         for (const pago of factura.factura.paymentsCredit) {
@@ -262,8 +265,15 @@ export class CorteComponent implements OnInit {
               
               if (banco.name === pago.type) {
                 banco.monto += pago.amount;
+
+                banco.transacciones.push({
+                    monto: pago.amount,
+                    descripcion: pago.description,
+                    tipo: pago.type
+                });
                 
                 this.totalBancosAbono += pago.amount;
+
                 
               };
               
@@ -314,7 +324,7 @@ export class CorteComponent implements OnInit {
     }
 
     // SI TIENES PAGOS DE ALQUILERES
-    if (this.turno.alquileres.length > 0) {
+    if (this.turno.alquileres!.length > 0) {
       this.cargarAlquileres();      
     }
       
@@ -347,15 +357,15 @@ export class CorteComponent implements OnInit {
     this.invoiceService.loadInvoiceCierre(endPoint)
         .subscribe( ({invoices, total, devolucion, montos, costos, efectivo, tarjeta, transferencia, credit, creditos, vales, propinas}) => {
 
-          this.montos = montos;
-          this.propinas = propinas;
-          this.costo = costos;
-          this.efectivo = efectivo;
-          this.credito = credit;
-          this.devolucion = devolucion;
-          this.transferencia = transferencia;
+          this.montos = montos!;
+          this.propinas = propinas!;
+          this.costo = costos!;
+          this.efectivo = efectivo!;
+          this.credito = credit!;
+          this.devolucion = devolucion!;
+          this.transferencia = transferencia!;
           this.totalBancos = 0;
-          this.totalCreditos = creditos;
+          this.totalCreditos = creditos!;
           
           this.facturas = invoices;
 
@@ -376,13 +386,13 @@ export class CorteComponent implements OnInit {
                   // COMPROBAR SI EL PRODUCTO TIENE IMPUESTO
                   if (!product.product.tax) {
                     depart.qty = depart.qty + product.qty,
-                    depart.monto = depart.monto + (product.qty * precio);
+                    depart.monto = depart.monto! + (product.qty * precio);
                     
                   }else{
                     depart.qty = depart.qty + product.qty,
                     this.impuestos.map( (impuesto) => {
                       if (product.product.taxid === impuesto.taxid) {
-                        depart.monto = depart.monto + (product.qty * (((precio * impuesto.valor)/100) + precio));                        
+                        depart.monto = depart.monto! + (product.qty * (((precio * impuesto.valor)/100) + precio));                        
                       }
                     })
 
@@ -399,9 +409,16 @@ export class CorteComponent implements OnInit {
               
               this.bancos.map( (banco) => {                
                 
-                if (banco.name === pago.type) {                  
+                if (banco.name === pago.type) {
 
-                  banco.monto += pago.amount;
+                  banco.monto += pago.amount;                  
+                  
+                  banco.transacciones.push({
+                    monto: pago.amount,
+                    descripcion: pago.description,
+                    tipo: pago.type
+                  });
+                  
 
                   this.totalBancos += pago.amount;
 
@@ -411,11 +428,11 @@ export class CorteComponent implements OnInit {
               
             }
 
-          } 
-
+          }
           // this.efectivo = this.montos - this.totalBancos;
-          
         });
+  
+        
   }
   
 
@@ -432,7 +449,7 @@ export class CorteComponent implements OnInit {
     this.alqEfectivo = 0;
     this.totalAlquiler = 0;
 
-    for (const alq of this.turno.alquileres) {
+    for (const alq of this.turno.alquileres!) {
       await this.alquileresService.loadAlquilerId(alq.alquiler)
                 .subscribe( ({alquiler}) => {
 
@@ -470,9 +487,9 @@ export class CorteComponent implements OnInit {
   /** ===============================================================
   * CERRAR CAJA Y TURNO 
   ==================================================================== */
-  public fechaCierre: Date;
-  public montoDiferencia: number;
-  public diferencia: boolean;
+  public fechaCierre!: Date;
+  public montoDiferencia!: number;
+  public diferencia!: boolean;
 
   cerrarTurno(dineroCaja: number){
 
@@ -487,12 +504,12 @@ export class CorteComponent implements OnInit {
     this.turno.cierre = new Date();
 
     // CERRAR TURNO
-    this.turnoService.updateTurno(this.turno, this.turno.tid)
+    this.turnoService.updateTurno(this.turno, this.turno.tid!)
         .subscribe( (resp:{ ok:boolean, turno: LoadTurno }) => {        
           
-          this.fechaCierre = resp.turno.cierre;
+          this.fechaCierre = resp.turno.cierre!;
           this.diferencia = resp.turno.diferencia ;
-          this.montoDiferencia = resp.turno.montoD ;
+          this.montoDiferencia = resp.turno.montoD!;
 
           this.userService.user.cerrada = true;
 
@@ -522,6 +539,7 @@ export class CorteComponent implements OnInit {
   /** ================================================================
    *   ABRIR CAJA
   ==================================================================== */
+  
   corte(){
     
     if (!this.user.cerrada) {
@@ -558,6 +576,18 @@ export class CorteComponent implements OnInit {
     }
     
 
+
+  }
+
+  /** ================================================================
+   *  DETALLES DE BANCOS
+  ==================================================================== */
+  public bancoSelect!: Banco;
+  detalleBanco(banco: Banco){
+
+    this.bancoSelect = banco;
+    console.log(banco);
+    
 
   }
 

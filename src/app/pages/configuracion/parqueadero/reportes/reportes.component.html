@@ -28,29 +28,6 @@
     </div>
     <!-- TITLE - SUBTITLE -->
 
-    <div class="d-flex flex-wrap gap-2">
-
-        <!-- <div class="col-xl-3 col-md-3 mb-4">
-                        <div class="card border-top-0 border-bottom-0 border-end-0 border-left-lg border-primary h-100 bg-white">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center flex-wrap">
-                                    <div class="flex-grow-1">
-                                        <div class="small font-weight-bold text-primary mb-1">Monto Total Facturas</div>
-                                        <div class="h5">({{totalAmount | divisa}})</div>
-                                        <div class="text-xs font-weight-bold text-success d-inline-flex align-items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up mr-1"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
-                                        </div>
-                                    </div>
-                                    <div class="ms-2">
-                                        <i class="bi bi-receipt text-muted" style="font-size: 1.5rem;"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-
-    </div>
-
 </div>
 
 <!-- TABLE FACTURAS -->
@@ -125,7 +102,9 @@
                         <th class="text-muted " scope="col">Cliente</th>
                         <th class="text-muted " scope="col">Categoria</th>
                         <th class="text-muted " scope="col">Usuario</th>
-                        <th class="text-muted " scope="col">fecha</th>
+                        <th class="text-muted " scope="col">cehckin</th>
+                        <th class="text-muted " scope="col">cehckout</th>
+                        <th class="text-muted " scope="col">Total</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -137,11 +116,19 @@
                     </tr>
 
                     <tr class="trHover" *ngFor="let parq of parqueos; let i = index">
-                        <th scope="row ">{{ parq.placa }}</th>
+                        <th scope="row ">
+                            <span *ngIf="parq.estado === 'Parqueado'" class="badge badge-danger">P</span>
+                            <span *ngIf="parq.estado === 'Finalizado'" class="badge badge-success">F</span>
+                            {{ parq.placa }}
+                        </th>
                         <td>{{ parq.car.cliente }}</td>
                         <td>{{ parq.car.typeparq.name }}</td>
                         <td> {{ parq.user.name }} </td>
-                        <td>{{ parq.fecha | date: 'short' }}</td>
+                        <td>{{ parq.checkin | date: 'short' }}</td>
+                        <td>{{ parq.checkout || '' | date: 'short' }}</td>
+                        <td>{{ parq.total | currency }}</td>
+
+
                     </tr>
 
                 </tbody>

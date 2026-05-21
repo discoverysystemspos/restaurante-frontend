@@ -666,6 +666,116 @@ export class EmpresaComponent implements OnInit {
     this.puertoBascula = port;
   }
 
+  /** ================================================================
+   *  ACTUALIZAR IP SERVER
+  ==================================================================== */
+  updateIpServer(ipserver: string){
+
+    if (ipserver.length < 6) {
+      Swal.fire('Atención', 'esta ip es invalidad', 'warning');
+      return;
+    }
+
+    this.empresaService.updateDatos({ipserver}, this.empresa.eid)
+        .subscribe( ({}) => {
+
+          this.empresa.ipserver = ipserver;
+          Swal.fire('Estupendo', 'se ha actualizado la ip del servidor exitosamente', 'success');
+
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');          
+        })
+
+  }
+
+
+  /** ================================================================
+   *  ADD PRINTER RED
+  ==================================================================== */
+  public newPrinterSubmit: boolean = false;
+  public formPrinter = this.fb.group({
+    name: ['', [Validators.required]],
+    type: ['1', [Validators.required]],
+    interface: ['', [Validators.required]],
+  })
+
+  newPrinter(){
+
+    this.newPrinterSubmit = true;
+
+    if (this.formPrinter.invalid) {
+      return;
+    }
+
+    this.empresa.printers.push({
+      name: this.formPrinter.value.name,
+      type: this.formPrinter.value.type,
+      interface: this.formPrinter.value.interface
+    })
+
+    this.empresaService.updateDatos({printers: this.empresa.printers}, this.empresa.eid)
+        .subscribe( (resp) => {
+
+          console.log(resp);
+          this.newPrinterSubmit = false;
+          this.formPrinter.reset({
+            type: '1'
+          })
+          Swal.fire('Estupendo', 'se ha agregado la nueva impresora exitosamente', 'success');
+
+        }, (err) => {
+          console.log(err);
+          Swal.fire('Error', err.error.msg, 'error');          
+        })
+
+  }
+
+  validateNewPrinter(campo: string): boolean{
+
+    if(this.newPrinterSubmit && this.formPrinter.get(campo).invalid){
+      return true;
+    }else{
+      return false;
+    }
+
+  }
+
+  /** ================================================================
+   *  DELETE PRINTER
+  ==================================================================== */
+  deletePrinter(i: any){
+
+    Swal.fire({
+      title: "Estas seguro?",
+      text: "de eliminar esta impresora!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, eliminar!",
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        
+        this.empresa.printers.splice(i, 1);
+        this.empresaService.updateDatos({printers: this.empresa.printers}, this.empresa.eid)
+            .subscribe( (resp) => {
+              console.log(resp);
+              Swal.fire('Estupendo', 'se ha eliminado la impresora exitosamente!', 'success');
+            }, (err) => {
+              console.log(err);
+              Swal.fire('error', err.error.msg, 'error');
+              
+            })
+
+      }
+    });
+
+
+
+  }
+
 
 
   // FIN DE LA CLASE

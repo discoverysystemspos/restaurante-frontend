@@ -44,8 +44,7 @@ export class ReportesComponent implements OnInit {
   loadParqueos(){    
     
     this.parqueoService.loadParqueos(this.query)
-    .subscribe( ({ parqueos, total }) => {
-
+    .subscribe( ({ parqueos, total }) => {        
         this.total = total;      
         this.parqueos = parqueos;
         this.parqueosTemp = parqueos;

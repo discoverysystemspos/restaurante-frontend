@@ -58,16 +58,16 @@ export class ElectronicaService {
   postFacturaDataico(invoice: LoadInvoice, dataico: DataicoInterface, impuestos: Impuestos[]) {
     
     let customer: Customer = {
-      department: dataico.department,
-      city: dataico.city,
+      department: dataico.department!,
+      city: dataico.city!,
       address_line: 'No aplica',
       party_type: 'PERSONA_NATURAL',
       tax_level_code: 'NO_RESPONSABLE_DE_IVA',
-      email: dataico.email,
+      email: dataico.email!,
       country_code: 'CO',
       first_name: 'Consumidor',
       family_name: 'Final',
-      phone: dataico.phone,
+      phone: dataico.phone!,
       party_identification_type: 'CC',
       company_name: '',
       regimen: 'SIMPLE',
@@ -76,19 +76,19 @@ export class ElectronicaService {
 
     if (invoice.client) {
       customer = {
-        department:                 invoice.client.codigodepartamento,
-        city:                       invoice.client.codigociudad,
-        address_line:               invoice.client.address,
-        party_type:                 invoice.client.party_type,
-        tax_level_code:             invoice.client.tax_level_code,
-        email:                      invoice.client.email,
-        country_code:               invoice.client.country_code,
+        department:                 invoice.client.codigodepartamento!,
+        city:                       invoice.client.codigociudad!,
+        address_line:               invoice.client.address!,
+        party_type:                 invoice.client.party_type!,
+        tax_level_code:             invoice.client.tax_level_code!,
+        email:                      invoice.client.email!,
+        country_code:               invoice.client.country_code!,
         first_name:                 invoice.client.first_name,
-        phone:                      invoice.client.phone,
-        party_identification_type:  invoice.client.party_identification_type,
+        phone:                      invoice.client.phone!,
+        party_identification_type:  invoice.client.party_identification_type!,
         company_name:               invoice.client.company_name,
         family_name:                invoice.client.family_name,
-        regimen:                    invoice.client.regimen,
+        regimen:                    invoice.client.regimen!,
         party_identification:       invoice.client.cedula
       }
     }
@@ -109,8 +109,8 @@ export class ElectronicaService {
     // SETEAR FECHA
    
     let {  ...actions } = dataico.actions;
-    delete actions._id;
-    delete dataico.numbering._id;
+    delete (actions as any)._id;
+    delete (dataico.numbering as any)._id;
 
     let items: Item[] = [];
 

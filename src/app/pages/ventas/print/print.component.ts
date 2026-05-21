@@ -109,6 +109,9 @@ export class PrintComponent implements OnInit {
     this.invoiceService.loadInvoiceId(id)
         .subscribe( ({invoice}) => {
 
+          console.log(invoice);
+          
+
           this.factura = invoice;
           this.totalItems = 0;      
 
@@ -124,8 +127,14 @@ export class PrintComponent implements OnInit {
               if (product.product.taxid) {
                 
                 this.impuestos.map( (impuesto) => {  
-                  if (impuesto.taxid === product.product.taxid._id) {                  
-                    impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
+                  if (impuesto.taxid === product.product.taxid._id) {
+                    
+                    if (invoice.descuento) {
+                      impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
+                      impuesto.total = impuesto.total - ((impuesto.total * invoice.porcentaje)/100);
+                    }else{
+                      impuesto.total += Math.round(((product.qty * product.price) * impuesto.valor)/100);
+                    }
                   }  
                 });
               }

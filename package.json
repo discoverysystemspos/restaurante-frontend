@@ -33,6 +33,7 @@
     "moment": "^2.29.1",
     "ngx-barcode": "^0.3.0",
     "ngx-printer": "^0.9.1",
+    "qz-tray": "^2.2.5",
     "rxjs": "~6.6.0",
     "sweetalert2": "^10.13.0",
     "swiper": "^8.1.4",

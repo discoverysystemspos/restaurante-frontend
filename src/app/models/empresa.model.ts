@@ -16,6 +16,13 @@ export interface header{
     size: number
 }
 
+export interface printer{
+    name: string,
+    type: string,
+    interface: string,
+    _id?: string
+}
+
 export class Datos{
 
     constructor(
@@ -79,6 +86,8 @@ export class Datos{
         public msgv?: string,
         public notificaciones?: any[],
         public vence?: Date,
+        public ipserver?: string,
+        public printers?: printer[],
         public impresora?: number,
     ){}
 

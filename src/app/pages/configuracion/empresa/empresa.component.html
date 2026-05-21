@@ -26,6 +26,11 @@
         <h5 class="text-dark">ADMINISTRACIÓN DE MI EMPRESA</h5>
         <p>Configura toda la información de tu empresa desde este modulo.</p>
     </div>
+
+    <div *ngIf="empresa" class="d-flex flex-wrap gap-2 mb-3">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newPrinterRed"> <i class="bi bi-printer"></i> Impresoras de red</button>
+    </div>
+
     <!-- TITLE - SUBTITLE -->
     <div class="row">
 
@@ -1303,4 +1308,92 @@
 </div>
 <!-- =========================================================================
     ACTUALIZAR TICKET
+========================================================================= -->
+
+<!-- =========================================================================
+    AGREGAR IMPRESARA DE RED
+========================================================================= -->
+<div *ngIf="empresa" class="modal fade" id="newPrinterRed" tabindex="-1" aria-labelledby="newPrinterRedModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newPrinterRedModal"><i class="bi-printer" style="font-size: 1rem"></i> Agregar Impresoras de red</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row ">
+                    <div class="col-10">
+                        <label for="ipserver" class="">Ip Servidor</label>
+                        <input #ipserver [(ngModel)]='empresa.ipserver' type="text" class="form-control" id="ipserver" placeholder="Ip Servidor">
+                    </div>
+                    <div class="col-auto align-self-end">
+                        <button type="submit" class="btn btn-primary" (click)="updateIpServer(ipserver.value)">Actualizar</button>
+                    </div>
+                </div>
+
+                <hr class="" style="border: 1px black solid;">
+
+                <h3>Agregar Imppresora</h3>
+
+                <form autocomplete="off" [formGroup]="formPrinter" (ngSubmit)="newPrinter()">
+
+                    <div class="mb-3">
+                        <label for="" class="form-label">Nombre</label>
+                        <input formControlName="name" type="text" name="" id="" class="form-control" placeholder="Nombre de la impresora" aria-describedby="helpIdName"/>
+                        <small *ngIf="validateNewPrinter('name')" id="helpIdName" class="text-danger">Este campo es obligatorio</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="" class="form-label">Tipo o modelo</label>
+                        <select formControlName="type" class="form-select" aria-label="Default select example">
+                            <option value="1">Tipo 1</option>
+                            <option value="2">Tipo 2</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="" class="form-label">Ip Impresora</label>
+                        <input formControlName="interface" type="text" name="" id="" class="form-control" placeholder="ejemplo: 192.168.1.151" aria-describedby="helpId"/>
+                        <small *ngIf="validateNewPrinter('interface')" id="helpId" class="text-danger">Este campo es obligatorio</small>
+                    </div>
+
+                    <button type="submit" class="btn btnW waves-effect waves-ligth px-3 btn-primary w-100">Guardar</button>
+                    
+                </form>
+
+                <hr class="" style="border: 1px black solid;">
+
+                <h3>Impresoras en red</h3>
+                <div class="table-responsive">
+                    <table class="table table-stripe table-hover table-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Tipo</th>
+                                <th scope="col">Ip</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="empresa.printers.length === 0"><td colspan="3">No se ha guardado ninguna impresora</td></tr>
+                            <tr *ngFor="let printer of empresa.printers; let i = index">
+                                <td> {{ printer.name }} </td>
+                                <td> Tipo {{ printer.type }} </td>
+                                <td> {{ printer.interface }} </td>
+                                <td><button type="button" (click)="deletePrinter(i)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =========================================================================
+    AGREGAR IMPRESARA DE RED
 ========================================================================= -->

@@ -51,7 +51,7 @@ export class UsuariosComponent implements OnInit {
     
     this.userService.loadUsers()
     .subscribe( ({ total, users }) => {
-      
+
       this.totalUsers = total;
       this.usuarios = users;
       this.usuariosTemp = users;
@@ -68,7 +68,8 @@ export class UsuariosComponent implements OnInit {
   public formSubmitted:boolean = false;
   public privilegio : _privilegios = {
     cierre: true,
-    comandas: true
+    comandas: true,
+    mpv: true,
   };
   public newUserForm = this.fb.group({
     usuario: ['', [Validators.required, Validators.minLength(4)]],
@@ -77,9 +78,13 @@ export class UsuariosComponent implements OnInit {
     role: ['STAFF'],
     cierre: [true],
     comandas: [true],
+    mpv: [true],
     privilegios: {
       cierre: true,
-      comandas: true
+      comandas: true,
+      mpv: true,
+      parqueaderop: true,
+      delpv: true,
     }
   });
 
@@ -91,14 +96,9 @@ export class UsuariosComponent implements OnInit {
       return;
     }else{
 
-      
-      // this.privilegio.push({
-      //   cierre: this.newUserForm.value.cierre,
-      //   comandas: this.newUserForm.value.comandas,
-      // });
-
       this.newUserForm.value.privilegios.cierre = this.newUserForm.value.cierre;
       this.newUserForm.value.privilegios.comandas = this.newUserForm.value.comandas;
+      this.newUserForm.value.privilegios.mpv = this.newUserForm.value.mpv;
 
       this.userService.createUser(this.newUserForm.value)
           .subscribe( (resp:{ok: boolean, user: User}) => {            
@@ -142,6 +142,9 @@ export class UsuariosComponent implements OnInit {
     role: ['STAFF'],
     cierre: true,
     comandas: true,
+    mpv: true,
+    parqueaderop: true,
+    delpv: true,
     privilegios: {}
   });
 
@@ -151,6 +154,10 @@ export class UsuariosComponent implements OnInit {
     id: [''],
     role: ['STAFF'],
     cierre: [true],
+    comandas: true,
+    mpv: true,
+    parqueaderop: true,
+    delpv: true,
     privilegios: {}
   });
 
@@ -159,9 +166,13 @@ export class UsuariosComponent implements OnInit {
     if (!user.privilegios) {
       user.privilegios = {
         cierre: true,
-        comandas: true
+        comandas: true,
+        mpv: true,
+        parqueaderop: true,
+        delpv: true,
       }
     }
+    
     
     this.updateUserForm.setValue({
       usuario: user.usuario,
@@ -172,7 +183,16 @@ export class UsuariosComponent implements OnInit {
       role: user.role,
       cierre: user.privilegios.cierre,
       comandas: user.privilegios.comandas,
-      privilegios: user.privilegios
+      mpv: user.privilegios.mpv,
+      parqueaderop: user.privilegios.parqueaderop,
+      delpv: user.privilegios.delpv,
+      privilegios: {
+        cierre: user.privilegios.cierre,
+        comandas: user.privilegios.comandas,
+        mpv: user.privilegios.mpv,
+        parqueaderop: user.privilegios.parqueaderop,
+        delpv: user.privilegios.delpv,
+      }
     });
 
   }
@@ -184,8 +204,6 @@ export class UsuariosComponent implements OnInit {
 
     this.formSubmittedUp = true;
     
-        
-    
     if (this.updateUserForm.value.password.length === 1) {
             
       this.updateUserForm2.setValue({
@@ -195,9 +213,16 @@ export class UsuariosComponent implements OnInit {
         role: this.updateUserForm.value.role,
         privilegios: {
           cierre: this.updateUserForm.value.cierre,
-          comandas: this.updateUserForm.value.comandas
+          comandas: this.updateUserForm.value.comandas,
+          mpv: this.updateUserForm.value.mpv,
+          parqueaderop: this.updateUserForm.value.parqueaderop,
+          delpv: this.updateUserForm.value.delpv,
         },
-        cierre: this.updateUserForm.value.cierre
+        cierre: this.updateUserForm.value.cierre,
+        comandas: this.updateUserForm.value.comandas,
+        mpv: this.updateUserForm.value.mpv,
+        parqueaderop: this.updateUserForm.value.parqueaderop,
+        delpv: this.updateUserForm.value.delpv
       });
 
       this.userService.updateUser(this.updateUserForm2.value, this.updateUserForm2.value.id)
@@ -224,7 +249,8 @@ export class UsuariosComponent implements OnInit {
 
       this.updateUserForm.value.privilegios = {
         cierre: this.updateUserForm.value.cierre,
-        comandas: this.updateUserForm.value.comandas
+        comandas: this.updateUserForm.value.comandas,
+        mpv: this.updateUserForm.value.mpv
       }
 
       this.userService.updateUser(this.updateUserForm.value, this.updateUserForm.value.id)
@@ -239,11 +265,6 @@ export class UsuariosComponent implements OnInit {
       });
 
     }
-
-    
-
-    
-
 
   }
 

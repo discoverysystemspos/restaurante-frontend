@@ -107,7 +107,7 @@ export class TotalComponent implements OnInit {
   public listaClientes: Client[] = [];
   public listaClientesTemp: Client[] = [];
   public totalClientes: number = 0;
-  @ViewChild('searchClient') searchClient: ElementRef;
+  @ViewChild('searchClient') searchClient!: ElementRef;
   buscarCliente(termino: string){
 
     this.cargandoCliente = false;
@@ -205,7 +205,7 @@ export class TotalComponent implements OnInit {
   /** ================================================================
    *   CARGAR DATOS DE LA EMPRESA
   ==================================================================== */
-  public empresa: Datos;
+  public empresa!: Datos;
   cargarDatos(){
 
     this.empresaService.getDatos()
@@ -381,9 +381,9 @@ export class TotalComponent implements OnInit {
             // COMPROBAR SI EXISTEN RESULTADOS
             this.facturas = invoices; 
             this.resultado = invoices.length; 
-            this.totalAmount = montos;
-            this.totalCost = costos;
-            this.totalIva = iva;
+            this.totalAmount = montos!;
+            this.totalCost = costos!;
+            this.totalIva = iva!;
 
             for (const factura of invoices) {
               
@@ -518,7 +518,7 @@ export class TotalComponent implements OnInit {
     this.comision = 0;
     this.porcentaje = 0;
 
-    for (const com of this.empresa.comisiones) {
+    for (const com of this.empresa.comisiones!) {
 
       if (monto >= com.monto) {
         this.porcentaje = com.comision;
@@ -558,9 +558,9 @@ export class TotalComponent implements OnInit {
         // COMPROBAR SI EXISTEN RESULTADOS
         this.facturas = invoices; 
         this.resultado = invoices.length; 
-        this.totalAmount = montos;
-        this.totalCost = costos;
-        this.totalIva = iva;
+        this.totalAmount = montos!;
+        this.totalCost = costos!;
+        this.totalIva = iva!;
 
         this.comisionCalcular(this.totalAmount);
 
@@ -628,9 +628,9 @@ export class TotalComponent implements OnInit {
         // COMPROBAR SI EXISTEN RESULTADOS
         this.facturas = invoices; 
         this.resultado = invoices.length; 
-        this.totalAmount = montos;
-        this.totalCost = costos;
-        this.totalIva = iva;
+        this.totalAmount = montos!;
+        this.totalCost = costos!;
+        this.totalIva = iva!;
 
         this.comisionCalcular(this.totalAmount);
 
@@ -699,9 +699,19 @@ export class TotalComponent implements OnInit {
             porc = item.product.taxid.valor || 0;
             tipeT = item.product.taxid.name;
           }
-          
-          invoices.push({
-            fecha: invoi.fecha,
+
+          // SET HOURS
+          let invf = new Date(invoi.fecha);  
+          let fecha = `${invf.getDate()}/${invf.getMonth() + 1}/${invf.getFullYear()} ${invf.getHours()}:${invf.getMinutes()}`;
+
+          let url = document.URL.split(':');
+          if (url[0] === 'https') {
+            // fecha = new Date(invf.getTime() + 1000 * 60 * 60 - 7200000);  
+            fecha = `${invf.getDate()}/${invf.getMonth() + 1}/${invf.getFullYear()} ${invf.getHours()-5}:${invf.getMinutes()}`;       
+          } 
+
+          let it: any = {
+            fecha,
             invoice: number, 
             "razón social": clienteName,
             "Tipo de Documento": invoi.client?.party_identification_type || 'CC',
@@ -717,7 +727,20 @@ export class TotalComponent implements OnInit {
             "Porcentaje de IVA": porc,
             "Total": ((item.price+((item.price * porc)/100)) * item.qty).toFixed(2),
             usuario
-          })
+          }
+
+          if (invoi.payments.length > 0) {
+
+            for (let i = 0; i < invoi.payments.length; i++) {
+              const pago = invoi.payments[i];        
+              it[`Pago${i+1}`] = `${pago.amount}`;
+              it[`tipoDePago${i+1}`] = `${pago.type}`;
+              it[`DescripcionDePago${i+1}`] = `${pago.description || 'N/A'}`;
+            }
+            
+          } 
+          
+          invoices.push(it)
         }
       }
       
@@ -785,9 +808,9 @@ export class TotalComponent implements OnInit {
           this.cargando = false;
           this.facturas = invoices; 
           this.resultado = invoices.length; 
-          this.totalAmount = montos;
-          this.totalCost = costos;
-          this.totalIva = iva;          
+          this.totalAmount = montos!;
+          this.totalCost = costos!;
+          this.totalIva = iva!;          
 
         this.comisionCalcular(this.totalAmount);
 
@@ -860,7 +883,7 @@ export class TotalComponent implements OnInit {
   /** ================================================================
    *   SELECT CLIENT
   ==================================================================== */
-  public cliente: Client;
+  public cliente!: Client | undefined;
   selectC(client: Client){
 
     this.cliente = client;

@@ -5,7 +5,8 @@ export class Banco{
         public status: boolean,
         public baid: string,
         public _id: string,
-        public monto?: number
+        public transacciones: any[],
+        public monto?: any,
     ){}
 
 }

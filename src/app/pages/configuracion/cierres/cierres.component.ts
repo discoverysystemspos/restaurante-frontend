@@ -119,6 +119,7 @@ export class CierresComponent implements OnInit {
 
           bancos.map( (banco) => {
             banco.monto = 0;
+            banco.transacciones = [];
           });   
 
           this.bancos = bancos;
@@ -130,6 +131,7 @@ export class CierresComponent implements OnInit {
 
           bancos.map( (banco) => {
             banco.monto = 0;
+            banco.transacciones = [];
           });   
           
           this.bancosAbonos = bancos;
@@ -317,10 +319,12 @@ export class CierresComponent implements OnInit {
 
     this.bancos.map( (banco) => {
       banco.monto = 0;
+      banco.transacciones = [];
     });
 
     this.bancosAbonos.map( (banco) => {
       banco.monto = 0;
+      banco.transacciones = [];
     });
 
     // await this.cargarBancos();
@@ -507,6 +511,12 @@ export class CierresComponent implements OnInit {
     
                 if (banco.name === pago.type) {
                   banco.monto += pago.amount;
+
+                  banco.transacciones.push({
+                    monto: pago.amount,
+                    descripcion: pago.description,
+                    tipo: pago.type
+                  });
     
                   this.totalBancos += pago.amount;
     
@@ -532,7 +542,12 @@ export class CierresComponent implements OnInit {
                   this.bancosAbonos.map( (banco) => {
                     
                     if (banco.name === pago.type) {
-                      banco.monto += pago.amount;      
+                      banco.monto += pago.amount; 
+                      banco.transacciones.push({
+                        monto: pago.amount,
+                        descripcion: pago.description,
+                        tipo: pago.type
+                      });     
                       this.totalBancosAbono += pago.amount;
                       
                     };
@@ -645,10 +660,12 @@ export class CierresComponent implements OnInit {
 
     this.bancos.map( (banco) => {
       banco.monto = 0;
+      banco.transacciones = [];
     });
 
     this.bancosAbonos.map( (banco) => {
       banco.monto = 0;
+      banco.transacciones = [];
     });
 
     this.abEfectivo = 0;
@@ -771,6 +788,11 @@ export class CierresComponent implements OnInit {
           
                       if (banco.name === pago.type) {
                         banco.monto += pago.amount;
+                        banco.transacciones.push({
+                          monto: pago.amount,
+                          descripcion: pago.description,
+                          tipo: pago.type
+                        });
           
                         this.totalBancos += pago.amount;
           
@@ -796,7 +818,12 @@ export class CierresComponent implements OnInit {
                         this.bancosAbonos.map( (banco) => {
                           
                           if (banco.name === pago.type) {
-                            banco.monto += pago.amount;      
+                            banco.monto += pago.amount;
+                            banco.transacciones.push({
+                              monto: pago.amount,
+                              descripcion: pago.description,
+                              tipo: pago.type
+                            }); 
                             this.totalBancosAbono += pago.amount;
                             
                           };
@@ -859,6 +886,18 @@ export class CierresComponent implements OnInit {
         });
 
     }
+
+  }
+
+  /** ================================================================
+   *  DETALLES DE BANCOS
+  ==================================================================== */
+  public bancoSelect: Banco;
+  detalleBanco(banco: Banco){
+
+    this.bancoSelect = banco;
+    console.log(banco);
+    
 
   }
 

@@ -89,7 +89,7 @@ export class UserService {
         
         const { usuario, name, role, img, uid, status, cerrada, turno, privilegios} = resp.usuario;
 
-        this.user = new User( usuario, name, '', role, img || 'no-image', uid, status, cerrada, turno, privilegios);        
+        this.user = new User( usuario, name, '', role, img || 'no-image', uid, status, cerrada, turno, privilegios);   
 
         localStorage.setItem('token', resp.token);
 

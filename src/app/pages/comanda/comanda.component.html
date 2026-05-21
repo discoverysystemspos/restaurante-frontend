@@ -159,10 +159,13 @@
                     <hr>
                     <h4>Cocina</h4>
 
-                    <div class="d-flex justify-content-end my-2">
+                    <div *ngIf="empresa" class="d-flex justify-content-end my-2 gap-2">
                         <button type="button" (click)="printDiv('printDiv1', cocina)" class="btn btn-sm btn-success btnW waves-effect waves-ligth">
-                        Imprimir
-                    </button>
+                            Imprimir
+                        </button>
+                        <button (click)="imprimir(printer)" *ngFor="let printer of empresa.printers" type="button" class="btn btn-sm btn-primary btnW waves-effect waves-ligth">
+                            {{printer.name}}
+                        </button>
                     </div>
 
                     <!-- DETALLES DE LA COMANDA -->

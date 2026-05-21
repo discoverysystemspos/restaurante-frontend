@@ -620,8 +620,12 @@ PRODUCT SELECT
         <div class="pb-2">
             <p class="mb-0 text-center fw-bold">TOTAL</p>
             <h4 class="mb-3 display-5 text-center text-break fw-bold"> {{ total | divisa }} </h4>
-            <p class="mb-2 text-center" *ngIf="payments.length > 0" [ngClass]="{'text-success': restante === 0, 'text-danger': restante < total || restante > total}"> Restante {{ restante | divisa }} </p>
-            <div class="d-flex justify-content-center">
+            <p class="mb-2 text-center" *ngIf="payments.length > 0" [ngClass]="{'text-success': restante === 0, 'text-success': restante < 0,  'text-danger': restante > 0}"> 
+                <span *ngIf="restante > 0"> restante {{ restante | divisa }} </span>
+                <span *ngIf="restante < 0"> Vueltos {{ restante * -1 | divisa }} </span>
+                
+            </p>
+            <div *ngIf="user.privilegios.parqueaderop" class="d-flex justify-content-center">
                 <a class="text-decoration-none mx-auto" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
                     Editar Monto
                 </a>

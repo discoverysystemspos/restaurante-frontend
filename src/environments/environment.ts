@@ -12,7 +12,10 @@
 
   base_url: 'https://admin.castitoner.com/api',
 
-  base_url: 'https://elemporio.poslatino.com/api',
+  base_url: 'https://cabrosycabros.poslatino.com/api',
+  
+
+  base_url: 'https://nuestrobogota.simids.app/api',
 
   base_url: 'https://custommer999.loggikpos.online/api',
 
@@ -34,7 +37,7 @@ export const environment = {
     url: 'simids.com',
     phone: '573007325684'
   },
-  base_url: 'http://localhost:3000/api',
+  base_url: 'https://nuestrobogota.simids.app/api',
   local_url: 'https://castitoner.com/api',
   dataico_url: 'https://api.dataico.com/dataico_api/v2'
 };

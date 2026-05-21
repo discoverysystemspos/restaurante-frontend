@@ -81,7 +81,7 @@
                             <div class="col-12 mt-auto">
                                 <div class="d-flex align-items-center">
 
-                                    <p class="mb-0 text-success">{{ producto.price | divisa }}</p>
+                                    <p class="mb-0 text-success">{{ producto.price | number : '1.2-2' }}</p>
                                     <button *ngIf="!empresa.kiosco" type="button" [disabled]=" producto.vencido || producto.inventario <= 0 && producto.type !== 'Paquete'" (click)="buscarCodigo( producto.code )" class="btn btn-link btn-primary text-white ms-auto" style="font-size: 1rem;">
                                         <i class="bi bi-cart-plus"></i>
                                     </button>
@@ -211,16 +211,16 @@
                                                 <p class="mb-0">{{ item.product.name }}<span *ngIf="item.mayor" class="badge text-dark">M</span></p>
                                             </div>
                                         </td>
-                                        <td>{{ item.price | divisa }}</td>
+                                        <td>{{ item.price | number : '1.2-2' }}</td>
                                         <td class="text-center">
                                             <button *ngIf="empresa.bascula" type="button" (click)="loadBascula(i, item)" class="btn btn-link p-1 text-primary">
                                                 <i class="bi-arrow-down-square-fill" style="font-size: 1rem"></i>
                                             </button>
                                             <input [readonly]="user.role === 'WAITER' || user.role === 'WAITERALL'" class="w-75" min="1" type="number" [value]="item.qty" (change)="changeCant(cantt.value, item)" #cantt>
                                         </td>
-                                        <td>{{ item.price * item.qty | divisa}}</td>
+                                        <td>{{ item.price * item.qty | number : '1.2-2'}}</td>
                                         <td>
-                                            <button type="button" [disabled]="user.role !== 'ADMIN' && user.role !== 'STAFF' && user.role !== 'CASHIER'" (click)="eliminarProductoCarrito(i, item.product)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
+                                            <button type="button" [disabled]="!user.privilegios.delpv" (click)="eliminarProductoCarrito(i, item.product)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
                                         </td>
                                     </tr>
                                 </ng-container>
@@ -399,13 +399,13 @@
                                             <td colspan="2">
                                                 <p class="mb-0">{{ item.product.name }} <span *ngIf="item.mayor" class="badge text-dark">M</span></p>
                                             </td>
-                                            <td>{{ item.price | divisa}}</td>
+                                            <td>{{ item.price | number : '1.2-2'}}</td>
                                             <td class="text-center">
                                                 <input [readonly]="inputChange || user.role === 'WAITER' || user.role === 'WAITERALL'" class="w-75" min="1" type="number" [value]="item.qty" [max]="item.product.inventario" (change)="changeCant(cant.value, item)" #cant>
                                             </td>
-                                            <td>{{ item.price * item.qty | divisa}}</td>
+                                            <td>{{ item.price * item.qty | number : '1.2-2'}}</td>
                                             <td>
-                                                <button type="button" [disabled]="user.role !== 'ADMIN' && user.role !== 'STAFF' && user.role !== 'CASHIER'" (click)="eliminarProductoCarrito(i, item.product)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
+                                                <button type="button" [disabled]="!user.privilegios.delpv" (click)="eliminarProductoCarrito(i, item.product)" class="btn btn-link p-1 text-danger"><i class="bi-trash" style="font-size: 0.9rem"></i></button>
                                             </td>
                                         </tr>
                                     </ng-container>
@@ -572,7 +572,7 @@
                                                                 <td>
                                                                     <p class="mb-0">{{ control.type }} <span *ngIf="control.description">- {{ control.description }}</span></p>
                                                                 </td>
-                                                                <td> {{ control.amount | divisa }} </td>
+                                                                <td> {{ control.amount | number : '1.2-2' }} </td>
                                                                 <td>
                                                                     <button type="button" class="btn btn-link p-1 text-danger text-right" (click)="eliminarPagos(control)"> <i class="bi-trash"></i> </button>
                                                                 </td>
@@ -637,17 +637,17 @@
 
                                                             <!-- TOTAL -->
                                                             <div class="text-center my-3" *ngIf="empresa">
-                                                                <h4 class="display-4 text-primary">{{ total | divisa }}</h4>
+                                                                <h4 class="display-4 text-primary">{{ total | number : '1.2-2' }}</h4>
 
 
                                                                 <h5 *ngIf="empresa.usd" class="text-primary fw-normal">{{ (total / empresa.currencyusd ) | number : '1.2-2' }} USD</h5>
                                                                 <h5 *ngIf="empresa.cop" class="text-primary fw-normal">{{ (total * empresa.currencycop ) | number : '1.2-2' }} COP</h5>
-                                                                <!-- <h4 class="display-4 text-primary" *ngIf="empresa.responsable">{{ total + ((total * empresa.tax)/100) | divisa }}</h4> -->
+                                                                <!-- <h4 class="display-4 text-primary" *ngIf="empresa.responsable">{{ total + ((total * empresa.tax)/100) | number : '1.2-2' }}</h4> -->
 
                                                                 <small *ngIf="totalPagos > 0 && totalPagos < total" class="text-danger animated fadeIn">Resta</small>
                                                                 <small *ngIf="totalPagos > 0 && totalPagos >= total" class="text-success animated fadeIn">Vueltos</small>
                                                                 <h4 class="mb-0 fw-normal animated fadeIn" [ngClass]=" {   'text-danger': totalPagos < total, 'text-success': totalPagos >= total  }" *ngIf="totalPagos > 0">
-                                                                    {{ vueltos | divisa }}
+                                                                    {{ vueltos | number : '1.2-2' }}
                                                                 </h4>
 
                                                             </div>
@@ -676,11 +676,11 @@
                                                                             <ng-container *ngFor="let item of carrito; let i = index">
                                                                                 <tr class="trHover" *ngIf="item.product">
                                                                                     <td colspan="2">{{ item.product.name }}</td>
-                                                                                    <td>{{ item.price | divisa}}</td>
+                                                                                    <td>{{ item.price | number : '1.2-2'}}</td>
                                                                                     <td class="text-center">
                                                                                         <input class="w-75" min="1" type="number" #cantP (keyup)="cantP.value = cantP.value; addSaldo(item.price, cantP.value)">
                                                                                     </td>
-                                                                                    <td>{{ item.price * cantP.value | divisa}}</td>
+                                                                                    <td>{{ item.price * cantP.value | number : '1.2-2'}}</td>
                                                                                 </tr>
                                                                             </ng-container>
 
@@ -877,7 +877,7 @@
                             <tbody style="color: black;" [ngStyle]="{'fonto-size': empresa.impresora === 80 ? '1.4rem importan!' : '1rem'}">
                                 <tr *ngFor="let item of factura.products" class="trHover">
                                     <td class="py-0" [ngStyle]="{'line-height': empresa.impresora === 80 ? '1rem importan!' : '0.8rem'}">
-                                        <small class="text-wrap"> {{ item.qty }} x {{item.price | divisa}} </small> <br>
+                                        <small class="text-wrap"> {{ item.qty }} x {{item.price | number : '1.2-2'}} </small> <br>
                                         <small class="text-wrap"> {{ item.product.name }} <strong *ngIf="item.mayor" class="fw-bolde text-black">M</strong> </small>
                                     </td>
                                     <td class="text-end">
@@ -885,8 +885,8 @@
                                         <small *ngIf="!item.product.tax"> 0% </small>
                                     </td>
                                     <td>
-                                        <small *ngIf="!empresa.impuesto" class="text-wrap"> {{ item.qty * item.price | divisa }} </small>
-                                        <small *ngIf="empresa.impuesto" class="text-wrap"> {{ (item.qty * item.price) + ((item.qty * item.price) * (item.product.taxid?.valor/100)) | divisa }} </small>
+                                        <small *ngIf="!empresa.impuesto" class="text-wrap"> {{ item.qty * item.price | number : '1.2-2' }} </small>
+                                        <small *ngIf="empresa.impuesto" class="text-wrap"> {{ (item.qty * item.price) + ((item.qty * item.price) * (item.product.taxid?.valor/100)) | number : '1.2-2' }} </small>
                                     </td>
                                 </tr>
                                 <tr class="" style="border-top: 2px solid black;">
@@ -894,17 +894,26 @@
                                         <h6 class="mb-0 text-wrap text-left">Sub-total</h6>
                                     </td>
                                     <td class="fw-bold">
-                                        <h6 class="mb-0 text-wrap text-rigth"> {{ factura.base | divisa }} </h6>
+                                        <h6 class="mb-0 text-wrap text-rigth"> {{ factura.base | number : '1.2-2' }} </h6>
                                     </td>
                                 </tr>
 
                                 <!-- DESCUENTO -->
-                                <tr class="" style="border-top: 2px solid black;">
+                                <tr *ngIf="factura.descuento" class="" style="border-top: 2px solid black;">
                                     <td>
                                         <h6 class="mb-0 text-wrap text-left">Descuento</h6>
                                     </td>
                                     <td class="fw-bold">
-                                        <h6 class="mb-0 text-wrap text-rigth" *ngIf="factura.descuento"> {{ (factura.base * factura.porcentaje )/100 | divisa }} </h6>
+                                        <h6 class="mb-0 text-wrap text-rigth" *ngIf="factura.descuento"> {{ (factura.base * factura.porcentaje )/100 | number : '1.2-2' }} </h6>
+                                    </td>
+                                </tr>
+
+                                <tr *ngIf="factura.descuento" class="" style="border-top: 2px solid black;">
+                                    <td>
+                                        <h6 class="mb-0 text-wrap text-left">Sub-total</h6>
+                                    </td>
+                                    <td colspan="2" class="fw-bold">
+                                        <h6 class="mb-0 text-wrap text-rigth" *ngIf="empresa?.impuesto"> {{ factura?.base - ((factura?.base * factura?.porcentaje)/100 ) | number : '1.2-2' }} </h6>
                                     </td>
                                 </tr>
                                 
@@ -920,6 +929,8 @@
                                 </ng-container>
 
                                 <ng-container *ngIf="empresa.impuesto">
+
+                                   
                                     <ng-container *ngFor="let impuesto of impuestos">
 
                                         <tr *ngIf="impuesto.total > 0" class="" style="border-top: 2px solid black;">
@@ -928,7 +939,7 @@
 
                                             </td>
                                             <td class="fw-bold">
-                                                <h6 class="mb-0 text-wrap text-rigth"> {{ impuesto.total | divisa }} </h6>
+                                                <h6 class="mb-0 text-wrap text-rigth"> {{ factura.iva | number : '1.2-2' }} </h6>
                                             </td>
                                         </tr>
                                     </ng-container>
@@ -939,7 +950,7 @@
                                         <h6 class="mb-0 text-wrap text-left">Total</h6>
                                     </td>
                                     <td class="fw-bold">
-                                        <h6 class="mb-0 text-wrap text-rigth"> {{ factura.amount - datafon | divisa}} </h6>
+                                        <h6 class="mb-0 text-wrap text-rigth"> {{ factura.amount - datafon | number : '1.2-2'}} </h6>
                                     </td>
                                 </tr>
 
@@ -948,7 +959,7 @@
                                         <h6 class="mb-0 text-wrap text-left">Servicio Sugerido del {{empresa.propina}}%</h6>
                                     </td>
                                     <td class="fw-bold">
-                                        <h6 class="mb-0 text-wrap text-rigth"> {{ factura.tip | divisa }} </h6>
+                                        <h6 class="mb-0 text-wrap text-rigth"> {{ factura.tip | number : '1.2-2' }} </h6>
                                     </td>
                                 </tr>
 
@@ -957,7 +968,7 @@
                                         <h6 class="mb-0 text-wrap text-left">Datafon Comisión {{empresa.comidatafon}}%</h6>
                                     </td>
                                     <td class="fw-bold">
-                                        <h6 class="mb-0 text-wrap text-rigth"> {{ datafon | divisa }} </h6>
+                                        <h6 class="mb-0 text-wrap text-rigth"> {{ datafon | number : '1.2-2' }} </h6>
                                     </td>
                                 </tr>
 
@@ -966,7 +977,7 @@
                                         <h6 class="mb-0 text-wrap text-left">Total + Servicio <span *ngIf="empresa.datafon && datafon > 0"> + Datafon </span></h6>
                                     </td>
                                     <td class="fw-bold">
-                                        <h6 class="mb-0 text-wrap text-rigth"> {{ factura.tip + factura.amount + datafon | divisa}} </h6>
+                                        <h6 class="mb-0 text-wrap text-rigth"> {{ factura.tip + factura.amount + datafon | number : '1.2-2'}} </h6>
                                     </td>
                                 </tr>
 
@@ -981,8 +992,12 @@
 
                         <hr class="my-1">
                         <div *ngIf="!factura.apartado">
-                            <p class="mb-0 mx-auto"><small class="text-wrap text-center mb-0">Pago con: {{factura.pago | divisa}} </small></p>
-                            <p class="mb-0 mx-auto"><small class="text-wrap text-center mb-0">Vueltos: {{factura.vueltos | divisa}} </small></p>
+                            <p *ngIf="factura.type === 'efectivo'" class="mb-0 mx-auto "><small class="text-wrap text-center mb-0">Pago con: {{factura?.pago | number : '1.2-2'}} </small></p>
+                            <p *ngIf="factura.type === 'efectivo'" class="mb-0 mx-auto "><small class="text-wrap text-center mb-0">Vueltos: {{factura?.vueltos | number : '1.2-2'}} </small></p>
+                            <p class="mb-0 mx-auto"><small class="text-wrap text-center mb-0">Metodo: {{factura.type }} </small></p>
+                            <p *ngIf="factura.type !== 'efectivo'" class="mb-0 mx-auto">
+                                <small class="text-wrap text-center mb-0" *ngFor="let p of factura.payments" >{{p.type }} : {{p.amount | number : '1.2-2'}} </small>
+                            </p>
                         </div>
 
                         <div *ngIf="factura.apartado">
@@ -997,14 +1012,14 @@
                                 <tbody>
                                     <tr *ngFor="let pay of factura.payments">
                                         <td>Abono {{ pay.type }} </td>
-                                        <td> {{ pay.amount | divisa }} </td>
+                                        <td> {{ pay.amount | number : '1.2-2' }} </td>
                                     </tr>
 
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <th>Restante</th>
-                                        <th> {{ factura.amount - totalPagos | divisa }} </th>
+                                        <th> {{ factura.amount - totalPagos | number : '1.2-2' }} </th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -1038,7 +1053,7 @@
                     </div>
                 </div>
 
-                <div class="d-flex justify-content-center mb-3" *ngIf="printComandaC">
+                <div class="d-flex justify-content-center mb-5 pb-5" *ngIf="printComandaC">
                     <div class="card border-0 pb-4" [ngStyle]="{'width': empresa.impresora === 58 ? '14rem' : '24rem'}" style="width: 14rem; color:black; background: white;" id="printComanda">
                         <div class=" text-wrap bg-white p-3 position-relative">
                             <h2 class="mb-2 text-center">Orden # {{ mesa.fecha | date: 'H-ms' }}</h2>
@@ -1087,7 +1102,7 @@
                                 <!-- NOTAS -->
                                 <div *ngIf="mesa?.nota.length > 0" class="container border rounded overflow-auto" #content style="max-height: 15rem; min-height: 5rem; overflow-x: hidden!important;">
                                     <ul class="list-group list-group-flush py-2" #messages>
-                                        <li class="list-group-item border-0 py-1 px-1" *ngFor="let nota of mesa.nota">
+                                        <li class="list-group-item border-0 py-1 px-1" *ngFor="let nota of notas">
                                             <div class="d-flex justify-content-start">
                                                 <!-- <div>
                                                     <button type="button" disabled class="btn btn-link p-1 text-danger">
@@ -1166,13 +1181,13 @@
                 <!-- AMOUNT -->
                 <div>
                     <div class="text-center" *ngIf="empresa">
-
-                        <p class="h6 fw-normal text-muted mb-0">Sub-total {{ base | divisa }} <span *ngIf="empresa.propina"> + Servicio {{ totalTip | divisa }}</span> <span *ngIf="empresa.datafon && datafon > 0"> + Datafon {{ datafon | divisa }}</span> </p>
-                        <p class="h6 fw-normal text-danger mb-0" *ngIf="mesa?.descuento">Descuento {{ ((base * mesa?.porcentaje) / 100) | divisa }}</p>
-                        <h4 class="fw-normal display-7 text-primary mb-1">{{ total | divisa }}</h4>
+                        <p class="h6 fw-normal text-muted mb-0">Sub-total {{ base | number : '1.2-2' }} <span *ngIf="empresa.propina"> + Servicio {{ totalTip | number : '1.2-2' }}</span> <span *ngIf="empresa.datafon && datafon > 0"> + Datafon {{ datafon | number : '1.2-2' }}</span> </p>
+                        <p class="h6 fw-normal text-danger mb-0" *ngIf="mesa?.descuento">Descuento {{ ((base * mesa?.porcentaje) / 100) | number : '1.2-2' }}</p>
+                        
+                        <h4 class="fw-normal display-7 text-primary mb-1">{{ total | number : '1.2-2' }}</h4>
                         <h5 class="mb-0 fw-normal animated fadeIn" [ngClass]=" {   'text-danger': totalPagos < total, 'text-success': totalPagos >= total  }" *ngIf="totalPagos > 0">
                             <small *ngIf="totalPagos > 0 && totalPagos < total" class="text-danger animated fadeIn">Resta:</small>
-                            <small *ngIf="totalPagos > 0 && totalPagos >= total" class="text-success animated fadeIn">Vueltos:</small> {{ vueltos | divisa }}
+                            <small *ngIf="totalPagos > 0 && totalPagos >= total" class="text-success animated fadeIn">Vueltos:</small> {{ vueltos | number : '1.2-2' }}
                         </h5>
 
                     </div>
@@ -1182,14 +1197,24 @@
                 <!-- Buttons -->
                 <div *ngIf="empresa">
 
-                    <div class="mx-auto my-3" [ngClass]="{'d-none': !empresa.comandas}">
+                    <div class="mx-auto my-3" >
 
                         <!-- IMPRIMIR COMANDA -->
-                        <div class="form-check">
+                        <div class="form-check" [ngClass]="{'d-none': !empresa.comandas}">
                             <input #checkCom (change)="printComandaC = checkCom.checked" class="form-check-input" type="checkbox" id="checkCom">
 
                             <label class="form-check-label h5" for="checkCom">
                                 Imprimir Comanda
+                            </label>
+                        </div>
+
+                        <!-- IMPRIMIR COMANDA -->
+                        <div class="form-check">
+                            <input #checkImp (change)="checkImp.checked = checkImp.checked" class="form-check-input" type="checkbox" id="checkImp">
+
+                            <label class="form-check-label h5" for="checkImp">
+                                <span *ngIf="!checkImp.checked">Imprimir Comprobante</span>
+                                <span *ngIf="checkImp.checked">Sin Imprimir Comprobante</span>                                
                             </label>
                         </div>
 
@@ -1208,7 +1233,7 @@
 
                         <!-- BTN COTIZACIÓN -->
                         <div *ngIf="empresa?.cotizacion" class="float-end">
-                            <button type="button" [disabled]="facturando == true || user.cerrada" (click)="crearFactura(false)" class="btn btn-sm btn-outline-primary">
+                            <button type="button" [disabled]="facturando == true || user.cerrada" (click)="crearFactura(false, checkImp.checked)" class="btn btn-sm btn-outline-primary">
                                 Cotización
                             </button>
                         </div>
@@ -1216,9 +1241,9 @@
 
                         <!-- BTN CREAR FACTURA -->
                         <div class="float-end" *ngIf="empresa?.electronica">
-                            <button type="button" [disabled]="facturando == true || user.cerrada" (click)="crearFactura(true)" class="btn btn-sm btn-outline-success">
-                        Crear Factura Electronica
-                    </button>
+                            <button type="button" [disabled]="facturando == true || user.cerrada" (click)="crearFactura(true, checkImp.checked)" class="btn btn-sm btn-outline-success">
+                            Crear Factura Electronica
+                        </button>
                         </div>
                         <!-- BTN CREAR FACTURA -->
                     </div>
@@ -1569,7 +1594,7 @@
                                 <div class="card">
                                     <div class="text-center" style="color: #000;">
                                         <h4 class="mb-0 fw-normal">Salida</h4>
-                                        <h2 class="fw-bold"> {{ movimiento.monto | divisa}} </h2>
+                                        <h2 class="fw-bold"> {{ movimiento.monto | number : '1.2-2'}} </h2>
                                         <p class="mb-0"> {{ movimiento.user.name }} </p>
                                         <p> {{ movimiento.fecha | date: 'short' }} </p>
                                     </div>
@@ -1610,7 +1635,7 @@ VERIFICADOR DE PRECIOS
 
                     <div *ngIf="productoCom" class="mt-4">
                         <h6 class="text-muted mb-0"> {{ productoCom.name }} </h6>
-                        <h4 class="display-2 text-primary"> {{ productoCom.price | divisa }} </h4>
+                        <h4 class="display-2 text-primary"> {{ productoCom.price | number : '1.2-2' }} </h4>
                     </div>
 
                 </div>
@@ -1812,7 +1837,7 @@ PREFACTURA
 
                         <h4 class="card-title mb-0 text-wrap text-center"> {{ empresa.name }} </h4>
                         <p class="text-center mb-0" *ngFor="let text of ticketHeader" style="line-height: 1rem;"> {{ text }} </p>
-                        <p class="text-center mb-0" *ngIf="mesa.img === 'mesa.svg'"> Orden #{{ mesa.fecha | date: 'H-ms' }}</p>
+                        <p class="text-center mb-0" *ngIf="mesa?.img! === 'mesa.svg'"> Orden #{{ mesa.fecha | date: 'H-ms' }}</p>
                     </div>
                     <!-- EMPRESA -->
 
@@ -1839,9 +1864,9 @@ PREFACTURA
 
                                 <tr *ngFor="let producto of carrito">
                                     <th scope="row"> {{ producto.product.name }} </th>
-                                    <td> {{ producto.price | divisa }} </td>
+                                    <td> {{ producto.price | number : '1.2-2' }} </td>
                                     <td class="text-center"> {{ producto.qty | number }} </td>
-                                    <td> {{ (producto.qty * producto.price) | divisa }} </td>
+                                    <td> {{ (producto.qty * producto.price) | number : '1.2-2' }} </td>
                                 </tr>
 
                             </tbody>
@@ -1849,14 +1874,14 @@ PREFACTURA
                                 <tr>
                                     <td colspan="4" class="text-end">
                                         <div class="col ms-auto text-end" *ngIf="empresa">
-                                            <p class="h6 fw-bold mb-0" *ngIf="!empresa.responsable">Sub-total: {{ base / 1 | divisa }}</p>
-                                            <p class="h6 fw-bold mb-0" *ngIf="empresa.responsable">Sub-total: {{ base - iva | divisa }}</p>
-                                            <p class="h6 fw-bold mb-0" *ngIf="mesa?.descuento">Descuento: {{ (base * mesa?.porcentaje) /100 | divisa }}</p>
-                                            <p class="h6 fw-bold mb-0" *ngIf="empresa.responsable">IVA: {{ iva | divisa }}</p>
-                                            <p class="fw-bold mb-0" [ngClass]="{'h4': empresa.tip === false, 'h6': empresa.tip }" *ngIf="!empresa.responsable">Total: {{ (total - totalTip ) | divisa }}</p>
-                                            <p class="fw-bold mb-0" [ngClass]="{'h4': empresa.tip === false, 'h6': empresa.tip }" *ngIf="empresa.responsable">Total: {{ (total - totalTip ) | divisa }}</p>
-                                            <p class="h6 fw-bold mb-0" *ngIf="empresa.tip"> Servicio del {{empresa.propina}}%: {{ totalTip | divisa }}</p>
-                                            <p class="h4 fw-bold mb-0" *ngIf="empresa.tip"> Total + Servicio: {{ total | divisa }}</p>
+                                            <p class="h6 fw-bold mb-0" *ngIf="!empresa.responsable">Sub-total: {{ base / 1 | number : '1.2-2' }}</p>
+                                            <p class="h6 fw-bold mb-0" *ngIf="empresa.responsable">Sub-total: {{ base - iva | number : '1.2-2' }}</p>
+                                            <p class="h6 fw-bold mb-0" *ngIf="mesa?.descuento">Descuento: {{ (base * mesa?.porcentaje) /100 | number : '1.2-2' }}</p>
+                                            <p class="h6 fw-bold mb-0" *ngIf="empresa.responsable">IVA: {{ iva | number : '1.2-2' }}</p>
+                                            <p class="fw-bold mb-0" [ngClass]="{'h4': empresa.tip === false, 'h6': empresa.tip }" *ngIf="!empresa.responsable">Total: {{ (total - totalTip ) | number : '1.2-2' }}</p>
+                                            <p class="fw-bold mb-0" [ngClass]="{'h4': empresa.tip === false, 'h6': empresa.tip }" *ngIf="empresa.responsable">Total: {{ (total - totalTip ) | number : '1.2-2' }}</p>
+                                            <p class="h6 fw-bold mb-0" *ngIf="empresa.tip"> Servicio del {{empresa.propina}}%: {{ totalTip | number : '1.2-2' }}</p>
+                                            <p class="h4 fw-bold mb-0" *ngIf="empresa.tip"> Total + Servicio: {{ total | number : '1.2-2' }}</p>
                                             <p class="h4 fw-bold mb-0" *ngIf="empresa.usd"> Total USD: {{ (total / empresa.currencyusd ) | number : '1.2-2' }}</p>
                                             <p class="h4 fw-bold mb-0" *ngIf="empresa.bs"> Total BS: {{ (total / empresa.currencybs ) | number : '1.2-2' }}</p>
                                             
@@ -1922,26 +1947,26 @@ PRODUCT SELECT
             <button class="btn btn-primary" type="button" id="button-addon2" (click)="cambiarValor(1)"> + </button>
         </div>
 
-        <div class="container my-2">
+        <div  class="container my-2">
             <div class="d-flex flex-row gap-4">
                 <div class="form-check form-switch">
-                    <input [disabled]="user.role !== 'ADMIN' && user.role !== 'STAFF' || cDis.checked" #cMayor (change)="mayoreoApp(cMayor.checked)" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                    <input [disabled]="!user.privilegios.mpv || user.role !== 'ADMIN' && user.role !== 'STAFF' || cDis.checked" #cMayor (change)="mayoreoApp(cMayor.checked)" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
                     <label class="form-check-label" for="flexSwitchCheckDefault">Mayoreo</label>
                 </div>
                 <div class="form-check form-switch">
-                    <input [disabled]="user.role !== 'ADMIN' && user.role !== 'STAFF' || cMayor.checked " #cDis (change)="distribuidorApp(cDis.checked)" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefaultDistr">
+                    <input [disabled]="!user.privilegios.mpv || user.role !== 'ADMIN' && user.role !== 'STAFF' || cMayor.checked " #cDis (change)="distribuidorApp(cDis.checked)" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefaultDistr">
                     <label class="form-check-label" for="flexSwitchCheckDefaultDistr">Distribuidor</label>
                 </div>
                 <div class="form-check form-switch">
-                    <input [disabled]="user.role !== 'ADMIN' && user.role !== 'STAFF' && user.role !== 'CASHIER'" #newPri (change)="newPri.checked = newPri.checked" class="form-check-input" type="checkbox" role="switch" id="newPriceC">
+                    <input [disabled]="!user.privilegios.mpv || user.role !== 'ADMIN' && user.role !== 'STAFF' && user.role !== 'CASHIER'" #newPri (change)="newPri.checked = newPri.checked" class="form-check-input" type="checkbox" role="switch" id="newPriceC">
                     <label class="form-check-label" for="newPriceC">Totalizar Precio </label>
                 </div>
             </div>
         </div>
 
-        <label for="pricePr">Precio:</label>
+        <label for="pricePr">Precio:  {{user.privilegios.mpv}} </label>
         <div class="input-group">
-            <input [readOnly]="user.role !== 'ADMIN' && user.role !== 'STAFF' && user.role !== 'CASHIER'" #pricePr type="number" min="0" class="form-control" placeholder="" [(ngModel)]="priceProductSelected">
+            <input [readOnly]="!user.privilegios.mpv || user.role !== 'ADMIN' && user.role !== 'STAFF' && user.role !== 'CASHIER'" #pricePr type="number" min="0" class="form-control" placeholder="" [(ngModel)]="priceProductSelected">
         </div>
 
         <p class="mb-3 text-danger" *ngIf="qtySelect <= 0"> <small> Debes de agregar cantidad </small> </p>

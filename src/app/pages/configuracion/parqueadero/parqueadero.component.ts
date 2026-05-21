@@ -77,9 +77,6 @@ export class ParqueaderoComponent implements OnInit {
 
                   this.user = userService.user;
 
-                  console.log(this.user);
-                  
-
                   this.printWindowSubscription = this.printerService.$printWindowOpen.subscribe(
                     val => { console.log('Print window is open:', val) }
                   );
@@ -112,7 +109,7 @@ export class ParqueaderoComponent implements OnInit {
     this.mesasService.loadMesas(0)
         .subscribe( ({mesas}) => {
           
-          this.ticket = mesas[0].mid;
+          this.ticket = mesas[0].mid!;
 
         })
 
@@ -122,7 +119,7 @@ export class ParqueaderoComponent implements OnInit {
    *  OBTENER DATOS DE LA FACTURA ELECTRONICA
   ==================================================================== */
   public dataDataico: boolean = false;
-  public dataico: DataicoInterface;
+  public dataico!: DataicoInterface;
   loadDataDataico(){
 
     this.dataicoService.loadDataDataico()
@@ -131,9 +128,9 @@ export class ParqueaderoComponent implements OnInit {
           delete dataico.actions._id;
           delete dataico.actions.email;
           delete dataico.actions.attachments;
-          delete dataico.datid;
-          delete dataico.customer;
-          delete dataico.numbering._id;
+          delete (dataico as any).datid;
+          delete (dataico as any).customer;
+          delete (dataico as any).numbering._id;
 
           if (dataico) {
             this.dataDataico = true;
@@ -156,7 +153,7 @@ export class ParqueaderoComponent implements OnInit {
     this.productService.cargarProductoCodigo('0000000')
         .subscribe( (product) => {
 
-          this.product = product.pid;
+          this.product = product.pid!;
           
 
         })
@@ -194,7 +191,7 @@ export class ParqueaderoComponent implements OnInit {
   /** ================================================================
    *   CARGAR DATOS DE LA EMPRESA
   ==================================================================== */
-  public empresa: Datos;
+  public empresa!: Datos;
   public ticketHeader: any;
   public ticketfooter: any;
   cargarDatos(){
@@ -203,8 +200,8 @@ export class ParqueaderoComponent implements OnInit {
         .subscribe( datos => {
           this.empresa = datos;   
           
-          this.ticketHeader =  this.empresa.header.split('\n');
-          this.ticketfooter =  this.empresa.footer.split('\n');
+          this.ticketHeader =  this.empresa?.header!.split('\n');
+          this.ticketfooter =  this.empresa?.footer!.split('\n');
           
         }, (err) => { Swal.fire('Error', err.error.msg, 'error'); });
   }
@@ -213,7 +210,7 @@ export class ParqueaderoComponent implements OnInit {
    *   PRINTER
   ==================================================================== */
   @ViewChild('PrintTemplate')
-  private PrintTemplateTpl: TemplateRef<any>;
+  private PrintTemplateTpl!: TemplateRef<any>;
 
   title = 'ngx-printer-demo';
 
@@ -253,59 +250,108 @@ export class ParqueaderoComponent implements OnInit {
   /** ================================================================
    *   CHECKIN PARQUEO
   ==================================================================== */
-  public vCheckin: Parqueo;
-  @ViewChild('inP') inP: ElementRef;
-  @ViewChild('btnV') btnV: ElementRef;
-  @ViewChild('btnVC') btnVC: ElementRef;
-  checkin(placa: string){
+  public vCheckin!: Parqueo;
+  @ViewChild('inP') inP!: ElementRef;
+  @ViewChild('btnV') btnV!: ElementRef;
+  @ViewChild('btnVC') btnVC!: ElementRef;
+  checkin(placa: string) {
 
-    if (placa.length === 0) {
-      return;
-    }
+  if (!placa || placa.trim().length === 0) return;
 
-    if (this.user.cerrada) {
-      Swal.fire('Atención', 'Debes de abrir caja para poder ingresar los vehiculos al parqueadero', 'warning');
-      return;
-    }
+  if (this.user.cerrada) {
+    Swal.fire('Atención', 'Debes abrir caja para poder ingresar vehículos', 'warning');
+    return;
+  }
 
-    let now = new Date();
-    now.setSeconds(0, 0); // Establece los segundos y milisegundos a 0
+  // Guardar SIEMPRE el tiempo correcto en milisegundos
+  const timestamp = Date.now();
 
-    let timestamp = now.getTime(); // Obtiene el tiempo en milisegundos desde el 1 de enero de 1970
+  this.parqueoService.createParqueo({
+      placa,
+      checkin: timestamp,
+      turno: this.user.turno
+    })
+    .subscribe(({ parqueo }) => {
 
-    this.parqueoService.createParqueo({placa, checkin: timestamp, turno: this.user.turno})
-        .subscribe( ({parqueo}) => {
+      this.vCheckin = parqueo;
+      this.parqueos.push(parqueo);
 
-          this.vCheckin = parqueo;
+      this.inP.nativeElement.value = '';
+      this.inP.nativeElement.focus();
 
-          this.parqueos.push(parqueo);
+      setTimeout(() => {
+        this.printDiv('printDiv1');
+      }, 1500);
 
-          this.inP.nativeElement.value = '';
-          this.inP.nativeElement.focus = true;
+    }, (err) => {
 
-          setTimeout( () => {
-            this.printDiv('printDiv1')
-          }, 1500 )
+      Swal.fire('Error', err.error.msg, 'error');
+
+      if (err.error.msg === 'No existe vehiculo con esta placa') {
+        this.newCarForm.setValue({
+          placa: placa,
+          cliente: '',
+          typeparq: 'none'
+        });
+
+        this.btnV.nativeElement.click();
+        this.btnVC.nativeElement.click();
+      }
+
+    });
+
+}
+
+
+  // checkin(placa: string){
+
+  //   if (placa.length === 0) {
+  //     return;
+  //   }
+
+  //   if (this.user.cerrada) {
+  //     Swal.fire('Atención', 'Debes de abrir caja para poder ingresar los vehiculos al parqueadero', 'warning');
+  //     return;
+  //   }
+
+  //   let now = new Date();
+  //   now.setSeconds(0, 0); // Establece los segundos y milisegundos a 0
+
+  //   let timestamp = now.getTime(); // Obtiene el tiempo en milisegundos desde el 1 de enero de 1970
+
+  //   this.parqueoService.createParqueo({placa, checkin: timestamp, turno: this.user.turno})
+  //       .subscribe( ({parqueo}) => {
+
+  //         this.vCheckin = parqueo;
+
+  //         this.parqueos.push(parqueo);
+
+  //         this.inP.nativeElement.value = '';
+  //         this.inP.nativeElement.focus = true;
+
+  //         setTimeout( () => {
+  //           this.printDiv('printDiv1')
+  //         }, 1500 )
           
 
-        }, (err) => {
-          console.log(err);
-          Swal.fire('Error', err.error.msg, 'error');
+  //       }, (err) => {
+  //         console.log(err);
+  //         Swal.fire('Error', err.error.msg, 'error');
 
-          if (err.error.msg === 'No existe vehiculo con esta placa') {
-            this.newCarForm.setValue({
-              placa: placa,
-              cliente: '',
-              typeparq: 'none'
-            })
+  //         if (err.error.msg === 'No existe vehiculo con esta placa') {
+  //           this.newCarForm.setValue({
+  //             placa: placa,
+  //             cliente: '',
+  //             typeparq: 'none'
+  //           })
 
-            this.btnV.nativeElement.click();
-            this.btnVC.nativeElement.click();
-          }
+  //           this.btnV.nativeElement.click();
+  //           this.btnVC.nativeElement.click();
+  //         }
 
-        })
+  //       })
 
-  }
+  // }
 
   /** ================================================================
    *   NUEVO MONTO
@@ -327,135 +373,217 @@ export class ParqueaderoComponent implements OnInit {
   @ViewChild ('montoP') montoP!: ElementRef;
   public payments: any[] = [];
   public restante: number = 0;
-  addPay(monto: any, type: string){
+  addPay(monto: any, type: string) {
+      monto = Number(monto);
 
-    monto = Number(monto);
-    if (this.payments.length > 0 && this.restante >= 0 ) {
-      return;
-    }
+      const pagadoAcumulado = this.payments.reduce((acc, pay) => acc + pay.amount, 0);
+      
+      const loQueFaltaba = this.total - pagadoAcumulado;
+      if (loQueFaltaba <= 0) {
+          console.log("El total ya está cubierto.");
+          return;
+      }
 
-    if(monto > (this.restante * -1 ) && this.restante < 0){
-      monto = (this.restante * -1);
-    }
+      let montoARegistrar = monto;
+      if (monto > loQueFaltaba) {
+          montoARegistrar = loQueFaltaba;
+      }
 
-    this.payments.push({
-      type,
-      amount: monto,
-      description: ''
-    });
+      this.payments.push({
+          type,
+          amount: montoARegistrar,
+          description: ''
+      });
 
-    this.restante = 0;
-    for (const pay of this.payments) {
-      this.restante = this.restante + pay.monto;
-    }
-
-    this.restante = this.restante - this.total;    
-
+      const nuevoTotalPagadoConExcedente = pagadoAcumulado + monto;
+      this.restante = this.total - nuevoTotalPagadoConExcedente;
   }
 
-  delPay(pay: any){    
+  delPay(index: number) {
 
-    this.payments.splice( pay, 1 );
-    this.restante = 0;
-    for (const pay of this.payments) {
-      this.restante = this.restante + pay.monto;
+    if (index > -1) {
+        this.payments.splice(index, 1);
     }
 
-    this.restante = this.restante - this.total;
-
+    const totalPagadoActualmente = this.payments.reduce((acc, pay) => acc + pay.amount, 0);
+    this.restante = this.total - totalPagadoActualmente;
   }
 
 
   /** ================================================================
    *   CHECKOUT PARQUEO 
   ==================================================================== */
-  public vCheckout: Parqueo;
-  @ViewChild('modalCheckOut', { static: true }) modalCheckOut: TemplateRef<any>;
-  @ViewChild('outP') outP: ElementRef;
+  public vCheckout!: Parqueo;
+  @ViewChild('modalCheckOut', { static: true }) modalCheckOut!: TemplateRef<any>;
+  @ViewChild('outP') outP!: ElementRef;
   public total: number = 0;
   public subtotal: number = 0;
   public iva: number = 0;
   public parq: any;
   public diff: any;
   public plenas: number = 0;
-  checkout( placa: string ){
-    
+
+  checkout(placa: string) {
+
     this.payments = [];
     this.total = 0;
     this.subtotal = 0;
     this.iva = 0;
     this.plenas = 0;
 
-
-    let parq = this.parqueos.find( (p) => {
-      return p.placa === placa.trim();
-    });
+    const parq = this.parqueos.find(p => p.placa === placa.trim());
 
     if (!parq) {
-      Swal.fire('Error', 'No existe ningun vehiculo con esta placa en el parqueadero', 'warning');
-      return
+      Swal.fire('Error', 'No existe ningún vehículo con esta placa en el parqueadero', 'warning');
+      return;
     }
 
     this.parq = parq;
 
-    // CALCULAR DIFERENCIA
-    let cal = 1000*60;
-    if(parq.car.typeparq.type === 'Horas'){      
-      cal = 1000*60*60;
+    const tipo = parq.car.typeparq.type; // Minutos / Horas
+    const precio = parq.car.typeparq.price;
+    const tax = parq.car.typeparq.tax.valor;
+    const tplena = parq.car.typeparq.tplena;
+    const precioPlena = parq.car.typeparq.plena;
+
+    // =============================
+    // CALCULAR DIFERENCIA DE TIEMPO
+    // =============================
+    const diffMs = new Date().getTime() - parq.checkin;
+
+    if (tipo === 'Minutos') {
+      this.diff = Math.floor(diffMs / (1000 * 60)); // minutos completos
+    } else if (tipo === 'Horas') {
+      this.diff = Math.ceil(diffMs / (1000 * 60 * 60)); // horas completas
     }
-    
-    this.diff =  (new Date().getTime() - parq.checkin)/ cal;
-    this.diff = parseFloat(this.diff.toFixed(2));
-    
-    if (this.diff < 1 && parq.car.typeparq.type !== 'Horas') {
+
+    // Si es menos de 1 minuto → 0 (solo aplica a minutos)
+    if (this.diff < 1 && tipo !== 'Horas') {
       this.diff = 0;
     }
 
-    // REDONDEAR AL NUMERO MENOR SI SON MINUTOS
-    if(parq.car.typeparq.type === 'Minutos'){      
-      if (this.diff > 0) {        
-        this.diff = Math.floor(this.diff);
-      }      
-    }    
+    // =============================
+    // MANEJO DE PLENAS
+    // =============================
+    let tiempoRestante = this.diff;
+    this.plenas = 0;
 
-    this.total = this.diff * parq.car.typeparq.price;    
-    
-    if (this.total < parq.car.typeparq.price) {
-      this.total = parq.car.typeparq.price;      
-    }
-    
-    if (this.diff >= parq.car.typeparq.tplena ) {
-      // this.total = parq.car.typeparq.plena;
-      let w = true;
-      
-      while(w){
-        if (this.diff >= parq.car.typeparq.tplena) {
-          this.plenas += 1;          
+    if (tplena > 0) {
+      // Calcular cuántas plenas entran
+      this.plenas = Math.floor(tiempoRestante / tplena);
 
-          this.diff -= parq.car.typeparq.tplena;
-        }else{
-          this.total = this.diff * parq.car.typeparq.price;
-          w = false;
-        }
-      }
-
+      // Tiempo restante después de plenas
+      tiempoRestante = tiempoRestante % tplena;
     }
 
+    // =============================
+    // CALCULAR TOTAL
+    // =============================
+    this.total = 0;
+
+    // Total de plenas
     if (this.plenas > 0) {
-      this.total += (this.plenas * parq.car.typeparq.plena)      
+      this.total += this.plenas * precioPlena;
     }
-    
-    this.subtotal = parseFloat(((this.total *100)/(parq.car.typeparq.tax.valor + 100)).toFixed(2));
-    this.iva = parseFloat((this.total-this.subtotal).toFixed(2));
+
+    // Total del tiempo restante
+    if (tiempoRestante > 0) {
+      this.total += tiempoRestante * precio;
+    }
+
+    // Mínimo cobrar 1 unidad
+    if (this.total < precio) {
+      this.total = precio;
+    }
+
+    // =============================
+    // SUBTOTAL E IVA
+    // =============================
+    this.subtotal = parseFloat(((this.total * 100) / (tax + 100)).toFixed(2));
+    this.iva = parseFloat((this.total - this.subtotal).toFixed(2));
 
     this.modal.open(this.modalCheckOut);
-    
   }
+
+
+  // checkout( placa: string ){
+    
+  //   this.payments = [];
+  //   this.total = 0;
+  //   this.subtotal = 0;
+  //   this.iva = 0;
+  //   this.plenas = 0;
+
+
+  //   let parq = this.parqueos.find( (p) => {
+  //     return p.placa === placa.trim();
+  //   });
+
+  //   if (!parq) {
+  //     Swal.fire('Error', 'No existe ningun vehiculo con esta placa en el parqueadero', 'warning');
+  //     return
+  //   }
+
+  //   this.parq = parq;
+
+  //   // CALCULAR DIFERENCIA
+  //   let cal = 1000*60;
+  //   if(parq.car.typeparq.type === 'Horas'){      
+  //     cal = 1000*60*60;
+  //   }
+    
+  //   this.diff =  (new Date().getTime() - parq.checkin)/ cal;
+  //   this.diff = parseFloat(this.diff.toFixed(2));
+    
+  //   if (this.diff < 1 && parq.car.typeparq.type !== 'Horas') {
+  //     this.diff = 0;
+  //   }
+
+  //   // REDONDEAR AL NUMERO MENOR SI SON MINUTOS
+  //   if(parq.car.typeparq.type === 'Minutos'){      
+  //     if (this.diff > 0) {        
+  //       this.diff = Math.floor(this.diff);
+  //     }      
+  //   }    
+
+  //   this.total = this.diff * parq.car.typeparq.price;    
+    
+  //   if (this.total < parq.car.typeparq.price) {
+  //     this.total = parq.car.typeparq.price;      
+  //   }
+    
+  //   if (this.diff >= parq.car.typeparq.tplena ) {
+  //     // this.total = parq.car.typeparq.plena;
+  //     let w = true;
+      
+  //     while(w){
+  //       if (this.diff >= parq.car.typeparq.tplena) {
+  //         this.plenas += 1;          
+
+  //         this.diff -= parq.car.typeparq.tplena;
+  //       }else{
+  //         this.total = this.diff * parq.car.typeparq.price;
+  //         w = false;
+  //       }
+  //     }
+
+  //   }
+
+  //   if (this.plenas > 0) {
+  //     this.total += (this.plenas * parq.car.typeparq.plena)      
+  //   }
+    
+  //   this.subtotal = parseFloat(((this.total *100)/(parq.car.typeparq.tax.valor + 100)).toFixed(2));
+  //   this.iva = parseFloat((this.total-this.subtotal).toFixed(2));
+
+  //   this.modal.open(this.modalCheckOut);
+    
+  // }
 
   /** ================================================================
    *   CREAR FACTURA
   ==================================================================== */
-  public factura: LoadInvoice;
+  public factura!: LoadInvoice;
   public facturando: boolean = false;
   crearFactura( send_dian: boolean ){
 
@@ -512,8 +640,8 @@ export class ParqueaderoComponent implements OnInit {
             data.client = this.clienteTemp.cid;
           }
 
-          this.invoiceService.createInvoice(data, this.user.turno)
-              .subscribe( (resp:{ok: boolean, invoice: LoadInvoice } ) => {
+          this.invoiceService.createInvoice(data, this.user.turno!)
+              .subscribe( (resp: any ) => {
 
                 this.factura = resp.invoice;
 
@@ -522,7 +650,7 @@ export class ParqueaderoComponent implements OnInit {
                 if (this.empresa.electronica && send_dian) {
                   
                   this.electronicaService.postFacturaDataico(this.factura, this.dataico, this.impuestos)
-                      .subscribe( (resp: {status, invoice, ok}) => {
+                      .subscribe( (resp: any) => {
                                                 
                         if (resp.status === 500) {
                           Swal.fire('Atención', 'No se pudo enviar la factura electronica a la DIAN, ve a la factura y vuelve a enviarla, si el problema persiste, ponte en contacto', 'warning');
@@ -679,10 +807,10 @@ export class ParqueaderoComponent implements OnInit {
   /** ================================================================
    *  SELECT CATEGORY
   ==================================================================== */
-  public categoryID: string;
+  public categoryID!: string;
   selectCategory(category: Typeparq){
 
-    this.categoryID = category.tpid;
+    this.categoryID = category.tpid!;
 
     this.upCategoryForm.setValue({
       name: category.name,
@@ -781,7 +909,7 @@ export class ParqueaderoComponent implements OnInit {
   /** ================================================================
    *   CREATE CAR
   ==================================================================== */
-  @ViewChild('mVehiculo') mVehiculo: ElementRef;
+  @ViewChild('mVehiculo') mVehiculo!: ElementRef;
   public newCarSubmitted: boolean = false;
   public newCarForm = this.fb.group({
     placa: ['', [Validators.required]],
@@ -835,10 +963,10 @@ export class ParqueaderoComponent implements OnInit {
   /** ================================================================
    *   SELECT CAR
   ==================================================================== */
-  public carID: string;
+  public carID!: string;
   selectCar( car: Car ){    
 
-    this.carID = car.carid;
+    this.carID = car.carid!;
 
     this.upCarForm.setValue({
       placa: car.placa,
@@ -988,7 +1116,7 @@ export class ParqueaderoComponent implements OnInit {
 
           
           this.turnosService.createCaja(open)
-            .subscribe( (resp:{ ok:boolean, turno:any}) => {
+            .subscribe( (resp: any) => {
                 this.userService.user.turno = resp.turno.tid;
                 this.userService.user.cerrada = false;                
                 this.cargarTurno();
@@ -1007,15 +1135,15 @@ export class ParqueaderoComponent implements OnInit {
   /** ================================================================
    *   REGISTRAR ENTRADAS Y SALIDAS
   ==================================================================== */
-  public turno: LoadTurno;
+  public turno!: LoadTurno;
   cargarTurno(){
 
     if (this.user.cerrada === false) {
       
-      this.turnosService.getTurnoId(this.user.turno)
+      this.turnosService.getTurnoId(this.user.turno!)
           .subscribe( (turno) => {
             this.turno = turno;
-            this.movimientos = turno.movements;                    
+            this.movimientos = turno.movements!;                    
           });
     }
 
@@ -1024,10 +1152,10 @@ export class ParqueaderoComponent implements OnInit {
   /** ================================================================
    *   REGISTRAR ENTRADAS Y SALIDAS
   ==================================================================== */
-  @ViewChild('montoE') montoE: ElementRef;
-  @ViewChild('descriptionE') descriptionE: ElementRef;
-  @ViewChild('montoS') montoS: ElementRef;
-  @ViewChild('descriptionS') descriptionS: ElementRef;
+  @ViewChild('montoE') montoE!: ElementRef;
+  @ViewChild('descriptionE') descriptionE!: ElementRef;
+  @ViewChild('montoS') montoS!: ElementRef;
+  @ViewChild('descriptionS') descriptionS!: ElementRef;
 
   public movimientos: _movements[] = [];
 
@@ -1062,7 +1190,7 @@ export class ParqueaderoComponent implements OnInit {
     // AGREGAR EL MOVIMIENTO AL OBJECTO
     
     // GUARDAR ACTUALIZAR EN LA BASE DE DATOS
-    this.turnosService.updateTurno(this.turno, this.turno.tid)
+    this.turnosService.updateTurno(this.turno, this.turno.tid!)
     .subscribe((resp) => {
       
       this.montoE.nativeElement.value = '';
@@ -1141,7 +1269,7 @@ export class ParqueaderoComponent implements OnInit {
   public listaClientes: Client[] = [];
   public listaClientesTemp: Client[] = [];
   public totalClientes: number = 0;
-  public clienteTemp: Client;
+  public clienteTemp: Client | undefined;
 
   /** ================================================================
    *  BUSCAR CLIENTE
@@ -1186,7 +1314,7 @@ export class ParqueaderoComponent implements OnInit {
   /** ================================================================
    *  SELECCIONAR CLIENTE searchClient
   ==================================================================== */
-  @ViewChild('searchClient') searchClient: ElementRef;
+  @ViewChild('searchClient') searchClient!: ElementRef;
   seleccionarCliente(cliente: Client){
     
     this.clienteTemp = cliente;
@@ -1201,7 +1329,7 @@ export class ParqueaderoComponent implements OnInit {
   /** ================================================================
    *  CREAR CLIENTE
   ==================================================================== */
-  @ViewChild('btnCreateClient') btnCreateClient: ElementRef<any>;
+  @ViewChild('btnCreateClient') btnCreateClient!: ElementRef<any>;
   public formSubmitted: boolean = false;
   public newClientForm = this.fb.group({
     party_type: ['PERSONA_NATURAL', [Validators.required]],
@@ -1238,7 +1366,7 @@ export class ParqueaderoComponent implements OnInit {
     // OBTENER CODIGO DEL DEPARTAMENTO Y CIUDAD
     let codigoD = await this.departments.find( departamento => this.newClientForm.value.department === departamento.departamento );
     let codigoC = await this.cities.find( city => this.newClientForm.value.city === city.ciudad );
-    this.newClientForm.value.codigodepartamento  = codigoD.codigo;
+    this.newClientForm.value.codigodepartamento  = codigoD?.codigo;
     this.newClientForm.value.codigociudad  = codigoC.codigo;
 
     if (this.newClientForm.value.party_type === 'PERSONA_NATURAL') {      
@@ -1268,7 +1396,7 @@ export class ParqueaderoComponent implements OnInit {
   ==================================================================== */
   campoValido(campo: string): boolean{
 
-    if (this.formSubmitted && this.newClientForm.get(campo).invalid) {
+    if (this.formSubmitted && this.newClientForm.get(campo)?.invalid) {
       return true;
     }else{
       return false;

@@ -14,6 +14,9 @@ import { Carrito, LoadCarrito } from '../../interfaces/carrito.interface';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user.model';
+import { EmpresaService } from 'src/app/services/empresa.service';
+import { Datos, printer } from 'src/app/models/empresa.model';
+import { PrinterService } from 'src/app/services/printer.service';
 
 @Component({
   selector: 'app-comanda',
@@ -43,7 +46,9 @@ export class ComandaComponent implements OnInit {
 
   constructor(  private mesasService: MesasService,
                 private printerService: NgxPrinterService,
+                private imprimirService: PrinterService,
                 private router: Router,
+                private empresaService: EmpresaService,
                 private userService:UserService) {
 
                   const reloadMesa = setInterval( () => {
@@ -84,7 +89,23 @@ export class ComandaComponent implements OnInit {
 
     // CARGAR MESAS
     this.cargarMesas();
+    this.loadEmpresa();
   }
+
+  /** ================================================================
+   *   LOAD EMPRESA
+  ==================================================================== */
+  public empresa: Datos;
+  loadEmpresa(){
+
+    this.empresaService.getDatos()
+        .subscribe( (resp) => {
+          this.empresa = resp;          
+        })
+
+  }
+
+  
 
   /** ================================================================
    *   IMPRIMIR
@@ -234,6 +255,47 @@ export class ComandaComponent implements OnInit {
       }
 
     });
+
+  }
+
+  /** ================================================================
+   *   IMPRIMIR EN RED Orden # {{ comanda?.fecha | date: 'H-ms' }}
+  ==================================================================== */
+  imprimir(impresora: printer){
+
+    let data: any = {
+      impresora,
+      comanda: this.comanda.comanda,
+      orden: `Orden # ${new Date(this.comanda.fecha).getHours()}-${new Date(this.comanda.fecha).getMinutes()}${new Date(this.comanda.fecha).getSeconds()}`,
+      mesa: this.comanda.name,
+      notas: this.comanda.nota,
+      mesero: this.comanda.mesero.name,
+      fecha: this.comanda.fecha
+      
+    }
+    
+    this.imprimirService.imprimirRed(data, this.empresa.ipserver)
+        .subscribe( (resp) => {
+          
+          Swal.fire({
+            toast: true,
+            timer:2000,
+            text: 'Se ha impreso la comanda correctamente',
+            icon: 'success',
+            showConfirmButton: false,
+            position: 'top-right'
+          })
+
+          this.comanda.comanda.map( (item) => {
+            if (item.estado === 'pendiente') {
+              this.cambiarEstado(this.comanda.comanda, item.product, 'Preparando', this.comanda);
+            }
+          });
+          
+        }, (err) => {
+          console.log(err);          
+          Swal.fire('Error', err.error.msg, 'error');
+        })
 
   }
 

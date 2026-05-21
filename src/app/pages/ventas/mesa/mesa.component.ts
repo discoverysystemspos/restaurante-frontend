@@ -56,6 +56,7 @@ import { DataicoInterface } from 'src/app/interfaces/dataico.interface';
 import { Entradas } from 'src/app/models/entradas.model';
 import { Vehiculo } from 'src/app/models/vehiculos.model';
 import { FileUploadService } from 'src/app/services/file-upload.service';
+import { PrinterService } from 'src/app/services/printer.service';
 
 interface _Department {
   codigo: string,
@@ -118,6 +119,7 @@ export class MesaComponent implements OnInit {
                 private dataicoService: DataicoService,
                 private electronicaService: ElectronicaService,
                 private http: HttpClient,
+                private cajonService: PrinterService,
                 private fileUploadService: FileUploadService) {
 
                   // CARGAR INFORMACION DEL USUARIO
@@ -127,6 +129,9 @@ export class MesaComponent implements OnInit {
                   .subscribe(val => {});
               
                   this.$printItems = this.printerService.$printItems;
+
+                  console.log(this.user);
+                  
 
                   
 
@@ -153,6 +158,41 @@ export class MesaComponent implements OnInit {
       if (event.key === '*') {
         this.montoAdd.nativeElement.focus();
       }
+
+      if (event.key === 'F8') {
+        console.log('Abriendo Cajon');
+
+        this.cajonService.openCashDrawer();
+        
+        // this.cajonService.openCashDrawer()
+        //     .subscribe( resp => {
+
+        //       // Swal.fire({
+        //       //   toast: true,
+        //       //   timer: 2000,
+        //       //   text: msg,
+        //       //   icon: (ok)? 'success': 'error'
+        //       // })
+
+        //     }, (err) => {
+        //       console.log(err);
+        //       Swal.fire('Error', err.error.msg, 'error');
+              
+        //     })
+      }
+
+      if (event.key === 'F9') {
+        this.cajonService.pingCajon()
+            .subscribe( ({ok, msg}) => {
+              Swal.fire('', msg, 'success')
+            }, (err)=> {
+              console.log(err);
+              Swal.fire('Error', err.error.msg, 'error');
+              
+            })
+      }
+
+      
 
     });    
 
@@ -249,7 +289,7 @@ export class MesaComponent implements OnInit {
    *  OBTENER DATOS DE LA FACTURA ELECTRONICA
   ==================================================================== */
   public dataDataico: boolean = false;
-  public dataico: DataicoInterface;
+  public dataico!: DataicoInterface;
   loadDataDataico(){
 
     this.dataicoService.loadDataDataico()
@@ -383,7 +423,7 @@ export class MesaComponent implements OnInit {
   /** ================================================================
    *   CARGAR DATOS DE LA EMPRESA
   ==================================================================== */
-  public empresa: Datos;
+  public empresa!: Datos;
   public ticketHeader: any;
   public ticketfooter: any;
   cargarDatos(){
@@ -392,8 +432,8 @@ export class MesaComponent implements OnInit {
         .subscribe( datos => {
           this.empresa = datos;
           
-          this.ticketHeader =  this.empresa.header.split('\n');
-          this.ticketfooter =  this.empresa.footer.split('\n');
+          this.ticketHeader =  this.empresa.header!.split('\n');
+          this.ticketfooter =  this.empresa.footer!.split('\n');
 
           this.loadDataDataico();
 
@@ -415,8 +455,8 @@ export class MesaComponent implements OnInit {
   /** ================================================================
    *  CARGAR DATOS DE LA MESA
   ==================================================================== */
-  public mesaID: string;
-  public meserID: string;
+  public mesaID!: string;
+  public meserID!: string;
   cargarMesa(id: string){
 
     this.productUp = [];
@@ -993,6 +1033,11 @@ export class MesaComponent implements OnInit {
   }
 
   carritoTemp( product: any, qty: number, precio: number, nota: string = '', newPrice: boolean = false ){
+
+    if (!product.department) {
+      Swal.fire('Error', `El producto no tiene un departamento asignado, porfavor asigna un departamento para "${product.name}"`, 'error');
+      return;
+    }
 
     // SI ES UNA MESA
     if (this.mesa.img === 'mesa.svg') {
@@ -1671,7 +1716,14 @@ export class MesaComponent implements OnInit {
             this.impuestos.map( (impuesto) => {            
               
               if (impuesto.taxid === this.carrito[i].product.taxid) {
-                impuesto.total += this.carrito[i].iva;
+
+                if (this.mesa.descuento) {
+                  impuesto.total += this.carrito[i].iva;
+                  impuesto.total = impuesto.total - Math.round((impuesto.total * this.mesa.porcentaje)/100);
+                  
+                }else{
+                  impuesto.total += this.carrito[i].iva;
+                }
               }
 
             })
@@ -1731,6 +1783,8 @@ export class MesaComponent implements OnInit {
     this.totalTip = 0;
     this.totalItems = 0;
 
+    console.log(this.mesa)
+
     this.impuestos.map( (impuesto) => {
       impuesto.total = 0;
     });
@@ -1755,7 +1809,13 @@ export class MesaComponent implements OnInit {
           this.impuestos.map( (impuesto) => {            
             
             if (impuesto.taxid === this.carrito[i].product.taxid) {
-              impuesto.total += this.carrito[i].iva;
+              if (this.mesa.descuento) {
+                impuesto.total += this.carrito[i].iva;
+                impuesto.total = impuesto.total - Math.round((impuesto.total * this.mesa.porcentaje)/100);
+                
+              }else{
+                impuesto.total += this.carrito[i].iva;
+              }
             }
 
           })
@@ -1771,7 +1831,11 @@ export class MesaComponent implements OnInit {
       }
 
       if (this.mesa.descuento) {
-        this.total = this.total - Math.round((this.total * this.mesa.porcentaje)/100);
+        this.total = this.total - ((this.total * this.mesa.porcentaje)/100);
+        if (this.iva > 0) {
+          this.iva = this.iva - ((this.iva * this.mesa.porcentaje)/100);
+        }
+
       }
 
       if (this.empresa?.impuesto) {
@@ -2629,16 +2693,17 @@ export class MesaComponent implements OnInit {
   public factura: LoadInvoice;
   public facturando: boolean = false;
   
-  crearFactura( send_dian: boolean  = false){
+  crearFactura( send_dian: boolean  = false, imprimir: boolean = false){
+
+    this.facturando = true;
 
     if (send_dian) {
       if (!this.empresa.electronica) {
+        this.facturando = false;
         Swal.fire('Atención', 'Debes de configurar la facturación electronica para crear facturas electronicas', 'info');
         return;
       }
-    }
-
-    this.facturando = true;
+    }    
 
     if(!this.credit){
 
@@ -2725,9 +2790,7 @@ export class MesaComponent implements OnInit {
     if (this.empresa.tip) {
       this.invoiceForm.value.tip = Number(this.tipIn.nativeElement.value);
       this.invoiceForm.value.amount = this.total - this.totalTip;
-    }
-
-    
+    }   
 
     try {
       
@@ -2800,7 +2863,7 @@ export class MesaComponent implements OnInit {
                           this.factura.number = resp.invoice.number;
                         }
 
-                        if (this.empresa.printpos) {              
+                        if (this.empresa.printpos && !imprimir) {              
                           // window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
                           // IMPRIMIR FACTURA
                           setTimeout( () => {
@@ -2808,10 +2871,8 @@ export class MesaComponent implements OnInit {
                           },2000);
                           
                         }else{
+                          this.cajonService.openCashDrawer();
                           window.open(`./dashboard/factura/${ this.factura.iid }`, '_blank');
-                          setTimeout( () => {             
-                            window.location.reload();
-                          },1000);
                         }
                         
                       }, (err) => {
@@ -2823,7 +2884,7 @@ export class MesaComponent implements OnInit {
                   
                 }else{
 
-                  if (this.empresa.printpos) {              
+                  if (this.empresa.printpos && !imprimir) {              
                     // window.open(`./dashboard/ventas/print/${ resp.invoice.iid }`, '_blank');
                     // IMPRIMIR FACTURA
                     setTimeout( () => {
@@ -2831,10 +2892,9 @@ export class MesaComponent implements OnInit {
                     },2000);
                     
                   }else{
+                    this.cajonService.openCashDrawer();
                     window.open(`./dashboard/factura/${ this.factura.iid }`, '_blank');
-                    setTimeout( () => {             
-                      window.location.reload();
-                    },1000);
+                    
                   }
                 }
 
