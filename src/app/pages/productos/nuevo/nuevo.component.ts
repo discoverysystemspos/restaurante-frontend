@@ -28,7 +28,7 @@ import { Impuestos } from '../../../models/impuestos.model';
 })
 export class NuevoComponent implements OnInit {
   
-  public producto: Product;
+  public producto!: Product;
   public kits: Kit[] = []; 
 
   constructor( private fb: FormBuilder,
@@ -65,7 +65,7 @@ export class NuevoComponent implements OnInit {
    *   IMPORTAR EXCEL
   ==================================================================== */
   arrayBuffer:any;
-  file:File;
+  file!:File;
   public totalItems: number = 0;
   public sendExcel: boolean = false;
 
@@ -155,7 +155,7 @@ export class NuevoComponent implements OnInit {
   ==================================================================== */
   public sinResultados = false;
   public cargando = false;
-  public searchInput:string;
+  public searchInput:string = '';
   public searchProduct: Product[] = [];
 
   buscar(termino: string){
@@ -197,10 +197,10 @@ export class NuevoComponent implements OnInit {
   /** ================================================================
    *   SELECCIONAR PRODUCTO PARA EL PAQUETE O KIT
   ==================================================================== */
-  @ViewChild('search') search: ElementRef;
-  @ViewChild('qty') qty: ElementRef;
+  @ViewChild('search') search!: ElementRef;
+  @ViewChild('qty') qty!: ElementRef;
   
-  public seleKit: Product;
+  public seleKit!: Product;
   public inProducto:string = '';
   public btnAddKit: string = 'disabled';
 
@@ -236,7 +236,7 @@ export class NuevoComponent implements OnInit {
     this.kits.push({
       qty, 
       product: {
-        _id: this.seleKit.pid,
+        _id: this.seleKit.pid!,
         name: this.seleKit.name
       }
     });
@@ -301,7 +301,7 @@ export class NuevoComponent implements OnInit {
     }
 
     // CARGAMOS EL PRECIO
-    this.productoForm.value.price = this.precioN;
+    this.productoForm.value.price = this.precioN.toFixed(0);
     this.productoForm.value.gain = this.gananciaN;
     
     this.productoForm.value.impuesto = this.impuesto;
@@ -383,7 +383,7 @@ export class NuevoComponent implements OnInit {
         
         porcentaje = (this.costoN * this.gananciaN)/100;
         
-        this.precioN = (this.costoN / ( 1 - (this.gananciaN / 100)));     
+        this.precioN = (this.costoN / ( 1 - (this.gananciaN / 100))).toFixed(0) as unknown as number;     
 
         break;
       case 'ganancia':
@@ -392,7 +392,7 @@ export class NuevoComponent implements OnInit {
         
         porcentaje = (this.costoN * this.gananciaN)/100;
 
-        this.precioN = (this.costoN / ( 1 - (this.gananciaN / 100)));   
+        this.precioN = (this.costoN / ( 1 - (this.gananciaN / 100))).toFixed(0) as unknown as number;   
         
         break;
         
@@ -428,7 +428,7 @@ export class NuevoComponent implements OnInit {
       
       
 
-      this.pIva.nativeElement.value = Math.round( this.productoForm.value.price * ((tax.valor / 100) +1 ));
+      this.pIva.nativeElement.value = Math.round( this.productoForm.value.price * ((tax!.valor / 100) +1 ));
     }
     
   }
@@ -441,10 +441,10 @@ export class NuevoComponent implements OnInit {
   /** ================================================================
    *  PRECIO CON IVA
    ==================================================================== */
-  public selectTax: string;
+  public selectTax!: string;
 
-  @ViewChild('pIva') pIva: ElementRef;
-  @ViewChild('tax') tax: ElementRef;
+  @ViewChild('pIva') pIva!: ElementRef;
+  @ViewChild('tax') tax!: ElementRef;
   precioIva(){
 
     let tax = this.impuestos.find( taxS =>  {
@@ -458,9 +458,9 @@ export class NuevoComponent implements OnInit {
 
     let precio = 0;
 
-    precio = this.pIva.nativeElement.value / ((tax.valor / 100)+1);
+    precio = this.pIva.nativeElement.value / ((tax!.valor / 100)+1);
 
-    this.porcentaje('precio', precio.toFixed(2));
+    this.porcentaje('precio', precio.toFixed(0));
 
   }
 
@@ -469,7 +469,7 @@ export class NuevoComponent implements OnInit {
   ==================================================================== */
   campoValido(campo: string): boolean{
 
-    if ( this.productoForm.get(campo).invalid &&  this.formSubmitted) {  
+    if ( this.productoForm.get(campo)!.invalid &&  this.formSubmitted) {  
       return true;      
     } else{            
       return false;

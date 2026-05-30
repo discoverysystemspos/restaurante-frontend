@@ -28,9 +28,9 @@ import { Impuestos } from '../../models/impuestos.model';
 
 export class ProductoComponent implements OnInit {
 
-  public producto: Product;
+  public producto!: Product;
 
-  public stockP: number;
+  public stockP!: number;
 
   public searchProduct: Product[] = [];
   public kits: Kit[] = [];  
@@ -79,11 +79,11 @@ export class ProductoComponent implements OnInit {
   /** ================================================================
    *   CARGAR PRODUCTO
   ==================================================================== */
-  public costoN:number;
-  public gananciaN:number;
-  public precioN:number;
-  public productoID: string;
-  public productoImg: string;
+  public costoN!: number;
+  public gananciaN!: number;
+  public precioN!: number;
+  public productoID!: string;
+  public productoImg!: string;
 
   public priceIva: number = 0;
 
@@ -97,11 +97,11 @@ export class ProductoComponent implements OnInit {
         .subscribe( product => {   
 
           this.producto = product;
-          this.productoImg = product.img;
+          this.productoImg = product.img!;
           
-          this.vendidos = this.producto.sold;
-          this.comprados = this.producto.bought;
-          this.devueltos = this.producto.returned;
+          this.vendidos = this.producto.sold!;
+          this.comprados = this.producto.bought!;
+          this.devueltos = this.producto.returned!;
           
           const { code, name, department, type, cost, gain, expiration, visibility, price, returned, sold,  wholesale, pid, comanda, tipo, description, tax, impuesto, taxid, bascula, mayoreo, brand, sku, distribuidor } = product;
           
@@ -120,7 +120,7 @@ export class ProductoComponent implements OnInit {
           
           this.upProductForm.value.price = this.precioN;
 
-          this.kits = product.kit;
+          this.kits = product.kit!;
 
           let expiracion;
           
@@ -158,7 +158,7 @@ export class ProductoComponent implements OnInit {
   ==================================================================== */
   public sinResultados = false;
   public cargando = false;
-  public searchInput:string;
+  public searchInput:string = '';
 
   buscar(termino:string){
     
@@ -196,10 +196,10 @@ export class ProductoComponent implements OnInit {
   /** ================================================================
    *   SELECCIONAR PRODUCTO PARA EL PAQUETE O KIT
   ==================================================================== */
-  @ViewChild('search') search: ElementRef;
-  @ViewChild('qty') qty: ElementRef;
+  @ViewChild('search') search!: ElementRef;
+  @ViewChild('qty') qty!: ElementRef;
 
-  public seleKit: Product;
+  public seleKit!: Product;
   public inProducto:string = '';
   public btnAddKit: string = 'disabled';
 
@@ -234,7 +234,7 @@ export class ProductoComponent implements OnInit {
     this.kits.push({
       qty, 
       product: {
-        _id: this.seleKit.pid,
+        _id: this.seleKit.pid!,
         name: this.seleKit.name
       }
     });
@@ -278,8 +278,8 @@ export class ProductoComponent implements OnInit {
   /** ================================================================
    *  PORCENTAJE
   ==================================================================== */
-  @ViewChild('pIva') pIva: ElementRef;
-  @ViewChild('tax') tax: ElementRef;
+  @ViewChild('pIva') pIva!: ElementRef;
+  @ViewChild('tax') tax!: ElementRef;
   porcentaje(nombre:string, numero:any){    
     
     let porcentaje: number;
@@ -291,7 +291,7 @@ export class ProductoComponent implements OnInit {
         
         porcentaje = (this.costoN * this.gananciaN)/100;
         
-        this.precioN = (this.costoN / ( 1 - (this.gananciaN / 100)));     
+        this.precioN = (this.costoN / ( 1 - (this.gananciaN / 100))).toFixed(0) as unknown as number;     
 
         break;
       case 'ganancia':
@@ -300,7 +300,7 @@ export class ProductoComponent implements OnInit {
         
         porcentaje = (this.costoN * this.gananciaN)/100;
 
-        this.precioN = (this.costoN / ( 1 - (this.gananciaN / 100)));   
+        this.precioN = (this.costoN / ( 1 - (this.gananciaN / 100))).toFixed(0) as unknown as number;   
         
         break;
         
@@ -334,7 +334,7 @@ export class ProductoComponent implements OnInit {
 
       });
 
-      this.pIva.nativeElement.value = Math.round( this.upProductForm.value.price * ((tax.valor / 100) +1 ));
+      this.pIva.nativeElement.value = Math.round( this.upProductForm.value.price * ((tax!.valor / 100) +1 ));
     }
         
 
@@ -343,7 +343,7 @@ export class ProductoComponent implements OnInit {
   /** ================================================================
    *  PRECIO CON IVA
   ==================================================================== */
-  public selectTax: string;
+  public selectTax!: string;
   precioIva(){
 
     console.log(this.selectTax);
@@ -359,7 +359,7 @@ export class ProductoComponent implements OnInit {
 
     let precio = 0;
 
-    precio = this.pIva.nativeElement.value / ((tax.valor / 100)+1);
+    precio = this.pIva.nativeElement.value / ((tax!.valor / 100)+1);
 
     this.porcentaje('precio', precio.toFixed(2));    
 
@@ -451,7 +451,7 @@ export class ProductoComponent implements OnInit {
    *   ACTUALIZAR IMAGEN
   ==================================================================== */
   public imgTemp: any = null;
-  public subirImagen: File;
+  public subirImagen!: File;
   cambiarImage(file: File){
     this.subirImagen = file;
     
@@ -469,7 +469,7 @@ export class ProductoComponent implements OnInit {
   /** ================================================================
    *  SUBIR IMAGEN fileImg
   ==================================================================== */
-  @ViewChild('fileImg') fileImg: ElementRef;
+  @ViewChild('fileImg') fileImg!: ElementRef;
   public imgProducto: string = 'no-image';
   subirImg(){
     
@@ -485,8 +485,8 @@ export class ProductoComponent implements OnInit {
   /** ================================================================
    *  AJUSTAR INVENTARIO
   ==================================================================== */
-  @ViewChild('cantidadE') cantidadE: ElementRef;
-  @ViewChild('cantidadS') cantidadS: ElementRef;
+  @ViewChild('cantidadE') cantidadE!: ElementRef;
+  @ViewChild('cantidadS') cantidadS!: ElementRef;
   public ajustarInventario = {
     cantidad: 0,
     bought: 0,
@@ -515,7 +515,7 @@ export class ProductoComponent implements OnInit {
     }
 
     this.productService.ajustarInventario(this.productoID, this.ajustarInventario)
-        .subscribe( (resp: {ok: boolean, product: Product}) => {
+        .subscribe( (resp:any) => {
 
           this.cantidadE.nativeElement.value = '';
           this.cantidadS.nativeElement.value = '';
@@ -560,11 +560,11 @@ export class ProductoComponent implements OnInit {
           for (const product of products) {
 
             if( product.type === 'Agrego' ){
-              this.comprados += product.qty;
+              this.comprados += product.qty!;
             }else if( product.type === 'Salida' ){
-              this.vendidos += product.qty;
+              this.vendidos += product.qty!;
 
-              product.invoice.products.map( (item) => {
+              product.invoice!.products.map( (item) => {
 
                 if (item.product === this.producto.pid) {
                   this.utilidad += (item.price - this.producto.cost) * item.qty;
@@ -574,7 +574,7 @@ export class ProductoComponent implements OnInit {
               
 
             }else if( product.type === 'Devolución' ){
-              this.devueltos += product.qty;              
+              this.devueltos += product.qty!;              
             }
             
           }
@@ -680,7 +680,7 @@ export class ProductoComponent implements OnInit {
       if (result.isConfirmed) {
 
         this.productService.deleteProduct(_id)
-        .subscribe((resp:{product, ok}) =>{
+        .subscribe((resp:any) =>{
 
           if (resp.product.status) {
             Swal.fire('Estupendo', 'Se ha habilitado el Producto exitosamente!', 'success');

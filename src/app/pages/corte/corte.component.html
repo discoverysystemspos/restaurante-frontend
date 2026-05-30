@@ -369,6 +369,13 @@
 
                             <ng-container *ngIf="bancosAbonos.length > 0">
                                 <tr *ngFor="let banco of bancosAbonos">
+                                    <td colspan="2"><button type="button" (click)="detalleBanco(banco)" class="btn btn-link p-1 text-info" data-bs-toggle="modal" data-bs-target="#transaccionesModal"><i class="bi-list" style="font-size: 0.9rem"></i></button> {{ banco.name }} </td>
+                                    <td> {{ banco.monto | divisa }} </td>
+                                </tr>
+                            </ng-container>
+
+                            <!-- <ng-container *ngIf="bancosAbonos.length > 0">
+                                <tr *ngFor="let banco of bancosAbonos">
                                     <td colspan="2">
                                         {{ banco.name }} </td>
                                     <td class="text-end">
@@ -377,7 +384,7 @@
                                         </span>
                                     </td>
                                 </tr>
-                            </ng-container>
+                            </ng-container> -->
 
                             <tr class="border-top">
                                 <td colspan="2"> Total </td>

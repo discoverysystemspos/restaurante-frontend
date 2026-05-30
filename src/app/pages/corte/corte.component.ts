@@ -505,7 +505,7 @@ export class CorteComponent implements OnInit {
 
     // CERRAR TURNO
     this.turnoService.updateTurno(this.turno, this.turno.tid!)
-        .subscribe( (resp:{ ok:boolean, turno: LoadTurno }) => {        
+        .subscribe( (resp: any) => {        
           
           this.fechaCierre = resp.turno.cierre!;
           this.diferencia = resp.turno.diferencia ;
@@ -584,11 +584,8 @@ export class CorteComponent implements OnInit {
   ==================================================================== */
   public bancoSelect!: Banco;
   detalleBanco(banco: Banco){
-
     this.bancoSelect = banco;
     console.log(banco);
-    
-
   }
 
 

@@ -37,7 +37,7 @@ export const environment = {
     url: 'simids.com',
     phone: '573007325684'
   },
-  base_url: 'https://nuestrobogota.simids.app/api',
+  base_url: 'https://caseritas.poslatino.com/api',
   local_url: 'https://castitoner.com/api',
   dataico_url: 'https://api.dataico.com/dataico_api/v2'
 };
