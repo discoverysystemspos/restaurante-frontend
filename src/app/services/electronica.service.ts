@@ -142,6 +142,11 @@ export class ElectronicaService {
         "measuring-unit": type
       }
 
+      if (item.price === 0) {
+        item["discount-rate"] = 100;
+        item["original-price"] = 1;
+      }
+
       items.push(item);
 
     }
